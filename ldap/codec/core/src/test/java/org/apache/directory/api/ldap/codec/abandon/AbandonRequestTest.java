@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec.abandon;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -42,11 +43,9 @@ import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -54,8 +53,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class AbandonRequestTest extends AbstractCodecServiceTest
 {
     /**
@@ -225,7 +223,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AbandonRequest with a null messageId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAbandonRequestNoMessageId() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
@@ -243,14 +241,17 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AbandonRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AbandonRequest with a bad Message Id
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAbandonRequestBadMessageId() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0B );
@@ -268,6 +269,9 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AbandonRequest>  container = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 }

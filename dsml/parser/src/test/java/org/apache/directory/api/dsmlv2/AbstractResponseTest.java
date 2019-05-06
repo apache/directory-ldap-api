@@ -21,8 +21,8 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -54,7 +54,7 @@ public abstract class AbstractResponseTest extends AbstractTest
         }
         catch ( XmlPullParserException e )
         {
-            assertTrue( e.getMessage(), true );
+            assertTrue( true, e.getMessage() );
             return;
         }
         catch ( Exception e )

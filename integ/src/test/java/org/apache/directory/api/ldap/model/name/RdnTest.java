@@ -23,28 +23,28 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import java.io.IOException;
 
 /**
  * Tests for the schemaAware Rdn class
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class RdnTest
 {
     private static SchemaManager schemaManager;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
@@ -262,10 +262,13 @@ public class RdnTest
      * test that a RDN with an attributeType used twice with the same value
      * throws an exception
      */
-    @Test( expected=LdapInvalidDnException.class )
+    @Test
     public void testWrongRdnAtUsedTwiceSameValue() throws LdapException
     {
-        new Rdn( schemaManager, " cn = b + cn = b " );
+        assertThrows( LdapInvalidDnException.class, () ->
+        {
+            new Rdn( schemaManager, " cn = b + cn = b " );
+        } );
     }
     
     

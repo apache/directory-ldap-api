@@ -20,8 +20,9 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Iterator;
 
@@ -30,24 +31,20 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the GracefulDisconnectTest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerExtendedResponse( new GracefulDisconnectFactory( codec ) );
@@ -275,7 +272,7 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a GracefulDisconnect with a timeOffline off limit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulDisconnectTimeOfflineOffLimit() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -286,14 +283,18 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 
         GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
             get( GracefulDisconnectResponse.EXTENSION_OID );
-        factory.newResponse( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newResponse( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a GracefulDisconnect with a delay off limit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulDisconnectDelayOffLimit() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -305,14 +306,18 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 
         GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
             get( GracefulDisconnectResponse.EXTENSION_OID );
-        factory.newResponse( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newResponse( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a GracefulDisconnect with an empty TimeOffline
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulDisconnectTimeOfflineEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -323,14 +328,18 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 
         GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
             get( GracefulDisconnectResponse.EXTENSION_OID );
-        factory.newResponse( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newResponse( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a GracefulDisconnect with an empty delay
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulDisconnectDelayEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -341,7 +350,11 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 
         GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
             get( GracefulDisconnectResponse.EXTENSION_OID );
-        factory.newResponse( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newResponse( bb );
+        } );
     }
 
 
@@ -349,7 +362,7 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a GracefulDisconnect with an empty replicated
      * contexts
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulDisconnectReplicatedContextsEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -360,7 +373,11 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 
         GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
             get( GracefulDisconnectResponse.EXTENSION_OID );
-        factory.newResponse( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newResponse( bb );
+        } );
     }
 
 
@@ -368,7 +385,7 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a GracefulDisconnect with an invalid replicated
      * context
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulDisconnectReplicatedContextsInvalid() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -380,6 +397,10 @@ public class GracefulDisconnectResponseTest extends AbstractCodecServiceTest
 
         GracefulDisconnectFactory factory = ( GracefulDisconnectFactory ) codec.getExtendedResponseFactories().
             get( GracefulDisconnectResponse.EXTENSION_OID );
-        factory.newResponse( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newResponse( bb );
+        } );
     }
 }

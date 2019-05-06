@@ -20,12 +20,13 @@
 package org.apache.directory.api.ldap.model.ldif;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -46,22 +47,18 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the LdifReader class
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class SchemaAwareLdifReaderTest
 {
     private static byte[] data;
@@ -94,7 +91,7 @@ public class SchemaAwareLdifReaderTest
     /**
      * Create a file to be used by ":<" values
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws Exception
     {
         data = new byte[256];
@@ -112,7 +109,7 @@ public class SchemaAwareLdifReaderTest
     /**
      * Initialize the SchemaManager
      */
-    @Before
+    @BeforeEach
     public void init()
     {
         schemaManager = new DefaultSchemaManager();
@@ -1254,8 +1251,8 @@ public class SchemaAwareLdifReaderTest
         }
         catch ( Exception ne )
         {
-            assertTrue( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), 
-                ne.getMessage().startsWith( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ) );
+            assertTrue( ne.getMessage().startsWith( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ),
+                I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ) );
         }
     }
 
@@ -2063,7 +2060,7 @@ public class SchemaAwareLdifReaderTest
     }
 
 
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testChangeTypeDeleteBadEntry() throws Exception
     {
         String ldif =
@@ -2072,14 +2069,17 @@ public class SchemaAwareLdifReaderTest
                 "changetype: delete\n" +
                 "attr1: test";
 
-        try ( LdifReader reader = new LdifReader( schemaManager ) )
+        assertThrows( LdapLdifException.class, ( ) ->
         {
-            reader.parseLdif( ldif );
-        }
+            try ( LdifReader reader = new LdifReader( schemaManager ) )
+            {
+                reader.parseLdif( ldif );
+            }
+        } );
     }
 
 
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifContentWithControl() throws Exception
     {
         String ldif =
@@ -2090,7 +2090,10 @@ public class SchemaAwareLdifReaderTest
 
         try ( LdifReader reader = new LdifReader( schemaManager ) )
         {
-            reader.parseLdif( ldif );
+            assertThrows( LdapLdifException.class, ( ) ->
+            {
+                reader.parseLdif( ldif );
+            } );
         }
     }
 

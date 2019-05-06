@@ -20,15 +20,14 @@
 package org.apache.directory.api.ldap.model.filter;
 
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 /**
@@ -36,8 +35,7 @@ import static org.junit.Assert.assertFalse;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class FilterNodeEqualityTest
 {
     @Test
@@ -46,21 +44,21 @@ public class FilterNodeEqualityTest
         EqualityNode<String> eqNode1 = new EqualityNode<String>( "attr1", "test" );
         EqualityNode<String> eqNode2 = new EqualityNode<String>( "attr1", "test" );
 
-        assertEquals( "two exact nodes should be equal", eqNode1, eqNode2 );
+        assertEquals( eqNode1, eqNode2, "two exact nodes should be equal" );
 
         eqNode2 = new EqualityNode<String>( "attr2", "test" );
-        assertFalse( "different attribute in node should return false on equals()", eqNode1.equals( eqNode2 ) );
+        assertFalse( eqNode1.equals( eqNode2 ), "different attribute in node should return false on equals()" );
 
         eqNode2 = new EqualityNode<String>( "attr2", "foobar" );
-        assertFalse( "different value in node should return false on equals()", eqNode1.equals( eqNode2 ) );
+        assertFalse( eqNode1.equals( eqNode2 ), "different value in node should return false on equals()" );
 
         PresenceNode presenceNode = new PresenceNode( "attr1" );
-        assertFalse( "two different leaf nodes should not be equal", eqNode1.equals( presenceNode ) );
-        assertFalse( "two different leaf nodes should not be equal", presenceNode.equals( eqNode1 ) );
+        assertFalse( eqNode1.equals( presenceNode ), "two different leaf nodes should not be equal" );
+        assertFalse( presenceNode.equals( eqNode1 ), "two different leaf nodes should not be equal" );
 
         GreaterEqNode<String> greaterEqNode = new GreaterEqNode<String>( "attr1", "test" );
-        assertFalse( "two different simple nodes should not be equal", eqNode1.equals( greaterEqNode ) );
-        assertFalse( "two different simple nodes should not be equal", greaterEqNode.equals( eqNode1 ) );
+        assertFalse( eqNode1.equals( greaterEqNode ), "two different simple nodes should not be equal" );
+        assertFalse( greaterEqNode.equals( eqNode1 ), "two different simple nodes should not be equal" );
     }
 
 
@@ -70,14 +68,14 @@ public class FilterNodeEqualityTest
         GreaterEqNode<String> greaterEqNode1 = new GreaterEqNode<String>( "attr1", "test" );
         GreaterEqNode<String> greaterEqNode2 = new GreaterEqNode<String>( "attr1", "test" );
 
-        assertEquals( "two exact nodes should be equal", greaterEqNode1, greaterEqNode2 );
+        assertEquals( greaterEqNode1, greaterEqNode2, "two exact nodes should be equal" );
 
         greaterEqNode2 = new GreaterEqNode<String>( "attr2", "test" );
-        assertFalse( "different attribute in node should return false on equals()", greaterEqNode1
-            .equals( greaterEqNode2 ) );
+        assertFalse( greaterEqNode1
+            .equals( greaterEqNode2 ), "different attribute in node should return false on equals()" );
 
         greaterEqNode2 = new GreaterEqNode<String>( "attr2", "foobar" );
-        assertFalse( "different value in node should return false on equals()", greaterEqNode1.equals( greaterEqNode2 ) );
+        assertFalse( greaterEqNode1.equals( greaterEqNode2 ), "different value in node should return false on equals()" );
     }
 
 
@@ -87,13 +85,13 @@ public class FilterNodeEqualityTest
         LessEqNode<String> lessEqNode1 = new LessEqNode<String>( "attr1", "test" );
         LessEqNode<String> lessEqNode2 = new LessEqNode<String>( "attr1", "test" );
 
-        assertEquals( "two exact nodes should be equal", lessEqNode1, lessEqNode2 );
+        assertEquals( lessEqNode1, lessEqNode2, "two exact nodes should be equal" );
 
         lessEqNode2 = new LessEqNode<String>( "attr2", "test" );
-        assertFalse( "different attribute in node should return false on equals()", lessEqNode1.equals( lessEqNode2 ) );
+        assertFalse( lessEqNode1.equals( lessEqNode2 ), "different attribute in node should return false on equals()" );
 
         lessEqNode2 = new LessEqNode<String>( "attr2", "foobar" );
-        assertFalse( "different value in node should return false on equals()", lessEqNode1.equals( lessEqNode2 ) );
+        assertFalse( lessEqNode1.equals( lessEqNode2 ), "different value in node should return false on equals()" );
     }
 
 
@@ -103,15 +101,15 @@ public class FilterNodeEqualityTest
         ApproximateNode<String> approximateNode1 = new ApproximateNode<String>( "attr1", "test" );
         ApproximateNode<String> approximateNode2 = new ApproximateNode<String>( "attr1", "test" );
 
-        assertEquals( "two exact nodes should be equal", approximateNode1, approximateNode2 );
+        assertEquals( approximateNode1, approximateNode2, "two exact nodes should be equal" );
 
         approximateNode2 = new ApproximateNode<String>( "attr2", "test" );
-        assertFalse( "different attribute in node should return false on equals()", approximateNode1
-            .equals( approximateNode2 ) );
+        assertFalse( approximateNode1
+            .equals( approximateNode2 ), "different attribute in node should return false on equals()" );
 
         approximateNode2 = new ApproximateNode<String>( "attr2", "foobar" );
-        assertFalse( "different value in node should return false on equals()", approximateNode1
-            .equals( approximateNode2 ) );
+        assertFalse( approximateNode1
+            .equals( approximateNode2 ), "different value in node should return false on equals()" );
     }
 
 
@@ -121,10 +119,10 @@ public class FilterNodeEqualityTest
         PresenceNode presenceNode1 = new PresenceNode( "attr1" );
         PresenceNode presenceNode2 = new PresenceNode( "attr1" );
 
-        assertEquals( "two exact presence nodes on same attribute should be equal", presenceNode1, presenceNode2 );
+        assertEquals( presenceNode1, presenceNode2, "two exact presence nodes on same attribute should be equal" );
 
         presenceNode2 = new PresenceNode( "attr2" );
-        assertFalse( "presence nodes on different attributes should not be equal", presenceNode1.equals( presenceNode2 ) );
+        assertFalse( presenceNode1.equals( presenceNode2 ), "presence nodes on different attributes should not be equal" );
     }
 
 

@@ -20,31 +20,27 @@
 package org.apache.directory.api.ldap.aci.protectedItem;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.aci.protectedItem.RestrictedByElem;
 import org.apache.directory.api.ldap.aci.protectedItem.RestrictedByItem;
 import org.apache.directory.api.ldap.model.filter.UndefinedNode;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Unit tests class RestrictedByItem.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class RestrictedByItemTest
 {
     RestrictedByItem restrictedByItemA;
@@ -61,7 +57,7 @@ public class RestrictedByItemTest
     /**
      * Initialize maxValueCountItem instances
      */
-    @Before
+    @BeforeEach
     public void initNames() throws Exception
     {
         elemsA = new HashSet<RestrictedByElem>();

@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.extras;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 
 
 /**
@@ -33,25 +31,5 @@ import org.junit.BeforeClass;
  */
 public abstract class AbstractCodecServiceTest
 {
-    protected static LdapApiService codec;
-
-
-    /**
-     * Initialize the codec service
-     */
-    @BeforeClass
-    public static void setupLdapCodecService()
-    {
-        codec = new DefaultLdapCodecService();
-    }
-
-
-    /**
-     * Shutdown the codec service
-     */
-    @AfterClass
-    public static void tearDownLdapCodecService()
-    {
-        codec = null;
-    }
+    protected static LdapApiService codec = new DefaultLdapCodecService();
 }

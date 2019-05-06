@@ -20,17 +20,19 @@
 package org.apache.directory.api.ldap.model.ldif;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -42,50 +44,50 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.api.ldap.model.ldif.LdifAttributesReader;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdifAttributesReaderTest
 {
-    /** Uses a temporary folder rule */
-    @Rule 
-    public TemporaryFolder tmpFolder= new TemporaryFolder();
-
     private byte[] data;
 
     private File HJENSEN_JPEG_FILE = null;
+    
+    private File jpegFile;
+    
+    private File tmpFolder;
 
 
     private File createFile( String name, byte[] data ) throws IOException
     {
-        File jpeg = tmpFolder.newFile( name + ".jpg" );
+        Path tmpFolder = Files.createTempDirectory( LdifAttributesReaderTest.class.getSimpleName() );
+        
+        jpegFile = File.createTempFile( tmpFolder.toString(), name + ".jpg" );
 
-        DataOutputStream os = new DataOutputStream( new FileOutputStream( jpeg ) );
+        DataOutputStream os = new DataOutputStream( new FileOutputStream( jpegFile ) );
 
         os.write( data );
         os.close();
 
-        return jpeg;
+        return jpegFile;
     }
 
 
     /**
      * Create a file to be used by ":<" values
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         data = new byte[256];
@@ -96,6 +98,14 @@ public class LdifAttributesReaderTest
         }
 
         HJENSEN_JPEG_FILE = createFile( "hjensen", data );
+    }
+    
+    
+    @AfterEach
+    public void cleanup()
+    {
+        FileUtils.deleteQuietly( jpegFile );
+        FileUtils.deleteQuietly( tmpFolder );
     }
 
 
@@ -714,8 +724,8 @@ public class LdifAttributesReaderTest
         }
         catch ( LdapLdifException ne )
         {
-            assertTrue( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), ne.getMessage().startsWith(
-                I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ) );
+            assertTrue( ne.getMessage().startsWith( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ),
+                I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ) );
         }
 
         reader.close();

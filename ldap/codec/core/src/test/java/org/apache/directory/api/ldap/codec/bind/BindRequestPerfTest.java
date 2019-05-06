@@ -27,19 +27,15 @@ import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 //@Ignore("Ignore performance tests: should not be with integration tests")
 public class BindRequestPerfTest extends AbstractCodecServiceTest
 {
@@ -48,7 +44,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
      * controls
      */
     @Test
-    @Ignore
+    @Disabled
     public void testEncodeBindRequestPerf() throws Exception
     {
         Dn dn = new Dn( "uid=akarasulu,dc=example,dc=com" );

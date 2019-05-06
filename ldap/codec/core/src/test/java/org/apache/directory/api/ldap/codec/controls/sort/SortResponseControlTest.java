@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -30,13 +31,16 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Tests for SortResponseControl.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution( ExecutionMode.CONCURRENT)
 public class SortResponseControlTest extends AbstractCodecServiceTest
 {
     @Test
@@ -97,7 +101,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testDecodeControlWithWrongResultCode() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
@@ -111,6 +115,10 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         SortResponseFactory factory = ( SortResponseFactory ) codec.getResponseControlFactories().
             get( SortResponse.OID );
         SortResponse control = factory.newControl();
-        factory.decodeValue( control, bb.array() );
+
+        assertThrows( IllegalArgumentException.class, ( ) ->
+        {
+            factory.decodeValue( control, bb.array() );
+        } );
     }
 }

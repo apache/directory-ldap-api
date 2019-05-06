@@ -36,8 +36,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.directory.junit</groupId>
-      <artifactId>junit-addons</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-runner</artifactId>
       <scope>test</scope>
     </dependency>
     
@@ -67,6 +73,13 @@
           <systemPropertyVariables>
             <workingDirectory>${basedir}/target</workingDirectory>
           </systemPropertyVariables>
+          <parallel>all</parallel>
+          <threadCount>10</threadCount>
+          <properties>
+            <configurationParameters>
+              junit.jupiter.execution.parallel.enabled=true
+            </configurationParameters>
+          </properties>
         </configuration>
       </plugin>
       <plugin>

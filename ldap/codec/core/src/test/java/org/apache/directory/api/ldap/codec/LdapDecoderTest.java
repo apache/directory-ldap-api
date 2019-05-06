@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -45,12 +46,9 @@ import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
 import org.apache.mina.core.session.DummySession;
 import org.apache.mina.core.session.IoSession;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -58,8 +56,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapDecoderTest extends AbstractCodecServiceTest
 {
     /**
@@ -366,7 +363,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a PDU with a bad Length. The first TLV has a length
      * of 0x32 when the PDU is 0x33 bytes long.
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBadLengthTooSmall() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
@@ -396,7 +393,10 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
@@ -404,7 +404,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a PDU with a bad primitive Length. The second TLV
      * has a length of 0x02 when the PDU is 0x01 bytes long.
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBadPrimitiveLengthTooBig() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
@@ -432,14 +432,17 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a PDU with a bad tag.
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBadTagTransition() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
@@ -466,7 +469,10 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 

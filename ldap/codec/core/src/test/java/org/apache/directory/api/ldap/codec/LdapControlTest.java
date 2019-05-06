@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -43,15 +44,12 @@ import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapControlTest extends AbstractCodecServiceTest
 {
     /**
@@ -235,7 +233,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a Request with null OID controls
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeRequestWithControlsNullOID() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x19 );
@@ -259,14 +257,17 @@ public class LdapControlTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode the PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a Request with bad OID controls
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeRequestWithControlsBadOID() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x20 );
@@ -292,14 +293,17 @@ public class LdapControlTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a Request with bad criticality
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeRequestWithControlsBadCriticality() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x25 );
@@ -324,6 +328,9 @@ public class LdapControlTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode the PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 }

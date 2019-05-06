@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.search.persistentSearch;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 
@@ -31,20 +32,16 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.ChangeType;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the PSearchControlTest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class PSearchControlTest extends AbstractCodecServiceTest
 {
     /**
@@ -123,7 +120,7 @@ public class PSearchControlTest extends AbstractCodecServiceTest
      * Test the decoding of a PSearchControl with a changes types which
      * value is 0
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeModifyDNRequestSuccessChangeTypes0() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
@@ -139,7 +136,11 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
             get( PersistentSearch.OID );
         PersistentSearch ctrl = factory.newControl();
-        factory.decodeValue( ctrl, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( ctrl, bb.array() );
+        } );
     }
 
 
@@ -147,7 +148,7 @@ public class PSearchControlTest extends AbstractCodecServiceTest
      * Test the decoding of a PSearchControl with a changes types which
      * value is above 15
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeModifyDNRequestSuccessChangeTypes22() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
@@ -163,14 +164,18 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
             get( PersistentSearch.OID );
         PersistentSearch ctrl = factory.newControl();
-        factory.decodeValue( ctrl, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( ctrl, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a PSearchControl with a null sequence
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeModifyDNRequestSuccessNullSequence() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -183,14 +188,18 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
             get( PersistentSearch.OID );
         PersistentSearch ctrl = factory.newControl();
-        factory.decodeValue( ctrl, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( ctrl, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a PSearchControl without changeTypes
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeModifyDNRequestSuccessWithoutChangeTypes() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
@@ -205,14 +214,18 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
             get( PersistentSearch.OID );
         PersistentSearch ctrl = factory.newControl();
-        factory.decodeValue( ctrl, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( ctrl, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a PSearchControl without changeOnly
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeModifyDNRequestSuccessWithoutChangesOnly() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
@@ -227,14 +240,18 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
             get( PersistentSearch.OID );
         PersistentSearch ctrl = factory.newControl();
-        factory.decodeValue( ctrl, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( ctrl, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a PSearchControl without returnECs
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeModifyDNRequestSuccessWithoutReturnECs() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
@@ -249,6 +266,10 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         PersistentSearchFactory factory = ( PersistentSearchFactory ) codec.getRequestControlFactories().
             get( PersistentSearch.OID );
         PersistentSearch ctrl = factory.newControl();
-        factory.decodeValue( ctrl, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( ctrl, bb.array() );
+        } );
     }
 }

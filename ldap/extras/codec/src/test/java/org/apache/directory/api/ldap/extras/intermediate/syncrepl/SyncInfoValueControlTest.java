@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.extras.intermediate.syncrepl;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 
@@ -35,24 +36,20 @@ import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SynchronizationInfoEnum;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the SyncInfoControlValue codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SyncInfoValueControlTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerIntermediateResponse( new SyncInfoValueFactory() );
@@ -495,7 +492,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, empty
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncInfoValueControlSyncIdSetEmpty() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -509,7 +506,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         SyncInfoValueFactory factory = ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().
             get( SyncInfoValue.OID );
         SyncInfoValue syncInfoValue = factory.newResponse();
-        factory.decodeValue( syncInfoValue, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncInfoValue, bb.array() );
+        } );
     }
 
 
@@ -517,7 +518,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, cookie
      * but no UUID set
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncInfoValueControlSyncIdSetCookieNoSet() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
@@ -533,7 +534,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         SyncInfoValueFactory factory = ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().
             get( SyncInfoValue.OID );
         SyncInfoValue syncInfoValue = factory.newResponse();
-        factory.decodeValue( syncInfoValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncInfoValue, bb.array() );
+        } );
     }
 
 
@@ -541,7 +546,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, no cookie
      * a refreshDeletes flag, but no UUID set
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesNoSet() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
@@ -556,7 +561,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         SyncInfoValueFactory factory = ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().
             get( SyncInfoValue.OID );
         SyncInfoValue syncInfoValue = factory.newResponse();
-        factory.decodeValue( syncInfoValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncInfoValue, bb.array() );
+        } );
     }
 
 
@@ -564,7 +573,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, a cookie
      * a refreshDeletes flag, but no UUID set
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesNoSet() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
@@ -581,7 +590,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         SyncInfoValueFactory factory = ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().
             get( SyncInfoValue.OID );
         SyncInfoValue syncInfoValue = factory.newResponse();
-        factory.decodeValue( syncInfoValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncInfoValue, bb.array() );
+        } );
     }
 
 
@@ -1006,7 +1019,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, with some
      * invalid UUID
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncInfoValueControlSyncIdSetTooSmallUUID() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x1D );
@@ -1027,7 +1040,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         SyncInfoValueFactory factory = ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().
             get( SyncInfoValue.OID );
         SyncInfoValue syncInfoValue = factory.newResponse();
-        factory.decodeValue( syncInfoValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncInfoValue, bb.array() );
+        } );
     }
 
 
@@ -1035,7 +1052,7 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, with some
      * invalid UUID
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncInfoValueControlSyncIdSetTooLongUUID() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x20 );
@@ -1057,6 +1074,10 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
         SyncInfoValueFactory factory = ( SyncInfoValueFactory ) codec.getIntermediateResponseFactories().
             get( SyncInfoValue.OID );
         SyncInfoValue syncInfoValue = factory.newResponse();
-        factory.decodeValue( syncInfoValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncInfoValue, bb.array() );
+        } );
     }
 }

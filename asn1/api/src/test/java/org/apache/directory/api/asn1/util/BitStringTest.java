@@ -20,16 +20,14 @@
 package org.apache.directory.api.asn1.util;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -37,8 +35,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class BitStringTest
 {
     /**
@@ -59,7 +56,7 @@ public class BitStringTest
         }
         catch ( IndexOutOfBoundsException ioobe )
         {
-            assertTrue( true );
+            assertTrue(  true );
         }
     }
 

@@ -20,22 +20,20 @@
 package org.apache.directory.api.ldap.aci;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.aci.UserClass.Name;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -43,8 +41,7 @@ import org.junit.runner.RunWith;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class UserClass_NameTest
 {
     private Name nameA;
@@ -56,7 +53,7 @@ public class UserClass_NameTest
     /**
      * Initialize name instances
      */
-    @Before
+    @BeforeEach
     public void initNames() throws LdapInvalidDnException
     {
         Set<String> dnSetA = new HashSet<>();
@@ -111,7 +108,7 @@ public class UserClass_NameTest
     }
 
 
-    @Ignore( "There is no way this test can succeed, we are hashcoding values in a set...")
+    @Disabled( "There is no way this test can succeed, we are hashcoding values in a set...")
     @Test
     public void testHashCodeSymmetric() throws Exception
     {
@@ -129,7 +126,7 @@ public class UserClass_NameTest
     }
 
 
-    @Ignore( "There is no way this test can succeed, we are hashcoding values in a set...")
+    @Disabled( "There is no way this test can succeed, we are hashcoding values in a set...")
     @Test
     public void testHashCodeTransitive() throws Exception
     {

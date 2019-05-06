@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.modifyDn;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -41,20 +42,16 @@ import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the ModifyDNRequest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class ModifyDNRequestTest extends AbstractCodecServiceTest
 {
     /**
@@ -110,7 +107,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a bad Dn ModifyDNRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestBadDN() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
@@ -138,27 +135,30 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof ModifyDnResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, ldapMessageContainer );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof ModifyDnResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of a bad Rdn ModifyDNRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestBadRDN() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
@@ -186,27 +186,30 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof ModifyDnResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, ldapMessageContainer );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof ModifyDnResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of a bad Rdn ModifyDNRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestBadNewSuperior() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
@@ -234,20 +237,23 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         // Allocate a ModifyRequest Container
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof ModifyDnResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, ldapMessageContainer );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof ModifyDnResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
@@ -433,7 +439,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyDNRequest with an empty body
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestEmptyBody() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -452,14 +458,17 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a ModifyDNRequest with an empty entry
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestEmptyEntry() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
@@ -479,14 +488,17 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a ModifyDNRequest with an empty newRdn
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestEmptyNewRdn() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
@@ -510,14 +522,17 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a ModifyDNRequest with an empty deleteOldRdn
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeModifyDNRequestEmptyDeleteOldRdnn() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x3C );
@@ -543,6 +558,9 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ModifyDnRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a ModifyDNRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 }

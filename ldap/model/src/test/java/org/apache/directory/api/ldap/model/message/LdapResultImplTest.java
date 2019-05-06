@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.LdapResult;
@@ -30,11 +30,9 @@ import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -43,8 +41,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  *         $Rev: 946251 $
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapResultImplTest
 {
     /**
@@ -54,7 +51,7 @@ public class LdapResultImplTest
     public void testEqualsSameObj()
     {
         LdapResultImpl r0 = new LdapResultImpl();
-        assertTrue( "same object should be equal", r0.equals( r0 ) );
+        assertTrue( r0.equals( r0 ), "same object should be equal" );
     }
 
 
@@ -68,8 +65,8 @@ public class LdapResultImplTest
         LdapResultImpl r0 = new LdapResultImpl();
         LdapResultImpl r1 = new LdapResultImpl();
 
-        assertTrue( "default copy should be equal", r0.equals( r1 ) );
-        assertTrue( "default copy should be equal", r1.equals( r0 ) );
+        assertTrue( r0.equals( r1 ), "default copy should be equal" );
+        assertTrue( r1.equals( r0 ), "default copy should be equal" );
     }
 
 
@@ -82,8 +79,8 @@ public class LdapResultImplTest
         LdapResultImpl r0 = new LdapResultImpl();
         LdapResultImpl r1 = new LdapResultImpl();
 
-        assertTrue( "default copy with different lockable parents " + "should be equal", r0.equals( r1 ) );
-        assertTrue( "default copy with different lockable parents " + "should be equal", r1.equals( r0 ) );
+        assertTrue( r0.equals( r1 ), "default copy with different lockable parents should be equal" );
+        assertTrue( r1.equals( r0 ), "default copy with different lockable parents should be equal" );
     }
 
 
@@ -153,8 +150,8 @@ public class LdapResultImplTest
             }
         };
 
-        assertTrue( "r0 equals should see other impl r1 as equal", r0.equals( r1 ) );
-        assertFalse( "r1 impl uses Object.equals() so it should not see " + "r0 as the same object", r1.equals( r0 ) );
+        assertTrue( r0.equals( r1 ), "r0 equals should see other impl r1 as equal" );
+        assertFalse( r1.equals( r0 ), "r1 impl uses Object.equals() so it should not see r0 as the same object" );
     }
 
 
@@ -184,8 +181,8 @@ public class LdapResultImplTest
         refs1.addLdapUrl( "ldap://someserver.com" );
         refs1.addLdapUrl( "ldap://anotherserver.org" );
 
-        assertTrue( "exact copy should be equal", r0.equals( r1 ) );
-        assertTrue( "exact copy should be equal", r1.equals( r0 ) );
+        assertTrue( r0.equals( r1 ), "exact copy should be equal" );
+        assertTrue( r1.equals( r0 ), "exact copy should be equal" );
     }
 
 
@@ -283,8 +280,8 @@ public class LdapResultImplTest
         refs1.addLdapUrl( "ldap://someserver.com" );
         refs1.addLdapUrl( "ldap://anotherserver.org" );
 
-        assertFalse( "results with different error messages should " + "not be equal", r0.equals( r1 ) );
-        assertFalse( "results with different error messages should " + "not be equal", r1.equals( r0 ) );
+        assertFalse( r0.equals( r1 ), "results with different error messages should not be equal" );
+        assertFalse( r1.equals( r0 ), "results with different error messages should not be equal" );
     }
 
 
@@ -314,8 +311,8 @@ public class LdapResultImplTest
         refs1.addLdapUrl( "ldap://someserver.com" );
         refs1.addLdapUrl( "ldap://anotherserver.org" );
 
-        assertFalse( "results with different matchedDn properties " + "should not be equal", r0.equals( r1 ) );
-        assertFalse( "results with different matchedDn properties " + "should not be equal", r1.equals( r0 ) );
+        assertFalse( r0.equals( r1 ), "results with different matchedDn properties should not be equal" );
+        assertFalse( r1.equals( r0 ), "results with different matchedDn properties should not be equal" );
     }
 
 
@@ -345,8 +342,8 @@ public class LdapResultImplTest
         refs1.addLdapUrl( "ldap://someserver.com" );
         refs1.addLdapUrl( "ldap://anotherserver.org" );
 
-        assertFalse( "results with different result codes should not be equal", r0.equals( r1 ) );
-        assertFalse( "results with different result codes should not be equal", r1.equals( r0 ) );
+        assertFalse( r0.equals( r1 ), "results with different result codes should not be equal" );
+        assertFalse( r1.equals( r0 ), "results with different result codes should not be equal" );
     }
 
 
@@ -378,7 +375,7 @@ public class LdapResultImplTest
         refs1.addLdapUrl( "ldap://abc.com" );
         refs1.addLdapUrl( "ldap://anotherserver.org" );
 
-        assertFalse( "results with different referrals should not be equal", r0.equals( r1 ) );
-        assertFalse( "results with different referrals should not be equal", r1.equals( r0 ) );
+        assertFalse( r0.equals( r1 ), "results with different referrals should not be equal" );
+        assertFalse( r1.equals( r0 ), "results with different referrals should not be equal" );
     }
 }

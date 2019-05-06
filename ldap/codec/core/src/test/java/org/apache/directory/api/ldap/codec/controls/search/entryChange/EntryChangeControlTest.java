@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.search.entryChange;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -34,20 +35,16 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.controls.ChangeType;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the EntryChangeControlTest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class EntryChangeControlTest extends AbstractCodecServiceTest
 {
     /**
@@ -165,7 +162,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
      * Test the decoding of a EntryChangeControl with a add so we should not
      * have a PreviousDN
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeEntryChangeControlWithADDAndPreviousDNBad() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0D );
@@ -186,7 +183,11 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
             EntryChange.OID );
         EntryChange entryChange = factory.newControl();
-        factory.decodeValue( entryChange, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( entryChange, bb.array() );
+        } );
     }
 
 
@@ -229,7 +230,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
      * Test the decoding of a EntryChangeControl with a wrong changeType and
      * nothing else
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeEntryChangeControlWithWrongChangeType() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
@@ -246,14 +247,18 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
             EntryChange.OID );
         EntryChange entryChange = factory.newControl();
-        factory.decodeValue( entryChange, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( entryChange, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a EntryChangeControl with a wrong changeNumber
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeEntryChangeControlWithWrongChangeNumber() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x1C );
@@ -274,7 +279,11 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
         EntryChangeFactory factory = ( EntryChangeFactory ) codec.getResponseControlFactories().get( 
             EntryChange.OID );
         EntryChange entryChange = factory.newControl();
-        factory.decodeValue( entryChange, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( entryChange, bb.array() );
+        } );
     }
 
 

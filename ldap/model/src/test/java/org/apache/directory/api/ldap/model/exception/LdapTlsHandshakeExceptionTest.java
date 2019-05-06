@@ -27,12 +27,16 @@ import java.io.IOException;
 import java.security.cert.CertPathBuilderException;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertPathValidatorException.BasicReason;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 
-import org.junit.Test;
 
-
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapTlsHandshakeExceptionTest
 {
     @Test

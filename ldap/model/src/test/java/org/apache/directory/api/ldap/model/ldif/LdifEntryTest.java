@@ -20,11 +20,12 @@
 package org.apache.directory.api.ldap.model.ldif;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
@@ -38,29 +39,29 @@ import org.apache.directory.api.ldap.model.ldif.LdifControl;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the LdifEntry class
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdifEntryTest
 {
     /**
      * Check that we can't create an empty LdifEntry
      */
-    @Test(expected = LdapInvalidAttributeValueException.class)
+    @Test
     public void testLdifEntryEmpty() throws Exception
     {
-        new LdifEntry( "", "" );
+        assertThrows( LdapInvalidAttributeValueException.class, () ->
+        {
+            new LdifEntry( "", "" );
+        } );
     }
 
 
@@ -156,7 +157,7 @@ public class LdifEntryTest
      * 
      * @throws Exception
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifParserChangeTypeDeleteNoControlAttribute() throws Exception
     {
         String ldif =
@@ -167,7 +168,10 @@ public class LdifEntryTest
                 "changetype: delete\n" +
                 "cn: bad !!\n";
 
-        new LdifEntry( "ou=Product Development, dc=airius, dc=com", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "ou=Product Development, dc=airius, dc=com", ldif );
+        } );
     }
 
 
@@ -383,28 +387,34 @@ public class LdifEntryTest
     /**
      * Test a ModDn changeType LdifEntry with no newRdn
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifEntryChangeTypeModDnNoNewRdn() throws Exception
     {
         String ldif =
             "changetype: moddn\n" +
                 "deleteoldrdn: 1\n";
 
-        new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        } );
     }
 
 
     /**
      * Test a ModDn changeType LdifEntry with no deleteOldRdn flag
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifEntryChangeTypeModDnNoDeleteOldRdn() throws Exception
     {
         String ldif =
             "changetype: moddn\n" +
                 "newrdn: cn=app2\n";
 
-        new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        } );
     }
 
 
@@ -550,7 +560,7 @@ public class LdifEntryTest
     /**
      * Test a Modify changeType LdifEntry with no end separator ("-")
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifEntryChangeTypeModifyNoEndSeparator() throws Exception
     {
         String ldif =
@@ -559,7 +569,10 @@ public class LdifEntryTest
                 "cn: v1\n" +
                 "cn: v2\n";
 
-        new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        } );
     }
 
 
@@ -636,7 +649,7 @@ public class LdifEntryTest
     /**
      * Test a Modify changeType LdifEntry with no operation
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifEntryChangeTypeModifyNoOperator() throws Exception
     {
         String ldif =
@@ -645,7 +658,10 @@ public class LdifEntryTest
                 "dn: v2\n" +
                 "-";
 
-        new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        } );
     }
 
 
@@ -688,7 +704,7 @@ public class LdifEntryTest
     /**
      * Test a Modify changeType LdifEntry with a different attribute used
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifEntryChangeTypeModifyNotSameAttr() throws Exception
     {
         String ldif =
@@ -698,14 +714,17 @@ public class LdifEntryTest
                 "sn: v2\n" +
                 "-";
 
-        new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        } );
     }
 
 
     /**
      * Test a Modify changeType LdifEntry with a different attribute used
      */
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifEntryChangeTypeModifyNotSameAttr2() throws Exception
     {
         String ldif =
@@ -715,7 +734,10 @@ public class LdifEntryTest
                 "sn: v2\n" +
                 "-";
 
-        new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        assertThrows( LdapLdifException.class, () ->
+        {
+            new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        } );
     }
 
 

@@ -20,29 +20,25 @@
 package org.apache.directory.api.ldap.aci;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.aci.protectedItem.SelfValueItem;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Unit tests class ProtectedItem.SelfValue.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class ProtectedItem_SelfValueTest
 {
     SelfValueItem selfValueA;
@@ -54,7 +50,7 @@ public class ProtectedItem_SelfValueTest
     /**
      * Initialize name instances
      */
-    @Before
+    @BeforeEach
     public void initNames() throws Exception
     {
         Set<AttributeType> colA = new HashSet<AttributeType>();

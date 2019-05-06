@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -33,24 +34,20 @@ import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateTypeEnum;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the SyncStateControlValue codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SyncStateValueControlTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerResponseControl( new SyncStateValueFactory( codec ) );
@@ -182,7 +179,7 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SyncStateValue control with an empty sequence
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeSyncStateValueControlEmptySequence() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -195,14 +192,18 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
         SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
             get( SyncStateValue.OID );
         SyncStateValue syncStateValue = factory.newControl();
-        factory.decodeValue( syncStateValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncStateValue, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a SyncStateValue control with no syncState
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeSyncStateValueControlNoSyancState() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
@@ -217,14 +218,18 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
         SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
             get( SyncStateValue.OID );
         SyncStateValue syncStateValue = factory.newControl();
-        factory.decodeValue( syncStateValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncStateValue, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a SyncStateValue control with no syncUUID
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeSyncStateValueControlNoSyncUUID() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
@@ -240,7 +245,11 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
         SyncStateValueFactory factory = ( SyncStateValueFactory ) codec.getResponseControlFactories().
             get( SyncStateValue.OID );
         SyncStateValue syncStateValue = factory.newControl();
-        factory.decodeValue( syncStateValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncStateValue, bb.array() );
+        } );
     }
 
 

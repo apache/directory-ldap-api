@@ -21,32 +21,29 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * TestCase for a Cancel Extended Operation request
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class CancelRequestTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerExtendedRequest( new CancelFactory( codec ) );
@@ -81,7 +78,7 @@ public class CancelRequestTest extends AbstractCodecServiceTest
     /**
      * Test a Cancel message with no cancelId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCancelNoCancelId() throws DecoderException
     {
         byte[] stream = new byte[]
@@ -91,14 +88,18 @@ public class CancelRequestTest extends AbstractCodecServiceTest
 
         CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
             get( CancelRequest.EXTENSION_OID );
-        factory.newRequest( stream );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( stream );
+        } );
     }
 
 
     /**
      * Test a Cancel message with an empty cancelId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCancelEmptyCancelId() throws DecoderException
     {
         byte[] stream = new byte[]
@@ -109,14 +110,18 @@ public class CancelRequestTest extends AbstractCodecServiceTest
 
         CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
             get( CancelRequest.EXTENSION_OID );
-        factory.newRequest( stream );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( stream );
+        } );
     }
 
 
     /**
      * Test a Cancel message with a bad cancelId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCancelBadCancelId() throws DecoderException
     {
         byte[] stream = new byte[]
@@ -128,14 +133,18 @@ public class CancelRequestTest extends AbstractCodecServiceTest
 
         CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
             get( CancelRequest.EXTENSION_OID );
-        factory.newRequest( stream );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( stream );
+        } );
     }
 
 
     /**
      * Test a Cancel message with more than one cancelId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCancelMoreThanOneCancelId() throws DecoderException
     {
         byte[] stream = new byte[]
@@ -147,6 +156,10 @@ public class CancelRequestTest extends AbstractCodecServiceTest
 
         CancelFactory factory = ( CancelFactory ) codec.getExtendedRequestFactories().
             get( CancelRequest.EXTENSION_OID );
-        factory.newRequest( stream );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( stream );
+        } );
     }
 }

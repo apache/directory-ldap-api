@@ -20,7 +20,7 @@
 package org.apache.directory.api.util;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,17 +28,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -46,28 +44,24 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class UnicodeTest
 {
-    /** Uses a temporary folder rule */
-    @Rule 
-    public TemporaryFolder tmpFolder= new TemporaryFolder();
-
     /** The file stream we use for this test */
+    private  Path tmpFolder;
     private FileOutputStream fos = null;
     private FileInputStream fis = null;
-
-
-    /**
-     * Initialize the temporary folder and the associated streams
-     */
-    @Before
-    public void init()
+    
+    @BeforeEach
+    public void init() throws IOException
     {
+        tmpFolder = Files.createTempDirectory( FileUtilsTest.class.getSimpleName() );
+        tmpFolder.toFile().deleteOnExit();
+        
         try
         {
-            File tmpFile = tmpFolder.newFile( "UTFUtils.test" );
+            File tmpFile = File.createTempFile( tmpFolder.toFile().getAbsolutePath(), "UTFUtils.test" );
+            tmpFile.deleteOnExit();
             fos = new FileOutputStream( tmpFile );
             fis = new FileInputStream( tmpFile );
         }
@@ -80,7 +74,7 @@ public class UnicodeTest
     /**
      * Cleanup the streams after each test
      */
-    @After
+    @AfterEach
     public void reset()
     {
         try

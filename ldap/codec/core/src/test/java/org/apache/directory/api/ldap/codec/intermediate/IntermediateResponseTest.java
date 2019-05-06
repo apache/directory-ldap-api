@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.intermediate;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -38,20 +39,16 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the IntermediateResponse codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class IntermediateResponseTest extends AbstractCodecServiceTest
 {
     /**
@@ -242,7 +239,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of an empty IntermediateResponse
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeIntermediateResponseEmpty() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -262,14 +259,17 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a IntermediateResponse PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of an empty OID
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeEmptyOID() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
@@ -290,14 +290,17 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a IntermediateResponse PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a bad name
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeExtendedBadRequestName() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x16 );
@@ -320,7 +323,10 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a IntermediateResponse PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 

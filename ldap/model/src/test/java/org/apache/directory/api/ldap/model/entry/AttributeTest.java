@@ -19,12 +19,13 @@
 package org.apache.directory.api.ldap.model.entry;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,12 +41,11 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.util.Strings;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -53,8 +53,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class AttributeTest
 {
     private static final Value NULL_STRING_VALUE = new Value( ( String ) null );
@@ -157,7 +156,7 @@ public class AttributeTest
     /**
      * @throws java.lang.Exception
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() throws Exception
     {
     }
@@ -1527,10 +1526,12 @@ public class AttributeTest
     /**
      * test that we properly throw an exception, and not a NPE, when no AttributeType is provided.
      */
-    @Test( expected=IllegalArgumentException.class )
+    @Test
     public void testNullAT() throws LdapInvalidAttributeValueException
     {
-        AttributeType attributeType = new AttributeType("mail");
-        new Value(attributeType, "test@test.com");
+        AttributeType attributeType = new AttributeType( "mail" );
+        assertThrows( IllegalArgumentException.class, () -> {
+            new Value( attributeType, "test@test.com" );
+        } );
     }
 }

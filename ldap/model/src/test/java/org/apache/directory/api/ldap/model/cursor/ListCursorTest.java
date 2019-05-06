@@ -23,17 +23,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.cursor.Cursor;
 import org.apache.directory.api.ldap.model.cursor.ListCursor;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -43,8 +41,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class ListCursorTest
 {
     @Test
@@ -244,7 +241,7 @@ public class ListCursorTest
     {
         try
         {
-            assertEquals( msg, expected, cursor.isClosed() );
+            assertEquals( expected, cursor.isClosed(), msg );
         }
         catch ( Exception e )
         {

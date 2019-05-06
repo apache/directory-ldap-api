@@ -20,19 +20,17 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.Collections;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -41,8 +39,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  *         $Rev: 946251 $
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class ReferralImplTest
 {
     /**
@@ -52,7 +49,7 @@ public class ReferralImplTest
     public void testEqualsSameObject()
     {
         ReferralImpl refs = new ReferralImpl();
-        assertTrue( "equals method should work for the same object", refs.equals( refs ) );
+        assertTrue( refs.equals( refs ), "equals method should work for the same object" );
     }
 
 
@@ -71,8 +68,8 @@ public class ReferralImplTest
         refs1.addLdapUrl( "ldap://blah0" );
         refs1.addLdapUrl( "ldap://blah1" );
         refs1.addLdapUrl( "ldap://blah2" );
-        assertTrue( "exact copies of Referrals should be equal", refs0.equals( refs1 ) );
-        assertTrue( "exact copies of Referrals should be equal", refs1.equals( refs0 ) );
+        assertTrue( refs0.equals( refs1 ), "exact copies of Referrals should be equal" );
+        assertTrue( refs1.equals( refs0 ), "exact copies of Referrals should be equal" );
     }
 
 
@@ -93,8 +90,8 @@ public class ReferralImplTest
         refs1.addLdapUrl( "ldap://blah1" );
         refs1.addLdapUrl( "ldap://blah2" );
         refs1.addLdapUrl( "ldap://blah2" );
-        assertTrue( "exact copies of Referrals should be equal", refs0.equals( refs1 ) );
-        assertTrue( "exact copies of Referrals should be equal", refs1.equals( refs0 ) );
+        assertTrue( refs0.equals( refs1 ), "exact copies of Referrals should be equal" );
+        assertTrue( refs1.equals( refs0 ), "exact copies of Referrals should be equal" );
     }
 
 
@@ -166,8 +163,8 @@ public class ReferralImplTest
         refs1.addLdapUrl( "ldap://blah1" );
         refs1.addLdapUrl( "ldap://blah2" );
         refs1.addLdapUrl( "ldap://blah4" );
-        assertFalse( "Referrals should not be equal", refs0.equals( refs1 ) );
-        assertFalse( "Referrals should not be equal", refs1.equals( refs0 ) );
+        assertFalse( refs0.equals( refs1 ), "Referrals should not be equal" );
+        assertFalse( refs1.equals( refs0 ), "Referrals should not be equal" );
     }
 
 
@@ -187,8 +184,8 @@ public class ReferralImplTest
         ReferralImpl refs1 = new ReferralImpl();
         refs1.addLdapUrl( "ldap://blah0" );
         refs1.addLdapUrl( "ldap://blah1" );
-        assertFalse( "Referrals should not be equal", refs0.equals( refs1 ) );
-        assertFalse( "Referrals should not be equal", refs1.equals( refs0 ) );
+        assertFalse( refs0.equals( refs1 ), "Referrals should not be equal" );
+        assertFalse( refs1.equals( refs0 ), "Referrals should not be equal" );
     }
 
 
@@ -237,9 +234,9 @@ public class ReferralImplTest
 
         ReferralImpl refs1 = new ReferralImpl();
 
-        assertFalse( "Object.equals() in effect because we did not redefine " + " equals for the new impl above", refs0
-            .equals( refs1 ) );
-        assertTrue( "Empty Referrals should be equal even if they are different" + " implementation classes", refs1
-            .equals( refs0 ) );
+        assertFalse( refs0.equals( refs1 ), 
+            "Object.equals() in effect because we did not redefine equals for the new impl above" );
+        assertTrue( refs1.equals( refs0 ), 
+            "Empty Referrals should be equal even if they are different implementation classes" );
     }
 }

@@ -52,7 +52,6 @@
     
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
-    <org.apache.directory.junit.junit-addons.version>2.0.0</org.apache.directory.junit.junit-addons.version>
     <org.apache.directory.checkstyle-configuration.version>2.0.0</org.apache.directory.checkstyle-configuration.version>
     
     <!-- Set versions for depending jars -->
@@ -63,7 +62,9 @@
     <commons.pool.version>2.6.1</commons.pool.version>
     <dom4j.version>2.1.1</dom4j.version>
     <forbiddenapis.version>2.5</forbiddenapis.version>
-    <junit.version>4.12</junit.version>
+    <hamcrest.version>2.1</hamcrest.version>
+    <junit.engine.version>5.4.2</junit.engine.version>
+    <junit.platform.version>1.4.2</junit.platform.version>
     <log4j.version>1.2.17</log4j.version>
     <logback.version>1.2.3</logback.version>
     <mina.core.version>2.1.2</mina.core.version>
@@ -129,13 +130,26 @@
         </plugin>
 
         <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <parallel>all</parallel>
+            <threadCount>10</threadCount>
+            <properties>
+              <configurationParameters>
+                junit.jupiter.execution.parallel.enabled=true
+              </configurationParameters>
+            </properties>
+          </configuration>
+        </plugin>
+
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
           <configuration>
             <aggregate>true</aggregate>
-           <forkCount>3</forkCount>
-           <reuseForks>true</reuseForks>
-           <argLine>-Xmx2048m -XX:MaxPermSize=512</argLine>
+            <forkCount>3</forkCount>
+            <reuseForks>true</reuseForks>
+            <argLine>-Xmx2048m -XX:MaxPermSize=512</argLine>
           </configuration>
         </plugin>
 
@@ -521,13 +535,6 @@
       </dependency>
 
       <!-- Test dependencies -->
-
-      <dependency>
-        <groupId>org.apache.directory.junit</groupId>
-        <artifactId>junit-addons</artifactId>
-        <version>${org.apache.directory.junit.junit-addons.version}</version>
-      </dependency>
-
       <dependency>
           <groupId>org.ops4j.pax.exam</groupId>
           <artifactId>pax-exam-container-forked</artifactId>
@@ -605,9 +612,23 @@
       </dependency>
 
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit.version}</version>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.engine.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-runner</artifactId>
+        <version>${junit.platform.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-library</artifactId>
+        <version>${hamcrest.version}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>

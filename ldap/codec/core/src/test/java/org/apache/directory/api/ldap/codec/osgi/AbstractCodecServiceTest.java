@@ -26,8 +26,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeEach;
 
 
 /**
@@ -37,7 +36,7 @@ import org.junit.BeforeClass;
  */
 public abstract class AbstractCodecServiceTest
 {
-    protected static DefaultLdapCodecService codec;
+    protected DefaultLdapCodecService codec;
 
     /** The encoder instance */
     protected static LdapEncoder encoder;
@@ -46,11 +45,11 @@ public abstract class AbstractCodecServiceTest
     /**
      * Initialize the codec service
      */
-    @BeforeClass
-    public static void setupLdapCodecService()
+    @BeforeEach
+    public void setupLdapCodecService()
     {
         codec = new DefaultLdapCodecService();
-
+        
         codec.registerProtocolCodecFactory( new ProtocolCodecFactory()
         {
             @Override
@@ -71,15 +70,5 @@ public abstract class AbstractCodecServiceTest
         {
             LdapApiServiceFactory.initialize( codec );
         }
-    }
-
-
-    /**
-     * Shutdown the codec service
-     */
-    @AfterClass
-    public static void tearDownLdapCodecService()
-    {
-        codec = null;
     }
 }

@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -33,24 +34,20 @@ import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest.SyncRequestValue;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the SyncRequestControlValue codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SyncRequestValueControlTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerRequestControl( new SyncRequestValueFactory( codec ) );
@@ -360,7 +357,7 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SyncRequestValue control with an empty sequence
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncRequestValueControlEmptySequence() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -373,14 +370,18 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
             get( SyncRequestValue.OID );
         SyncRequestValue syncRequestValue = factory.newControl();
-        factory.decodeValue( syncRequestValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncRequestValue, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a SyncRequestValue control with no mode
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSyncRequestValueControlNoMode() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
@@ -395,6 +396,10 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         SyncRequestValueFactory factory = ( SyncRequestValueFactory ) codec.getRequestControlFactories().
             get( SyncRequestValue.OID );
         SyncRequestValue syncRequestValue = factory.newControl();
-        factory.decodeValue( syncRequestValue, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( syncRequestValue, bb.array() );
+        } );
     }
 }

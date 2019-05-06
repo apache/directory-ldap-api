@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.add;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -38,18 +39,15 @@ import org.apache.directory.api.ldap.model.message.AddResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class AddResponseTest extends AbstractCodecServiceTest
 {
     /**
@@ -104,7 +102,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AddResponse with no LdapResult
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddResponseEmptyResult() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
@@ -122,7 +120,10 @@ public class AddResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 

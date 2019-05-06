@@ -20,12 +20,12 @@
 package org.apache.directory.api.ldap.model.entry;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -46,12 +46,11 @@ import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -66,8 +65,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class StringValueAttributeTypeTest
 {
     private EntryUtils.S s;
@@ -79,7 +77,7 @@ public class StringValueAttributeTypeTest
      * Initialize an AttributeType and the associated MatchingRule 
      * and Syntax
      */
-    @Before
+    @BeforeEach
     public void initAT()
     {
         s = new EntryUtils.S( "1.1.1.1", true );
@@ -480,7 +478,7 @@ public class StringValueAttributeTypeTest
         set.add( v3 );
 
         // check contains method
-        assertTrue( "since v1.equals( v0 ) and v0 was added then this should be true", set.contains( v1 ) );
+        assertTrue( set.contains( v1 ), "since v1.equals( v0 ) and v0 was added then this should be true" );
 
         // check ordering based on the comparator
         List<Value> list = new ArrayList<Value>();
@@ -492,10 +490,10 @@ public class StringValueAttributeTypeTest
         Collections.sort( list );
 
         // High, low, low, medium
-        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 0 ).equals( v3 ) );
-        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 1 ).equals( v0 ) );
-        assertTrue( "since v2 \"MEDIUM\" should be at index 2", list.get( 2 ).equals( v1 ) );
-        assertTrue( "since v3 \"HIGH\" should be at index 3", list.get( 3 ).equals( v2 ) );
+        assertTrue( list.get( 0 ).equals( v3 ), "since v0 equals v1 either could be at index 0 & 1" );
+        assertTrue( list.get( 1 ).equals( v0 ), "since v0 equals v1 either could be at index 0 & 1" );
+        assertTrue( list.get( 2 ).equals( v1 ), "since v2 \"MEDIUM\" should be at index 2" );
+        assertTrue( list.get( 3 ).equals( v2 ), "since v3 \"HIGH\" should be at index 3" );
 
         assertEquals( 4, list.size() );
     }
@@ -540,8 +538,8 @@ public class StringValueAttributeTypeTest
         set.add( v4 );
 
         // check contains method
-        assertTrue( "since v1.equals( v0 ) and v0 was added then this should be true", set.contains( v1 ) );
-        assertTrue( "since v4.equals( v5 ) and v4 was added then this should be true", set.contains( v5 ) );
+        assertTrue( set.contains( v1 ), "since v1.equals( v0 ) and v0 was added then this should be true" );
+        assertTrue( set.contains( v5 ), "since v4.equals( v5 ) and v4 was added then this should be true" );
 
         // check ordering based on the comparator
         ArrayList<Value> list = new ArrayList<Value>();
@@ -584,18 +582,18 @@ public class StringValueAttributeTypeTest
 
         Collections.sort( list, c );
 
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 0 ).equals( v4 ) );
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 0 ).equals( v5 ) );
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 1 ).equals( v4 ) );
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 1 ).equals( v5 ) );
+        assertTrue( list.get( 0 ).equals( v4 ), "since v4 equals v5 and has no value either could be at index 0 & 1" );
+        assertTrue( list.get( 0 ).equals( v5 ), "since v4 equals v5 and has no value either could be at index 0 & 1" );
+        assertTrue( list.get( 1 ).equals( v4 ), "since v4 equals v5 and has no value either could be at index 0 & 1" );
+        assertTrue( list.get( 1 ).equals( v5 ), "since v4 equals v5 and has no value either could be at index 0 & 1" );
 
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 2 ).equals( v0 ) );
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 2 ).equals( v1 ) );
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 3 ).equals( v0 ) );
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 3 ).equals( v1 ) );
+        assertTrue( list.get( 2 ).equals( v0 ), "since v0 equals v1 either could be at index 2 & 3" );
+        assertTrue( list.get( 2 ).equals( v1 ), "since v0 equals v1 either could be at index 2 & 3" );
+        assertTrue( list.get( 3 ).equals( v0 ), "since v0 equals v1 either could be at index 2 & 3" );
+        assertTrue( list.get( 3 ).equals( v1 ), "since v0 equals v1 either could be at index 2 & 3" );
 
-        assertTrue( "since v2 \"next0\" should be at index 4", list.get( 4 ).equals( v2 ) );
-        assertTrue( "since v3 \"next1\" should be at index 5", list.get( 5 ).equals( v3 ) );
+        assertTrue( list.get( 4 ).equals( v2 ), "since v2 \"next0\" should be at index 4" );
+        assertTrue( list.get( 5 ).equals( v3 ), "since v3 \"next1\" should be at index 5" );
 
         assertEquals( 6, list.size() );
     }

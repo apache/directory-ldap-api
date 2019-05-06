@@ -20,8 +20,9 @@
 package org.apache.directory.api.ldap.codec.controls.proxiedauthz;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -29,11 +30,9 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -41,8 +40,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 {
     /**
@@ -137,7 +135,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong DN user
      */
-    @Test( expected = DecoderException.class)
+    @Test
     public void testDecodeProxiedAuthzControlWrongDn() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x10 );
@@ -151,14 +149,18 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
             get( ProxiedAuthz.OID );
         ProxiedAuthz control = factory.newControl();
-        factory.decodeValue( control, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( control, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong user
      */
-    @Test( expected = DecoderException.class )
+    @Test
     public void testDecodeProxiedAuthzControlWrongAuthzId() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
@@ -172,7 +174,11 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ProxiedAuthzFactory factory = ( ProxiedAuthzFactory ) codec.getRequestControlFactories().
             get( ProxiedAuthz.OID );
         ProxiedAuthz control = factory.newControl();
-        factory.decodeValue( control, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( control, bb.array() );
+        } );
     }
 
 

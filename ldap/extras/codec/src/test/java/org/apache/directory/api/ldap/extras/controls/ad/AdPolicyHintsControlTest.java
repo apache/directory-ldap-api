@@ -20,8 +20,9 @@
 package org.apache.directory.api.ldap.extras.controls.ad;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -30,13 +31,10 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  *
@@ -44,18 +42,17 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerRequestControl( new AdPolicyHintsFactory( codec ) );
     }
     
     
-    @Test( expected=DecoderException.class )
+    @Test
     public void testAdPolicyHiontsControlNoFlag() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -70,11 +67,15 @@ public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
         AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().
             get( AdPolicyHints.OID );
         AdPolicyHints adPolicyHints = factory.newControl();
-        factory.decodeValue( adPolicyHints, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( adPolicyHints, bb.array() );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testAdPolicyHiontsControlEmptyFlag() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x04 );
@@ -90,7 +91,11 @@ public class AdPolicyHintsControlTest extends AbstractCodecServiceTest
         AdPolicyHintsFactory factory = ( AdPolicyHintsFactory ) codec.getRequestControlFactories().
             get( AdPolicyHints.OID );
         AdPolicyHints adPolicyHints = factory.newControl();
-        factory.decodeValue( adPolicyHints, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( adPolicyHints, bb.array() );
+        } );
     }
 
 

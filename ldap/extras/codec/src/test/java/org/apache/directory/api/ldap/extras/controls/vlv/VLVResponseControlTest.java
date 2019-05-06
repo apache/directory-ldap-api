@@ -21,8 +21,9 @@
 package org.apache.directory.api.ldap.extras.controls.vlv;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -32,18 +33,20 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * VLV response control tests.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution( ExecutionMode.CONCURRENT)
 public class VLVResponseControlTest extends AbstractCodecServiceTest
 {
-    @Before
+    @BeforeEach
     public void init()
     {
         codec.registerResponseControl( new VirtualListViewResponseFactory( codec ) );
@@ -168,7 +171,7 @@ public class VLVResponseControlTest extends AbstractCodecServiceTest
     }
 
     
-    @Test( expected=IllegalArgumentException.class )
+    @Test
     public void testDecodeFullBadResult() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x11 );
@@ -190,11 +193,15 @@ public class VLVResponseControlTest extends AbstractCodecServiceTest
         VirtualListViewResponseFactory factory = ( VirtualListViewResponseFactory ) codec.getResponseControlFactories().
             get( VirtualListViewResponse.OID );
         VirtualListViewResponse virtualListView = factory.newControl();
-        factory.decodeValue( virtualListView, bb.array() );
+
+        assertThrows( IllegalArgumentException.class, ( ) ->
+        {
+            factory.decodeValue( virtualListView, bb.array() );
+        } );
     }
 
     
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeEmptyVLVResponse() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -210,11 +217,15 @@ public class VLVResponseControlTest extends AbstractCodecServiceTest
         VirtualListViewResponseFactory factory = ( VirtualListViewResponseFactory ) codec.getResponseControlFactories().
             get( VirtualListViewResponse.OID );
         VirtualListViewResponse virtualListView = factory.newControl();
-        factory.decodeValue( virtualListView, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( virtualListView, bb.array() );
+        } );
     }
 
     
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeNoTargetPositionVLVResponse() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0E );
@@ -235,11 +246,15 @@ public class VLVResponseControlTest extends AbstractCodecServiceTest
         VirtualListViewResponseFactory factory = ( VirtualListViewResponseFactory ) codec.getResponseControlFactories().
             get( VirtualListViewResponse.OID );
         VirtualListViewResponse virtualListView = factory.newControl();
-        factory.decodeValue( virtualListView, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( virtualListView, bb.array() );
+        } );
     }
 
     
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeNoResultVLVResponse() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0E );
@@ -259,6 +274,10 @@ public class VLVResponseControlTest extends AbstractCodecServiceTest
         VirtualListViewResponseFactory factory = ( VirtualListViewResponseFactory ) codec.getResponseControlFactories().
             get( VirtualListViewResponse.OID );
         VirtualListViewResponse virtualListView = factory.newControl();
-        factory.decodeValue( virtualListView, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( virtualListView, bb.array() );
+        } );
     }
 }

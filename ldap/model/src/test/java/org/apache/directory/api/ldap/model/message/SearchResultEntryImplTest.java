@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
@@ -30,11 +30,9 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -43,8 +41,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  *         $Rev: 946251 $
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class SearchResultEntryImplTest
 {
     /**
@@ -85,7 +82,7 @@ public class SearchResultEntryImplTest
     public void testEqualsSameObject()
     {
         SearchResultEntryImpl resp = new SearchResultEntryImpl( 5 );
-        assertTrue( "the same object should be equal", resp.equals( resp ) );
+        assertTrue( resp.equals( resp ), "the same object should be equal" );
     }
 
 
@@ -103,8 +100,8 @@ public class SearchResultEntryImplTest
         resp1.setEntry( getEntry() );
         resp1.setObjectName( new Dn( "dc=example,dc=com" ) );
 
-        assertTrue( "exact copies should be equal", resp0.equals( resp1 ) );
-        assertTrue( "exact copies should be equal", resp1.equals( resp0 ) );
+        assertTrue( resp0.equals( resp1 ), "exact copies should be equal" );
+        assertTrue( resp1.equals( resp0 ), "exact copies should be equal" );
     }
 
 
@@ -151,7 +148,7 @@ public class SearchResultEntryImplTest
         resp1.setEntry( getEntry() );
         resp1.setObjectName( new Dn( "dc=example,dc=com" ) );
 
-        assertFalse( "different object names should not be equal", resp1.equals( resp0 ) );
-        assertFalse( "different object names should not be equal", resp0.equals( resp1 ) );
+        assertFalse( resp1.equals( resp0 ), "different object names should not be equal" );
+        assertFalse( resp0.equals( resp1 ), "different object names should not be equal" );
     }
 }

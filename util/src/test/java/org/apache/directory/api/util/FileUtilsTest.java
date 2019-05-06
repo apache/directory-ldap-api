@@ -21,16 +21,18 @@
 package org.apache.directory.api.util;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for FileUtils.
@@ -39,15 +41,26 @@ import org.junit.rules.TemporaryFolder;
  */
 public class FileUtilsTest
 {
-
-    @Rule
-    public TemporaryFolder tmpFolder = new TemporaryFolder();
+    private  Path tmpFolder;
+    
+    @BeforeEach
+    public void init() throws IOException
+    {
+        tmpFolder = Files.createTempDirectory( FileUtilsTest.class.getSimpleName() );
+    }
+    
+    
+    @AfterEach
+    public void cleanup()
+    {
+        FileUtils.deleteQuietly( tmpFolder.toFile() );
+    }
 
 
     @Test
     public void testOpenOutputStreamAppendToNonExistingFileInNonExistingFolder() throws Exception
     {
-        File nonExistingFile = new File( tmpFolder.getRoot(),
+        File nonExistingFile = new File( tmpFolder.toFile(),
             "testOpenOutputStreamAppendToNonExistingFileInNonExistingFolder/testOpenOutputStreamAppendToNonExistingFileInNonExistingFolder" );
 
         OutputStream os1 = FileUtils.openOutputStream( nonExistingFile, true );
@@ -71,7 +84,7 @@ public class FileUtilsTest
     @Test
     public void testOpenOutputStreamAppendToExistingFile() throws Exception
     {
-        File existingFile = tmpFolder.newFile( "testOpenOutputStreamAppendToExistingFile" );
+        File existingFile = new File( tmpFolder.toFile(), "testOpenOutputStreamAppendToExistingFile" );
         FileUtils.writeStringToFile( existingFile, "abc", StandardCharsets.UTF_8, false );
 
         OutputStream os = FileUtils.openOutputStream( existingFile, true );
@@ -89,7 +102,7 @@ public class FileUtilsTest
     @Test
     public void testOpenOutputStreamNotAppendToNonExistingFile() throws Exception
     {
-        File nonExistingFile = new File( tmpFolder.getRoot(),
+        File nonExistingFile = new File( tmpFolder.toFile(),
             "testOpenOutputStreamNotAppendToNonExistingFile/testOpenOutputStreamNotAppendToNonExistingFile" );
 
         OutputStream os1 = FileUtils.openOutputStream( nonExistingFile, false );
@@ -113,7 +126,7 @@ public class FileUtilsTest
     @Test
     public void testOpenOutputStreamNotAppendToExistingFile() throws Exception
     {
-        File existingFile = tmpFolder.newFile( "testOpenOutputStreamNotAppendToExistingFile" );
+        File existingFile = new File( tmpFolder.toFile(), "testOpenOutputStreamNotAppendToExistingFile" );
         FileUtils.writeStringToFile( existingFile, "abc", StandardCharsets.UTF_8, false );
 
         OutputStream os = FileUtils.openOutputStream( existingFile, false );

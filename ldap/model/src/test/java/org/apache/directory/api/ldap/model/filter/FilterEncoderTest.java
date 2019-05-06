@@ -20,11 +20,14 @@
 package org.apache.directory.api.ldap.model.filter;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -32,6 +35,7 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class FilterEncoderTest
 {
 
@@ -52,17 +56,23 @@ public class FilterEncoderTest
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFormatWithNoPlaceholdersAndTooManyArguments()
     {
-        FilterEncoder.format( "(cn=foo)", ONE );
+        assertThrows( IllegalArgumentException.class, () -> 
+        {
+            FilterEncoder.format( "(cn=foo)", ONE );
+        } );
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFormatWithPlaceholdersAndTooFewArguments()
     {
-        FilterEncoder.format( "(cn={0})", ZERO );
+        assertThrows( IllegalArgumentException.class, () -> 
+        {
+            FilterEncoder.format( "(cn={0})", ZERO );
+        } );
     }
 
 
@@ -74,10 +84,13 @@ public class FilterEncoderTest
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFormatWithPlaceholdersAndTooManyArguments()
     {
-        FilterEncoder.format( "(cn={0})", TWO );
+        assertThrows( IllegalArgumentException.class, () -> 
+        {
+            FilterEncoder.format( "(cn={0})", TWO );
+        } );
     }
 
 

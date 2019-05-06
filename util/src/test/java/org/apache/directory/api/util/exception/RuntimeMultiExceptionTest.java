@@ -22,17 +22,16 @@ package org.apache.directory.api.util.exception;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * 
@@ -44,7 +43,7 @@ public class RuntimeMultiExceptionTest
     private PrintStream originalErr;
 
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         originalOut = System.out;
@@ -52,7 +51,7 @@ public class RuntimeMultiExceptionTest
     }
 
 
-    @After
+    @AfterEach
     public void tearDown()
     {
         System.setOut( originalOut );
