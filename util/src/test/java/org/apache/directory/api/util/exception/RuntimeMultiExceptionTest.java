@@ -32,14 +32,11 @@ import java.io.StringWriter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Execution(ExecutionMode.SAME_THREAD)
 public class RuntimeMultiExceptionTest
 {
     private PrintStream originalOut;
@@ -81,27 +78,22 @@ public class RuntimeMultiExceptionTest
         assertThat( customOut.toString(), containsString( "nested1" ) );
         assertThat( customOut.toString(), containsString( "nested2" ) );
         assertThat( systemOut.size(), equalTo( 0 ) );
-    }
 
+        ByteArrayOutputStream systemOut2 = new ByteArrayOutputStream();
+        PrintStream systemPrintStream2 = new PrintStream( systemOut2 );
+        System.setOut( systemPrintStream2 );
+        System.setErr( systemPrintStream2 );
 
-    @Test
-    public void testPrintStacktraceToPrintStreamDoesNotWriteToSystemOutErr()
-    {
-        ByteArrayOutputStream systemOut = new ByteArrayOutputStream();
-        PrintStream systemPrintStream = new PrintStream( systemOut );
-        System.setOut( systemPrintStream );
-        System.setErr( systemPrintStream );
-
-        ByteArrayOutputStream customOut = new ByteArrayOutputStream();
-        PrintStream customPrintWriter = new PrintStream( customOut );
-        RuntimeMultiException runtimeMultiException = new RuntimeMultiException( "multi" );
+        ByteArrayOutputStream customOut2 = new ByteArrayOutputStream();
+        PrintStream customPrintWriter2 = new PrintStream( customOut2 );
+        runtimeMultiException = new RuntimeMultiException( "multi" );
         runtimeMultiException.addThrowable( new Exception( "nested1" ) );
         runtimeMultiException.addThrowable( new Exception( "nested2" ) );
-        runtimeMultiException.printStackTrace( customPrintWriter );
+        runtimeMultiException.printStackTrace( customPrintWriter2 );
 
-        assertThat( customOut.toString(), containsString( "multi" ) );
-        assertThat( customOut.toString(), containsString( "nested1" ) );
-        assertThat( customOut.toString(), containsString( "nested2" ) );
-        assertThat( systemOut.size(), equalTo( 0 ) );
+        assertThat( customOut2.toString(), containsString( "multi" ) );
+        assertThat( customOut2.toString(), containsString( "nested1" ) );
+        assertThat( customOut2.toString(), containsString( "nested2" ) );
+        assertThat( systemOut2.size(), equalTo( 0 ) );
     }
 }
