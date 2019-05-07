@@ -20,25 +20,25 @@
 package org.apache.directory.api.ldap.model.filter;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
 
 
 /**
@@ -46,8 +46,7 @@ import org.junit.runner.RunWith;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class FilterParserTest
 {
     private boolean checkWrongFilter( String filter )
@@ -1111,11 +1110,15 @@ public class FilterParserTest
     }
 
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testEqualsFilterWithUnderscoreNotRelaxed() throws ParseException
     {
         String str = "(a_b_=people)";
-        FilterParser.parse( str, false );
+        
+        assertThrows( ParseException.class, () -> 
+        {
+            FilterParser.parse( str, false );
+        } );
     }
 
 
@@ -1131,11 +1134,15 @@ public class FilterParserTest
     }
 
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testAndFilterWithUnderscoreNotRelaxed() throws ParseException
     {
         String str = "(&(o_u~=people)(a_g_e>=30))";
-        FilterParser.parse( str, false );
+        
+        assertThrows( ParseException.class, () -> 
+        {
+            FilterParser.parse( str, false );
+        } );
     }
 
 

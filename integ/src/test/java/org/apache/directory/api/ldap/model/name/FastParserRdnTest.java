@@ -22,28 +22,25 @@ package org.apache.directory.api.ldap.model.name;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import static org.junit.Assert.assertEquals;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the schemaAware Rdn class when using teh FastParser
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class FastParserRdnTest
 {
     private static SchemaManager schemaManager;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();

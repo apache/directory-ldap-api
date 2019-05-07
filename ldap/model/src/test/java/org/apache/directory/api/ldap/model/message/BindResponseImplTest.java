@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
@@ -31,12 +31,9 @@ import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Tests the methods of the BindResponseImpl class.
@@ -44,8 +41,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  *         $Rev: 946353 $
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class BindResponseImplTest
 {
     private static final byte[] PASSWORD = Strings.getBytesUtf8( "password" );
@@ -58,7 +54,7 @@ public class BindResponseImplTest
     public void testEqualsSameObj()
     {
         BindResponseImpl resp = new BindResponseImpl( 1 );
-        assertTrue( "same object should be equal", resp.equals( resp ) );
+        assertTrue( resp.equals( resp ), "same object should be equal" );
     }
 
 
@@ -70,8 +66,8 @@ public class BindResponseImplTest
     {
         BindResponseImpl resp0 = new BindResponseImpl( 1 );
         BindResponseImpl resp1 = new BindResponseImpl( 1 );
-        assertTrue( "default copy with same id should be equal", resp0.equals( resp1 ) );
-        assertTrue( "default copy with same id should be equal", resp1.equals( resp0 ) );
+        assertTrue( resp0.equals( resp1 ), "default copy with same id should be equal" );
+        assertTrue( resp1.equals( resp0 ), "default copy with same id should be equal" );
     }
 
 
@@ -107,8 +103,8 @@ public class BindResponseImplTest
     {
         BindResponseImpl resp0 = new BindResponseImpl( 1 );
         BindResponseImpl resp1 = new BindResponseImpl( 2 );
-        assertFalse( "different id objects should not be equal", resp0.equals( resp1 ) );
-        assertFalse( "different id objects should not be equal", resp1.equals( resp0 ) );
+        assertFalse( resp0.equals( resp1 ), "different id objects should not be equal" );
+        assertFalse( resp1.equals( resp0 ), "different id objects should not be equal" );
     }
 
 
@@ -123,8 +119,8 @@ public class BindResponseImplTest
         resp0.setServerSaslCreds( new byte[2] );
         BindResponseImpl resp1 = new BindResponseImpl( 1 );
         resp1.setServerSaslCreds( new byte[3] );
-        assertFalse( "different serverSaslCreds objects should not be equal", resp0.equals( resp1 ) );
-        assertFalse( "different serverSaslCreds objects should not be equal", resp1.equals( resp0 ) );
+        assertFalse( resp0.equals( resp1 ), "different serverSaslCreds objects should not be equal" );
+        assertFalse( resp1.equals( resp0 ), "different serverSaslCreds objects should not be equal" );
     }
 
 
@@ -160,8 +156,8 @@ public class BindResponseImplTest
         resp0.setServerSaslCreds( PASSWORD );
         resp1.setServerSaslCreds( PASSWORD );
 
-        assertTrue( "loaded carbon copies should be equal", resp0.equals( resp1 ) );
-        assertTrue( "loaded carbon copies should be equal", resp1.equals( resp0 ) );
+        assertTrue( resp0.equals( resp1 ), "loaded carbon copies should be equal" );
+        assertTrue( resp1.equals( resp0 ), "loaded carbon copies should be equal" );
     }
 
 

@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.add;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -50,20 +51,16 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the AddRequest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class AddRequestTest extends AbstractCodecServiceTest
 {
     /**
@@ -184,7 +181,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AddRequest with a null body
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNullBody() throws DecoderException
     {
 
@@ -203,14 +200,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a null entry
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNullEntry() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x39 );
@@ -248,27 +248,30 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof AddResponseImpl );
-            assertEquals( ResultCodeEnum.NAMING_VIOLATION, ( ( AddResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof AddResponseImpl );
+                assertEquals( ResultCodeEnum.NAMING_VIOLATION, ( ( AddResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestbadDN() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x59 );
@@ -309,27 +312,30 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof AddResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof AddResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a null attributeList
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNullAttributes() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
@@ -354,14 +360,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNullAttributeList() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
@@ -387,14 +396,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNullType() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2F );
@@ -421,27 +433,30 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof AddResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof AddResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNoVals() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x30 );
@@ -469,14 +484,17 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddRequestNullVals() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x32 );
@@ -505,7 +523,10 @@ public class AddRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 

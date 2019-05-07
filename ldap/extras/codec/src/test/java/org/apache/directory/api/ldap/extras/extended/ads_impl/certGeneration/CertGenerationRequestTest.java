@@ -20,21 +20,20 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * 
@@ -42,13 +41,15 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
-public class CertGenerationRequestTest extends AbstractCodecServiceTest
+@Execution( ExecutionMode.CONCURRENT)
+public class CertGenerationRequestTest
 {
-    @Before
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.registerExtendedRequest( new CertGenerationFactory( codec ) );
     }
     
@@ -96,7 +97,7 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testCertGenerationDecodeEmptyTargetDN() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -108,11 +109,15 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testCertGenerationDecodeInvalidTargetDN() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -124,11 +129,15 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testCertGenerationDecodeEmptyIssuerDN() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -142,11 +151,15 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testCertGenerationDecodeInvalidIssuerDN() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -160,11 +173,15 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testCertGenerationDecodeEmptySubjectDN() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -180,11 +197,15 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testCertGenerationDecodeInvalidSubjectDN() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -200,11 +221,15 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeEmptySequence() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -214,6 +239,10 @@ public class CertGenerationRequestTest extends AbstractCodecServiceTest
 
         CertGenerationFactory factory = ( CertGenerationFactory ) codec.getExtendedRequestFactories().
             get( CertGenerationRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 }

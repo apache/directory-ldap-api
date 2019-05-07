@@ -48,15 +48,17 @@ import static org.apache.directory.api.ldap.model.password.PasswordUtil.SHA1_LEN
 import static org.apache.directory.api.ldap.model.password.PasswordUtil.SHA256_LENGTH;
 import static org.apache.directory.api.ldap.model.password.PasswordUtil.SHA384_LENGTH;
 import static org.apache.directory.api.ldap.model.password.PasswordUtil.SHA512_LENGTH;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -64,6 +66,7 @@ import org.junit.Test;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class PasswordUtilTest
 {
 

@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec.compare;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -42,20 +43,16 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the CompareRequest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class CompareRequestTest extends AbstractCodecServiceTest
 {
     /**
@@ -112,7 +109,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of an empty CompareRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCompareRequestEmptyRequest() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -131,14 +128,17 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of an empty entry CompareRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCompareRequestEmptyEntry() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x18 );
@@ -164,14 +164,17 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of an empty ava
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCompareRequestEmptyAVA() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
@@ -196,14 +199,17 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of an empty ava
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCompareRequestInvalidDN() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
@@ -228,28 +234,31 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-            fail( "We should never reach this point !!!" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof CompareResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( CompareResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+                fail( "We should never reach this point !!!" );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof CompareResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( CompareResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of an empty attributeDesc ava
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCompareRequestEmptyAttributeDesc() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
@@ -275,21 +284,24 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the CompareRequest PDU
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-            fail( "We should never reach this point !!!" );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof CompareResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( CompareResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+                fail( "We should never reach this point !!!" );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof CompareResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( CompareResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 

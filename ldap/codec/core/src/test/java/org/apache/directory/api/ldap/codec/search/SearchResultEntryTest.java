@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.search;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -42,20 +43,16 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the SearchResultEntry codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SearchResultEntryTest extends AbstractCodecServiceTest
 {
     /**
@@ -313,7 +310,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of an empty SearchResultEntry
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryEmpty() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -333,14 +330,17 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of an SearchResultEntry with an empty object name
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryEmptyObjectName() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
@@ -363,14 +363,17 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of an SearchResultEntry with an object name alone
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryObjectNameAlone() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x24 );
@@ -394,7 +397,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -451,7 +457,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of an SearchResultEntry with an empty attributes list
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryEmptyAttributeList() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x28 );
@@ -479,7 +485,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -487,7 +496,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of an SearchResultEntry with an empty attributes list
      * with controls
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryEmptyAttributeListWithControls() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x45 );
@@ -520,14 +529,17 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchResultEntry with an empty type
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryEmptyType() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2A );
@@ -556,14 +568,17 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchResultEntry with a type alone
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchResultEntryTypeAlone() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
@@ -593,7 +608,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchResultEntry> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 

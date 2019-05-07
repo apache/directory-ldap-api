@@ -20,19 +20,21 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateTypeEnum;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
@@ -45,32 +47,26 @@ import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the EndTransactionResponse codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
-public class EndTransactionResponseTest extends AbstractCodecServiceTest
+@Execution( ExecutionMode.CONCURRENT)
+public class EndTransactionResponseTest
 {
-    static
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         LdapApiServiceFactory.initialize( codec );
-    }
-    
-    @Before
-    public void init()
-    {
-        codec = LdapApiServiceFactory.getSingleton();
         codec.registerResponseControl( new SyncDoneValueFactory( codec ) );
         codec.registerResponseControl( new SyncStateValueFactory( codec ) );
         codec.registerExtendedResponse( new EndTransactionFactory( codec ) );
@@ -80,7 +76,7 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a EndTransactionResponse with nothing in it
      */
-    @Test( expected=DecoderException.class)
+    @Test
     public void testDecodeEndTransactionResponseEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -90,7 +86,11 @@ public class EndTransactionResponseTest extends AbstractCodecServiceTest
 
         EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedResponseFactories().
             get( EndTransactionResponse.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 

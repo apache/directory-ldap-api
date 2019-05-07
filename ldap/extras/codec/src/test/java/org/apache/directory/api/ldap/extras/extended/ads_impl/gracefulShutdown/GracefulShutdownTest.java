@@ -20,34 +20,35 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the GracefulShutdownTest codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
-public class GracefulShutdownTest extends AbstractCodecServiceTest
+@Execution( ExecutionMode.CONCURRENT)
+public class GracefulShutdownTest
 {
-    @Before
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.registerExtendedRequest( new GracefulShutdownFactory( codec ) );
     }
 
@@ -262,7 +263,7 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a GracefulShutdown with a timeOffline off limit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulShutdownTimeOfflineOffLimit() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -273,14 +274,18 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
 
         GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
             get( GracefulShutdownRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a GracefulShutdown with a delay off limit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulShutdownDelayOffLimit() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -292,14 +297,18 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
 
         GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
             get( GracefulShutdownRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a GracefulShutdown with an empty TimeOffline
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulShutdownTimeOfflineEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -310,14 +319,18 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
 
         GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
             get( GracefulShutdownRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a GracefulShutdown with an empty delay
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeGracefulShutdownDelayEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -328,6 +341,10 @@ public class GracefulShutdownTest extends AbstractCodecServiceTest
 
         GracefulShutdownFactory factory = ( GracefulShutdownFactory ) codec.getExtendedRequestFactories().
             get( GracefulShutdownRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 }

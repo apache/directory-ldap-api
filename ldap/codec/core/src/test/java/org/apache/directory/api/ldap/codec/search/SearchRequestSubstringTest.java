@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec.search;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -49,28 +50,24 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * A test case for SearchRequest messages
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SearchRequestSubstringTest extends AbstractCodecServiceTest
 {
     /** An oid normalizer map */
     static Map<String, OidNormalizer> oids = new HashMap<String, OidNormalizer>();
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws Exception
     {
         // DC normalizer
@@ -1054,7 +1051,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with an empty Substring filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptySubstringFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1090,7 +1087,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1098,7 +1098,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter and an empty
      * Substring
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterEmptyType() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1135,7 +1135,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1143,7 +1146,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter and an empty
      * Substring
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterNoSubstrings() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1181,7 +1184,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1189,7 +1195,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter and an empty
      * Substring
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterEmptySubstrings() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1228,7 +1234,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1236,7 +1245,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter and an empty
      * Substring Initial
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterEmptyInitial() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1276,7 +1285,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1284,7 +1296,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter and an empty
      * Substring Any
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterEmptyAny() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1324,7 +1336,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1332,7 +1347,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter and an empty
      * Substring Initial
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterEmptyFinal() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1372,7 +1387,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1380,7 +1398,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter Any before
      * initial
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterAnyInitial() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1423,7 +1441,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1431,7 +1452,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter Final before
      * initial
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterFinalInitial() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1474,7 +1495,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1482,7 +1506,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter Final before
      * any
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterFinalAny() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1525,14 +1549,17 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with a Substring filter Two initials
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterTwoInitials() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1575,14 +1602,17 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with a Substring filter Two finals
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestSubstringFilterTwoFinals() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1625,6 +1655,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 }

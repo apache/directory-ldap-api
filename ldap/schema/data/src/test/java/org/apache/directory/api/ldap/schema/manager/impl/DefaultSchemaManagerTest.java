@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.schema.manager.impl;
 
 
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**

@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.bind;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -40,18 +41,14 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class BindResponseTest extends AbstractCodecServiceTest
 {
     /**
@@ -355,8 +352,8 @@ public class BindResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindResponse with no LdapResult
      */
-    @Test( expected=DecoderException.class )
-    public void testDecodeAddResponseEmptyResult()throws DecoderException
+    @Test
+    public void testDecodeAddResponseEmptyResult() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -373,6 +370,9 @@ public class BindResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 }

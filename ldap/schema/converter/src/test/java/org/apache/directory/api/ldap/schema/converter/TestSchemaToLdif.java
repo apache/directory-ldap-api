@@ -20,7 +20,8 @@
 package org.apache.directory.api.ldap.schema.converter;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -28,15 +29,16 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+/**
+ * Test the schema converter
+ *  
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+@Execution( ExecutionMode.CONCURRENT )
 public class TestSchemaToLdif
 {
     private static final String HEADER =
@@ -884,9 +886,12 @@ public class TestSchemaToLdif
     }
 
 
-    @Test(expected = ParserException.class)
+    @Test
     public void testConvertWrongLdif() throws ParserException, IOException
     {
-        transform( "testWrongLdif" );
+        assertThrows( ParserException.class, ( ) ->
+        {
+            transform( "testWrongLdif" );
+        } );
     }
 }

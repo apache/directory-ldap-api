@@ -20,11 +20,12 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 
@@ -33,13 +34,16 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Tests for SortRequestControl.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution( ExecutionMode.CONCURRENT)
 public class SortRequestControlTest extends AbstractCodecServiceTest
 {
     @Test
@@ -132,7 +136,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
     }
 
 
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeWithoutAtDesc() throws Exception
     {
         ByteBuffer stream = ByteBuffer.allocate( 16 );
@@ -146,7 +150,11 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
 
         SortRequestFactory factory = ( SortRequestFactory ) codec.getRequestControlFactories().get( SortRequest.OID );
         SortRequest control = factory.newControl();
-        factory.decodeValue( control, stream.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( control, stream.array() );
+        } );
     }
 
 

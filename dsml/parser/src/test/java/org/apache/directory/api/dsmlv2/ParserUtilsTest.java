@@ -21,8 +21,8 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +31,9 @@ import org.apache.directory.api.dsmlv2.batchRequest.BatchRequestTest;
 import org.apache.directory.api.dsmlv2.batchResponse.BatchResponseTest;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -39,6 +41,7 @@ import org.junit.Test;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution( ExecutionMode.CONCURRENT)
 public class ParserUtilsTest extends AbstractTest
 {
 
@@ -62,8 +65,8 @@ public class ParserUtilsTest extends AbstractTest
         String dsml = batchRequest.toDsml();
         assertNotNull( dsml );
 
-        assertEquals( "Pretty printed DSML should contain newlines", 20, countNewlines( dsml ) );
-        assertEquals( "Pretty printed DSML should contain indention", 38, countIndention( dsml ) );
+        assertEquals( 20, countNewlines( dsml ), "Pretty printed DSML should contain newlines" );
+        assertEquals( 38, countIndention( dsml ), "Pretty printed DSML should contain indention" );
     }
 
 
@@ -84,8 +87,8 @@ public class ParserUtilsTest extends AbstractTest
         String dsml = batchResponse.toDsml();
         assertNotNull( dsml );
 
-        assertEquals( "Pretty printed DSML should contain newlines", 12, countNewlines( dsml ) );
-        assertEquals( "Pretty printed DSML should contain indention", 18, countIndention( dsml ) );
+        assertEquals( 12, countNewlines( dsml ), "Pretty printed DSML should contain newlines" );
+        assertEquals( 18, countIndention( dsml ), "Pretty printed DSML should contain indention" );
     }
 
 

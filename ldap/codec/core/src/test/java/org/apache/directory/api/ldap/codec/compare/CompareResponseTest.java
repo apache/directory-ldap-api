@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.compare;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -38,11 +39,9 @@ import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -50,8 +49,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class CompareResponseTest extends AbstractCodecServiceTest
 {
     /**
@@ -174,7 +172,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a CompareResponse with no LdapResult
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeCompareResponseEmptyResult() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -193,6 +191,9 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         LdapMessageContainer<CompareResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a CompareResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 }

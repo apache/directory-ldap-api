@@ -20,12 +20,13 @@
 package org.apache.directory.api.ldap.model.url;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -37,11 +38,10 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.ldap.model.url.LdapUrl.Extension;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -49,8 +49,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapUrlTest
 {
     /**
@@ -97,40 +96,52 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad port
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadPort() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:/" );
+        } );
     }
 
 
     /**
      * test a LdapUrl with a bad port 2
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadPort2() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:-1/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:-1/" );
+        } );
     }
 
 
     /**
      * test a LdapUrl with a bad port 3
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadPort3() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:abc/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:abc/" );
+        } );
     }
 
 
     /**
      * test a LdapUrl with a bad port 4
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadPort4() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:65536/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:65536/" );
+        } );
     }
 
 
@@ -261,10 +272,13 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad IP host 4
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnBadHostIP4() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://1.1.1.1.1/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://1.1.1.1.1/" );
+        } );
     }
 
 
@@ -297,10 +311,13 @@ public class LdapUrlTest
      * test a bad LdapUrl IPv6 host
      * @throws LdapURLEncodingException 
      */
-    @Test( expected=LdapURLEncodingException.class )
+    @Test
     public void testDnIPv6BadHost() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://[:]/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://[:]/" );
+        } );
     }
 
 
@@ -308,10 +325,13 @@ public class LdapUrlTest
      * test a bad LdapUrl IPv6 host
      * @throws LdapURLEncodingException 
      */
-    @Test( expected=LdapURLEncodingException.class )
+    @Test
     public void testDnIPv6BadHost2() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://[1::2::3]/" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://[1::2::3]/" );
+        } );
     }
 
 
@@ -351,20 +371,26 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with an invalid Dn
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnInvalidDN() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:389/dc=example%202,dc : org" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:389/dc=example%202,dc : org" );
+        } );
     }
 
 
     /**
      * test a LdapUrl with an invalid Dn 2
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testDnInvalidDN2() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:389/dc=example%202,dc = org," );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:389/dc=example%202,dc = org," );
+        } );
     }
 
 
@@ -404,10 +430,13 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with invalid attributes
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testLdapInvalideAttributes() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://directory.apache.org:389/dc=example,dc=org?ou=,dc" );
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://directory.apache.org:389/dc=example,dc=org?ou=,dc" );
+        } );
     }
 
 
@@ -766,12 +795,13 @@ public class LdapUrlTest
      * test a LdapUrl with no host, a port, and a Dn
      *
      */
-    @Test(expected = LdapURLEncodingException.class)
+    @Test
     public void testLdapURLNoHostPortDN() throws LdapURLEncodingException
     {
-        new LdapUrl( "ldap://:123/ou=system" );
-
-        fail();
+        assertThrows( LdapURLEncodingException.class, () ->
+        {
+            new LdapUrl( "ldap://:123/ou=system" );
+        } );
     }
 
 

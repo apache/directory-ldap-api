@@ -19,13 +19,13 @@
 package org.apache.directory.api.ldap.entry;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -48,21 +48,17 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * A test class for the DefaultEntry class
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class SchemaAwareEntryTest
 {
     private static Dn exampleDn;
@@ -179,7 +175,7 @@ public class SchemaAwareEntryTest
     /**
      * @throws java.lang.Exception
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() throws Exception
     {
         exampleDn = new Dn( "dc=example,dc=com" );
@@ -853,13 +849,13 @@ public class SchemaAwareEntryTest
 
         entry.put( "sn", ( String ) null );
         assertEquals( 1, entry.size() );
-        assertNotNull( "sn", entry.get( "sn" ) );
+        assertNotNull( entry.get( "sn" ), "sn" );
         assertEquals( 1, entry.get( "sn" ).size() );
         assertNull( entry.get( "sn" ).get().getString() );
 
         entry.put( "ObjectClass", "top", "person", "top" );
         assertEquals( 2, entry.size() );
-        assertNotNull( "objectclass", entry.get( "sn" ) );
+        assertNotNull( entry.get( "sn" ), "objectclass" );
         assertEquals( 2, entry.get( "OBJECTCLASS" ).size() );
         Attribute attribute = entry.get( "objectClass" );
         assertTrue( attribute.contains( "top" ) );
@@ -909,7 +905,7 @@ public class SchemaAwareEntryTest
 
         entry.put( "sn", strNullValue );
         assertEquals( 1, entry.size() );
-        assertNotNull( "sn", entry.get( "sn" ) );
+        assertNotNull( entry.get( "sn" ), "sn" );
         assertEquals( 1, entry.get( "sn" ).size() );
         assertNull( entry.get( "sn" ).get().getString() );
 
@@ -917,7 +913,7 @@ public class SchemaAwareEntryTest
 
         entry.put( "ObjectClass", strValueTop, strValuePerson, strValueTop2, strNullValue );
         assertEquals( 1, entry.size() );
-        assertNotNull( "objectclass", entry.get( "objectclass" ) );
+        assertNotNull( entry.get( "objectclass" ), "objectclass" );
         assertEquals( 3, entry.get( "OBJECTCLASS" ).size() );
         Attribute attribute = entry.get( "objectClass" );
         assertTrue( attribute.contains( "top" ) );
@@ -930,7 +926,7 @@ public class SchemaAwareEntryTest
 
         entry.put( "userpassword", strNullValue );
         assertEquals( 1, entry.size() );
-        assertNotNull( "userpassword", entry.get( "userpassword" ) );
+        assertNotNull( entry.get( "userpassword" ), "userpassword" );
         assertEquals( 1, entry.get( "userpassword" ).size() );
         assertNull( entry.get( "userpassword" ).get().getString() );
 
@@ -938,7 +934,7 @@ public class SchemaAwareEntryTest
 
         entry.put( "userPassword", binValue1, binValue2, binValue3, binNullValue );
         assertEquals( 1, entry.size() );
-        assertNotNull( "userpassword", entry.get( "userpassword" ) );
+        assertNotNull( entry.get( "userpassword" ), "userpassword" );
         assertEquals( 3, entry.get( "userpassword" ).size() );
         attribute = entry.get( "userpassword" );
         assertTrue( attribute.contains( BYTES1 ) );

@@ -20,37 +20,38 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the EndTransactionRequest codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
-public class EndTransactionRequestTest extends AbstractCodecServiceTest
+@Execution( ExecutionMode.CONCURRENT)
+public class EndTransactionRequestTest
 {
-    @Before
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.registerExtendedRequest( new EndTransactionFactory( codec ) );
     }
     
@@ -58,7 +59,7 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a EndTransactionRequest with nothing in it
      */
-    @Test( expected=DecoderException.class)
+    @Test
     public void testDecodeEndTransactionRequestEmpty() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -68,14 +69,18 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
         
         EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
             get( EndTransactionRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 
     /**
      * Test the decoding of a EndTransactionRequest with an commit but no identifier
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testEndTransactionRequestCommitNoIdentifier() throws DecoderException
     {
         byte[] bb = new byte[]
@@ -86,7 +91,11 @@ public class EndTransactionRequestTest extends AbstractCodecServiceTest
 
         EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedRequestFactories().
             get( EndTransactionRequest.EXTENSION_OID );
-        factory.newRequest( bb );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.newRequest( bb );
+        } );
     }
 
 

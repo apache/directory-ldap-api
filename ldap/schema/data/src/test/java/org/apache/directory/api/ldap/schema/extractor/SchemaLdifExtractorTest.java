@@ -25,28 +25,24 @@ import java.io.IOException;
 
 import org.apache.directory.api.ldap.schema.extractor.impl.DefaultSchemaLdifExtractor;
 import org.apache.directory.api.util.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Tests the DefaultSchemaLdifExtractor class.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class SchemaLdifExtractorTest
 {
     private static String workingDirectory;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws IOException
     {
         workingDirectory = System.getProperty( "workingDirectory" );
@@ -63,7 +59,7 @@ public class SchemaLdifExtractorTest
     }
 
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws IOException
     {
         // Cleanup the target directory

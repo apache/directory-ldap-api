@@ -20,9 +20,9 @@
 
 package org.apache.directory.api.util;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * A class to test DateUtils

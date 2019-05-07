@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -39,6 +42,7 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class SchemaObjectSorterTest
 {
 
@@ -127,7 +131,7 @@ public class SchemaObjectSorterTest
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testSortAttributeTypesLoop()
     {
         List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
@@ -137,7 +141,11 @@ public class SchemaObjectSorterTest
         addAttributeType( attributeTypes, "1.1.4", "att4", "att3" );
 
         Iterable<AttributeType> sorted = SchemaObjectSorter.hierarchicalOrdered( attributeTypes );
-        sorted.iterator().next();
+
+        assertThrows( IllegalStateException.class, () ->
+        {
+            sorted.iterator().next();
+        } );
     }
 
 
@@ -227,7 +235,7 @@ public class SchemaObjectSorterTest
     }
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testSortObjectClassesLoop()
     {
         List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
@@ -236,7 +244,10 @@ public class SchemaObjectSorterTest
         addObjectClass( objectClasses, "1.2.3", "oc3", "oc2" );
 
         Iterable<ObjectClass> sorted = SchemaObjectSorter.sortObjectClasses( objectClasses );
-        sorted.iterator().next();
-    }
 
+        assertThrows( IllegalStateException.class, () ->
+        {
+            sorted.iterator().next();
+        } );
+    }
 }

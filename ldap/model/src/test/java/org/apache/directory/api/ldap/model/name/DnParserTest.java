@@ -20,10 +20,10 @@
 package org.apache.directory.api.ldap.model.name;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.charset.StandardCharsets;
 
@@ -32,12 +32,10 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -45,8 +43,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class DnParserTest
 {
     /**
@@ -353,7 +350,7 @@ public class DnParserTest
     {
         Dn nameNull = new Dn( ( String ) null );
 
-        assertEquals( "Null Dn are legal : ", "", nameNull.toString() );
+        assertEquals( "", nameNull.toString(), "Null Dn are legal : " );
     }
 
 
@@ -368,11 +365,11 @@ public class DnParserTest
     {
         Dn nameRFC1779_1 = new Dn( "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US" );
 
-        assertEquals( "RFC1779_1 : ",
+        assertEquals( 
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
-            nameRFC1779_1.getName() );
-        assertEquals( "RFC1779_1 : ", "CN=Marshall T. Rose,O=Dover Beach Consulting,L=Santa Clara,ST=California,C=US",
-            nameRFC1779_1.getEscaped() );
+            nameRFC1779_1.getName(), "RFC1779_1 : " );
+        assertEquals( "CN=Marshall T. Rose,O=Dover Beach Consulting,L=Santa Clara,ST=California,C=US",
+            nameRFC1779_1.getEscaped(), "RFC1779_1 : " );
     }
 
 
@@ -387,7 +384,7 @@ public class DnParserTest
     {
         Dn nameRFC2253_1 = new Dn( "CN=Steve Kille,O=Isode limited,C=GB" );
 
-        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", nameRFC2253_1.getName() );
+        assertEquals( "CN=Steve Kille,O=Isode limited,C=GB", nameRFC2253_1.getName(), "RFC2253_1 : " );
     }
 
 
@@ -402,9 +399,9 @@ public class DnParserTest
     {
         Dn nameRFC2253_2 = new Dn( "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
 
-        assertEquals( "RFC2253_2 : ", "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
-            nameRFC2253_2.getName() );
-        assertEquals( "RFC2253_2 : ", "OU=Sales+CN=J. Smith,O=Widget Inc.,C=US", nameRFC2253_2.getEscaped() );
+        assertEquals( "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
+            nameRFC2253_2.getName(), "RFC2253_2 : " );
+        assertEquals( "OU=Sales+CN=J. Smith,O=Widget Inc.,C=US", nameRFC2253_2.getEscaped(), "RFC2253_2 : " );
     }
 
 
@@ -419,9 +416,9 @@ public class DnParserTest
     {
         Dn nameRFC2253_3 = new Dn( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
 
-        assertEquals( "RFC2253_3 : ", "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB", nameRFC2253_3
-            .getName() );
-        assertEquals( "RFC2253_3 : ", "CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB", nameRFC2253_3.getEscaped() );
+        assertEquals( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB", nameRFC2253_3
+            .getName(), "RFC2253_3 : " );
+        assertEquals( "CN=L. Eagle,O=Sue\\, Grabbit and Runn,C=GB", nameRFC2253_3.getEscaped(), "RFC2253_3 : " );
     }
 
 
@@ -435,7 +432,7 @@ public class DnParserTest
     public final void testParseStringRFC2253_4() throws LdapException
     {
         Dn nameRFC2253_4 = new Dn( "CN=Before\\0DAfter,O=Test,C=GB" );
-        assertEquals( "RFC2253_4 : ", "CN=Before\\0DAfter,O=Test,C=GB", nameRFC2253_4.getName() );
+        assertEquals( "CN=Before\\0DAfter,O=Test,C=GB", nameRFC2253_4.getName(), "RFC2253_4 : " );
     }
 
 
@@ -450,8 +447,8 @@ public class DnParserTest
     {
         Dn nameRFC2253_5 = new Dn( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
 
-        assertEquals( "RFC2253_5 : ", "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB", nameRFC2253_5
-            .getName() );
+        assertEquals( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB", nameRFC2253_5
+            .getName(), "RFC2253_5 : " );
     }
 
 
@@ -466,7 +463,7 @@ public class DnParserTest
     {
         Dn nameRFC2253_6 = new Dn( "SN=Lu\\C4\\8Di\\C4\\87" );
 
-        assertEquals( "RFC2253_6 : ", "SN=Lu\\C4\\8Di\\C4\\87", nameRFC2253_6.getName() );
+        assertEquals( "SN=Lu\\C4\\8Di\\C4\\87", nameRFC2253_6.getName(), "RFC2253_6 : " );
     }
 
 
@@ -683,7 +680,7 @@ public class DnParserTest
     
     
     @Test
-    @Ignore
+    @Disabled
     public void testDnParsingPerf() throws LdapInvalidDnException
     {
         long[] deltas = new long[10];
@@ -787,7 +784,7 @@ public class DnParserTest
     
     
     @Test
-    @Ignore
+    @Disabled
     public void testDnParsingOneRdnPerf() throws LdapInvalidDnException
     {
         long t0 = System.currentTimeMillis();

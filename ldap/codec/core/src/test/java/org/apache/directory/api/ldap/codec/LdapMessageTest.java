@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.ByteBuffer;
 
@@ -37,11 +38,9 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -49,14 +48,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapMessageTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of null length messageId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeMessageLengthNull() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x02 );
@@ -71,14 +69,17 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of null length messageId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeMessageIdLengthNull() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x04 );
@@ -94,14 +95,17 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of null length messageId
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeMessageIdMinusOne() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x05 );
@@ -117,14 +121,17 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of messageId which value is -1
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeMessageIdMaxInt() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x08 );
@@ -141,7 +148,10 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
 
         // Decode a BindRequest PDU
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 

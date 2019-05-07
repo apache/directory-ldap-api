@@ -20,29 +20,25 @@
 package org.apache.directory.api.ldap.schema.syntaxCheckers;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.SubtreeSpecificationSyntaxChecker;
 import org.apache.directory.api.ldap.schema.loader.JarLdifSchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test cases for SubtreeSpecificationSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class SubtreeSpecificationSyntaxCheckerTest
 {
     private static SubtreeSpecificationSyntaxChecker checker;
@@ -51,7 +47,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
     /**
      * Initialization
      */
-    @BeforeClass
+    @BeforeAll
     public static void init() throws Exception
     {
         JarLdifSchemaLoader loader = new JarLdifSchemaLoader();

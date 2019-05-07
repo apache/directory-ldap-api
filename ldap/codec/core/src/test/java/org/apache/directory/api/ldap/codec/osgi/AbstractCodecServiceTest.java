@@ -20,14 +20,15 @@
 package org.apache.directory.api.ldap.codec.osgi;
 
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeEach;
 
 
 /**
@@ -37,49 +38,46 @@ import org.junit.BeforeClass;
  */
 public abstract class AbstractCodecServiceTest
 {
-    protected static DefaultLdapCodecService codec;
-
-    /** The encoder instance */
-    protected static LdapEncoder encoder;
-
+    protected DefaultLdapCodecService codec;
+    
+    private static Lock lock = new ReentrantLock();
 
     /**
      * Initialize the codec service
      */
-    @BeforeClass
-    public static void setupLdapCodecService()
+    @BeforeEach
+    public void setupLdapCodecService()
     {
-        codec = new DefaultLdapCodecService();
-
-        codec.registerProtocolCodecFactory( new ProtocolCodecFactory()
+        lock.lock();
+        
+        try
         {
-            @Override
-            public ProtocolEncoder getEncoder( IoSession session ) throws Exception
+            codec = new DefaultLdapCodecService();
+            
+            codec.registerProtocolCodecFactory( new ProtocolCodecFactory()
             {
-                return null;
-            }
-
-
-            @Override
-            public ProtocolDecoder getDecoder( IoSession session ) throws Exception
+                @Override
+                public ProtocolEncoder getEncoder( IoSession session ) throws Exception
+                {
+                    return null;
+                }
+    
+    
+                @Override
+                public ProtocolDecoder getDecoder( IoSession session ) throws Exception
+                {
+                    return null;
+                }
+            } );
+    
+            if ( LdapApiServiceFactory.isInitialized() == false )
             {
-                return null;
+                LdapApiServiceFactory.initialize( codec );
             }
-        } );
-
-        if ( LdapApiServiceFactory.isInitialized() == false )
-        {
-            LdapApiServiceFactory.initialize( codec );
         }
-    }
-
-
-    /**
-     * Shutdown the codec service
-     */
-    @AfterClass
-    public static void tearDownLdapCodecService()
-    {
-        codec = null;
+        finally
+        {
+            lock.unlock();
+        }
     }
 }

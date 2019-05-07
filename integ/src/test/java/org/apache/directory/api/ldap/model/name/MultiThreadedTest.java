@@ -20,33 +20,24 @@
 package org.apache.directory.api.ldap.model.name;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.apache.directory.junit.tools.MultiThreadedMultiInvoker;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Multi-threaded 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class MultiThreadedTest
 {
-    @Rule
-    public MultiThreadedMultiInvoker i = new MultiThreadedMultiInvoker( 100, 1000 );
-
     private static Dn referenceDn;
     private static Dn sharedDn;
     private static Rdn referenceRdn;
@@ -57,7 +48,7 @@ public class MultiThreadedTest
     private static SchemaManager schemaManager;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();

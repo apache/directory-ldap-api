@@ -20,25 +20,24 @@
 package org.apache.directory.api.ldap.util.tree;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Map;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.util.tree.DnNode;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -46,8 +45,7 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class TestDnNode
 {
     //---------------------------------------------------------------------------
@@ -56,12 +54,15 @@ public class TestDnNode
     /**
      * Test the addition of a null Dn
      */
-    @Test(expected = LdapUnwillingToPerformException.class)
+    @Test
     public void testAddNullDNNoElem() throws LdapException
     {
         DnNode<Dn> tree = new DnNode<Dn>();
 
-        tree.add( null );
+        assertThrows( LdapUnwillingToPerformException.class, () ->
+        {
+            tree.add( null );
+        } );
     }
 
 
@@ -172,7 +173,7 @@ public class TestDnNode
     /**
      * Test the addition of two equal DNs
      */
-    @Test(expected = LdapUnwillingToPerformException.class)
+    @Test
     public void testAdd2EqualDNsNoElem() throws LdapException
     {
         DnNode<Dn> tree = new DnNode<Dn>();
@@ -180,7 +181,12 @@ public class TestDnNode
         Dn dn2 = new Dn( "dc=b,dc=a" );
 
         tree.add( dn1 );
-        tree.add( dn2 );
+
+
+        assertThrows( LdapUnwillingToPerformException.class, () ->
+        {
+            tree.add( dn2 );
+        } );
     }
 
 
@@ -190,12 +196,16 @@ public class TestDnNode
     /**
      * Test the addition of a null Dn
      */
-    @Test(expected = LdapUnwillingToPerformException.class)
+    @Test
     public void testAddNullDN() throws LdapException
     {
         DnNode<Dn> tree = new DnNode<Dn>();
 
-        tree.add( ( Dn ) null, null );
+
+        assertThrows( LdapUnwillingToPerformException.class, () ->
+        {
+            tree.add( ( Dn ) null, null );
+        } );
     }
 
 
@@ -306,7 +316,7 @@ public class TestDnNode
     /**
      * Test the addition of two equal DNs
      */
-    @Test(expected = LdapUnwillingToPerformException.class)
+    @Test
     public void testAdd2EqualDNs() throws LdapException
     {
         DnNode<Dn> tree = new DnNode<Dn>();
@@ -314,7 +324,11 @@ public class TestDnNode
         Dn dn2 = new Dn( "dc=b,dc=a" );
 
         tree.add( dn1, dn1 );
-        tree.add( dn2, dn2 );
+
+        assertThrows( LdapUnwillingToPerformException.class, () ->
+        {
+            tree.add( dn2, dn2 );
+        } );
     }
 
 

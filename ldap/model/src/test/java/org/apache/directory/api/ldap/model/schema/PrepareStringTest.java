@@ -23,14 +23,18 @@ package org.apache.directory.api.ldap.model.schema;
 import java.io.IOException;
 
 import org.apache.directory.api.util.exception.InvalidCharacterException;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the PrepareString class
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class PrepareStringTest
 {
     @Test

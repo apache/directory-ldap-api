@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec.search;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -63,28 +64,24 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * A test case for SearchRequest messages
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SearchRequestTest extends AbstractCodecServiceTest
 {
     /** An oid normalizer map */
     static Map<String, OidNormalizer> oids = new HashMap<String, OidNormalizer>();
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         // DC normalizer
@@ -1352,7 +1349,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with an empty body
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyBody() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1371,14 +1368,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty baseDN and nothing more
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestBaseDnOnly() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1398,7 +1398,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -1551,7 +1554,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a bad objectBase
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestGlobalBadObjectBase() throws DecoderException
     {
 
@@ -1624,27 +1627,30 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, ldapMessageContainer );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof SearchResultDoneImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( SearchResultDoneImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, ldapMessageContainer );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof SearchResultDoneImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( SearchResultDoneImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty scope
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyScope() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1667,14 +1673,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with a bad scope
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestGlobalBadScope() throws DecoderException
     {
 
@@ -1742,14 +1751,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty derefAlias
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyDerefAlias() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1773,14 +1785,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with a bad derefAlias
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestGlobalBadDerefAlias() throws DecoderException
     {
 
@@ -1848,14 +1863,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty size limit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptySizeLimit() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1880,14 +1898,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with a bad sizeLimit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestGlobalBadSizeLimit() throws DecoderException
     {
 
@@ -1954,14 +1975,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty time limit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyTimeLimit() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -1987,14 +2011,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with a bad timeLimit
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestGlobalBadTimeLimit() throws DecoderException
     {
 
@@ -2066,14 +2093,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer =
             new LdapMessageContainer<>( codec );
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyTypeOnly() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2100,14 +2130,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2135,14 +2168,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty Present filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyPresentFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2170,14 +2206,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty equalityMatch filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyEqualityMatchFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2205,14 +2244,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty greaterOrEqual filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyGreaterOrEqualFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2240,14 +2282,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty lessOrEqual filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyLessOrEqualFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2275,14 +2320,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an approxMatch filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyApproxMatchFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2310,7 +2358,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -2318,7 +2369,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a greaterOrEqual filter and an
      * empty attributeDesc
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyGreaterOrEqualEmptyAttrDesc()
         throws DecoderException
     {
@@ -2348,7 +2399,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -2567,7 +2621,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with an empty And filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyAndFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2597,14 +2651,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty Or filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyOrFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2634,14 +2691,17 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
     /**
      * Test the decoding of a SearchRequest with an empty Not filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyNotFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2671,7 +2731,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -2679,7 +2742,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Not filter and an empty And
      * filter
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestNotFilterEmptyAndFilter() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -2711,7 +2774,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
             new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 

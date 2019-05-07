@@ -135,6 +135,7 @@ public class DefaultSchemaManager implements SchemaManager
     public DefaultSchemaManager()
     {
         this( STRICT, jarLdifSchemaLoader().getAllSchemas() );
+        
         try
         {
             loadAllEnabled();
@@ -164,6 +165,24 @@ public class DefaultSchemaManager implements SchemaManager
     }
 
     
+    /*
+     * Static helper factory Create LDIF based SchemaLoader
+     */
+    private static SchemaLoader jarLdifSchemaLoader()
+    {
+        try
+        {
+            return new JarLdifSchemaLoader();
+        }
+        catch ( LdapException | IOException e )
+        {
+            LOG.error( I18n.err( I18n.ERR_16080_SCHEMA_LOADER_CANT_BE_CREATED, e.getMessage() ) );
+            throw new RuntimeException( e.getMessage() );
+        }
+    }
+
+
+    
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
      * Strict schema validation
@@ -172,7 +191,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public DefaultSchemaManager( Collection<Schema> schemas )
     {
-       this( STRICT, schemas );
+        this( STRICT, schemas );
     }
 
     
@@ -180,7 +199,7 @@ public class DefaultSchemaManager implements SchemaManager
      * Creates a new instance of DefaultSchemaManager with the given schemaLoader
      *
      * Schema validation strictness (i.e. relaxed/strict) controlled by the given schemaLoader
-     *
+     * 
      * @param schemaLoader The schemaLoader containing the schemas to load
      */
     public DefaultSchemaManager( SchemaLoader schemaLoader )

@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.model.name;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,9 +35,9 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -49,7 +50,7 @@ public class SchemaAwareAvaSerializationTest
     private static SchemaManager schemaManager;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
@@ -124,7 +125,7 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testBinaryAtavSerializationBytes() throws LdapException, IOException, ClassNotFoundException
     {
@@ -333,7 +334,7 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testBinaryAtavStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
     {
@@ -396,18 +397,20 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
-    @Test(expected = IOException.class)
+    @Test
     public void testNullNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         byte[] buffer = new byte[128];
         Ava atav = new Ava( schemaManager, "DC", ( String ) null );
 
-        atav.serialize( buffer, 0 );
-        fail();
+        assertThrows( IOException.class, () ->
+        {
+            atav.serialize( buffer, 0 );
+        } );
     }
 
 
-    @Test(expected = IOException.class)
+    @Test
     public void testNullNormValueStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
     {
         Ava atav = new Ava( schemaManager, "DC", ( String ) null );
@@ -415,8 +418,10 @@ public class SchemaAwareAvaSerializationTest
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
-        atav.writeExternal( out );
-        fail();
+        assertThrows( IOException.class, () ->
+        {
+            atav.writeExternal( out );
+        } );
     }
 
 
@@ -458,7 +463,7 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testStringAtavSerializationPerf() throws IOException, LdapException,
         ClassNotFoundException
@@ -489,7 +494,7 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testStringAtavSerializationBytesPerf() throws IOException, LdapException,
         ClassNotFoundException

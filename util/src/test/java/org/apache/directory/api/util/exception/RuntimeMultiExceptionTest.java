@@ -22,17 +22,16 @@ package org.apache.directory.api.util.exception;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * 
@@ -44,7 +43,7 @@ public class RuntimeMultiExceptionTest
     private PrintStream originalErr;
 
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         originalOut = System.out;
@@ -52,7 +51,7 @@ public class RuntimeMultiExceptionTest
     }
 
 
-    @After
+    @AfterEach
     public void tearDown()
     {
         System.setOut( originalOut );
@@ -79,27 +78,22 @@ public class RuntimeMultiExceptionTest
         assertThat( customOut.toString(), containsString( "nested1" ) );
         assertThat( customOut.toString(), containsString( "nested2" ) );
         assertThat( systemOut.size(), equalTo( 0 ) );
-    }
 
+        ByteArrayOutputStream systemOut2 = new ByteArrayOutputStream();
+        PrintStream systemPrintStream2 = new PrintStream( systemOut2 );
+        System.setOut( systemPrintStream2 );
+        System.setErr( systemPrintStream2 );
 
-    @Test
-    public void testPrintStacktraceToPrintStreamDoesNotWriteToSystemOutErr()
-    {
-        ByteArrayOutputStream systemOut = new ByteArrayOutputStream();
-        PrintStream systemPrintStream = new PrintStream( systemOut );
-        System.setOut( systemPrintStream );
-        System.setErr( systemPrintStream );
-
-        ByteArrayOutputStream customOut = new ByteArrayOutputStream();
-        PrintStream customPrintWriter = new PrintStream( customOut );
-        RuntimeMultiException runtimeMultiException = new RuntimeMultiException( "multi" );
+        ByteArrayOutputStream customOut2 = new ByteArrayOutputStream();
+        PrintStream customPrintWriter2 = new PrintStream( customOut2 );
+        runtimeMultiException = new RuntimeMultiException( "multi" );
         runtimeMultiException.addThrowable( new Exception( "nested1" ) );
         runtimeMultiException.addThrowable( new Exception( "nested2" ) );
-        runtimeMultiException.printStackTrace( customPrintWriter );
+        runtimeMultiException.printStackTrace( customPrintWriter2 );
 
-        assertThat( customOut.toString(), containsString( "multi" ) );
-        assertThat( customOut.toString(), containsString( "nested1" ) );
-        assertThat( customOut.toString(), containsString( "nested2" ) );
-        assertThat( systemOut.size(), equalTo( 0 ) );
+        assertThat( customOut2.toString(), containsString( "multi" ) );
+        assertThat( customOut2.toString(), containsString( "nested1" ) );
+        assertThat( customOut2.toString(), containsString( "nested2" ) );
+        assertThat( systemOut2.size(), equalTo( 0 ) );
     }
 }

@@ -20,8 +20,8 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
@@ -33,8 +33,8 @@ import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValueI
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -44,7 +44,7 @@ import org.junit.Test;
  */
 public class StandaloneLdapCodecServiceTest
 {
-    @BeforeClass
+    @BeforeAll
     public static void setupLdapApiService() throws Exception
     {
         // Load the extension points

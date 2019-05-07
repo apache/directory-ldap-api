@@ -20,8 +20,9 @@
 package org.apache.directory.api.ldap.extras.controls.ad;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
@@ -29,16 +30,14 @@ import java.util.EnumSet;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  *
@@ -46,14 +45,16 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
-public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
+@Execution( ExecutionMode.CONCURRENT)
+public class AdDirSyncResponseControlTest
 {
-    @Before
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
-        codec.registerRequestControl( new AdDirSyncResponseFactory( codec ) );
+        codec = new DefaultLdapCodecService();
+        codec.registerResponseControl( new AdDirSyncResponseFactory( codec ) );
     }
     
     
@@ -73,7 +74,7 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getResponseControlFactories().
             get( AdDirSyncResponse.OID );
         AdDirSyncResponse adDirSyncResponse = factory.newControl();
         factory.decodeValue( adDirSyncResponse, bb.array() );
@@ -109,7 +110,7 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getResponseControlFactories().
             get( AdDirSyncResponse.OID );
         AdDirSyncResponse adDirSyncResponse = factory.newControl();
         factory.decodeValue( adDirSyncResponse, bb.array() );
@@ -127,7 +128,7 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testAdDirSyncControlAbsentCookie() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
@@ -141,14 +142,18 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getResponseControlFactories().
             get( AdDirSyncResponse.OID );
         AdDirSyncResponse adDirSyncResponse = factory.newControl();
-        factory.decodeValue( adDirSyncResponse, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( adDirSyncResponse, bb.array() );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testAdDirSyncControlAbsentParentFirst() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
@@ -162,14 +167,18 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getResponseControlFactories().
             get( AdDirSyncResponse.OID );
         AdDirSyncResponse adDirSyncResponse = factory.newControl();
-        factory.decodeValue( adDirSyncResponse, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( adDirSyncResponse, bb.array() );
+        } );
     }
 
 
-    @Test( expected=DecoderException.class )
+    @Test
     public void testAdDirSyncControlEmpty() throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -181,9 +190,13 @@ public class AdDirSyncResponseControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getRequestControlFactories().
+        AdDirSyncResponseFactory factory = ( AdDirSyncResponseFactory ) codec.getResponseControlFactories().
             get( AdDirSyncResponse.OID );
         AdDirSyncResponse adDirSyncResponse = factory.newControl();
-        factory.decodeValue( adDirSyncResponse, bb.array() );
+        
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( adDirSyncResponse, bb.array() );
+        } );
     }
 }

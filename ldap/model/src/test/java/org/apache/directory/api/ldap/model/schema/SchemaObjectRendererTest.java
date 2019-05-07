@@ -19,8 +19,8 @@
  */package org.apache.directory.api.ldap.model.schema;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -36,14 +36,17 @@ import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptio
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.NameFormDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class SchemaObjectRendererTest
 {
 
@@ -61,7 +64,7 @@ public class SchemaObjectRendererTest
     private NameForm nameForm;
 
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         objectClassSimple = new ObjectClass( "1.2.3.4" );

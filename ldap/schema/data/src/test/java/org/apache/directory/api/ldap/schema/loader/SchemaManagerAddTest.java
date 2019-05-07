@@ -20,11 +20,11 @@
 package org.apache.directory.api.ldap.schema.loader;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.api.util.FileUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
@@ -55,22 +60,13 @@ import org.apache.directory.api.ldap.model.schema.syntaxCheckers.RegexSyntaxChec
 import org.apache.directory.api.ldap.schema.extractor.SchemaLdifExtractor;
 import org.apache.directory.api.ldap.schema.extractor.impl.DefaultSchemaLdifExtractor;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 
 /**
  * A test class for SchemaManager, testig the addition of a SchemaObject.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class SchemaManagerAddTest
 {
     // A directory in which the ldif files will be stored
@@ -80,7 +76,7 @@ public class SchemaManagerAddTest
     private static File schemaRepository;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception
     {
         workingDirectory = System.getProperty( "workingDirectory" );
@@ -105,7 +101,7 @@ public class SchemaManagerAddTest
     }
 
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws IOException
     {
         // Cleanup the target directory

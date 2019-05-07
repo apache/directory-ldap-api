@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -44,12 +45,10 @@ import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -57,8 +56,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdifReaderTest
 {
     private static byte[] data;
@@ -89,7 +87,7 @@ public class LdifReaderTest
     /**
      * Create a file to be used by ":<" values
      */
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws Exception
     {
         data = new byte[256];
@@ -2067,7 +2065,7 @@ public class LdifReaderTest
     }
 
 
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testChangeTypeDeleteBadEntry() throws Exception
     {
         String ldif =
@@ -2078,12 +2076,15 @@ public class LdifReaderTest
 
         try ( LdifReader reader = new LdifReader() )
         {
-            reader.parseLdif( ldif );
+            assertThrows( LdapLdifException.class, () ->
+            {
+                reader.parseLdif( ldif );
+            } );
         }
     }
 
 
-    @Test(expected = LdapLdifException.class)
+    @Test
     public void testLdifContentWithControl() throws Exception
     {
         String ldif =
@@ -2094,7 +2095,10 @@ public class LdifReaderTest
 
         try ( LdifReader reader = new LdifReader() )
         {
-            reader.parseLdif( ldif );
+            assertThrows( LdapLdifException.class, () ->
+            {
+                reader.parseLdif( ldif );
+            } );
         }
     }
 

@@ -20,24 +20,20 @@
 package org.apache.directory.api.ldap.model.schema.syntaxes;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.FacsimileTelephoneNumberSyntaxChecker;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test cases for FacsimileTelephoneNumberSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class FacsimileTelephoneNumberSyntaxCheckerTest
 {
     FacsimileTelephoneNumberSyntaxChecker checker = FacsimileTelephoneNumberSyntaxChecker.INSTANCE;

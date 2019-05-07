@@ -19,18 +19,17 @@
 package org.apache.directory.api.ldap.model.entry;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.comparators.DnComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DnNormalizer;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.DnSyntaxChecker;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -38,8 +37,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class DnValueTest
 {
     private static EntryUtils.S s;
@@ -51,7 +49,7 @@ public class DnValueTest
      * Initialize an AttributeType and the associated MatchingRule 
      * and Syntax
      */
-    @BeforeClass
+    @BeforeAll
     public static void initAT()
     {
         s = new EntryUtils.S( "1.1.1.1", true );

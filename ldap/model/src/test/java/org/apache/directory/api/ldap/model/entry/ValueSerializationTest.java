@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.entry;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,22 +38,19 @@ import org.apache.directory.api.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
 import org.apache.directory.api.util.Strings;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the Value Serialization
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class ValueSerializationTest
 {
     private static byte[] data = new byte[]
@@ -84,7 +81,7 @@ public class ValueSerializationTest
      * Initialize an AttributeType and the associated MatchingRule 
      * and Syntax
      */
-    @Before
+    @BeforeEach
     public void initAT()
     {
         sb = new EntryUtils.S( "1.1.1.1", false );
@@ -493,7 +490,7 @@ public class ValueSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testStringValueWithDataNormalizedSerializationPerf() throws IOException, LdapException,
         ClassNotFoundException
@@ -521,7 +518,7 @@ public class ValueSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testStringValueWithDataNormalizedSerializationBytesPerf() throws IOException, LdapException,
         ClassNotFoundException

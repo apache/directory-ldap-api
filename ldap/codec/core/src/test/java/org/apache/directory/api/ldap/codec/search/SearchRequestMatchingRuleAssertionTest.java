@@ -20,12 +20,12 @@
 package org.apache.directory.api.ldap.codec.search;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -48,28 +48,24 @@ import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * A test case for SearchRequest messages
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecServiceTest
 {
     /** An oid normalizer map */
     static Map<String, OidNormalizer> oids = new HashMap<String, OidNormalizer>();
 
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() throws Exception
     {
         // DC normalizer
@@ -182,7 +178,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
     /**
      * Test the decoding of a SearchRequest with an empty extensible match
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestEmptyExtensibleMatch() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -212,7 +208,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
 
         // Decode a SearchRequest message
 
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -220,7 +219,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and an
      * empty matching rule
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchEmptyMatchingRule() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -250,7 +249,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -258,7 +260,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and an
      * empty type
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchEmptyType() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -288,7 +290,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -366,7 +371,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and an
      * matching rule and an empty type
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchMatchingRuleEmptyType() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -398,7 +403,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -406,7 +414,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and an
      * matching rule and an empty dnAttributes
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchDnAttributesEmptyType() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -456,7 +464,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -464,7 +475,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and a
      * matching rule and nothing else
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchMatchingRuleAlone() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -495,7 +506,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -503,7 +517,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and a type
      * and nothing else
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchTypeAlone() throws DecoderException, EncoderException
     {
         byte[] asn1BER = new byte[]
@@ -534,7 +548,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 
@@ -542,7 +559,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an extensible match and a match
      * Value and nothing else
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeSearchRequestExtensibleMatchMatchValueAlone() throws DecoderException
     {
         byte[] asn1BER = new byte[]
@@ -573,6 +590,9 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        Asn1Decoder.decode( stream, ldapMessageContainer );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 }

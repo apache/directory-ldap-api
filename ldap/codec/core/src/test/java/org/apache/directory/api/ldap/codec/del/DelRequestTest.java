@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.del;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -41,11 +42,9 @@ import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -53,8 +52,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class DelRequestTest extends AbstractCodecServiceTest
 {
     /**
@@ -102,7 +100,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a full DelRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeDelRequestBadDN() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x27 );
@@ -124,27 +122,30 @@ public class DelRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof DeleteResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( DeleteResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof DeleteResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( DeleteResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 
     /**
      * Test the decoding of an empty DelRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeDelRequestEmpty() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -164,7 +165,10 @@ public class DelRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<DeleteRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a DelRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 

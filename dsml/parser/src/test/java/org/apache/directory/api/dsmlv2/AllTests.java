@@ -44,19 +44,17 @@ import org.apache.directory.api.dsmlv2.searchResponse.SearchResponseTest;
 import org.apache.directory.api.dsmlv2.searchResponse.searchResultDone.SearchResultDoneTest;
 import org.apache.directory.api.dsmlv2.searchResponse.searchResultEntry.SearchResultEntryTest;
 import org.apache.directory.api.dsmlv2.searchResponse.searchResultReference.SearchResultReferenceTest;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.platform.suite.api.SelectClasses;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-import com.mycila.junit.concurrent.ConcurrentSuite;
-
 
 /**
  * This is the complete Test Suite for DSMLv2 Parser (Request and Response)
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentSuite.class)
-@Suite.SuiteClasses(
+@RunWith(JUnitPlatform.class)
+@SelectClasses(
     {
         AbandonRequestTest.class,
         AddRequestTest.class,

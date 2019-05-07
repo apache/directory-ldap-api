@@ -19,12 +19,12 @@
  */
 package org.apache.directory.api.asn1.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.ByteBuffer;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test for the Asn1Buffer class
@@ -95,7 +95,7 @@ public class Asn1BufferTest
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testBytesPerf()
     {
         long t0 = System.currentTimeMillis();

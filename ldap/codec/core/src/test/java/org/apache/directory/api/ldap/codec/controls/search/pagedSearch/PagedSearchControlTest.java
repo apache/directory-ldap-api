@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -32,20 +33,16 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the PagedSearchControlTest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class PagedSearchControlTest extends AbstractCodecServiceTest
 {
     /**
@@ -86,7 +83,7 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a PagedSearchControl with no cookie
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodePagedSearchRequestNoCookie() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
@@ -99,14 +96,18 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
         PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
         PagedResults pagedSearch = factory.newControl();
-        factory.decodeValue( pagedSearch, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( pagedSearch, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a PagedSearchControl with no size
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodePagedSearchRequestNoSize() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
@@ -120,14 +121,18 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
         PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
         PagedResults pagedSearch = factory.newControl();
-        factory.decodeValue( pagedSearch, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( pagedSearch, bb.array() );
+        } );
     }
 
 
     /**
      * Test the decoding of a PagedSearchControl with no size  and no cookie
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodePagedSearchRequestNoSizeNoCookie() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
@@ -139,7 +144,11 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
         PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
         PagedResults pagedSearch = factory.newControl();
-        factory.decodeValue( pagedSearch, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( pagedSearch, bb.array() );
+        } );
     }
 
 
@@ -187,7 +196,7 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
     /**
      * Test encoding of a PagedSearchControl with a empty size
      */
-    @Test(expected = DecoderException.class)
+    @Test
     public void testEncodePagedSearchControlEmptySize() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0a );
@@ -202,7 +211,11 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
         PagedResultsFactory factory = ( PagedResultsFactory ) codec.getResponseControlFactories().get( PagedResults.OID );
         PagedResults pagedSearch = factory.newControl();
-        factory.decodeValue( pagedSearch, bb.array() );
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( pagedSearch, bb.array() );
+        } );
     }
 
 

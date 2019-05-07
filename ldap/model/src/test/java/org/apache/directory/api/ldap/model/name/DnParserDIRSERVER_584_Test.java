@@ -20,13 +20,14 @@
 package org.apache.directory.api.ldap.model.name;
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -35,17 +36,19 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @see <a href="https://issues.apache.org/jira/browse/DIRSERVER-584">DIRSERVER-584</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class DnParserDIRSERVER_584_Test
 {
     /**
      * Need this testa() to run first to mess up the state of the static parser.
      */
-    @Test(expected = LdapException.class)
+    @Test
     public void testa() throws Exception
     {
-        new Dn( "ou=test+testing" );
+        assertThrows( LdapException.class, () -> 
+        {
+            new Dn( "ou=test+testing" );
+        } );
     }
 
 

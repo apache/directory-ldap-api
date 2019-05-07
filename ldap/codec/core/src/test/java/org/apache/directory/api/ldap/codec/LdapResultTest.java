@@ -20,10 +20,11 @@
 package org.apache.directory.api.ldap.codec;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Collection;
@@ -40,11 +41,9 @@ import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -53,14 +52,13 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LdapResultTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a AddResponse with no LdapResult
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddResponseEmptyResultCode() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
@@ -79,14 +77,17 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AddResponse with no LdapResult
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddResponseEmptyResultCodeAbove90() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
@@ -105,7 +106,10 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } ); 
     }
 
 
@@ -149,7 +153,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AddResponse with no matched Dn
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddResponseEmptyResultCodeNoMatchedDN() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
@@ -168,14 +172,17 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a AddResponse with no error message
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddResponseEmptyResultCodeNoErrorMsg() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
@@ -195,7 +202,10 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode a AddResponse message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
@@ -453,7 +463,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
      * Test the decoding of a AddResponse with a valid LdapResult and an invalid
      * transition after the referral sequence
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeAddResponseEmptyResultCodeEmptyReferrals() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
@@ -475,6 +485,9 @@ public class LdapResultTest extends AbstractCodecServiceTest
         LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
 
         // Decode the AddResponse PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 }

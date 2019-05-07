@@ -20,16 +20,14 @@
 package org.apache.directory.api.asn1.ber.tlv;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 
 /**
@@ -37,8 +35,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution(ExecutionMode.CONCURRENT)
 public class LengthTest
 {
 
@@ -48,17 +45,17 @@ public class LengthTest
     @Test
     public void testLengthGetNbBytes()
     {
-        assertEquals( "1 expected", 1, TLV.getNbBytes( 0 ) );
-        assertEquals( "1 expected", 1, TLV.getNbBytes( 1 ) );
-        assertEquals( "1 expected", 1, TLV.getNbBytes( 127 ) );
-        assertEquals( "2 expected", 2, TLV.getNbBytes( 128 ) );
-        assertEquals( "2 expected", 2, TLV.getNbBytes( 255 ) );
-        assertEquals( "3 expected", 3, TLV.getNbBytes( 256 ) );
-        assertEquals( "3 expected", 3, TLV.getNbBytes( 65535 ) );
-        assertEquals( "4 expected", 4, TLV.getNbBytes( 65536 ) );
-        assertEquals( "4 expected", 4, TLV.getNbBytes( 16777215 ) );
-        assertEquals( "5 expected", 5, TLV.getNbBytes( 16777216 ) );
-        assertEquals( "5 expected", 5, TLV.getNbBytes( 0xFFFFFFFF ) );
+        assertEquals( 1, TLV.getNbBytes( 0 ), "1 expected" );
+        assertEquals( 1, TLV.getNbBytes( 1 ), "1 expected" );
+        assertEquals( 1, TLV.getNbBytes( 127 ), "1 expected" );
+        assertEquals( 2, TLV.getNbBytes( 128 ), "2 expected" );
+        assertEquals( 2, TLV.getNbBytes( 255 ), "2 expected" );
+        assertEquals( 3, TLV.getNbBytes( 256 ), "3 expected" );
+        assertEquals( 3, TLV.getNbBytes( 65535 ), "3 expected" );
+        assertEquals( 4, TLV.getNbBytes( 65536 ), "4 expected" );
+        assertEquals( 4, TLV.getNbBytes( 16777215 ), "4 expected" );
+        assertEquals( 5, TLV.getNbBytes( 16777216 ), "5 expected" );
+        assertEquals( 5, TLV.getNbBytes( 0xFFFFFFFF ), "5 expected" );
     }
 
 

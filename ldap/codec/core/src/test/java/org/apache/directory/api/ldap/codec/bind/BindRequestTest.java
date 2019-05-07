@@ -26,6 +26,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -46,18 +47,14 @@ import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT)
 public class BindRequestTest extends AbstractCodecServiceTest
 {
     /**
@@ -264,7 +261,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with Simple authentication, no name
      * and no controls
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestSimpleNoName() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x15 );
@@ -287,7 +284,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
         Asn1Container container = new LdapMessageContainer<BindRequest>( codec );
 
         // Decode the BindRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
@@ -516,7 +516,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with an empty body
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestEmptyBody() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -533,14 +533,17 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a BindRequest with an empty version
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestEmptyVersion() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
@@ -558,14 +561,17 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a BindRequest with a bad version (0)
      */
-    @Test( expected= DecoderException.class )
+    @Test
     public void testDecodeBindRequestBadVersion0() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
@@ -583,14 +589,17 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a BindRequest with a bad version (4)
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestBadVersion4() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
@@ -608,14 +617,17 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a BindRequest with a bad version (128)
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestBadVersion128() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
@@ -633,14 +645,17 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a BindRequest with no name
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestNoName() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
@@ -658,14 +673,17 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a BindRequest with an empty name
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestEmptyName() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
@@ -684,7 +702,10 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
@@ -734,7 +755,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with an empty sasl
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeBindRequestEmptySasl() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
@@ -754,22 +775,23 @@ public class BindRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode a BindRequest message
-        try
+        assertThrows( DecoderException.class, ( ) ->
         {
-            Asn1Decoder.decode( stream, container );
-        }
-        catch ( DecoderException de )
-        {
-            assertTrue( de instanceof ResponseCarryingException );
-            Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof BindResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_CREDENTIALS, ( ( BindResponseImpl ) response ).getLdapResult()
-                .getResultCode() );
-
-            throw de;
-        }
-
-        fail( "We should not reach this point" );
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof BindResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_CREDENTIALS, ( ( BindResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
     }
 
 

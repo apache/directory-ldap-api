@@ -20,9 +20,10 @@
 package org.apache.directory.api.ldap.extras.extended;
 
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -31,9 +32,10 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
@@ -41,26 +43,25 @@ import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the ExtendedRequest codec
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
-public class ExtendedRequestTest extends AbstractCodecServiceTest
+@Execution( ExecutionMode.CONCURRENT)
+public class ExtendedRequestTest
 {
-    @Before
-    public void init()
+    private static LdapApiService codec;
+
+    @BeforeAll
+    public static void init()
     {
+        codec = new DefaultLdapCodecService();
         codec.getExtendedRequestFactories().put( "1.3.6.1.1.8", new CancelFactory( codec ) );
         codec.getExtendedRequestFactories().put( "1.3.6.1.4.1.1466.20037", new StartTlsFactory( codec ) );
     }
@@ -248,7 +249,7 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of an empty ExtendedRequest
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeExtendedRequestEmpty() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -267,14 +268,17 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of an empty OID
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeEmptyOID() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
@@ -294,14 +298,17 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 
     /**
      * Test the decoding of a bad name
      */
-    @Test( expected=DecoderException.class )
+    @Test
     public void testDecodeExtendedBadRequestName() throws DecoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x1F );
@@ -324,7 +331,10 @@ public class ExtendedRequestTest extends AbstractCodecServiceTest
         LdapMessageContainer<ExtendedRequest> container = new LdapMessageContainer<>( codec );
 
         // Decode the ExtendedRequest PDU
-        Asn1Decoder.decode( stream, container );
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
     }
 
 

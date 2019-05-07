@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.name;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,22 +31,18 @@ import java.io.ObjectOutputStream;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Test the Rdn Serialization
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
+@Execution( ExecutionMode.CONCURRENT )
 public class SchemaAwareRdnSerializationTest
 {
     private static SchemaManager schemaManager;
@@ -55,7 +51,7 @@ public class SchemaAwareRdnSerializationTest
     /**
      * Initialize OIDs maps for normalization
      */
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
@@ -180,7 +176,7 @@ public class SchemaAwareRdnSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testRdnFullSerializationPerf() throws IOException, LdapException, ClassNotFoundException
     {
@@ -210,7 +206,7 @@ public class SchemaAwareRdnSerializationTest
     }
 
 
-    @Ignore
+    @Disabled
     @Test
     public void testRdnFullSerializationBytesPerf() throws IOException, LdapException, ClassNotFoundException
     {
