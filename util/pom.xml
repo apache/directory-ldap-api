@@ -70,6 +70,16 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <configuration>
+          <systemPropertyVariables>
+            <workingDirectory>${basedir}/target</workingDirectory>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <inherited>true</inherited>
