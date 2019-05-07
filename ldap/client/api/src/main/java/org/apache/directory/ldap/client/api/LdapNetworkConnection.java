@@ -198,8 +198,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /** configuration object for the connection */
     private LdapConnectionConfig config;
     
-    /** The Sockect configuratio */
-    private SocketSessionConfig connectionConfig;
+    /** The Socket configuration */
+    private SocketSessionConfig socketSessionConfig;
 
     /** The connector open with the remote server */
     private IoConnector connector;
@@ -501,9 +501,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Use only one thread inside the connector
         connector = new NioSocketConnector( 1 );
         
-        if ( connectionConfig != null )
+        if ( socketSessionConfig != null )
         {
-            ( ( SocketSessionConfig ) connector.getSessionConfig() ).setAll( connectionConfig );
+            ( ( SocketSessionConfig ) connector.getSessionConfig() ).setAll( socketSessionConfig );
         }
         else
         {
@@ -5294,20 +5294,20 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * @return the connectionConfig
+     * @return the socketSessionConfig
      */
-    public SocketSessionConfig getConnectionConfig()
+    public SocketSessionConfig getSocketSessionConfig()
     {
-        return connectionConfig;
+        return socketSessionConfig;
     }
 
 
     /**
-     * @param connectionConfig the connectionConfig to set
+     * @param socketSessionConfig the socketSessionConfig to set
      */
-    public void setConnectionConfig( SocketSessionConfig connectionConfig )
+    public void setSocketSessionConfig( SocketSessionConfig socketSessionConfig )
     {
-        this.connectionConfig = connectionConfig;
+        this.socketSessionConfig = socketSessionConfig;
     }
     
     
