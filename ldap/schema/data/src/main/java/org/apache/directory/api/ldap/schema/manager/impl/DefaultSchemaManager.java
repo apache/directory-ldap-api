@@ -164,23 +164,6 @@ public class DefaultSchemaManager implements SchemaManager
         }
     }
 
-    
-    /*
-     * Static helper factory Create LDIF based SchemaLoader
-     */
-    private static SchemaLoader jarLdifSchemaLoader()
-    {
-        try
-        {
-            return new JarLdifSchemaLoader();
-        }
-        catch ( LdapException | IOException e )
-        {
-            LOG.error( I18n.err( I18n.ERR_16080_SCHEMA_LOADER_CANT_BE_CREATED, e.getMessage() ) );
-            throw new RuntimeException( e.getMessage() );
-        }
-    }
-
 
     
     /**
