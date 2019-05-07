@@ -76,6 +76,14 @@
           <systemPropertyVariables>
             <workingDirectory>${basedir}/target</workingDirectory>
           </systemPropertyVariables>
+          <parallel>all</parallel>
+          <!-- Hack... Trying not to run tests in parallel... -->
+          <threadCount>1</threadCount>
+          <properties>
+            <configurationParameters>
+              junit.jupiter.execution.parallel.enabled=false
+            </configurationParameters>
+          </properties>
         </configuration>
       </plugin>
     
