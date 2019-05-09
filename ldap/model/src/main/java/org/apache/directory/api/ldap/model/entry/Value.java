@@ -581,8 +581,8 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
 
 
     /**
-     * Get the wrapped value as a byte[]. If the original value
-     * is binary, this method will return a copy of the wrapped byte[]
+     * Get the wrapped value as a byte[], if and only if the Value is binary,
+     * otherwise returns null.
      *
      * @return the wrapped value as a byte[]
      */

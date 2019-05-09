@@ -172,15 +172,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
         }
         
-        StringBuilder sb = new StringBuilder( upType );
-        sb.append( '=' );
-        
-        if ( ( value != null ) && ( value.getString() != null ) )
-        {
-            sb.append( value.getString() );
-        }
-        
-        upName = sb.toString();
+        upName = getEscaped();
 
         hashCode();
     }

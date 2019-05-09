@@ -758,7 +758,15 @@ public final class AttributeUtils
             for ( Iterator<Value> valueIterator = attribute.iterator(); valueIterator.hasNext(); )
             {
                 Value value = valueIterator.next();
-                jndiAttribute.add( value.getString() );
+                
+                if ( value.isHumanReadable() )
+                {
+                    jndiAttribute.add( value.getString() );
+                }
+                else
+                {
+                    jndiAttribute.add( value.getBytes() );
+                }
             }
 
             return jndiAttribute;
