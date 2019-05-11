@@ -387,7 +387,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             }
         }
             
-        // We have to copy the byte[], they are just referenced by suoer.clone()
+        // We have to copy the byte[], they are just referenced by super.clone()
         if ( value.bytes != null )
         {
             bytes = new byte[value.bytes.length];
