@@ -614,8 +614,8 @@
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/directory-ldap-api.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/directory-ldap-api.git</developerConnection>
-    <url>https://gitbox.apache.org/repos/asf?p=directory-ldap-api.git;a=shortlog;h=refs/remotes/tags/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <url>https://github.com/apache/directory-ldap-api/tree/${project.scm.tag}</url>
+    <tag>1.0</tag>
   </scm>
 
   <reporting>
