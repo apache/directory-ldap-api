@@ -88,7 +88,7 @@
 
   <issueManagement>
     <system>JIRA</system>
-    <url>http://issues.apache.org/jira/browse/DIRAPI</url>
+    <url>https://issues.apache.org/jira/browse/DIRAPI</url>
   </issueManagement>
 
   <modules>

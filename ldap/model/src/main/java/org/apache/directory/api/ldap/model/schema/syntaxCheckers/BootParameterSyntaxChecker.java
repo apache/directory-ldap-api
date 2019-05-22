@@ -119,8 +119,8 @@ public final class BootParameterSyntaxChecker extends SyntaxChecker
             
             while ( c != limit )
             {
-                if ( Character.isUpperCase( c ) || Character.isLowerCase( c ) || Character.isDigit( c ) ||
-                    ( c == '-' ) || ( c == ';' ) || ( c == '_' ) )
+                if ( Character.isUpperCase( c ) || Character.isLowerCase( c ) || Character.isDigit( c )
+                    || ( c == '-' ) || ( c == ';' ) || ( c == '_' ) )
                 {
                     pos++;
                 }
@@ -161,8 +161,8 @@ public final class BootParameterSyntaxChecker extends SyntaxChecker
             {
                 c = strValue.charAt( pos );
 
-                if ( Character.isUpperCase( c ) || Character.isLowerCase( c ) || Character.isDigit( c ) ||
-                    ( c == '-' ) || ( c == ';' ) || ( c == '_' ) )
+                if ( Character.isUpperCase( c ) || Character.isLowerCase( c ) || Character.isDigit( c )
+                    || ( c == '-' ) || ( c == ';' ) || ( c == '_' ) )
                 {
                     pos++;
                 }

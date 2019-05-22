@@ -34,13 +34,13 @@
 
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/DIRAPI</url>
+    <url>https://issues.apache.org/jira/browse/DIRAPI</url>
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/clients/ldap/trunk/ldap-client-api</connection>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/clients/ldap/trunk/ldap-client-api</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/clients/ldap/trunk/ldap-client-api</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/clients/ldap/trunk/ldap-client-api</url>
+    <url>https://svn.apache.org/viewvc/directory/clients/ldap/trunk/ldap-client-api</url>
     <tag>HEAD</tag>
   </scm>
 

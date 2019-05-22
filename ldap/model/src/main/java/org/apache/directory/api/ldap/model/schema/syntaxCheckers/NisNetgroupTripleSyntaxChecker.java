@@ -117,10 +117,10 @@ public final class NisNetgroupTripleSyntaxChecker extends SyntaxChecker
         { 
             c = strValue.charAt( pos );
             
-            while ( ( c != ',') && ( c != ')' ) )
+            while ( ( c != ',' ) && ( c != ')' ) )
             {
-                if ( Character.isUpperCase( c ) || Character.isLowerCase( c ) || Character.isDigit( c ) ||
-                    ( c == '-' ) || ( c == ';' ) || ( c == '_' ) )
+                if ( Character.isUpperCase( c ) || Character.isLowerCase( c ) || Character.isDigit( c )
+                    || ( c == '-' ) || ( c == ';' ) || ( c == '_' ) )
                 {
                     pos++;
                 }
