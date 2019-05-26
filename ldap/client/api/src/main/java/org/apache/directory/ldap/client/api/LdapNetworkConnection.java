@@ -42,7 +42,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -196,16 +195,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     private long timeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
 
     /** configuration object for the connection */
-    private LdapConnectionConfig config;
+    private final LdapConnectionConfig config;
     
     /** The Socket configuration */
     private SocketSessionConfig socketSessionConfig;
 
     /** The connector open with the remote server */
     private IoConnector connector;
-
-    /** A mutex used to avoid a double close of the connector */
-    private ReentrantLock connectorMutex = new ReentrantLock();
 
     /**
      * The created session, created when we open a connection with
@@ -214,7 +210,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     private IoSession ldapSession;
 
     /** a map to hold the ResponseFutures for all operations */
-    private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<>();
+    private final Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<>();
 
     /** list of controls supported by the server */
     private List<String> supportedControls;
@@ -225,16 +221,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /** A flag indicating that the BindRequest has been issued and successfully authenticated the user */
     private AtomicBoolean authenticated = new AtomicBoolean( false );
 
-    /** A flag indicating that the connection is connected or not */
-    private AtomicBoolean connected = new AtomicBoolean( false );
-
     /** a list of listeners interested in getting notified when the
      *  connection's session gets closed cause of network issues
      */
     private List<ConnectionClosedEventListener> conCloseListeners;
 
     /** The Ldap codec protocol filter */
-    private IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
+    private final IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
 
     /** the SslFilter key */
     private static final String SSL_FILTER_KEY = "sslFilter";
@@ -244,10 +237,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /** The krb5 configuration property */
     private static final String KRB5_CONF = "java.security.krb5.conf";
-    
-    /** A future used to block any action until the handhake is completed */
+
+    /** A future used to block any action until the handshake is completed */
     private HandshakeFuture handshakeFuture;
-    
+
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
     static final String TIME_OUT_ERROR = I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED );
 
@@ -531,7 +524,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public boolean isConnected()
     {
-        return ( ldapSession != null ) && connected.get() && !ldapSession.isClosing();
+        return ( ldapSession != null ) && ldapSession.isConnected() && !ldapSession.isClosing();
     }
 
 
@@ -569,7 +562,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new InvalidConnectionException( I18n.err( I18n.ERR_04104_NULL_CONNECTION_CANNOT_CONNECT ) );
         }
 
-        if ( !connected.get() )
+        if ( !isConnected() )
         {
             throw new InvalidConnectionException( I18n.err( I18n.ERR_04108_INVALID_CONNECTION ) );
         }
@@ -824,65 +817,74 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         
         closeFuture.addListener( future -> 
         {
-            // Process all the waiting operations and cancel them
-            if ( LOG.isDebugEnabled() )
+            synchronized ( LdapNetworkConnection.this )
             {
-                LOG.debug( I18n.msg( I18n.MSG_04137_NOD_RECEIVED ) );
-            }
+                // DIRAPI-342: Skip processing if LDAP session changed, i.e. after re-connect.
+                if ( future.getSession() != ldapSession )
+                {
+                    return;
+                }
 
-            for ( ResponseFuture<?> responseFuture : futureMap.values() )
-            {
+                // Process all the waiting operations and cancel them
                 if ( LOG.isDebugEnabled() )
                 {
-                    LOG.debug( I18n.msg( I18n.MSG_04134_CLOSING, responseFuture ) );
+                    LOG.debug( I18n.msg( I18n.MSG_04137_NOD_RECEIVED ) );
                 }
 
-                responseFuture.cancel();
-
-                try
+                for ( ResponseFuture<?> responseFuture : futureMap.values() )
                 {
-                    if ( responseFuture instanceof AddFuture )
+                    if ( LOG.isDebugEnabled() )
                     {
-                        ( ( AddFuture ) responseFuture ).set( AddNoDResponse.PROTOCOLERROR );
+                        LOG.debug( I18n.msg( I18n.MSG_04134_CLOSING, responseFuture ) );
                     }
-                    else if ( responseFuture instanceof BindFuture )
+
+                    responseFuture.cancel();
+
+                    try
                     {
-                        ( ( BindFuture ) responseFuture ).set( BindNoDResponse.PROTOCOLERROR );
+                        if ( responseFuture instanceof AddFuture )
+                        {
+                            ( ( AddFuture ) responseFuture ).set( AddNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof BindFuture )
+                        {
+                            ( ( BindFuture ) responseFuture ).set( BindNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof CompareFuture )
+                        {
+                            ( ( CompareFuture ) responseFuture ).set( CompareNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof DeleteFuture )
+                        {
+                            ( ( DeleteFuture ) responseFuture ).set( DeleteNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof ExtendedFuture )
+                        {
+                            ( ( ExtendedFuture ) responseFuture ).set( ExtendedNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof ModifyFuture )
+                        {
+                            ( ( ModifyFuture ) responseFuture ).set( ModifyNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof ModifyDnFuture )
+                        {
+                            ( ( ModifyDnFuture ) responseFuture ).set( ModifyDnNoDResponse.PROTOCOLERROR );
+                        }
+                        else if ( responseFuture instanceof SearchFuture )
+                        {
+                            ( ( SearchFuture ) responseFuture ).set( SearchNoDResponse.PROTOCOLERROR );
+                        }
                     }
-                    else if ( responseFuture instanceof CompareFuture )
+                    catch ( InterruptedException e )
                     {
-                        ( ( CompareFuture ) responseFuture ).set( CompareNoDResponse.PROTOCOLERROR );
+                        LOG.error( I18n.err( I18n.ERR_04113_ERROR_PROCESSING_NOD, responseFuture ), e );
                     }
-                    else if ( responseFuture instanceof DeleteFuture )
-                    {
-                        ( ( DeleteFuture ) responseFuture ).set( DeleteNoDResponse.PROTOCOLERROR );
-                    }
-                    else if ( responseFuture instanceof ExtendedFuture )
-                    {
-                        ( ( ExtendedFuture ) responseFuture ).set( ExtendedNoDResponse.PROTOCOLERROR );
-                    }
-                    else if ( responseFuture instanceof ModifyFuture )
-                    {
-                        ( ( ModifyFuture ) responseFuture ).set( ModifyNoDResponse.PROTOCOLERROR );
-                    }
-                    else if ( responseFuture instanceof ModifyDnFuture )
-                    {
-                        ( ( ModifyDnFuture ) responseFuture ).set( ModifyDnNoDResponse.PROTOCOLERROR );
-                    }
-                    else if ( responseFuture instanceof SearchFuture )
-                    {
-                        ( ( SearchFuture ) responseFuture ).set( SearchNoDResponse.PROTOCOLERROR );
-                    }
-                }
-                catch ( InterruptedException e )
-                {
-                    LOG.error( I18n.err( I18n.ERR_04113_ERROR_PROCESSING_NOD, responseFuture ), e );
+
+                    futureMap.remove( messageId.get() );
                 }
 
-                futureMap.remove( messageId.get() );
+                futureMap.clear();
             }
-
-            futureMap.clear();
         } );
     }
     
@@ -926,7 +928,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public boolean connect() throws LdapException
     {
-        if ( ( ldapSession != null ) && connected.get() )
+        if ( isConnected() )
         {
             // No need to connect if we already have a connected session
             return true;
@@ -974,34 +976,43 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * {@inheritDoc}
      */
     @Override
-    public void close()
+    public synchronized void close()
     {
-        // Close the session
-        if ( ( ldapSession != null ) && connected.get() )
+        if ( !isConnected() )
         {
-            ldapSession.closeNow();
-            connected.set( false );
+            return;
         }
+
+        // Close the session
+        ldapSession.closeNow().awaitUninterruptibly( timeout );
+        ldapSession = null;
+
+        clearMaps();
 
         // And close the connector if it has been created locally
         // Release the connector
-        connectorMutex.lock();
 
-        try
+        if ( connector != null )
         {
-            if ( connector != null )
-            {
-                connector.dispose();
-                connector = null;
-            }
-        }
-        finally
-        {
-            connectorMutex.unlock();
+            connector.dispose();
+            connector = null;
         }
 
         // Reset the messageId
         messageId.set( 0 );
+
+        if ( conCloseListeners != null )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04136_NOTIFYING_CLOSE_LISTENERS ) );
+            }
+
+            for ( ConnectionClosedEventListener listener : conCloseListeners )
+            {
+                listener.connectionClosed();
+            }
+        }
     }
 
 
@@ -2394,16 +2405,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             responseFuture.cancel();
         }
 
-        // clear the mappings
-        clearMaps();
-
         //  We now have to close the session
         close();
-
-        connected.set( false );
-
-        // Last, not least, reset the MessageId value
-        messageId.set( 0 );
 
         // And get out
         if ( LOG.isDebugEnabled() )
@@ -4746,7 +4749,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 codec, config.getBinaryAttributeDetector() );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
-        connected.set( true );
     }
 
 
@@ -4754,48 +4756,21 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * {@inheritDoc}
      */
     @Override
-    public void sessionClosed( IoSession session ) throws Exception
+    public synchronized void sessionClosed( IoSession session ) throws Exception
     {
-        // no need to handle if this session was closed by the user
-        if ( ldapSession == null || !connected.get() )
+        // DIRAPI-342: Skip processing if LDAP session changed, i.e. after re-connect.
+        if ( session != ldapSession )
         {
             return;
         }
 
-        ldapSession.closeNow();
-        connected.set( false );
-        // Reset the messageId
-        messageId.set( 0 );
-
-        connectorMutex.lock();
-
-        try
+        // no need to handle if this session was closed by the user
+        if ( !isConnected() )
         {
-            if ( connector != null )
-            {
-                connector.dispose();
-                connector = null;
-            }
-        }
-        finally
-        {
-            connectorMutex.unlock();
+            return;
         }
 
-        clearMaps();
-
-        if ( conCloseListeners != null )
-        {
-            if ( LOG.isDebugEnabled() )
-            {
-                LOG.debug( I18n.msg( I18n.MSG_04136_NOTIFYING_CLOSE_LISTENERS ) );
-            }
-
-            for ( ConnectionClosedEventListener listener : conCloseListeners )
-            {
-                listener.connectionClosed();
-            }
-        }
+        close();
     }
 
 
@@ -4901,7 +4876,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // for LDAPS/TLS
             handshakeFuture = new HandshakeFuture();
             
-            if ( ( ldapSession == null ) || !connected.get() )
+            if ( !isConnected() )
             {
                 connector.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
             }
