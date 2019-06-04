@@ -39,9 +39,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -247,7 +249,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /** A future used to block any action until the handshake is completed */
     private HandshakeFuture handshakeFuture;
     
-    private CountDownLatch closeLatch = new CountDownLatch( 1 ); 
+    /** A future used to wait for a connection to be closed */
+    private CompletableFuture<Integer> connectionCloseFuture = new CompletableFuture<>(); 
     
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
     static final String TIME_OUT_ERROR = I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED );
@@ -776,7 +779,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 }
                 
                 // Cancel the latch
-                closeLatch.countDown();
+                connectionCloseFuture.complete( 0 );
 
                 // if there is no cause assume timeout
                 if ( cause == null )
@@ -932,7 +935,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( !connectionFuture.isConnected() )
         {
             // Release the latch
-            closeLatch.countDown();
+            connectionCloseFuture.cancel( true );
             
             close( connectionFuture );
         }
@@ -955,7 +958,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Initialize the MessageId
         messageId.set( 0 );
         
-        closeLatch = new CountDownLatch( 1 );
+        connectionCloseFuture = new CompletableFuture<>();
 
         // And return
         return true;
@@ -978,10 +981,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             if ( ( ioSession != null ) && ioSession.isConnected() )
             { 
-                closeLatch.await();
+                connectionCloseFuture.get( timeout, TimeUnit.MILLISECONDS );
             }
         }
-        catch ( InterruptedException e )
+        catch ( TimeoutException | ExecutionException | InterruptedException e )
         {
             if ( LOG.isDebugEnabled() )
             {
@@ -2167,7 +2170,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( Exception e )
         {
-            closeLatch.countDown();
+            connectionCloseFuture.complete( 0 );
             throw new LdapException( e );
         }
     }
@@ -2374,9 +2377,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         try
         {
-            closeLatch.await();
+            connectionCloseFuture.get( timeout, TimeUnit.MILLISECONDS );
         }
-        catch ( InterruptedException e )
+        catch ( TimeoutException | ExecutionException | InterruptedException e )
         {
             if ( LOG.isDebugEnabled() )
             {
@@ -4776,7 +4779,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
         }
         
-        closeLatch.countDown();
+        connectionCloseFuture.complete( 0 );
     }
 
 
