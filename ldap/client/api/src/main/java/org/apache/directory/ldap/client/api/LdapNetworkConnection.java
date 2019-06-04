@@ -983,8 +983,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( InterruptedException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSH_04178_CLOSE_LATCH_ABORTED ) );
+            }
         }
     }
 
@@ -2376,8 +2378,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( InterruptedException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSH_04178_CLOSE_LATCH_ABORTED ) );
+            }
         }
 
         // And get out
