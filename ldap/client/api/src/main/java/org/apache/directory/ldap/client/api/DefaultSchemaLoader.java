@@ -104,6 +104,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private static final NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
     private static final SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
 
+    protected DefaultSchemaLoader() throws LdapException
+    {
+        // For use in subclasses
+    }
 
     /**
      * Creates a new instance of DefaultSchemaLoader.
@@ -210,7 +214,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
     }
 
-
     /**
      * Creates a new instance of NetworkSchemaLoader.
      *
@@ -232,6 +235,15 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         loadSchemas();
     }
 
+    protected LdapConnection getConnection()
+    {
+        return connection;
+    }
+
+    protected void setConnection( LdapConnection connection )
+    {
+        this.connection = connection;
+    }
 
     /**
      * Indicates if the given Root DSE corresponds to an ApacheDS server.
@@ -605,7 +617,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
-    private void updateSchemas( SchemaObject schemaObject )
+    protected void updateSchemas( SchemaObject schemaObject )
     {
         String schemaName = schemaObject.getSchemaName();
         Schema schema;

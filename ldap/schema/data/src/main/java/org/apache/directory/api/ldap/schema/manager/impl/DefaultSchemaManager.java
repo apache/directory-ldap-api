@@ -280,7 +280,7 @@ public class DefaultSchemaManager implements SchemaManager
     }
 
 
-    private void addSchemaObjects( Schema schema, Registries registries ) throws LdapException
+    protected void addSchemaObjects( Schema schema, Registries registries ) throws LdapException
     {
         // Create a content container for this schema
         registries.addSchema( schema.getSchemaName() );
@@ -1116,7 +1116,7 @@ public class DefaultSchemaManager implements SchemaManager
      * @return the created schemaObject instance
      * @throws LdapException If the registering failed
      */
-    private SchemaObject addSchemaObject( Registries registries, SchemaObject schemaObject, Schema schema )
+    protected SchemaObject addSchemaObject( Registries registries, SchemaObject schemaObject, Schema schema )
         throws LdapException
     {
         if ( registries.isRelaxed() )
