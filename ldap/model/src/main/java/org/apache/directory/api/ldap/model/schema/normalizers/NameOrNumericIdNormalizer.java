@@ -95,8 +95,15 @@ public class NameOrNumericIdNormalizer extends Normalizer
             return oid;
         }
 
-        // if all else fails
-        throw new LdapOtherException( I18n.err( I18n.ERR_13725_CANNOT_HANDLE_NAME_AND_OPTIONAL_UID_NORM, value ) );
+        // if all else fails and the schema is not in relaxed mode, throw an exception
+        if ( schemaManager.isStrict() )
+        {
+            throw new LdapOtherException( I18n.err( I18n.ERR_13725_CANNOT_HANDLE_NAME_AND_OPTIONAL_UID_NORM, value ) );
+        }
+        else
+        {
+            return value;
+        }
     }
 
 
