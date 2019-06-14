@@ -207,6 +207,22 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         setUp( calendar );
     }
+    
+    
+    /**
+     * Creates a new instance of GeneralizedTime by setting the time to an instance of Calendar.
+     * @see #GeneralizedTime(Calendar)
+     * 
+     * @param timeInMillis the time in milliseconds
+     */
+    public GeneralizedTime( long timeInMillis )
+    {
+        Locale locale = Locale.getDefault();
+        TimeZone timeZone = TimeZone.getTimeZone( "GMT"  );
+        calendar = Calendar.getInstance( timeZone, locale );
+        calendar.setTimeInMillis( timeInMillis );
+        setUp( calendar );
+    }
 
 
     /**

@@ -20,7 +20,12 @@
 
 package org.apache.directory.api.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import java.text.ParseException;
+import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +36,36 @@ import org.junit.jupiter.api.Test;
  */
 public class DateUtilTest
 {
+    @Test
+    public void testGetGeneralizedTimeWithDefaultTimeProvider() throws ParseException
+    {
+        long t1 = System.currentTimeMillis();
+        String gt = DateUtils.getGeneralizedTime( TimeProvider.DEFAULT );
+        long now = new GeneralizedTime( gt ).getTime();
+        long t2 = System.currentTimeMillis();
+        assertTrue( t1 <= now );
+        assertTrue( now <= t2 );
+    }
+
+
+    @Test
+    public void testGetGeneralizedTimeWithMockTimeProvider() throws ParseException
+    {
+        MockTimeProvider mockTimeProvider = new MockTimeProvider();
+        mockTimeProvider.setTimeInMillis( 1234567890L );
+
+        String gt = DateUtils.getGeneralizedTime( mockTimeProvider );
+        long t1 = new GeneralizedTime( gt ).getTime();
+        assertEquals( 1234567890L, t1 );
+    }
+
+
+    @Test
+    public void testGetDate()
+    {
+        Date date = DateUtils.getDate( "19700101000000.000Z" );
+        assertEquals( 0, date.getTime() );
+    }
 
     @Test
     public void testInfinite()

@@ -37,6 +37,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.DateUtils;
+import org.apache.directory.api.util.TimeProvider;
 import org.apache.directory.api.util.Strings;
 
 /**
@@ -607,7 +608,7 @@ public final class PasswordUtil
      * @param pwdMaxAgeSec the max age value in seconds
      * @return true if expired, false otherwise
      */
-    public static boolean isPwdExpired( String pwdChangedZtime, int pwdMaxAgeSec )
+    public static boolean isPwdExpired( String pwdChangedZtime, int pwdMaxAgeSec, TimeProvider timeProvider )
     {
         Date pwdChangeDate = DateUtils.getDate( pwdChangedZtime );
 
@@ -616,7 +617,7 @@ public final class PasswordUtil
         time += pwdChangeDate.getTime();
 
         Date expiryDate = DateUtils.getDate( DateUtils.getGeneralizedTime( time ) );
-        Date now = DateUtils.getDate( DateUtils.getGeneralizedTime() );
+        Date now = DateUtils.getDate( DateUtils.getGeneralizedTime( timeProvider ) );
 
         boolean expired = false;
 

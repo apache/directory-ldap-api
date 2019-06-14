@@ -33,7 +33,6 @@ import org.apache.directory.api.i18n.I18n;
  */
 public final class DateUtils
 {
-
     /**
      * Private constructor.
      */
@@ -43,10 +42,9 @@ public final class DateUtils
 
 
     /**
-     * Return a Date instance from a String 
-     *
-     * @param zuluTime The String to convert
-     * @return The Date instance
+     * Converts a generalized time string to a {@link Date} object.
+     * @param zuluTime the generalized time string
+     * @return the converted data
      */
     public static Date getDate( String zuluTime )
     {
@@ -66,9 +64,9 @@ public final class DateUtils
      * 
      * @return the generalizedTime right now
      */
-    public static String getGeneralizedTime()
+    public static String getGeneralizedTime( TimeProvider timeProvider )
     {
-        return new GeneralizedTime( new Date() ).toGeneralizedTime();
+        return new GeneralizedTime( timeProvider.currentIimeMillis() ).toGeneralizedTime();
     }
 
 
