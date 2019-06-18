@@ -20,8 +20,8 @@
 package org.apache.directory.ldap.client.api;
 
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -38,7 +38,7 @@ import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.exceptions.misusing.NotAMockException;
 import org.mockito.internal.util.MockUtil;
 import org.mockito.verification.VerificationMode;
@@ -48,8 +48,6 @@ public class ValidatingPoolableLdapConnectionFactoryTest
 {
     private static final String ADMIN_CREDENTIALS = "secret";
     private static final String ADMIN_DN = "uid=admin, ou=system";
-    private static final MockUtil MOCK_UTIL = new MockUtil();
-
 
     @Test
     public void testPoolWithBind()
@@ -266,7 +264,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
 
     private static final LdapConnection verify( LdapConnection connection, VerificationMode mode )
     {
-        if ( MOCK_UTIL.isMock( connection ) )
+        if ( MockUtil.isMock( connection ) )
         {
             return org.mockito.Mockito.verify( connection, mode );
         }

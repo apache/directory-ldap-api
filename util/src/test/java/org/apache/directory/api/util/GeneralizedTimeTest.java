@@ -20,13 +20,13 @@
 package org.apache.directory.api.util;
 
 import static org.apache.directory.api.util.TimeZones.GMT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -1199,7 +1199,7 @@ public class GeneralizedTimeTest
         Calendar calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTime( date );
         GeneralizedTime gt = new GeneralizedTime( calendar );
-        assertEquals( "calendar time must equal the date time", date.getTime(), calendar.getTime().getTime() );
+        assertEquals( date.getTime(), calendar.getTime().getTime(), "calendar time must equal the date time" );
         String gtStr = gt.toGeneralizedTime();
         LOG.info( "generalized time string of original time = {}", gtStr );
 
@@ -1209,8 +1209,7 @@ public class GeneralizedTimeTest
         LOG.info( "recalculated time = {}", recalculatedTime );
         LOG.info( "generalized time string of recalculated time = {}", recalculatedGt.toGeneralizedTime() );
 
-        assertEquals( "The time after round trip GeneralizedTime generation should stay the same",
-            originalTime, recalculatedTime );
+        assertEquals( originalTime, recalculatedTime, "The time after round trip GeneralizedTime generation should stay the same" );
     }
 
     static DateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSS z", Locale.ROOT );
