@@ -20,12 +20,12 @@
 package org.apache.directory.api.ldap.model.ldif;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.DataOutputStream;
@@ -1256,8 +1256,8 @@ public class LdifReaderTest
         }
         catch ( Exception ne )
         {
-            assertTrue( I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ), 
-                ne.getMessage().startsWith( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ) );
+            assertTrue( ne.getMessage().startsWith( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER.getErrorCode() ),
+                        I18n.err( I18n.ERR_13442_ERROR_PARSING_LDIF_BUFFER ) );
         }
     }
 

@@ -29,10 +29,10 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.startsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**

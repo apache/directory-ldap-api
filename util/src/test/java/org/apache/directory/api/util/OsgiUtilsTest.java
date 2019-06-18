@@ -20,15 +20,14 @@
 package org.apache.directory.api.util;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Set;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for OsgiUtils.
@@ -78,10 +77,10 @@ public class OsgiUtilsTest
             "org.ops4j.store.intern;uses:=\"org.ops4j.store,org.ops4j.io,org.apache.commons.logging\";"
                 + "version=\"1.2.2\",org.ops4j.store;uses:=\"org.ops4j.store.intern\";version=\"1.2.2", null );
 
-        assertTrue( "org.ops4j.store.intern", pkgs.contains( "org.ops4j.store.intern" ) );
-        assertTrue( "org.ops4j.store", pkgs.contains( "org.ops4j.store" ) );
+        assertTrue( pkgs.contains( "org.ops4j.store.intern" ), "org.ops4j.store.intern" );
+        assertTrue( pkgs.contains( "org.ops4j.store" ), "org.ops4j.store" );
 
-        assertEquals( "Expecting 2 packages", 2, pkgs.size() );
+        assertEquals( 2, pkgs.size(), "Expecting 2 packages" );
     }
 
 
@@ -113,22 +112,22 @@ public class OsgiUtilsTest
                 + "org.apache.log4j.spi,org.apache.log4j.or\",org.apache.log4j.varia;uses:=\""
                 + "org.apache.log4j.spi,org.apache.log4j,org.apache.log4j.helpers\"", null );
 
-        assertTrue( "org.apache.log4j.net", pkgs.contains( "org.apache.log4j.net" ) );
-        assertTrue( "org.apache.log4j.jmx", pkgs.contains( "org.apache.log4j.jmx" ) );
-        assertTrue( "org.apache.log4j.jdbc", pkgs.contains( "org.apache.log4j.jdbc" ) );
-        assertTrue( "org.apache.log4j.config", pkgs.contains( "org.apache.log4j.config" ) );
-        assertTrue( "org.apache.log4j.helpers", pkgs.contains( "org.apache.log4j.helpers" ) );
-        assertTrue( "org.apache.log4j", pkgs.contains( "org.apache.log4j" ) );
-        assertTrue( "org.apache.log4j.or", pkgs.contains( "org.apache.log4j.or" ) );
-        assertTrue( "org.apache.log4j.or.jms", pkgs.contains( "org.apache.log4j.or.jms" ) );
-        assertTrue( "org.apache.log4j.or.sax", pkgs.contains( "org.apache.log4j.or.sax" ) );
-        assertTrue( "org.apache.log4j.nt", pkgs.contains( "org.apache.log4j.nt" ) );
-        assertTrue( "org.apache.log4j.spi", pkgs.contains( "org.apache.log4j.spi" ) );
-        assertTrue( "org.apache.log4j.pattern", pkgs.contains( "org.apache.log4j.pattern" ) );
-        assertTrue( "org.apache.log4j.xml", pkgs.contains( "org.apache.log4j.xml" ) );
-        assertTrue( "org.apache.log4j.varia", pkgs.contains( "org.apache.log4j.varia" ) );
+        assertTrue( pkgs.contains( "org.apache.log4j.net" ), "org.apache.log4j.net" );
+        assertTrue( pkgs.contains( "org.apache.log4j.jmx" ), "org.apache.log4j.jmx" );
+        assertTrue( pkgs.contains( "org.apache.log4j.jdbc" ), "org.apache.log4j.jdbc" );
+        assertTrue( pkgs.contains( "org.apache.log4j.config" ), "org.apache.log4j.config" );
+        assertTrue( pkgs.contains( "org.apache.log4j.helpers" ), "org.apache.log4j.helpers" );
+        assertTrue( pkgs.contains( "org.apache.log4j" ), "org.apache.log4j" );
+        assertTrue( pkgs.contains( "org.apache.log4j.or" ), "org.apache.log4j.or" );
+        assertTrue( pkgs.contains( "org.apache.log4j.or.jms" ), "org.apache.log4j.or.jms" );
+        assertTrue( pkgs.contains( "org.apache.log4j.or.sax" ), "org.apache.log4j.or.sax" );
+        assertTrue( pkgs.contains( "org.apache.log4j.nt" ), "org.apache.log4j.nt" );
+        assertTrue( pkgs.contains( "org.apache.log4j.spi" ), "org.apache.log4j.spi" );
+        assertTrue( pkgs.contains( "org.apache.log4j.pattern" ), "org.apache.log4j.pattern" );
+        assertTrue( pkgs.contains( "org.apache.log4j.xml" ), "org.apache.log4j.xml" );
+        assertTrue( pkgs.contains( "org.apache.log4j.varia" ), "org.apache.log4j.varia" );
 
-        assertEquals( "Expecting 14 packages", 14, pkgs.size() );
+        assertEquals( 14, pkgs.size(), "Expecting 14 packages" );
     }
 
 
@@ -136,16 +135,16 @@ public class OsgiUtilsTest
     public void testGetClasspathCandidates()
     {
         Set<File> candidates = OsgiUtils.getClasspathCandidates( REJECTION_FILTER );
-        assertEquals( "Should have no results with REJECTION_FILTER", 0, candidates.size() );
+        assertEquals(  0, candidates.size(), "Should have no results with REJECTION_FILTER" );
 
         candidates = OsgiUtils.getClasspathCandidates( ONLY_ONE_FILTER );
-        assertEquals( "Should have one result with ONLY_ONE_FILTER", 1, candidates.size() );
+        assertEquals( 1, candidates.size(), "Should have one result with ONLY_ONE_FILTER" );
 
         candidates = OsgiUtils.getClasspathCandidates( JUNIT_SLF4J_FILTER );
-        assertTrue( "Should have at least 4 results with JUNIT_SLF4J_FILTER", candidates.size() >= 4 );
+        assertTrue( candidates.size() >= 4, "Should have at least 4 results with JUNIT_SLF4J_FILTER" );
 
         candidates = OsgiUtils.getClasspathCandidates( null );
-        assertTrue( "Should have at least 4 results with no filter", candidates.size() >= 4 );
+        assertTrue( candidates.size() >= 4, "Should have at least 4 results with no filter" );
     }
 
 

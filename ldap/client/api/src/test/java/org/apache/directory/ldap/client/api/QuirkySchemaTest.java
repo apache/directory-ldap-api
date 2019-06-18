@@ -20,10 +20,10 @@
 package org.apache.directory.ldap.client.api;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,7 +70,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.exception.Exceptions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -140,7 +140,7 @@ public class QuirkySchemaTest
             fail( "Schema load failed : " + Exceptions.printErrors( schemaManager.getErrors() ) );
         }
         
-        assertTrue ( "Surprisingly no errors after load", schemaManager.getErrors().size() > 0 );
+        assertTrue ( schemaManager.getErrors().size() > 0, "Surprisingly no errors after load" );
 
         assertTrue( schemaManager.getRegistries().getAttributeTypeRegistry().contains( "cn" ) );
         ObjectClass person = schemaManager.getRegistries().getObjectClassRegistry().lookup( "person" );
