@@ -352,9 +352,15 @@ public class LdapConnectionConfig
      * Sets the trust managers.
      *
      * @param trustManagers the new trust managers
+     * @throws IllegalArgumentException if the trustManagers parameter is null or empty
      */
     public void setTrustManagers( TrustManager... trustManagers )
     {
+        if ( ( trustManagers == null ) || ( trustManagers.length == 0 )
+            || ( trustManagers.length == 1 && trustManagers[0] == null ) )
+        {
+            throw new IllegalArgumentException( "TrustManagers must not be null or empty" );
+        }
         this.trustManagers = trustManagers;
     }
 

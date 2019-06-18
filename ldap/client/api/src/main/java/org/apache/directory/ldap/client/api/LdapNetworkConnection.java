@@ -4848,14 +4848,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             SSLContext sslContext = SSLContext.getInstance( config.getSslProtocol() );
             
-            TrustManager[] trustManagers = config.getTrustManagers();
-            
-            if ( ( trustManagers == null ) || ( trustManagers.length == 0 ) )
-            {
-                trustManagers = new TrustManager[] { new NoVerificationTrustManager() };
-            }
-            
-            sslContext.init( config.getKeyManagers(), trustManagers, config.getSecureRandom() );
+            sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
 
             SslFilter sslFilter = new SslFilter( sslContext );
             sslFilter.setUseClientMode( true );
