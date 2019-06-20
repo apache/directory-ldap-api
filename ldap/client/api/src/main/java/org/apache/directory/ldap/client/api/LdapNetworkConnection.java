@@ -5210,7 +5210,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             .append( kdcPort )
             .append( "\n\t}\n" );
 
-        File krb5Conf = File.createTempFile( "client-api-krb5", ".conf" );
+        File krb5Conf = Files.createTempFile( "client-api-krb5", ".conf" ).toFile();
         krb5Conf.deleteOnExit();
 
         try ( Writer writer = new OutputStreamWriter( Files.newOutputStream( Paths.get( krb5Conf.getPath() ) ), 
