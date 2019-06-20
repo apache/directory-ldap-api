@@ -517,7 +517,7 @@ public class SchemaManagerDelTest
 
 
     /**
-     * Check that a MatcingRule which has been used by a deleted AttributeType
+     * Check that a MatchingRule which has been used by a deleted AttributeType
      * can be removed
      */
     @Test
