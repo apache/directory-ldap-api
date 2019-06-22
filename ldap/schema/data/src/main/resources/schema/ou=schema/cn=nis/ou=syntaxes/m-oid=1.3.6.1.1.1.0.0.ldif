@@ -4,7 +4,6 @@ objectclass: top
 objectclass: metaTop
 objectclass: metaSyntax
 m-oid: 1.3.6.1.1.1.0.0
-m-description: RFC2307 NIS Netgroup Triple
 m-description: NIS Netgroup Triple
 m-obsolete: FALSE
 x-not-human-readable: FALSE
