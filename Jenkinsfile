@@ -19,7 +19,7 @@
 pipeline {
   agent none
   options {
-    buildDiscarder(logRotator(numToKeepStr: '3'))
+    buildDiscarder(logRotator(numToKeepStr: '10'))
     timeout(time: 8, unit: 'HOURS')
   }
   triggers {
@@ -30,6 +30,7 @@ pipeline {
     stage ('Debug') {
       options {
         timeout(time: 1, unit: 'HOURS')
+        retry(1)
       }
       agent {
         docker {
@@ -51,7 +52,8 @@ pipeline {
       parallel {
         stage ('Linux Java 8') {
           options {
-            timeout(time: 2, unit: 'HOURS')
+            timeout(time: 4, unit: 'HOURS')
+            retry(1)
           }
           agent {
             docker {
@@ -72,7 +74,8 @@ pipeline {
         }
         stage ('Linux Java 11') {
           options {
-            timeout(time: 2, unit: 'HOURS')
+            timeout(time: 4, unit: 'HOURS')
+            retry(1)
           }
           agent {
             docker {
@@ -92,7 +95,8 @@ pipeline {
         }
         stage ('Linux Java 12') {
           options {
-            timeout(time: 2, unit: 'HOURS')
+            timeout(time: 4, unit: 'HOURS')
+            retry(1)
           }
           agent {
             docker {
@@ -112,7 +116,8 @@ pipeline {
         }
         stage ('Windows Java 8') {
           options {
-            timeout(time: 2, unit: 'HOURS')
+            timeout(time: 4, unit: 'HOURS')
+            retry(1)
           }
           agent {
             label 'Windows'
@@ -135,6 +140,7 @@ pipeline {
     stage ('Deploy') {
       options {
         timeout(time: 2, unit: 'HOURS')
+        retry(1)
       }
       agent {
         label 'ubuntu'
@@ -145,7 +151,7 @@ pipeline {
         sh '''
         export JAVA_HOME=/home/jenkins/tools/java/latest1.8
         export MAVEN_OPTS="-Xmx512m"
-        /home/jenkins/tools/maven/latest3/bin/mvn -V clean install source:jar deploy
+        /home/jenkins/tools/maven/latest3/bin/mvn -V clean deploy -DskipTests
         '''
       }
       post {
@@ -159,6 +165,11 @@ pipeline {
     failure {
       mail to: 'notifications@directory.apache.org',
       subject: "Jenkins pipeline failed: ${currentBuild.fullDisplayName}",
+      body: "Jenkins build URL: ${env.BUILD_URL}"
+    }
+    fixed {
+      mail to: 'notifications@directory.apache.org',
+      subject: "Jenkins pipeline fixed: ${currentBuild.fullDisplayName}",
       body: "Jenkins build URL: ${env.BUILD_URL}"
     }
   }
