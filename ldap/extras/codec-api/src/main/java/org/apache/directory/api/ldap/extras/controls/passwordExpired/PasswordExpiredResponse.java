@@ -23,7 +23,6 @@ import org.apache.directory.api.ldap.model.message.Control;
 
 /**
  * The PasswordPolicy expired response control, as defined by 
- * https://docs.ldap.com/specs/draft-vchu-ldap-pwd-policy-00.txt
  * 
  * <pre>
  * controlType:  2.16.840.1.113730.3.4.5,
