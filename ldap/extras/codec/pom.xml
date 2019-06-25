@@ -145,7 +145,7 @@
               org.apache.directory.api.ldap.extras.controls;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ad;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.changeNotifications;version=${project.version},
-              org.apache.directory.api.ldap.extras.controls.passwordExpired_impl;version=${project.version},
+              org.apache.directory.api.ldap.extras.controls.passwordExpired;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.permissiveModify;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone;version=${project.version},
