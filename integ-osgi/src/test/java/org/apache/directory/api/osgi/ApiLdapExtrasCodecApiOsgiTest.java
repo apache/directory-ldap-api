@@ -27,6 +27,7 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeletedImpl;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHintsImpl;
 
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotificationsImpl;
+import org.apache.directory.api.ldap.extras.controls.passwordExpired.PasswordExpiredResponseImpl;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModifyImpl;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequestImpl;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponseImpl;
@@ -70,6 +71,7 @@ public class ApiLdapExtrasCodecApiOsgiTest extends ApiOsgiTestBase
         new AdPolicyHintsImpl().getOid();
         new AdShowDeletedImpl().getOid();
         new ChangeNotificationsImpl().getOid();
+        new PasswordExpiredResponseImpl().getTimeBeforeExpiration();
         new PasswordPolicyRequestImpl().getOid();
         new PasswordPolicyResponseImpl().getGraceAuthNRemaining();
         new PermissiveModifyImpl().getOid();

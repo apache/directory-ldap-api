@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import javax.inject.Inject;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.passwordExpired.PasswordExpiredResponse;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
@@ -55,6 +56,11 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
+        Control peResponse = ldapApiService.getResponseControlFactories()
+            .get( PasswordExpiredResponse.OID ).newControl();
+        assertNotNull( peResponse );
+        assertTrue( peResponse instanceof PasswordExpiredResponse );
+
         Control ppRequest = ldapApiService.getRequestControlFactories()
             .get( PasswordPolicyRequest.OID ).newControl();
         assertNotNull( ppRequest );
@@ -85,5 +91,4 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
         assertNotNull( syncInfoResponse );
         assertTrue( syncInfoResponse instanceof SyncInfoValue );
     }
-
 }

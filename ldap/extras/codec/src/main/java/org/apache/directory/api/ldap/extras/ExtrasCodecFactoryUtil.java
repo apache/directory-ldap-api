@@ -37,6 +37,8 @@ import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactor
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
+import org.apache.directory.api.ldap.extras.controls.passwordExpired.PasswordExpiredResponse;
+import org.apache.directory.api.ldap.extras.controls.passwordExpired_impl.PasswordExpiredResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify.PermissiveModify;
 import org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
@@ -144,6 +146,15 @@ public final class ExtrasCodecFactoryUtil
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, changeNotificationsFactory.getOid() ) );
+        }
+
+        // PasswordExpired response
+        ControlFactory<PasswordExpiredResponse> passwordExpiredResponseFactory = new PasswordExpiredResponseFactory( apiService );
+        responseControlFactories.put( passwordExpiredResponseFactory.getOid(), passwordExpiredResponseFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, passwordExpiredResponseFactory.getOid() ) );
         }
 
         // PasswordPolicy request

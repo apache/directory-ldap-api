@@ -71,6 +71,7 @@ public class StandaloneLdapCodecServiceTest
             + "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory,"
             + "org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.passwordExpired_impl.PasswordExpiredResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyResponseFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory,"
