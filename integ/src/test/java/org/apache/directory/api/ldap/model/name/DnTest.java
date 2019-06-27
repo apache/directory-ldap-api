@@ -3129,4 +3129,31 @@ public class DnTest
         long t1 = System.currentTimeMillis();
         System.out.println( "delta new 1 RDN : " + ( t1 - t0 ) );
     }
+
+
+    /**
+     * test a simple Dn with hexString attribute value, schema aware
+     */
+    @Test
+    public void testDnHexStringAttributeValueDSchemaAware() throws LdapException
+    {
+        Dn dn = new Dn( schemaManager, "uid = #4869" );
+
+        assertTrue( Dn.isValid( "uid = #4869" ) );
+        assertEquals( "uid=Hi", dn.getEscaped() );
+        assertEquals( "uid = #4869", dn.getName() );
+        assertEquals( "0.9.2342.19200300.100.1.1= hi ", dn.getNormName() );
+        
+        // Now, create a new DN, not schema aware
+        Dn dn2 = new Dn( "UID = #4869" );
+        assertEquals( "UID=Hi", dn2.getEscaped() );
+        assertEquals( "UID = #4869", dn2.getName() );
+        assertEquals( "uid=Hi", dn2.getNormName() );
+        
+        // Make it schemaAware
+        Dn dn3 = new Dn( schemaManager, dn2 );
+        assertEquals( "UID=Hi", dn3.getEscaped() );
+        assertEquals( "UID = #4869", dn3.getName() );
+        assertEquals( "0.9.2342.19200300.100.1.1= hi ", dn3.getNormName() );
+    }
 }

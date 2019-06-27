@@ -359,9 +359,18 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
             
             val = currentAva.getValue();
             
-            if ( ( schemaManager == null ) && ( val != null ) && ( val.getNormalized() != null ) )
+            if ( ( schemaManager == null ) && ( val != null ) )
             {
-                rdnNormStr.append( val.getNormalized() );
+                if ( val.getNormalized() != null )
+                {
+                    rdnNormStr.append( val.getNormalized() );
+                }
+                else
+                {
+                    // We can't tell if the value is HR or not. 
+                    // Use the Value User Provided value
+                    rdnNormStr.append( val.getUpValue() );
+                }
             }
         }
         (
@@ -391,9 +400,18 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
             
                 val = currentAva.getValue();
             
-                if ( ( schemaManager == null ) &&( val != null ) && ( val.getNormalized() != null ) )
+                if ( ( schemaManager == null ) && ( val != null ) )
                 {
-                    rdnNormStr.append( val.getNormalized() );
+	                if ( val.getNormalized() != null )
+	                {
+	                    rdnNormStr.append( val.getNormalized() );
+	                }
+                    else
+                    {
+                        // We can't tell if the value is HR or not. 
+                        // Use the Value User Provided value
+                        rdnNormStr.append( val.getUpValue() );
+                    }
                 }
             }
         )*

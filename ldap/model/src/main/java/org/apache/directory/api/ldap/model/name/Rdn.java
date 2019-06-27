@@ -211,7 +211,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         this.schemaManager = schemaManager;
         upName = "";
         normName = "";
-        normalized = true;
+        normalized = schemaManager != null;
         h = 0;
     }
 
