@@ -31,8 +31,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -49,6 +47,7 @@ import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
@@ -66,13 +65,12 @@ public class LdifAttributesReaderTest
     
     private File jpegFile;
     
-    private File tmpFolder;
+    @TempDir
+    public File tmpFolder;
 
 
     private File createFile( String name, byte[] data ) throws IOException
     {
-        Path tmpFolder = Files.createTempDirectory( LdifAttributesReaderTest.class.getSimpleName() );
-        
         jpegFile = File.createTempFile( tmpFolder.toString(), name + ".jpg" );
 
         DataOutputStream os = new DataOutputStream( new FileOutputStream( jpegFile ) );
