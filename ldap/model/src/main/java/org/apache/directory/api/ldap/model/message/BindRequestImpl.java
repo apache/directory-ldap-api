@@ -469,32 +469,30 @@ public BindRequest setName( String name )
         sb.append( "    BindRequest\n" );
         sb.append( "        Version : '" ).append( isVersion3 ? "3" : "2" ).append( "'\n" );
 
-        if ( ( ( Strings.isEmpty( name ) ) || ( dn == null ) || dn.equals( Dn.EMPTY_DN ) )
-            && isSimple )
+        if ( isSimple )
         {
-            sb.append( "        Name : anonymous\n" );
-        }
-        else
-        {
-            sb.append( "        Name : '" ).append( name ).append( "'\n" );
-
-            if ( isSimple )
+            if ( ( Strings.isEmpty( name ) && ( ( dn == null ) || dn.equals( Dn.EMPTY_DN ) ) ) )
             {
-                sb.append( "        Simple authentication : '" ).append( "(omitted-for-safety)" ).append( "'\n" );
+                sb.append( "        Name : anonymous\n" );
             }
             else
             {
-                sb.append( "        Sasl credentials\n" );
-                sb.append( "            Mechanism :'" ).append( mechanism ).append( "'\n" );
+                sb.append( "        Name : '" ).append( name ).append( "'\n" );
+                sb.append( "        Simple authentication : '" ).append( "(omitted-for-safety)" ).append( "'\n" );
+            }
+        }
+        else
+        {
+            sb.append( "        Sasl credentials\n" );
+            sb.append( "            Mechanism :'" ).append( mechanism ).append( "'\n" );
 
-                if ( credentials == null )
-                {
-                    sb.append( "            Credentials : null" );
-                }
-                else
-                {
-                    sb.append( "            Credentials : (omitted-for-safety)" );
-                }
+            if ( credentials == null )
+            {
+                sb.append( "            Credentials : null" );
+            }
+            else
+            {
+                sb.append( "            Credentials : (omitted-for-safety)" );
             }
         }
 
