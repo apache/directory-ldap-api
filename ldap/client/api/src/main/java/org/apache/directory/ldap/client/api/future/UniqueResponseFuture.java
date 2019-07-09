@@ -75,7 +75,7 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
         {
             wait();
         }
-        
+
         return response;
     }
 
@@ -87,8 +87,11 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
     @Override
     public synchronized R get( long timeout, TimeUnit unit ) throws InterruptedException
     {
-        wait( unit.toMillis( timeout ) );
-        
+        while ( !done && !cancelled )
+        {
+            wait( unit.toMillis( timeout ) );
+        }
+
         return response;
     }
 
@@ -102,9 +105,9 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
     public synchronized void set( R response ) throws InterruptedException
     {
         this.response = response;
-        
+
         done = response != null;
-        
+
         notifyAll();
     }
 
