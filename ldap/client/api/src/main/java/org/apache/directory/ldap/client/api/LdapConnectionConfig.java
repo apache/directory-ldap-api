@@ -70,7 +70,7 @@ public class LdapConnectionConfig
     /** A flag indicating if we are using SSL or not, default value is false */
     private boolean useSsl = false;
 
-    /** The session timeout */
+    /** The session timeout in milliseconds */
     private long timeout = DEFAULT_TIMEOUT;
 
     /** A flag indicating if we are using TLS or not, default value is false */
@@ -294,9 +294,9 @@ public class LdapConnectionConfig
 
 
     /**
-     * Gets the default timeout.
+     * Gets the default timeout in milliseconds.
      *
-     * @return the default timeout
+     * @return the default timeout in milliseconds
      */
     public long getDefaultTimeout()
     {
@@ -305,9 +305,9 @@ public class LdapConnectionConfig
 
 
     /**
-     * Gets the timeout.
+     * Gets the timeout in milliseconds.
      *
-     * @return the timeout
+     * @return the timeout in milliseconds
      */
     public long getTimeout()
     {
@@ -316,9 +316,9 @@ public class LdapConnectionConfig
 
 
     /**
-     * Sets the timeout.
+     * Sets the timeout in milliseconds.
      *
-     * @param timeout the timeout to set
+     * @param timeout the timeout in milliseconds to set
      */
     public void setTimeout( long timeout )
     {
