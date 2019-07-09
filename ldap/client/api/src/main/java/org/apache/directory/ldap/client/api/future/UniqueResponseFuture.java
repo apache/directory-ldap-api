@@ -87,7 +87,8 @@ public abstract class UniqueResponseFuture<R extends Response> implements Respon
     @Override
     public synchronized R get( long timeout, TimeUnit unit ) throws InterruptedException
     {
-        while ( !done && !cancelled )
+        // no need to wait if already done or cancelled
+        if ( !done && !cancelled )
         {
             wait( unit.toMillis( timeout ) );
         }

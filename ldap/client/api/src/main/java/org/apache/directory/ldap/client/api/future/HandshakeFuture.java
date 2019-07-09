@@ -56,7 +56,7 @@ public class HandshakeFuture implements Future<Boolean>
     {
         // set the cancel flag first
         cancelled = true;
-        
+
         // Notify the future
         notifyAll();
     }
@@ -68,7 +68,7 @@ public class HandshakeFuture implements Future<Boolean>
     public synchronized void secured()
     {
         done = true;
-        
+
         notifyAll();
     }
 
@@ -104,7 +104,7 @@ public class HandshakeFuture implements Future<Boolean>
         {
             wait();
         }
-        
+
         return done;
     }
 
@@ -113,10 +113,15 @@ public class HandshakeFuture implements Future<Boolean>
      * {@inheritDoc}
      */
     @Override
-    public synchronized Boolean get( long timeout, TimeUnit unit ) throws InterruptedException, ExecutionException, TimeoutException
+    public synchronized Boolean get( long timeout, TimeUnit unit )
+        throws InterruptedException, ExecutionException, TimeoutException
     {
-        wait( unit.toMillis( timeout ) );
-        
+        // no need to wait if already done or cancelled
+        if ( !done && !cancelled )
+        {
+            wait( unit.toMillis( timeout ) );
+        }
+
         return done;
     }
 
