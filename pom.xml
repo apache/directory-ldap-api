@@ -56,8 +56,8 @@
     
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
-    <commons.codec.version>1.12</commons.codec.version>
-    <commons.collections.version>4.3</commons.collections.version>
+    <commons.codec.version>1.13</commons.codec.version>
+    <commons.collections.version>4.4</commons.collections.version>
     <commons.lang.version>3.9</commons.lang.version>
     <commons.pool.version>2.6.2</commons.pool.version>
     <dom4j.version>2.1.1</dom4j.version>
