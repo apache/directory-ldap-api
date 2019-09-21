@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.message.controls;
 
 
+import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 
 import java.util.Arrays;
