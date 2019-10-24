@@ -316,6 +316,15 @@ public final class ParserUtils
         try
         {
             factory.setFeature( javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE );
+            try
+            {
+                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "" );
+                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "" );
+            }
+            catch ( IllegalArgumentException ex )
+            {
+                // ignore
+            }
             transformer = factory.newTransformer( new StreamSource( ParserUtils.class
                 .getResourceAsStream( "/org/apache/directory/shared/dsmlv2/DSMLv2.xslt" ) ) );
         }
