@@ -181,7 +181,7 @@ public class Csn implements Comparable<Csn>
         // And add the milliseconds and microseconds now
         try
         {
-            millis = Integer.valueOf( timestampStr.substring( 15, 21 ) );
+            millis = Integer.parseInt( timestampStr.substring( 15, 21 ) );
         }
         catch ( NumberFormatException nfe )
         {
