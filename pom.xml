@@ -191,6 +191,11 @@
               <exclude>src/main/resources/schema-all.ldif</exclude>
               <!-- Exlude the imported external java code -->
               <exclude>**/src/main/java/org/apache/directory/api/ldap/model/password/BCrypt.java</exclude>
+              <!-- exclude OpenLDAP schema files -->
+              <exclude>**/src/test/resources/org/apache/directory/api/ldap/model/schema/parsers/dyngroup.schema</exclude>
+              <exclude>**/src/test/resources/org/apache/directory/api/ldap/model/schema/parsers/inetorgperson.schema</exclude>
+              <exclude>**/src/test/resources/org/apache/directory/api/ldap/model/schema/parsers/core.schema</exclude>
+              <exclude>**/src/test/resources/org/apache/directory/api/ldap/model/schema/parsers/collective.schema</exclude>
             </excludes>
           </configuration>
         </plugin>
