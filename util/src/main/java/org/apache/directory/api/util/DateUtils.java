@@ -62,6 +62,7 @@ public final class DateUtils
     /**
      * Gets the generalized time right now. {@link GeneralizedTime}
      * 
+     * @param timeProvider The Time provider to use to generate a time
      * @return the generalizedTime right now
      */
     public static String getGeneralizedTime( TimeProvider timeProvider )
