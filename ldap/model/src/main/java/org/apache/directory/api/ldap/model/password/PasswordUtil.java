@@ -606,6 +606,7 @@ public final class PasswordUtil
      *
      * @param pwdChangedZtime time when the password was last changed
      * @param pwdMaxAgeSec the max age value in seconds
+     * @param timeProvider The TimeProvider instance to use
      * @return true if expired, false otherwise
      */
     public static boolean isPwdExpired( String pwdChangedZtime, int pwdMaxAgeSec, TimeProvider timeProvider )

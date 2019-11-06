@@ -73,7 +73,7 @@ public final class DateUtils
 
     /**
      * 
-     * @see #getGeneralizedTime()
+     * @see DateUtils#getGeneralizedTime(TimeProvider)
      *
      * @param date the date to be converted to generalized time string
      * @return given date in the generalized time string format
@@ -86,7 +86,7 @@ public final class DateUtils
 
     /**
      * 
-     * @see #getGeneralizedTime()
+     * @see DateUtils#getGeneralizedTime(TimeProvider)
      *
      * @param time the time value to be converted to generalized time string
      * @return given time in generalized time string format

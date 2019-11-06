@@ -654,8 +654,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     
     /**
      * Process the connect. 
+     * 
+     * @exception LdapException If we weren't able to connect
+     * @return A Future that can be used to check the status of the connection
      */
-    private ConnectFuture tryConnect() throws LdapException
+    public ConnectFuture tryConnect() throws LdapException
     {
         // Build the connection address
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
@@ -728,6 +731,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     
     /**
      * Close the connection and generate the appropriate exception
+     * 
+     * @exception LdapException If we weren't able to close the connection
      */
     private void close( ConnectFuture connectionFuture ) throws LdapException
     {
@@ -761,6 +766,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     
     /**
      * Verify that the connection has been secured, otherwise throw a meaningful exception
+     * 
+     * @exception LdapException If we weren't able to check that the connection is secured
      */
     private void checkSecured( ConnectFuture connectionFuture ) throws LdapException
     {
@@ -806,6 +813,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     
     /**
      * Set a listener associated to the closeFuture
+     * 
+     * @param connectionFuture A Future for which we want to set a listener
      */
     private void setCloseListener( ConnectFuture connectionFuture )
     {

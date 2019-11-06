@@ -82,6 +82,7 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
      * Creates an ExtendedRequest implementing object used to perform
      * extended protocol operation on the server.
      * 
+     * @param requestName The extended request OID
      * @param requestValue the embedded value
      */
     public OpaqueExtendedRequest( String requestName, byte[] requestValue )
