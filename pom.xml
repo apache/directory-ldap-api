@@ -59,10 +59,10 @@
     <commons.codec.version>1.13</commons.codec.version>
     <commons.collections.version>4.4</commons.collections.version>
     <commons.lang.version>3.9</commons.lang.version>
-    <commons.pool.version>2.6.2</commons.pool.version>
+    <commons.pool.version>2.7.0</commons.pool.version>
     <dom4j.version>2.1.1</dom4j.version>
     <forbiddenapis.version>2.6</forbiddenapis.version>
-    <hamcrest.version>2.1</hamcrest.version>
+    <hamcrest.version>2.2</hamcrest.version>
     <junit.engine.version>5.4.2</junit.engine.version>
     <junit.platform.version>1.4.2</junit.platform.version>
     <log4j.version>1.2.17</log4j.version>
@@ -75,6 +75,9 @@
     <slf4j.api.version>1.7.26</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
     <slf4j.log4j12.version>1.7.26</slf4j.log4j12.version>
+    <velocity.version>1.5</velocity.version>
+    <wagon.ssh.version>3.3.3</wagon.ssh.version>
+    <wagon.ssh.external.version>3.3.3</wagon.ssh.external.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
   </properties>
@@ -113,7 +116,7 @@
             <dependency><!-- downgrade Velocity to 1.5 until skin is updated to Velocity 1.7 -->
               <groupId>org.apache.velocity</groupId>
               <artifactId>velocity</artifactId>
-              <version>1.5</version>
+              <version>${velocity.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -307,19 +310,19 @@
           <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-ssh</artifactId>
-            <version>3.3.2</version>
+            <version>${wagon.ssh.version}</version>
           </dependency>
           <!-- Add support for 'scpexe' -->
           <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-ssh-external</artifactId>
-            <version>3.3.2</version>
+            <version>${wagon.ssh.external.version}</version>
           </dependency>
           <!-- Needed for mvn site to work.-->
           <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
-            <version>1.5</version>
+            <version>${velocity.version}</version>
           </dependency>
         </dependencies>
       </plugin>
