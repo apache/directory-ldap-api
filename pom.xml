@@ -42,7 +42,7 @@
   <artifactId>api-parent</artifactId>
   <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
-  <version>2.0.0.AM5-SNAPSHOT</version>
+  <version>2.0.0</version>
 
   <properties>
     <projectName>ApacheDS-LDAP-API</projectName>
@@ -652,7 +652,7 @@
     <connection>scm:git:https://gitbox.apache.org/repos/asf/directory-ldap-api.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/directory-ldap-api.git</developerConnection>
     <url>https://github.com/apache/directory-ldap-api/tree/${project.scm.tag}</url>
-    <tag>master</tag>
+    <tag>2.0.0</tag>
   </scm>
 
   <reporting>
