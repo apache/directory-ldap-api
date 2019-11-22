@@ -67,6 +67,8 @@ import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
+import org.apache.directory.api.ldap.extras.controls.ad.TreeDelete;
+import org.apache.directory.api.ldap.extras.controls.ad.TreeDeleteImpl;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -3642,13 +3644,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public void deleteTree( Dn dn ) throws LdapException
     {
-        String treeDeleteOid = "1.2.840.113556.1.4.805";
-
-        if ( isControlSupported( treeDeleteOid ) )
+        if ( isControlSupported( TreeDelete.OID ) )
         {
             DeleteRequest deleteRequest = new DeleteRequestImpl();
             deleteRequest.setName( dn );
-            deleteRequest.addControl( new OpaqueControl( treeDeleteOid ) );
+            deleteRequest.addControl( new TreeDeleteImpl() );
             DeleteResponse deleteResponse = delete( deleteRequest );
 
             processResponse( deleteResponse );

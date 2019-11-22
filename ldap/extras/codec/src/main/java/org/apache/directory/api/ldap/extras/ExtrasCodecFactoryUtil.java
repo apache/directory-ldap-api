@@ -31,10 +31,12 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncRequest;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
 import org.apache.directory.api.ldap.extras.controls.ad.AdPolicyHints;
 import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
+import org.apache.directory.api.ldap.extras.controls.ad.TreeDelete;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncRequestFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.TreeDeleteFactory;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications.ChangeNotifications;
 import org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory;
 import org.apache.directory.api.ldap.extras.controls.passwordExpired.PasswordExpiredResponse;
@@ -132,6 +134,10 @@ public final class ExtrasCodecFactoryUtil
         // AdShowDelete
         ControlFactory<AdShowDeleted> adShowDeletedFactory = new AdShowDeletedFactory( apiService );
         requestControlFactories.put( adShowDeletedFactory.getOid(), adShowDeletedFactory );
+
+        // TreeDelete
+        ControlFactory<TreeDelete> treeDeleteFactory = new TreeDeleteFactory( apiService );
+        requestControlFactories.put( treeDeleteFactory.getOid(), treeDeleteFactory );
 
         if ( LOG.isInfoEnabled() )
         {
