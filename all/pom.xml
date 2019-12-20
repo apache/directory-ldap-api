@@ -133,7 +133,6 @@
                   </manifestEntries>
                 </transformer>
               </transformers>
-
             </configuration>
           </execution>
         </executions>

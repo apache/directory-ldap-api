@@ -159,7 +159,7 @@
             <Bundle-Activator>
               org.apache.directory.api.ldap.codec.osgi.DefaultActivator
             </Bundle-Activator>
-	    <Automatic-Module-Name>apache.directory.ldap.api.extras.codec.core</Automatic-Module-Name>
+            <Automatic-Module-Name>apache.directory.ldap.api.extras.codec.core</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>
