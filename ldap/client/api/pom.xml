@@ -190,6 +190,7 @@
               javax.security.sasl,
               javax.net.ssl
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.client.api</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

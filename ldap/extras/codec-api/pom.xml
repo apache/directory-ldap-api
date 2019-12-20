@@ -90,6 +90,7 @@
               org.apache.directory.api.util;version=${project.version},
               org.apache.directory.api.util.exception;version=${project.version}
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.extras.codec.api</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

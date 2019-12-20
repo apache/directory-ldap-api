@@ -171,6 +171,7 @@
               org.apache.directory.api.util;version=${project.version},
               org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.schema.data</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

@@ -101,6 +101,7 @@
               javax.naming.directory,
               javax.naming.ldap
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.util</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

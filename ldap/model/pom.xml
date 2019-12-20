@@ -210,6 +210,7 @@
               javax.naming.directory,
               javax.naming.ldap
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.model</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

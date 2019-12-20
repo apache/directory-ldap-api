@@ -63,6 +63,7 @@
             <Export-Package>
               org.apache.directory.api.i18n;version=${project.version};-noimport:=true
             </Export-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.i18n</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

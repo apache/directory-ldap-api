@@ -88,6 +88,7 @@
           </supportedProjectTypes>
           <instructions>
             <Export-Package>*</Export-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.extras.codec.standalone</Automatic-Module-Name>
           </instructions>
         </configuration>
         <executions>

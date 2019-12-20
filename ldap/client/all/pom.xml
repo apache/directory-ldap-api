@@ -89,6 +89,13 @@
             <configuration>
               <createDependencyReducedPom>true</createDependencyReducedPom>
               <createSourcesJar>true</createSourcesJar>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Automatic-Module-Name>apache.directory.ldap.api.client.all</Automatic-Module-Name>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
             </configuration>
           </execution>
         </executions>
