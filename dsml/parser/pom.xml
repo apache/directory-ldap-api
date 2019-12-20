@@ -143,6 +143,7 @@
               javax.xml.transform,
               javax.xml.transform.stream
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.dsml.parser</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>

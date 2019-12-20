@@ -96,6 +96,7 @@
               org.slf4j;version=${slf4j.api.bundleversion},
               org.xmlpull.v1;version=${xpp3.version}
             </Import-Package>
+            <Automatic-Module-Name>apache.directory.ldap.api.dsml.engine</Automatic-Module-Name>
           </instructions>
         </configuration>
       </plugin>
