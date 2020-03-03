@@ -64,6 +64,7 @@
               org.apache.directory.api.ldap.codec.protocol.mina;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
+              org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.asn1;version=${project.version},
               org.apache.directory.api.asn1.ber;version=${project.version},
               org.apache.directory.api.asn1.ber.tlv;version=${project.version},
