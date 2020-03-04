@@ -138,10 +138,10 @@
               org.apache.directory.api.asn1.ber;version=${project.version},
               org.apache.directory.api.asn1.ber.grammar;version=${project.version},
               org.apache.directory.api.asn1.ber.tlv;version=${project.version},
+              org.apache.directory.api.asn1.util;version=${project.version},
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.ldap.codec;version=${project.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
-              org.apache.directory.api.ldap.codec.osgi;version=${project.version},
               org.apache.directory.api.ldap.extras.controls;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ad;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.changeNotifications;version=${project.version},
@@ -165,14 +165,15 @@
               org.apache.directory.api.ldap.extras.extended.whoAmI;version=${project.version},
               org.apache.directory.api.ldap.extras.intermediate.syncrepl;version=${project.version},
               org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
               org.apache.directory.api.ldap.model.message;version=${project.version},
               org.apache.directory.api.ldap.model.message.extended;version=${project.version},
               org.apache.directory.api.ldap.model.name;version=${project.version},
               org.apache.directory.api.ldap.model.url;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
-              org.slf4j;version=${slf4j.api.bundleversion},
               org.osgi.framework;version="[1.0.0,2.0.0)",
               org.osgi.util.tracker;version="[1.0.0,2.0.0)",
+              org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>
             <Bundle-Activator>
               org.apache.directory.api.ldap.extras.ExtrasBundleActivator

@@ -131,6 +131,8 @@
               org.apache.directory.api.ldap.codec.search;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
+              javax.naming,
+              javax.naming.ldap,
               org.apache.directory.api.asn1;version=${project.version},
               org.apache.directory.api.asn1.actions;version=${project.version},
               org.apache.directory.api.asn1.ber;version=${project.version},
@@ -150,11 +152,8 @@
               org.apache.directory.api.util.exception;version=${project.version},
               org.apache.mina.filter.codec;version=${mina.core.version},
               org.apache.mina.util;version=${mina.core.version},
-              org.slf4j;version=${slf4j.api.bundleversion},
               org.osgi.framework;version="[1.0.0,2.0.0)",
-              javax.naming,
-              javax.naming.directory,
-              javax.naming.ldap
+              org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>
             <Bundle-Activator>
               org.apache.directory.api.ldap.codec.osgi.DefaultActivator

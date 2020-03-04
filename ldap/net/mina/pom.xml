@@ -64,11 +64,11 @@
               org.apache.directory.api.ldap.codec.protocol.mina;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-              org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.asn1;version=${project.version},
               org.apache.directory.api.asn1.ber;version=${project.version},
               org.apache.directory.api.asn1.ber.tlv;version=${project.version},
               org.apache.directory.api.asn1.util;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
               org.apache.directory.api.ldap.model.exception;version=${project.version},
@@ -77,9 +77,9 @@
               org.apache.mina.core.buffer;version=${mina.core.version},
               org.apache.mina.core.session;version=${mina.core.version},
               org.apache.mina.filter.codec;version=${mina.core.version},
-              org.slf4j;version=${slf4j.api.bundleversion},
               org.osgi.framework;version="[1.0.0,2.0.0)",
-              org.osgi.util.tracker;version="[1.0.0,2.0.0)"
+              org.osgi.util.tracker;version="[1.0.0,2.0.0)",
+              org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>
             <Bundle-Activator>
               org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator

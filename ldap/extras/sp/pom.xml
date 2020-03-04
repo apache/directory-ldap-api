@@ -83,14 +83,14 @@
               org.apache.directory.api.ldap.sp;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
+              javax.naming,
+              javax.naming.directory,
+              javax.naming.ldap,
               org.apache.commons.lang3;version=${commons.lang.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
-              org.apache.directory.api.ldap.model.message;version=${project.version},
-              javax.naming,
-              javax.naming.directory,
-              javax.naming.ldap
+              org.apache.directory.api.util;version=${project.version}
             </Import-Package>
             <Automatic-Module-Name>apache.directory.ldap.api.extras.sp</Automatic-Module-Name>
           </instructions>

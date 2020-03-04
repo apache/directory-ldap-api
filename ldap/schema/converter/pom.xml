@@ -125,7 +125,8 @@
               org.apache.directory.api.ldap.schema.converter;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
-              <![CDATA[
+              antlr;version=${antlr.version},
+              org.apache.commons.lang3.exception;version=${commons.lang.version},
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
               org.apache.directory.api.ldap.model.entry;version=${project.version},
@@ -134,10 +135,7 @@
               org.apache.directory.api.ldap.model.name;version=${project.version},
               org.apache.directory.api.ldap.model.schema;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
-              org.slf4j;version=${slf4j.api.bundleversion},
-              antlr;version=${antlr.version},
-              *
-              ]]>
+              org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>
             <Automatic-Module-Name>apache.directory.ldap.api.schema.converter</Automatic-Module-Name>
           </instructions>
