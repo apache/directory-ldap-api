@@ -155,6 +155,7 @@
             <Import-Package>
               org.apache.directory.api.asn1.util;version=${project.version},
               org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.aci;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
               org.apache.directory.api.ldap.model.entry;version=${project.version},
               org.apache.directory.api.ldap.model.exception;version=${project.version},
@@ -162,9 +163,11 @@
               org.apache.directory.api.ldap.model.message;version=${project.version},
               org.apache.directory.api.ldap.model.name;version=${project.version},
               org.apache.directory.api.ldap.model.schema;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.comparators;version=${project.version},
               org.apache.directory.api.ldap.model.schema.normalizers;version=${project.version},
               org.apache.directory.api.ldap.model.schema.parsers;version=${project.version},
               org.apache.directory.api.ldap.model.schema.registries;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.syntaxCheckers;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
               org.slf4j;version=${slf4j.api.bundleversion}
             </Import-Package>

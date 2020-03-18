@@ -92,14 +92,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-runner</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13</version>
       <scope>test</scope>
     </dependency>
 
@@ -176,13 +171,6 @@
             <reuseForks>false</reuseForks>
             <forkedProcessExitTimeoutInSeconds>1</forkedProcessExitTimeoutInSeconds>
             <rerunFailingTestsCount>1</rerunFailingTestsCount>
-            <parallel>all</parallel>
-            <threadCount>10</threadCount>
-            <properties>
-              <configurationParameters>
-                junit.jupiter.execution.parallel.enabled=true
-              </configurationParameters>
-            </properties>
           </configuration>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->

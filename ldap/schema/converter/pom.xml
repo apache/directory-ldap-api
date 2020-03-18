@@ -126,6 +126,7 @@
             </Export-Package>
             <Import-Package>
               antlr;version=${antlr.version},
+              antlr.collections.impl;version=${antlr.version},
               org.apache.commons.lang3.exception;version=${commons.lang.version},
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},

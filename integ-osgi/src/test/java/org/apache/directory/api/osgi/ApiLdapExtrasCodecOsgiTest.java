@@ -29,6 +29,8 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.passwordExpired.PasswordExpiredResponse;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRequest;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsResponse;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
@@ -80,6 +82,16 @@ public class ApiLdapExtrasCodecOsgiTest extends ApiOsgiTestBase
             .get( StartTlsRequest.EXTENSION_OID ).newResponse();
         assertNotNull( startTlsResponse );
         assertTrue( startTlsResponse instanceof StartTlsResponse );
+
+        ExtendedRequest modifyPasswordRequest = ldapApiService.getExtendedRequestFactories()
+            .get( PasswordModifyRequest.EXTENSION_OID ).newRequest();
+        assertNotNull( modifyPasswordRequest );
+        assertTrue( modifyPasswordRequest instanceof PasswordModifyRequest );
+
+        ExtendedResponse passwordModifyResponse = ldapApiService.getExtendedResponseFactories()
+            .get( PasswordModifyRequest.EXTENSION_OID ).newResponse();
+        assertNotNull( passwordModifyResponse );
+        assertTrue( passwordModifyResponse instanceof PasswordModifyResponse );
 
         ExtendedResponse noticeOfDisconnectResponse = ldapApiService.getExtendedResponseFactories()
             .get( NoticeOfDisconnect.EXTENSION_OID ).newResponse();
