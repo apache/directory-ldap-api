@@ -89,6 +89,8 @@ public interface PagedResults extends Control
 
 
     /**
+     * This method is ApacheDS specific, do not use for other LDAP servers.
+     *
      * @return The integer value for the current cookie
      */
     int getCookieValue();
