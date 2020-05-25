@@ -119,6 +119,15 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.connect();
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    public Throwable exceptionCaught()
+    {
+        return connection.exceptionCaught();
+    }
+
 
     /**
      * {@inheritDoc}

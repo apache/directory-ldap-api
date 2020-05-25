@@ -92,6 +92,15 @@ public interface LdapConnection extends Closeable
      * @throws LdapException if some error occurred
      */
     boolean connect() throws LdapException;
+    
+    
+    /**
+     * tell if an exception was caught while processing the request or a response.
+     * 
+     * @return The exception if there was one thrown while processing a
+     * request or a response
+     */
+    Throwable exceptionCaught();
 
 
     /**

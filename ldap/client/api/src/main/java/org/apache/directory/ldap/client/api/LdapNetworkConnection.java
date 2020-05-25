@@ -564,6 +564,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Throwable exceptionCaught()
+    {
+        return ( Throwable ) ioSession.getAttribute( EXCEPTION_KEY );
+    }
+    
+    
+    /**
      * Check that a session is valid, ie we can send requests to the
      * server
      *

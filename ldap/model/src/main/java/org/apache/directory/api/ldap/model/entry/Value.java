@@ -271,7 +271,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         catch ( LdapException le )
         {
             LOG.error( le.getMessage() );
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_13247_INVALID_VALUE_CANT_NORMALIZE ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13247_INVALID_VALUE_CANT_NORMALIZE, upValue ) );
         }
         
         if ( !attributeType.isRelaxed() )
@@ -376,7 +376,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         catch ( LdapException le )
         {
             LOG.error( le.getMessage() );
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_13247_INVALID_VALUE_CANT_NORMALIZE ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13247_INVALID_VALUE_CANT_NORMALIZE, upValue ) );
         }
         
         // Check the normValue

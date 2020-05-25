@@ -389,7 +389,14 @@ public class QuirkySchemaTest
             {
                 return false;
             }
+
             
+            @Override
+            public Throwable exceptionCaught()
+            {
+                return null;
+            }
+
             
             @Override
             public List<String> getSupportedControls() throws LdapException

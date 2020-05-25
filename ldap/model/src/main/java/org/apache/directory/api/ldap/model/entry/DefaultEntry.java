@@ -326,7 +326,7 @@ public final class DefaultEntry implements Entry
                 // And store it
                 add( serverAttribute );
             }
-            catch ( LdapException ne )
+            catch ( Exception ne )
             {
                 // Just log a warning
                 if ( LOG.isWarnEnabled() )
