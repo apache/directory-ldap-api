@@ -702,6 +702,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // It may be an exception, or a timeout
             Throwable connectionException = connectionFuture.getException();
 
+            if ( ( connector != null ) && !connector.isDisposing() && !connector.isDisposed() )
+            { 
+                connector.dispose();
+            }
+
             connector = null;
 
             if ( connectionException == null )
@@ -943,46 +948,59 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             return true;
         }
         
-        // Create the connector if needed
-        if ( connector == null )
+        try
         {
-            createConnector();
-        }
-
-        // And create the connection future
-        ConnectFuture connectionFuture = tryConnect();
-
-        // Check if we are good to go
-        if ( !connectionFuture.isConnected() )
-        {
-            // Release the latch
-            connectionCloseFuture.cancel( true );
+            // Create the connector if needed
+            if ( connector == null )
+            {
+                createConnector();
+            }
+    
+            // And create the connection future
+            ConnectFuture connectionFuture = tryConnect();
+    
+            // Check if we are good to go
+            if ( !connectionFuture.isConnected() )
+            {
+                // Release the latch
+                connectionCloseFuture.cancel( true );
+                
+                close( connectionFuture );
+            }
+    
+            // Check if we are secured if requested
+            if ( config.isUseSsl() )
+            {
+                checkSecured( connectionFuture );
+            }
+    
+            // Add a listener to close the session in the session.
+            setCloseListener( connectionFuture );
+    
+            // Get back the session
+            ioSession = connectionFuture.getSession();
+    
+            // Store the container into the session if we don't have one
+            setBinaryDetector();
+    
+            // Initialize the MessageId
+            messageId.set( 0 );
             
-            close( connectionFuture );
+            connectionCloseFuture = new CompletableFuture<>();
+    
+            // And return
+            return true;
         }
-
-        // Check if we are secured if requested
-        if ( config.isUseSsl() )
+        catch ( Exception e )
         {
-            checkSecured( connectionFuture );
+            if ( ( connector != null ) && !connector.isDisposing() && !connector.isDisposed() ) 
+            {
+                connector.dispose();
+                connector = null;
+            }
+
+            throw e;
         }
-
-        // Add a listener to close the session in the session.
-        setCloseListener( connectionFuture );
-
-        // Get back the session
-        ioSession = connectionFuture.getSession();
-
-        // Store the container into the session if we don't have one
-        setBinaryDetector();
-
-        // Initialize the MessageId
-        messageId.set( 0 );
-        
-        connectionCloseFuture = new CompletableFuture<>();
-
-        // And return
-        return true;
     }
 
 
