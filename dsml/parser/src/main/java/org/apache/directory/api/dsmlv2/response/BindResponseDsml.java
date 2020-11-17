@@ -24,6 +24,7 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -33,6 +34,8 @@ import org.dom4j.Element;
  */
 public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> implements BindResponse
 {
+    private static final String AUTH_RESPONSE_TAG = "authResponse";
+
     /**
      * Creates a new getDecoratedMessage() of AuthResponseDsml.
      * 
@@ -62,7 +65,17 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     @Override
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "authResponse" );
+        Element element;
+
+        if ( root != null )
+        {
+            element = root.addElement( AUTH_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( AUTH_RESPONSE_TAG );
+        }
+
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
