@@ -183,11 +183,14 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "comparator LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    comparatorList.add( entry.getEntry() );
+                    
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+    
+                        comparatorList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -220,11 +223,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "syntaxChecker LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    syntaxCheckerList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        syntaxCheckerList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -257,11 +262,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "normalizer LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    normalizerList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        normalizerList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -294,11 +301,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "matchingRules LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    matchingRuleList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        matchingRuleList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -331,11 +340,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "syntax LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    syntaxList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        syntaxList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -370,11 +381,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "attributeType LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    attributeTypeList.add( entry.getEntry() );
+                    
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        attributeTypeList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -407,11 +420,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "matchingRuleUse LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    matchingRuleUseList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        matchingRuleUseList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -444,11 +459,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "nameForm LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    nameFormList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        nameFormList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -481,11 +498,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "ditContentRule LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    ditContentRulesList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        ditContentRulesList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -518,11 +537,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "ditStructureRule LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    ditStructureRuleList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                       ditStructureRuleList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -556,11 +577,13 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
                 if ( resourcePath.startsWith( start ) && resourcePath.endsWith( end ) )
                 {
                     URL resource = getResource( resourcePath, "objectClass LDIF file" );
-                    LdifReader reader = new LdifReader( resource.openStream() );
-                    LdifEntry entry = reader.next();
-                    reader.close();
 
-                    objectClassList.add( entry.getEntry() );
+                    try ( InputStream in = resource.openStream();
+                        LdifReader reader = new LdifReader( in ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        objectClassList.add( entry.getEntry() );
+                    }
                 }
             }
         }

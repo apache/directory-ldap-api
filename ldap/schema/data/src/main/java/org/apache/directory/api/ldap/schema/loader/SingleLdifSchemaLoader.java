@@ -90,9 +90,10 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
             }
 
-            InputStream in = resource.openStream();
-
-            initializeSchemas( in );
+            try ( InputStream in = resource.openStream() )
+            {
+                initializeSchemas( in );
+            }
         }
         catch ( LdapException | IOException e )
         {
@@ -115,9 +116,10 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
             }
 
-            InputStream in = Files.newInputStream( Paths.get( schemaFile ) );
-
-            initializeSchemas( in );
+            try ( InputStream in = Files.newInputStream( Paths.get( schemaFile ) ) )
+            {
+                initializeSchemas( in );
+            }
         }
         catch ( LdapException | IOException e )
         {
@@ -140,9 +142,10 @@ public class SingleLdifSchemaLoader extends AbstractSchemaLoader
                 scObjEntryMap.put( s, new HashMap<String, List<Entry>>() );
             }
 
-            InputStream in = schemaUrl.openStream();
-
-            initializeSchemas( in );
+            try ( InputStream in = schemaUrl.openStream() )
+            {
+                initializeSchemas( in );
+            }
         }
         catch ( LdapException | IOException e )
         {

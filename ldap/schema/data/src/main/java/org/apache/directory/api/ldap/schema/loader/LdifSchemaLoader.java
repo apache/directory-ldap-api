@@ -205,11 +205,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : comparators )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    comparatorList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        comparatorList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -246,11 +246,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : syntaxCheckerFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    syntaxCheckerList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        syntaxCheckerList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -287,11 +287,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : normalizerFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    normalizerList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        normalizerList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -328,11 +328,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : matchingRuleFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    matchingRuleList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        matchingRuleList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -369,11 +369,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : syntaxFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    syntaxList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        syntaxList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -412,11 +412,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : attributeTypeFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    attributeTypeList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        attributeTypeList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -454,11 +454,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : matchingRuleUseFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    matchingRuleUseList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        matchingRuleUseList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -495,11 +495,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : nameFormFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    nameFormList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        nameFormList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -537,11 +537,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : ditContentRuleFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    ditContentRuleList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        ditContentRuleList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -579,11 +579,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : ditStructureRuleFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    ditStructureRuleList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        ditStructureRuleList.add( entry.getEntry() );
+                    }
                 }
             }
         }
@@ -622,11 +622,11 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
             {
                 for ( File ldifFile : objectClassFiles )
                 {
-                    LdifReader reader = new LdifReader( ldifFile );
-                    LdifEntry entry = reader.next();
-                    reader.close();
-
-                    objectClassList.add( entry.getEntry() );
+                    try ( LdifReader reader = new LdifReader( ldifFile ) )
+                    {
+                        LdifEntry entry = reader.next();
+                        objectClassList.add( entry.getEntry() );
+                    }
                 }
             }
         }
