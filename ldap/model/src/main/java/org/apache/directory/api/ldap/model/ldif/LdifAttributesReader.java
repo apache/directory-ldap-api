@@ -158,6 +158,7 @@ public class LdifAttributesReader extends LdifReader
      */
     public LdifAttributesReader()
     {
+        super();
         lines = new ArrayList<String>();
         position = 0;
         version = DEFAULT_VERSION;

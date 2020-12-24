@@ -216,6 +216,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
     /** The ldif Reader */
     protected Reader reader;
+    
+    /** The internal inputStream */
+    private InputStream is;
 
     /** A flag set if the ldif contains entries */
     protected boolean containsEntries;
@@ -351,7 +354,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         try
         {
-            InputStream is = Files.newInputStream( Paths.get( file.getPath() ) );
+            is = Files.newInputStream( Paths.get( file.getPath() ) );
             initReader(
                 new BufferedReader( new InputStreamReader( is, Charset.defaultCharset() ) ) );
         }
@@ -2232,6 +2235,12 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             offset = 0;
             entryOffset = 0;
             lineNumber = 0;
+            
+            // Close the inner inputStream if needed
+            if ( is != null ) 
+            {
+                is.close();
+            }
         }
     }
 }
