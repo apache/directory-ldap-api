@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,16 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
         if ( tlv.getLength() >= 0 )
         {
             ControlFactory<?> factory = container.getControlFactory();
-            factory.decodeValue( control, value.getData() );
+           
+            if ( factory == null )
+            {
+                // We don't know about this control, so it's an opaque control 
+                ( ( OpaqueControl ) control ).setEncodedValue( value.getData() );
+            }
+            else
+            {
+                factory.decodeValue( control, value.getData() );
+            }
         }
 
         // We can have an END transition
