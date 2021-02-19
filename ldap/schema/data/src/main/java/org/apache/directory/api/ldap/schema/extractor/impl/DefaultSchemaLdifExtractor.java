@@ -363,6 +363,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         throws IOException
     {
         URL result = getUniqueResource( BASE_PATH + resourceName, resourceDescription );
+        
         return result.openStream();
     }
 
@@ -400,10 +401,9 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
     private void extractFromClassLoader( String resource ) throws IOException
     {
         byte[] buf = new byte[512];
-        InputStream in = DefaultSchemaLdifExtractor.getUniqueResourceAsStream( resource,
-            "LDIF file in schema repository" );
-
-        try
+        
+        try ( InputStream in = DefaultSchemaLdifExtractor.getUniqueResourceAsStream( resource,
+            "LDIF file in schema repository" ) )
         {
             File destination = new File( outputDirectory, resource );
 
@@ -421,25 +421,17 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
                     .getParentFile().getAbsolutePath() ) );
             }
 
-            OutputStream out = Files.newOutputStream( Paths.get( destination.getPath() ) );
+            try ( OutputStream out = Files.newOutputStream( Paths.get( destination.getPath() ) ) )
             
-            try
             {
                 while ( in.available() > 0 )
                 {
                     int readCount = in.read( buf );
                     out.write( buf, 0, readCount );
                 }
+
                 out.flush();
             }
-            finally
-            {
-                out.close();
-            }
-        }
-        finally
-        {
-            in.close();
         }
     }
 }
