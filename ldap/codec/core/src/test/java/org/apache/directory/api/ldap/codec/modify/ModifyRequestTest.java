@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -39,15 +40,18 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -1223,4 +1227,39 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
+
+
+    /**
+     * Test that encoding and decoding of a modify request with 10k attributes and 10k values
+     * succeeds without StackOverflowError (DIRAPI-368, DIRSERVER-2340).
+     */
+    @Test
+    public void testEncodeDecodeLarge() throws DecoderException, EncoderException, LdapException
+    {
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        ModifyRequest originalModifyRequest = new ModifyRequestImpl();
+        originalModifyRequest.setMessageId( 3 );
+        Dn dn = new Dn( "cn=test,ou=users,ou=system" );
+        originalModifyRequest.setName( dn );
+        for ( int modIndex = 0; modIndex < 10000; modIndex++ )
+        {
+            originalModifyRequest.addModification( new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                "objectclass" + modIndex, "top", "person" ) );
+        }
+        String[] values = IntStream.range( 0, 10000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
+        originalModifyRequest.addModification(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, "objectclass", values ) );
+
+        LdapEncoder.encodeMessage( buffer, codec, originalModifyRequest );
+
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        Asn1Decoder.decode( buffer.getBytes(), ldapMessageContainer );
+
+        ModifyRequest decodedModifyRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( originalModifyRequest, decodedModifyRequest );
+    }
+
 }
