@@ -33,12 +33,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-
 
 
 /**
@@ -408,6 +406,62 @@ public class FilterParserTest
         {
             assertTrue( true );
         }
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     */
+    @Test
+    public void testEqualsFilterForDnWithLeadingHash() throws ParseException
+    {
+        String str = "(memberOf=CN=\\5c#SOME,OU=Groups,OU=EMEA,DC=example,DC=net)";
+        EqualityNode<?> node = ( EqualityNode<?> ) FilterParser.parse( str, true );
+        assertEquals( "memberOf", node.getAttribute() );
+        assertEquals( "CN=\\#SOME,OU=Groups,OU=EMEA,DC=example,DC=net", node.getValue().getString() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     */
+    @Test
+    public void testEqualsFilterForDnWithLeadingHashHex() throws ParseException
+    {
+        String str = "(memberOf=CN=\\5C23SOME,OU=Groups,OU=EMEA,DC=example,DC=net)";
+        EqualityNode<?> node = ( EqualityNode<?> ) FilterParser.parse( str, true );
+        assertEquals( "memberOf", node.getAttribute() );
+        assertEquals( "CN=\\23SOME,OU=Groups,OU=EMEA,DC=example,DC=net", node.getValue().getString() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     */
+    @Test
+    public void testExtensibleFilterForDnWithLeadingHash() throws ParseException
+    {
+        String str = "(memberOf:1.2.840.113556.1.4.1941:=CN=\\5c#SOME,OU=Groups,OU=EMEA,DC=example,DC=net)";
+        ExtensibleNode node = ( ExtensibleNode ) FilterParser.parse( str, true );
+        assertEquals( "memberOf", node.getAttribute() );
+        assertEquals( "CN=\\#SOME,OU=Groups,OU=EMEA,DC=example,DC=net", node.getValue().getString() );
+        assertEquals( "1.2.840.113556.1.4.1941", node.getMatchingRuleId() );
+        assertFalse( node.hasDnAttributes() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     */
+    @Test
+    public void testExtensibleFilterForDnWithLeadingHashHex() throws ParseException
+    {
+        String str = "(memberOf:1.2.840.113556.1.4.1941:=CN=\\5C23SOME,OU=Groups,OU=EMEA,DC=example,DC=net)";
+        ExtensibleNode node = ( ExtensibleNode ) FilterParser.parse( str, true );
+        assertEquals( "memberOf", node.getAttribute() );
+        assertEquals( "CN=\\23SOME,OU=Groups,OU=EMEA,DC=example,DC=net", node.getValue().getString() );
+        assertEquals( "1.2.840.113556.1.4.1941", node.getMatchingRuleId() );
+        assertFalse( node.hasDnAttributes() );
     }
 
 
