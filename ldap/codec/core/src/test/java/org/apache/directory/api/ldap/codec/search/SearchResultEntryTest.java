@@ -990,11 +990,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         Dn dn = new Dn( "cn=test,ou=users,ou=system" );
         originalSearchResultEntry.setObjectName( dn );
         Entry entry = new DefaultEntry( dn );
-        for ( int attributeIndex = 0; attributeIndex < 10000; attributeIndex++ )
+        for ( int attributeIndex = 0; attributeIndex < 100000; attributeIndex++ )
         {
             entry.add( "objectclass" + attributeIndex, "top", "person" );
         }
-        String[] values = IntStream.range( 0, 10000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
+        String[] values = IntStream.range( 0, 100000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
         entry.add( "objectclass", values );
         originalSearchResultEntry.setEntry( entry );
 

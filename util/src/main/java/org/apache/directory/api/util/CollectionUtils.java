@@ -20,9 +20,8 @@
 package org.apache.directory.api.util;
 
 
-import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -32,13 +31,18 @@ import java.util.List;
  */
 public final class CollectionUtils
 {
+    private CollectionUtils()
+    {
+    }
+
+
     public static <T> Iterator<T> reverse( Iterator<T> iterator )
     {
-        List<T> rev = new ArrayList<>();
+        ArrayDeque<T> deque = new ArrayDeque<>();
         while ( iterator.hasNext() )
         {
-            rev.add( 0, iterator.next() );
+            deque.addLast( iterator.next() );
         }
-        return rev.iterator();
+        return deque.descendingIterator();
     }
 }

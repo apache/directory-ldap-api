@@ -1242,12 +1242,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         originalModifyRequest.setMessageId( 3 );
         Dn dn = new Dn( "cn=test,ou=users,ou=system" );
         originalModifyRequest.setName( dn );
-        for ( int modIndex = 0; modIndex < 10000; modIndex++ )
+        for ( int modIndex = 0; modIndex < 100000; modIndex++ )
         {
             originalModifyRequest.addModification( new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 "objectclass" + modIndex, "top", "person" ) );
         }
-        String[] values = IntStream.range( 0, 10000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
+        String[] values = IntStream.range( 0, 100000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
         originalModifyRequest.addModification(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, "objectclass", values ) );
 
