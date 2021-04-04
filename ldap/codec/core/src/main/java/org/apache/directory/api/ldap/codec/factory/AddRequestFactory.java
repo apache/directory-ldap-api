@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.util.CollectionUtils;
 import org.apache.directory.api.util.Strings;
 
 /**
@@ -49,7 +50,7 @@ public final class AddRequestFactory implements Messagefactory
 
 
     /**
-     * Encode an entry's Attribute's values. It's done recursively, to have the
+     * Encode an entry's Attribute's values. It's done in reverse order, to have the
      * last value encoded first in the reverse buffer.
      * <br>
      * The values are encoded this way :
@@ -65,12 +66,10 @@ public final class AddRequestFactory implements Messagefactory
      */
     private void encodeValueReverse( Asn1Buffer buffer, Iterator<Value> iterator )
     {
-        if ( iterator.hasNext() )
+        iterator = CollectionUtils.reverse( iterator );
+        while ( iterator.hasNext() )
         {
             Value value = iterator.next();
-
-            // Recursive call to have the latest values encoded first
-            encodeValueReverse( buffer, iterator );
 
             // Encode the value
             BerValue.encodeOctetString( buffer, value.getBytes() );
@@ -80,7 +79,7 @@ public final class AddRequestFactory implements Messagefactory
 
     /**
      * Encode the attributes, starting from the end. We iterate through the list
-     * of attributes, recursively. The last attribute will be encoded first, when
+     * of attributes in reverse order. The last attribute will be encoded first, when
      * the end of the list will be reached, which is what we went, as we encode from
      * the end.
      * <br>
@@ -99,12 +98,10 @@ public final class AddRequestFactory implements Messagefactory
      */
     private void encodeAttributeReverse( Asn1Buffer buffer, Iterator<Attribute> iterator )
     {
-        if ( iterator.hasNext() )
+        iterator = CollectionUtils.reverse( iterator );
+        while ( iterator.hasNext() )
         {
             Attribute attribute = iterator.next();
-
-            // Recursive call to have the latest attributes encoded first
-            encodeAttributeReverse( buffer, iterator );
 
             // Remind the current position
             int start = buffer.getPos();

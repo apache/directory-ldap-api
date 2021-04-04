@@ -32,6 +32,7 @@ import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.util.CollectionUtils;
 
 /**
  * The ModifyRequest factory.
@@ -50,7 +51,7 @@ public final class ModifyRequestFactory implements Messagefactory
 
 
     /**
-     * Encode the values, recursively
+     * Encode the values, in reverse order
      * <pre>
      * 0x04 LL attributeValue
      * ...
@@ -62,12 +63,10 @@ public final class ModifyRequestFactory implements Messagefactory
      */
     private void encodeValues( Asn1Buffer buffer, Iterator<Value> values )
     {
-        if ( values.hasNext() )
+        values = CollectionUtils.reverse( values );
+        while ( values.hasNext() )
         {
             Value value = values.next();
-
-            // Recurse on the values
-            encodeValues( buffer, values );
 
             // The value
             if ( value.isHumanReadable() )
@@ -82,7 +81,7 @@ public final class ModifyRequestFactory implements Messagefactory
     }
 
     /**
-     * Recursively encode the modifications, starting from the last one.
+     * Encode the modifications, starting from the last one.
      * <pre>
      * 0x30 LL modification sequence
      *   0x0A 0x01 operation
@@ -99,12 +98,10 @@ public final class ModifyRequestFactory implements Messagefactory
      */
     private void encodeModifications( Asn1Buffer buffer, Iterator<Modification> modifications )
     {
-        if ( modifications.hasNext() )
+        modifications = CollectionUtils.reverse( modifications );
+        while ( modifications.hasNext() )
         {
             Modification modification = modifications.next();
-
-            // Recurse
-            encodeModifications( buffer, modifications );
 
             int start = buffer.getPos();
 

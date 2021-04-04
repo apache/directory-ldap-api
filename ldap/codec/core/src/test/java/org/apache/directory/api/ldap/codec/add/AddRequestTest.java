@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -40,8 +41,10 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddResponseImpl;
@@ -50,6 +53,7 @@ import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -693,4 +697,39 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         assertArrayEquals( stream.array(), asn1Buffer.getBytes().array() );
     }
+
+
+    /**
+     * Test that encoding and decoding of an add request with 10k attributes and 10k values
+     * succeeds without StackOverflowError (DIRAPI-368, DIRSERVER-2340).
+     */
+    @Test
+    public void testEncodeDecodeLarge() throws DecoderException, EncoderException, LdapException
+    {
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        AddRequest originalAddRequest = new AddRequestImpl();
+        originalAddRequest.setMessageId( 3 );
+        Dn dn = new Dn( "cn=test,ou=users,ou=system" );
+        originalAddRequest.setEntryDn( dn );
+        Entry entry = new DefaultEntry( dn );
+        for ( int attributeIndex = 0; attributeIndex < 100000; attributeIndex++ )
+        {
+            entry.add( "objectclass" + attributeIndex, "top", "person" );
+        }
+        String[] values = IntStream.range( 0, 100000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
+        entry.add( "objectclass", values );
+        originalAddRequest.setEntry( entry );
+
+        LdapEncoder.encodeMessage( buffer, codec, originalAddRequest );
+
+        LdapMessageContainer<AddRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        Asn1Decoder.decode( buffer.getBytes(), ldapMessageContainer );
+
+        AddRequest decodedAddRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( originalAddRequest, decodedAddRequest );
+    }
+
 }

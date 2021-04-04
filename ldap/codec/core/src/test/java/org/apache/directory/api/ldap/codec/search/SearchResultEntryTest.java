@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -37,11 +38,14 @@ import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
+import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -121,7 +125,6 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         assertTrue( Arrays.equals( stream.array(), buffer.getBytes().array() ) );
     }
-
 
     /**
      * Test the decoding of a SearchResultEntry
@@ -971,4 +974,39 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         assertArrayEquals( stream.array(), result.array() );
     }
+
+
+    /**
+     * Test that encoding and decoding of a search result entry with 10k attributes and 10k values
+     * succeeds without StackOverflowError (DIRAPI-368, DIRSERVER-2340).
+     */
+    @Test
+    public void testEncodeDecodeLarge() throws DecoderException, EncoderException, LdapException
+    {
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        SearchResultEntry originalSearchResultEntry = new SearchResultEntryImpl();
+        originalSearchResultEntry.setMessageId( 3 );
+        Dn dn = new Dn( "cn=test,ou=users,ou=system" );
+        originalSearchResultEntry.setObjectName( dn );
+        Entry entry = new DefaultEntry( dn );
+        for ( int attributeIndex = 0; attributeIndex < 100000; attributeIndex++ )
+        {
+            entry.add( "objectclass" + attributeIndex, "top", "person" );
+        }
+        String[] values = IntStream.range( 0, 100000 ).boxed().map( i -> "value" + i ).toArray( String[]::new );
+        entry.add( "objectclass", values );
+        originalSearchResultEntry.setEntry( entry );
+
+        LdapEncoder.encodeMessage( buffer, codec, originalSearchResultEntry );
+
+        LdapMessageContainer<SearchResultEntry> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        Asn1Decoder.decode( buffer.getBytes(), ldapMessageContainer );
+
+        SearchResultEntry decodedSearchResultEntry = ldapMessageContainer.getMessage();
+
+        assertEquals( originalSearchResultEntry, decodedSearchResultEntry );
+    }
+
 }

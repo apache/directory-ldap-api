@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
+import org.apache.directory.api.util.CollectionUtils;
 
 /**
  * The SearchResultEntry factory.
@@ -48,7 +49,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
 
 
     /**
-     * Encode the values recursively
+     * Encode the values in reverse order.
      *
      * <pre>
      * 0x04 LL attributeValue
@@ -61,11 +62,10 @@ public final class SearchResultEntryFactory extends ResponseFactory
      */
     private void encodeValues( Asn1Buffer buffer, Iterator<Value> values )
     {
-        if ( values.hasNext() )
+        values = CollectionUtils.reverse( values );
+        while ( values.hasNext() )
         {
             Value value = values.next();
-
-            encodeValues( buffer, values );
 
             // The value
             if ( value.isHumanReadable() )
@@ -81,7 +81,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
 
 
     /**
-     * Encode the attributes recursively
+     * Encode the attributes in reverse order.
      *
      * <pre>
      *  0x30 LL partialAttributeList
@@ -97,16 +97,14 @@ public final class SearchResultEntryFactory extends ResponseFactory
      */
     private void encodeAttributes( Asn1Buffer buffer, Iterator<Attribute> attributes )
     {
-        if ( attributes.hasNext() )
+        attributes = CollectionUtils.reverse( attributes );
+        while ( attributes.hasNext() )
         {
             Attribute attribute = attributes.next();
 
-            // Recursive call
-            encodeAttributes( buffer, attributes );
-
             int start = buffer.getPos();
 
-            // The values, recursively, if any
+            // The values if any
             if ( attribute.size() != 0 )
             {
                 encodeValues( buffer, attribute.iterator() );
@@ -160,7 +158,7 @@ public final class SearchResultEntryFactory extends ResponseFactory
         // The partial attribute list
         Entry entry = searchResultEntry.getEntry();
 
-        // The attributes, recursively, if we have any
+        // The attributes, if we have any
         if ( ( entry != null ) && ( entry.size() != 0 ) )
         {
             encodeAttributes( buffer, entry.iterator() );
