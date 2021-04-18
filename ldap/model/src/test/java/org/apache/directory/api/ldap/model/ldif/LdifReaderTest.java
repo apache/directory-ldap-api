@@ -278,6 +278,45 @@ public class LdifReaderTest
 
 
     @Test
+    public void testEntryReaderPreservesAttributeCase() throws Exception
+    {
+        // content record
+        String ldif = "version:   1\n" +
+            "dn: dc=example,dc=com\n" +
+            "objectClass: top\n";
+
+        testEntryReaderPreservesAttributeCase( ldif );
+
+        // changetype add
+        ldif = "version:   1\n" +
+            "dn: dc=example,dc=com\n" +
+            "changetype: add\n" +
+            "objectClass: top\n";
+
+        testEntryReaderPreservesAttributeCase( ldif );
+    }
+
+
+    private void testEntryReaderPreservesAttributeCase( String ldif ) throws Exception
+    {
+        LdifReader reader = new LdifReader();
+
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+        assertNotNull( entries );
+        reader.close();
+
+        LdifEntry entry = entries.get( 0 );
+
+        assertEquals( "dc=example,dc=com", entry.getDn().getName() );
+
+        assertEquals( 1, entry.getEntry().size() );
+        Attribute attr = entry.getEntry().get( "objectClass" );
+        assertEquals( "objectclass", attr.getId() );
+        assertEquals( "objectClass", attr.getUpId() );
+    }
+
+
+    @Test
     public void testLdifParserAddAttrCaseInsensitiveAttrId() throws Exception
     {
         // test that mixed case attr ids work at all

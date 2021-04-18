@@ -981,10 +981,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         int colonIndex = line.indexOf( ':' );
 
-        String attributeType = lowerLine.substring( 0, colonIndex );
+        String attributeType = line.substring( 0, colonIndex );
+        String attributeTypeLower = lowerLine.substring( 0, colonIndex );
 
         // We should *not* have a Dn twice
-        if ( "dn".equals( attributeType ) )
+        if ( "dn".equals( attributeTypeLower ) )
         {
             LOG.error( I18n.err( I18n.ERR_13400_ENTRY_WITH_TWO_DNS, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_13439_LDIF_ENTRY_WITH_TWO_DNS ) );
