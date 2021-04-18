@@ -907,17 +907,18 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
-     * and the suffix "dc=example,dc=com", then the resulting Dn will be
-     * "ou=people,dc=example,dc=com"
+     * Adds all RDNs of the provided DN to the (leaf) end of this name.
+     * For instance, if the current Dn is "dc=example,dc=com",
+     * and the rdns "ou=people", then the resulting Dn will be
+     * "ou=people,dc=example,dc=com".
      *
-     * @param suffix the suffix to add
-     * @return The resulting Dn with the additional suffix
+     * @param dn the Dn to add
+     * @return the updated cloned Dn
      * @throws LdapInvalidDnException If the resulting Dn is not valid
      */
-    public Dn add( Dn suffix ) throws LdapInvalidDnException
+    public Dn add( Dn rdns ) throws LdapInvalidDnException
     {
-        if ( ( suffix == null ) || ( suffix.size() == 0 ) )
+        if ( ( rdns == null ) || ( rdns.size() == 0 ) )
         {
             return this;
         }
@@ -925,14 +926,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
         Dn clonedDn = copy();
 
         // Concatenate the rdns
-        clonedDn.rdns.addAll( 0, suffix.rdns );
+        clonedDn.rdns.addAll( 0, rdns.rdns );
 
         // Regenerate the normalized name and the original string
-        if ( clonedDn.isSchemaAware() && suffix.isSchemaAware() )
+        if ( clonedDn.isSchemaAware() && rdns.isSchemaAware() )
         {
             if ( clonedDn.size() != 0 )
             {
-                clonedDn.upName = suffix.getName() + "," + upName;
+                clonedDn.upName = rdns.getName() + "," + upName;
             }
         }
         else
@@ -945,17 +946,18 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Add a suffix to the Dn. For instance, if the current Dn is "ou=people",
-     * and the suffix "dc=example,dc=com", then the resulting Dn will be
-     * "ou=people,dc=example,dc=com"
+     * Adds a single Rdn to the (leaf) end of this name.
+     * For instance, if the current Dn is "dc=example,dc=com",
+     * and the rdn "ou=people", then the resulting Dn will be
+     * "ou=people,dc=example,dc=com".
      *
-     * @param comp the suffix to add
-     * @return The resulting Dn with the additional suffix
+     * @param rdn the Rdn to add
+     * @return the updated cloned Dn
      * @throws LdapInvalidDnException If the resulting Dn is not valid
      */
-    public Dn add( String comp ) throws LdapInvalidDnException
+    public Dn add( String rdn ) throws LdapInvalidDnException
     {
-        if ( comp.length() == 0 )
+        if ( rdn.length() == 0 )
         {
             return this;
         }
@@ -963,7 +965,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         Dn clonedDn = copy();
 
         // We have to parse the nameComponent which is given as an argument
-        Rdn newRdn = new Rdn( schemaManager, comp );
+        Rdn newRdn = new Rdn( schemaManager, rdn );
 
         clonedDn.rdns.add( 0, newRdn );
 
