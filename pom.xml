@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>44</version>
+    <version>45-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -52,13 +52,13 @@
     
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
-    <org.apache.directory.checkstyle-configuration.version>2.0.0</org.apache.directory.checkstyle-configuration.version>
+    <org.apache.directory.checkstyle-configuration.version>2.0.1-SNAPSHOT</org.apache.directory.checkstyle-configuration.version>
     
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
     <commons.codec.version>1.15</commons.codec.version>
     <commons.collections.version>4.4</commons.collections.version>
-    <commons.lang.version>3.11</commons.lang.version>
+    <commons.lang.version>3.12.0</commons.lang.version>
     <commons.pool.version>2.9.0</commons.pool.version>
     <dom4j.version>2.1.3</dom4j.version>
     <forbiddenapis.version>2.6</forbiddenapis.version>
@@ -76,8 +76,8 @@
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
     <slf4j.log4j12.version>1.7.26</slf4j.log4j12.version>
     <velocity.version>1.5</velocity.version>
-    <wagon.ssh.version>3.4.0</wagon.ssh.version>
-    <wagon.ssh.external.version>3.4.0</wagon.ssh.external.version>
+    <wagon.ssh.version>3.4.3</wagon.ssh.version>
+    <wagon.ssh.external.version>3.4.3</wagon.ssh.external.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
   </properties>
