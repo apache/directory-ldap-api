@@ -20,8 +20,6 @@
 
 package org.apache.directory.api.ldap.model.schema;
 
-import java.io.IOException;
-
 import org.apache.directory.api.util.exception.InvalidCharacterException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -38,10 +36,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PrepareStringTest
 {
     @Test
-    public void testEscapeBackSlash() throws IOException
+    public void testEscapeBackSlash()
     {
         String result = PrepareString.normalize( "C:\\a\\b\\c" );
-        System.out.println( result );
+        assertEquals( "C:\\a\\b\\c", result );
     }
     
     //-------------------------------------------------------------------------
