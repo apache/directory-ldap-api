@@ -34,7 +34,7 @@ pipeline {
       }
       agent {
         docker {
-          label 'ubuntu && !H28 && !H36 && !H40'
+          label 'ubuntu'
           image 'apachedirectory/maven-build:jdk-8'
           args '-v $HOME/.m2:/home/hnelson/.m2'
         }
@@ -57,13 +57,13 @@ pipeline {
           }
           agent {
             docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
+              label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-8'
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
           steps {
-            sh 'mvn -V clean verify'
+            sh 'mvn -U -V clean verify'
           }
           post {
             always {
@@ -79,13 +79,13 @@ pipeline {
           }
           agent {
             docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
+              label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-11'
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
           steps {
-            sh 'mvn -V clean verify'
+            sh 'mvn -U -V clean verify'
           }
           post {
             always {
@@ -93,20 +93,20 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 14') {
+        stage ('Linux Java 17') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
           }
           agent {
             docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-14'
+              label 'ubuntu'
+              image 'apachedirectory/maven-build:jdk-17'
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
           steps {
-            sh 'mvn -V clean verify'
+            sh 'mvn -U -V clean verify'
           }
           post {
             always {
@@ -126,7 +126,7 @@ pipeline {
             bat '''
             set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
             set MAVEN_OPTS="-Xmx512m"
-            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean verify
+            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -U -V clean verify
             '''
           }
           post {
@@ -151,7 +151,7 @@ pipeline {
         sh '''
         export JAVA_HOME=/home/jenkins/tools/java/latest1.8
         export MAVEN_OPTS="-Xmx512m"
-        /home/jenkins/tools/maven/latest3/bin/mvn -V clean deploy -DskipTests
+        /home/jenkins/tools/maven/latest3/bin/mvn -U -V clean deploy -DskipTests
         '''
       }
       post {
