@@ -33,10 +33,6 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.ldif.ChangeType;
-import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
-import org.apache.directory.api.ldap.model.ldif.LdifControl;
-import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 
@@ -607,6 +603,8 @@ public class LdifEntryTest
             assertNotNull( attribute );
             assertEquals( "uidnumber", attribute.getId() );
         }
+
+        assertTrue( ldifEntry.toString().contains( ldif ) );
     }
 
 
@@ -643,6 +641,8 @@ public class LdifEntryTest
             assertEquals( "uidnumber", attribute.getId() );
             assertEquals( "3", attribute.getString() );
         }
+
+        assertTrue( ldifEntry.toString().contains( ldif ) );
     }
 
 

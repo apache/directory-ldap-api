@@ -502,6 +502,10 @@ public final class LdifUtils
                             sb.append( "replace: " );
                             break;
 
+                        case INCREMENT_ATTRIBUTE:
+                            sb.append( "increment: " );
+                            break;
+
                         default:
                             throw new IllegalArgumentException( I18n.err( I18n.ERR_13434_UNEXPECTED_MOD_OPERATION, modification.getOperation() ) );
                     }
