@@ -36,6 +36,7 @@ pipeline {
         docker {
           label 'ubuntu'
           image 'apachedirectory/maven-build:jdk-8'
+          alwaysPull true
           args '-v $HOME/.m2:/home/hnelson/.m2'
         }
       }
@@ -59,6 +60,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-8'
+              alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
@@ -81,6 +83,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-11'
+              alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
@@ -102,6 +105,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-17'
+              alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
