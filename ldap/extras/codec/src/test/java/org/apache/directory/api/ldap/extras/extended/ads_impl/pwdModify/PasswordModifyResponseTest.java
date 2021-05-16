@@ -62,7 +62,6 @@ public class PasswordModifyResponseTest
     {
         byte[] bb = new byte[]
             { 
-                0x30, 0x00  // PasswordModifyResponse ::= SEQUENCE {
             };
 
         PasswordModifyFactory factory = ( PasswordModifyFactory ) codec.getExtendedResponseFactories().
@@ -88,7 +87,7 @@ public class PasswordModifyResponseTest
     {
         byte[] bb = new byte[]
             { 
-                0x30, 0x02,             // PasswordModifyResponse ::= SEQUENCE {
+                0x30, 0x00,             // PasswordModifyResponse ::= SEQUENCE {
                   ( byte ) 0x80, 0x00   // genPassword    [0]  OCTET STRING OPTIONAL
             };
 
@@ -96,15 +95,14 @@ public class PasswordModifyResponseTest
             get( PasswordModifyResponse.EXTENSION_OID );
         PasswordModifyResponse passwordModifyResponse = ( PasswordModifyResponse ) factory.newResponse( bb );
 
-        assertNotNull( passwordModifyResponse.getGenPassword() );
-        assertEquals( 0, passwordModifyResponse.getGenPassword().length );
+        assertNull( passwordModifyResponse.getGenPassword() );
 
         // Check the reverse decoding
         Asn1Buffer asn1Buffer = new Asn1Buffer();
 
         factory.encodeValue( asn1Buffer, passwordModifyResponse );
 
-        assertArrayEquals( bb, asn1Buffer.getBytes().array() );
+        assertEquals( 0, asn1Buffer.getPos() );
     }
 
 

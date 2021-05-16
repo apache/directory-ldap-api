@@ -35,6 +35,7 @@ import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRes
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -184,14 +185,16 @@ public class PasswordModifyFactory extends AbstractExtendedOperationFactory
         int start  = buffer.getPos();
         
         // The gen password
-        if ( ( ( PasswordModifyResponse ) extendedResponse ).getGenPassword() != null )
+        byte[] genPassword = ( ( PasswordModifyResponse ) extendedResponse ).getGenPassword();
+        
+        if ( !Strings.isEmpty( genPassword ) )
         {
             BerValue.encodeOctetString( buffer, 
                 ( byte ) PasswordModifyResponseConstants.GEN_PASSWORD_TAG,
                 ( ( PasswordModifyResponse ) extendedResponse ).getGenPassword() );
+            
+            // The sequence
+            BerValue.encodeSequence( buffer, start );
         }
-        
-        // The sequence
-        BerValue.encodeSequence( buffer, start );
     }
 }
