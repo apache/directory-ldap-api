@@ -534,8 +534,8 @@ public class FastDnParserTest
     /**
      * Tests to see if inner whitespace is preserved after an escaped ',' in a
      * value of a name component. This test was added to try to reproduce the
-     * bug encountered in DIREVE-179 <a
-     * href="http://issues.apache.org/jira/browse/DIREVE-179"> here</a>.
+     * bug encountered in DIRSERVER-297 <a
+     * href="https://issues.apache.org/jira/browse/DIRSERVER-297"> here</a>.
      */
     @Test
     public final void testPreserveSpaceAfterEscape() throws LdapException

@@ -756,7 +756,7 @@ public class FilterParserTest
     /**
      * Enrique just found this bug with the filter parser when parsing substring
      * expressions like *any*. Here's the JIRA issue: <a
-     * href="http://nagoya.apache.org/jira/browse/DIRLDAP-21">DIRLDAP-21</a>.
+     * href="https://issues.apache.org/jira/browse/DIRSERVER-235">DIRSERVER-235</a>.
      */
     @Test
     public void testSubstringStarAnyStar() throws ParseException

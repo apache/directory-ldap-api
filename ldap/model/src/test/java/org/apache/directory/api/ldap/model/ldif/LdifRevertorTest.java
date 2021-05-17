@@ -643,7 +643,7 @@ public class LdifRevertorTest
      * Test a reversed rename ModifyDN, where the Rdn are both simple, not overlapping,
      * with deleteOldRdn = false, and the Ava not present in the initial entry?
      * 
-     * Covers case 1.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 1.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -687,7 +687,7 @@ public class LdifRevertorTest
      * Test a reversed rename ModifyDN, where the Rdn are both simple, not overlapping,
      * with deleteOldRdn = false, and with a Ava present in the initial entry.
      * 
-     * Covers case 1.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 1.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -733,7 +733,7 @@ public class LdifRevertorTest
      * Test a reversed rename ModifyDN, where the Rdn are both simple, not overlapping,
      * with deleteOldRdn = true, and the Ava not present in the initial entry
      * 
-     * Covers case 2.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 2.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -777,7 +777,7 @@ public class LdifRevertorTest
      * Test a reversed rename ModifyDN, where the Rdn are both simple, not overlapping,
      * with deleteOldRdn = true, and with a Ava present in the initial entry.
      * 
-     * Covers case 2.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 2.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -824,7 +824,7 @@ public class LdifRevertorTest
      * the new Rdn is simple, not overlapping, with deleteOldRdn = false, and
      * with a Ava not present in the initial entry.
      * 
-     * Covers case 3 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 3 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -871,7 +871,7 @@ public class LdifRevertorTest
      * the new Rdn is simple, not overlapping, with deleteOldRdn = false, and
      * with an Ava present in the initial entry.
      * 
-     * Covers case 3 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 3 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -920,7 +920,7 @@ public class LdifRevertorTest
      * the new Rdn is simple, not overlapping, with deleteOldRdn = true, and
      * with an Ava not present in the initial entry.
      * 
-     * Covers case 4 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 4 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -967,7 +967,7 @@ public class LdifRevertorTest
      * the new Rdn is simple, not overlapping, with deleteOldRdn = true, and
      * with an Ava present in the initial entry.
      * 
-     * Covers case 4 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 4 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1015,7 +1015,7 @@ public class LdifRevertorTest
      * Test a reversed rename ModifyDN, where the initial Rdn is composite,
      * the new Rdn is simple, they overlap, with deleteOldRdn = false.
      * 
-     * Covers case 5 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 5 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1061,7 +1061,7 @@ public class LdifRevertorTest
      * Test a reversed rename ModifyDN, where the initial Rdn is composite,
      * the new Rdn is simple, they overlap, with deleteOldRdn = true.
      * 
-     * Covers case 5 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 5 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1108,7 +1108,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = false, and
      * the new values don't exist in the entry.
      * 
-     * Covers case 6.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 6.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1155,7 +1155,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = false, and
      * the new values exists in the entry.
      * 
-     * Covers case 6.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 6.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1215,7 +1215,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = true, and
      * none of new values exists in the entry.
      * 
-     * Covers case 7.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 7.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1262,7 +1262,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = true, and
      * some of new values exists in the entry.
      * 
-     * Covers case 7.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 7.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1322,7 +1322,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they overlap, with deleteOldRdn = false, and
      * none of new values exists in the entry.
      * 
-     * Covers case 8.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 8.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1369,7 +1369,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they overlap, with deleteOldRdn = false, and
      * some of the new values exist in the entry.
      * 
-     * Covers case 8.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 8.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1429,7 +1429,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they overlap, with deleteOldRdn = true, and
      * none of new values exists in the entry.
      * 
-     * Covers case 9.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 9.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1476,7 +1476,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they overlap, with deleteOldRdn = true, and
      * some of the new values exists in the entry.
      * 
-     * Covers case 9.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 9.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: cn=test,ou=system
@@ -1536,7 +1536,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = false, and
      * none of new values exists in the entry.
      * 
-     * Covers case 10.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 10.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1585,7 +1585,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = false, and
      * some of the new values exists in the entry.
      * 
-     * Covers case 10.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 10.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1647,7 +1647,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = true, and
      * none of new values exists in the entry.
      * 
-     * Covers case 11.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 11.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1696,7 +1696,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they don't overlap, with deleteOldRdn = true, and
      * some of the new values exists in the entry.
      * 
-     * Covers case 11.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 11.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1758,7 +1758,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they are overlapping, with deleteOldRdn = false, and
      * none of new values exists in the entry.
      * 
-     * Covers case 12.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 12.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1807,7 +1807,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they are overlapping, with deleteOldRdn = false, and
      * some of the new values exists in the entry.
      * 
-     * Covers case 12.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 12.2 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1856,7 +1856,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they are overlapping, with deleteOldRdn = true, and
      * none of new values exists in the entry.
      * 
-     * Covers case 13.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 13.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system
@@ -1905,7 +1905,7 @@ public class LdifRevertorTest
      * the new Rdn is composite, they are overlapping, with deleteOldRdn = true, and
      * some of the new values exists in the entry.
      * 
-     * Covers case 13.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
+     * Covers case 13.1 of https://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
      * dn: sn=small+cn=test,ou=system

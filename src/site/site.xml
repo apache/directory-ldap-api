@@ -21,7 +21,7 @@
 <project name="${project.name}">
   <bannerLeft>
     <src>images/server-icon_128x128.png</src>
-    <href>http://directory.apache.org/</href>
+    <href>https://directory.apache.org/</href>
     <name>${project.name}</name>
   </bannerLeft>
   <skin>
@@ -42,9 +42,9 @@
          and as of https://bugzilla.mozilla.org/show_bug.cgi?id=43659
          this workaround doesn't works in FF 3.x ...
         -->
-       <item name="Apache Directory" href="http://directory.apache%2eorg/"/>
-       <item name="Apache" href="http://www.apache%2eorg/"/>
-       <item name="Maven" href="http://maven.apache%2eorg/"/>
+       <item name="Apache Directory" href="https://directory.apache.org/"/>
+       <item name="Apache" href="https://www.apache.org/"/>
+       <item name="Maven" href="https://maven.apache.org/"/>
     </links>
     <menu ref="reports"/>
     <menu ref="modules"/>
