@@ -52,7 +52,7 @@
     
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
-    <org.apache.directory.checkstyle-configuration.version>2.0.1-SNAPSHOT</org.apache.directory.checkstyle-configuration.version>
+    <org.apache.directory.checkstyle-configuration.version>2.0.1</org.apache.directory.checkstyle-configuration.version>
     
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
