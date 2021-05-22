@@ -912,7 +912,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * and the rdns "ou=people", then the resulting Dn will be
      * "ou=people,dc=example,dc=com".
      *
-     * @param dn the Dn to add
+     * @param rdns the RDNs to add
      * @return the updated cloned Dn
      * @throws LdapInvalidDnException If the resulting Dn is not valid
      */
