@@ -4301,7 +4301,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     @Override
     public Entry getRootDse() throws LdapException
     {
-        return lookup( Dn.ROOT_DSE, SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
+        return lookup( Dn.ROOT_DSE, SchemaConstants.ALL_ATTRIBUTES_ARRAY );
     }
 
 
@@ -4639,6 +4639,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( cursor.next() )
             {
                 rootDse = cursor.get();
+                // We have to call cursor.next() here, as we need to make sure that the "done" status of the cursor
+                // is properly updated. Otherwise the subsequent cursor.close() initiates an ABANDON operation to
+                // stop the search, which is in fact finished already.
+                cursor.next();
             }
             else
             {
