@@ -66,6 +66,7 @@ import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
+import org.apache.directory.api.ldap.codec.api.SaslFilter;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.api.ldap.extras.controls.ad.TreeDelete;
 import org.apache.directory.api.ldap.extras.controls.ad.TreeDeleteImpl;
@@ -167,6 +168,7 @@ import org.apache.directory.ldap.client.api.future.ModifyFuture;
 import org.apache.directory.ldap.client.api.future.ResponseFuture;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.mina.core.filterchain.IoFilter;
+import org.apache.mina.core.filterchain.IoFilterChain;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.future.WriteFuture;
@@ -195,6 +197,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LdapNetworkConnection extends AbstractLdapConnection implements LdapAsyncConnection
 {
+
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger LOG = LoggerFactory.getLogger( LdapNetworkConnection.class );
 
@@ -236,11 +239,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private List<ConnectionClosedEventListener> conCloseListeners;
 
-    /** The Ldap codec protocol filter */
+    /** The LDAP codec protocol filter */
     private IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
 
-    /** the SslFilter key */
+    /** The LDAP coded protocol filter key */
+    private static final String LDAP_CODEC_FILTER_KEY = "ldapCodec";
+
+    /** The SslFilter key */
     private static final String SSL_FILTER_KEY = "sslFilter";
+
+    /** The SaslFilter key */
+    private static final String SASL_FILTER_KEY = "saslFilter";
 
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
@@ -517,7 +526,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
 
         // Add the codec to the chain
-        connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
+        connector.getFilterChain().addLast( LDAP_CODEC_FILTER_KEY, ldapProtocolFilter );
 
         // If we use SSL, we have to add the SslFilter to the chain
         if ( config.isUseSsl() )
@@ -4879,6 +4888,26 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Adds a {@link SaslFilter} to the session's filter chain.
+     * 
+     * @param saslClient The initialized SASL client
+     * 
+     * @throws LdapException
+     */
+    private void addSaslFilter( SaslClient saslClient ) throws LdapException
+    {
+        IoFilterChain filterChain = ioSession.getFilterChain();
+        if ( filterChain.contains( SASL_FILTER_KEY ) )
+        {
+            filterChain.remove( SASL_FILTER_KEY );
+        }
+
+        SaslFilter saslFilter = new SaslFilter( saslClient );
+        filterChain.addBefore( LDAP_CODEC_FILTER_KEY, SASL_FILTER_KEY, saslFilter );
+    }
+
+
+    /**
      * Adds {@link SslFilter} to the IOConnector or IOSession's filter chain
      * 
      * @throws LdapException If the SSL filter addition failed
@@ -5128,6 +5157,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                     result = bindResponse.getLdapResult().getResultCode();
                 }
+            }
+
+            /*
+             * Install the SASL filter when the SASL auth is complete.
+             * This adds the security layer if it was negotiated.
+             */
+            if ( sc.isComplete() )
+            {
+                addSaslFilter( sc );
             }
 
             bindFuture.set( bindResponse );

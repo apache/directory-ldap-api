@@ -35,9 +35,10 @@ import org.apache.directory.api.ldap.codec.actions.response.bind.InitBindRespons
 import org.apache.directory.api.ldap.codec.actions.response.search.done.InitSearchResultDone;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.codec.api.SaslFilter;
 import org.apache.directory.api.ldap.codec.search.AndFilter;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
-import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.junit.Test;
@@ -74,6 +75,11 @@ public class ApiLdapCodecCoreOsgiTest extends ApiOsgiTestBase
         new SubstringFilter();
 
         new SearchRequestImpl();
+
+        // Test SaslFilter
+        SaslFilter.OFFSET.toString();
+        SaslQoP.AUTH_CONF.name();
+        org.apache.mina.core.buffer.IoBuffer.isUseDirectBuffer();
     }
 
 

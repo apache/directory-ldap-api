@@ -22,6 +22,8 @@ package org.apache.directory.api.osgi;
 
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.apache.directory.api.ldap.codec.api.SaslFilter;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.ldap.client.api.DefaultPoolableLdapConnectionFactory;
 import org.apache.directory.ldap.client.api.Krb5LoginConfiguration;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -63,6 +65,11 @@ public class ApiLdapClientApiOsgiTest extends ApiOsgiTestBase
         ldapConnectionPool.getLdapApiService();
         ldapConnectionPool.getTestOnBorrow();
         ldapConnectionPool.close();
+
+        // Test SaslFilter
+        SaslFilter.OFFSET.toString();
+        SaslQoP.AUTH_CONF.name();
+        org.apache.mina.core.buffer.IoBuffer.isUseDirectBuffer();
     }
 
 }
