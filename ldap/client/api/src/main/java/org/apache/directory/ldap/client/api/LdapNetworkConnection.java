@@ -996,7 +996,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             messageId.set( 0 );
             
             connectionCloseFuture = new CompletableFuture<>();
-    
+
+            // establish TLS layer if TLS is enabled and SSL is NOT
+            if ( config.isUseTls() && !config.isUseSsl() )
+            {
+                startTls();
+            }
+
             // And return
             return true;
         }
@@ -1622,12 +1628,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // try to connect, if we aren't already connected.
         connect();
-
-        // establish TLS layer if TLS is enabled and SSL is NOT
-        if ( config.isUseTls() && !config.isUseSsl() )
-        {
-            startTls();
-        }
 
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
