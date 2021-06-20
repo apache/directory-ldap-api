@@ -48,6 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.security.auth.Subject;
 import javax.security.auth.login.Configuration;
@@ -4942,7 +4943,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 // Default to TLS
                 sslFilter.setEnabledProtocols( new String[]
-                    { "TLSv1", "TLSv1.1", "TLSv1.2" } );
+                    { "TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3" } );
             }
 
             // for LDAPS/TLS
@@ -5379,4 +5380,25 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             handshakeFuture.secured();
         }
     }
+
+
+    /**
+     * Gets the {@link SSLSession} associated with the connection.
+     * 
+     * @return the {@link SSLSession} associated with the connection or null if the connection is not secured
+     */
+    public SSLSession getSslSession()
+    {
+        if ( isSecured() )
+        {
+            SslFilter filter = ( SslFilter ) ioSession.getFilterChain().get( SSL_FILTER_KEY );
+            SSLSession sslSession = filter.getSslSession( ioSession );
+            return sslSession;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }
