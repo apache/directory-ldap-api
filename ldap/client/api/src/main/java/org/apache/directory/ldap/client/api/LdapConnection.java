@@ -690,7 +690,7 @@ public interface LdapConnection extends Closeable
 
 
     /**
-     * Get back the RooDSE from the connected server. Only the user attributes are returned.
+     * Get back the RooDSE from the connected server. All user and operational attributes are returned.
      * 
      * @return The Entry containing all the information about the rootDSE
      * @throws LdapException If the rootDSE can't be read
