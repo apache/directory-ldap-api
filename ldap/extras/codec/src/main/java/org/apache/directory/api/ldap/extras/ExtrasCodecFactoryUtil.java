@@ -69,11 +69,14 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.Password
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.startTransaction.StartTransactionFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
+import org.apache.directory.api.ldap.extras.controls.relax.RelaxControl;
+import org.apache.directory.api.ldap.extras.controls.relax_impl.RelaxControlFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -245,6 +248,15 @@ public final class ExtrasCodecFactoryUtil
         if ( LOG.isInfoEnabled() )
         {
             LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, virtualListViewResponseFactory.getOid() ) );
+        }
+
+        // RelaxControl
+        ControlFactory<RelaxControl> relaxControlFactory = new RelaxControlFactory( apiService );
+        requestControlFactories.put( relaxControlFactory.getOid(), relaxControlFactory );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( I18n.msg( I18n.MSG_06000_REGISTERED_CONTROL_FACTORY, relaxControlFactory.getOid() ) );
         }
     }
 
