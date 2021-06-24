@@ -64,6 +64,7 @@
               org.apache.directory.api.ldap.extras.controls.passwordExpired;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.permissiveModify;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.controls.relax;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncRequest;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncState;version=${project.version};-noimport:=true,
