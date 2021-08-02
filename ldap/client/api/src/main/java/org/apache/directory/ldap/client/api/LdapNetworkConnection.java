@@ -205,6 +205,21 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /** The timeout used for response we are waiting for */
     private long timeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
 
+    /** Timeout for connect and bind operations */
+    private long connectTimeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
+
+    /** Timeout for write operations, such as add, modify and delete */
+    private long writeOperationTimeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
+
+    /** Timeout for read operations, suc as search and compare */
+    private long readOperationTimeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
+
+    /** Timeout for close and unbind operations */
+    private long closeTimeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
+
+    /** Timeout for I/O (TCP) writes */
+    private long sendTimeout = LdapConnectionConfig.DEFAULT_TIMEOUT;
+
     /** configuration object for the connection */
     private LdapConnectionConfig config;
     
@@ -309,8 +324,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         
         this.timeout = config.getTimeout();
+        this.connectTimeout = determineTimeoutConfiguration( config.getConnectTimeout() );
+        this.writeOperationTimeout = determineTimeoutConfiguration( config.getWriteOperationTimeout() );
+        this.readOperationTimeout = determineTimeoutConfiguration( config.getReadOperationTimeout() );
+        this.closeTimeout = determineTimeoutConfiguration( config.getCloseTimeout() );
+        this.sendTimeout = determineTimeoutConfiguration( config.getSendTimeout() );
     }
 
+    private long determineTimeoutConfiguration( Long localTimeout )
+    {
+        return localTimeout == null ? this.timeout : localTimeout;
+    }
 
     /**
      * Create a new instance of a LdapConnection on localhost,
@@ -645,15 +669,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * Get the largest timeout from the search time limit and the connection
      * timeout.
      * 
-     * @param connectionTimoutInMS Connection timeout
+     * @param configuredTimeout Timeout configured in LdapNetworkConnection
      * @param searchTimeLimitInSeconds Search timeout
      * @return The largest timeout
      */
-    public long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
+    public long getTimeout( long configuredTimeout, int searchTimeLimitInSeconds )
     {
         if ( searchTimeLimitInSeconds < 0 )
         {
-            return connectionTimoutInMS;
+            return configuredTimeout;
         }
         else if ( searchTimeLimitInSeconds == 0 )
         {
@@ -663,13 +687,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
             else
             {
-                return config.getTimeout();
+                return configuredTimeout;
             }
         }
         else
         {
             long searchTimeLimitInMS = searchTimeLimitInSeconds * 1000L;
-            return Math.max( searchTimeLimitInMS, connectionTimoutInMS );
+            return Math.max( searchTimeLimitInMS, configuredTimeout );
         }
     }
 
@@ -690,7 +714,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Wait until it's established
         try
         {
-            result = connectionFuture.await( timeout );
+            result = connectionFuture.await( connectTimeout );
         }
         catch ( InterruptedException e )
         {
@@ -722,7 +746,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             if ( connectionException == null )
             {
                 // This was a timeout
-                String message = I18n.msg( I18n.MSG_04177_CONNECTION_TIMEOUT, timeout );
+                String message = I18n.msg( I18n.MSG_04177_CONNECTION_TIMEOUT, connectTimeout );
                 
                 if ( LOG.isDebugEnabled() )
                 {
@@ -800,7 +824,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         try
         {
-            boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+            boolean isSecured = handshakeFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( !isSecured )
             {
@@ -1036,7 +1060,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             if ( ( ioSession != null ) && ioSession.isConnected() )
             { 
-                connectionCloseFuture.get( timeout, TimeUnit.MILLISECONDS );
+                connectionCloseFuture.get( closeTimeout, TimeUnit.MILLISECONDS );
             }
         }
         catch ( TimeoutException | ExecutionException | InterruptedException e )
@@ -1141,7 +1165,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            AddResponse addResponse = addFuture.get( timeout, TimeUnit.MILLISECONDS );
+            AddResponse addResponse = addFuture.get( writeOperationTimeout, TimeUnit.MILLISECONDS );
 
             if ( addResponse == null )
             {
@@ -1536,7 +1560,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -1697,7 +1721,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -1769,7 +1793,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -1877,7 +1901,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -1963,7 +1987,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -2035,7 +2059,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -2107,7 +2131,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
             if ( bindResponse == null )
             {
@@ -2387,9 +2411,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         SearchFuture searchFuture = searchAsync( searchRequest );
 
-        long searchTimeout = getTimeout( timeout, searchRequest.getTimeLimit() );
+        long localSearchTimeout = getTimeout( readOperationTimeout, searchRequest.getTimeLimit() );
 
-        return new SearchCursorImpl( searchFuture, searchTimeout, TimeUnit.MILLISECONDS );
+        return new SearchCursorImpl( searchFuture, localSearchTimeout, TimeUnit.MILLISECONDS );
     }
 
 
@@ -2422,11 +2446,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest )
         WriteFuture unbindFuture = ioSession.write( unbindRequest );
 
-        unbindFuture.awaitUninterruptibly( timeout );
+        unbindFuture.awaitUninterruptibly( sendTimeout );
 
         try
         {
-            connectionCloseFuture.get( timeout, TimeUnit.MILLISECONDS );
+            connectionCloseFuture.get( closeTimeout, TimeUnit.MILLISECONDS );
         }
         catch ( TimeoutException | ExecutionException | InterruptedException e )
         {
@@ -2464,12 +2488,24 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( timeout <= 0 )
         {
             // Set a date in the far future : 100 years
-            this.timeout = 1000L * 60L * 60L * 24L * 365L * 100L;
+            setAllTimeOuts( 1000L * 60L * 60L * 24L * 365L * 100L );
         }
         else
         {
-            this.timeout = timeout;
+            setAllTimeOuts( timeout );
         }
+    }
+
+    private void setAllTimeOuts( long timeout )
+    {
+        this.timeout = timeout;
+        // For compatibility.
+        // Set all timeouts to the same value to preserve previous behavior.
+        this.connectTimeout = timeout;
+        this.writeOperationTimeout = timeout;
+        this.readOperationTimeout = timeout;
+        this.closeTimeout = timeout;
+        this.sendTimeout = timeout;
     }
 
 
@@ -3144,7 +3180,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            ModifyResponse modifyResponse = modifyFuture.get( timeout, TimeUnit.MILLISECONDS );
+            ModifyResponse modifyResponse = modifyFuture.get( writeOperationTimeout, TimeUnit.MILLISECONDS );
 
             if ( modifyResponse == null )
             {
@@ -3540,7 +3576,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            ModifyDnResponse modifyDnResponse = modifyDnFuture.get( timeout, TimeUnit.MILLISECONDS );
+            ModifyDnResponse modifyDnResponse = modifyDnFuture.get( writeOperationTimeout, TimeUnit.MILLISECONDS );
 
             if ( modifyDnResponse == null )
             {
@@ -3762,7 +3798,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            DeleteResponse delResponse = deleteFuture.get( timeout, TimeUnit.MILLISECONDS );
+            DeleteResponse delResponse = deleteFuture.get( writeOperationTimeout, TimeUnit.MILLISECONDS );
 
             if ( delResponse == null )
             {
@@ -3974,7 +4010,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            CompareResponse compareResponse = compareFuture.get( timeout, TimeUnit.MILLISECONDS );
+            CompareResponse compareResponse = compareFuture.get( readOperationTimeout, TimeUnit.MILLISECONDS );
 
             if ( compareResponse == null )
             {
@@ -4958,7 +4994,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 ioSession.getFilterChain().addFirst( SSL_FILTER_KEY, sslFilter );
                 
-                boolean isSecured = handshakeFuture.get( timeout, TimeUnit.MILLISECONDS );
+                boolean isSecured = handshakeFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
                 
                 if ( !isSecured )
                 {
@@ -5076,7 +5112,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 writeRequest( bindRequest );
 
                 // Get the server's response, blocking
-                bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+                bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
                 if ( bindResponse == null )
                 {
@@ -5105,7 +5141,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                 writeRequest( bindRequestCopy );
 
-                bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+                bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
                 if ( bindResponse == null )
                 {
@@ -5143,7 +5179,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                     writeRequest( bindRequest );
 
-                    bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+                    bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
 
                     if ( bindResponse == null )
                     {
@@ -5196,7 +5232,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Send the request to the server
         WriteFuture writeFuture = ioSession.write( request );
 
-        long localTimeout = timeout;
+        long localTimeout = sendTimeout;
 
         while ( localTimeout > 0 )
         {

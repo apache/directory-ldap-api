@@ -45,7 +45,7 @@ public class LdapNetworkConnectionTest
         // index 2: expected timeout in ms
         return Stream.of(
             Arguments.of( 2000, -1, 2000, "Invalid search time limit, use connection timeout" ),
-            Arguments.of( 2000, 0, 30000, "Search time limit is 0, use config default value" ),
+            Arguments.of( 2000, 0, 2000, "Search time limit is 0, use config default value" ),
             Arguments.of( 2000, 1, 2000, "search time limit < connection timeout, use connection timeout" ),
             Arguments.of( 2000, 5, 5000, "search time limit > connection timeout, use search time limit" ),
             Arguments.of( 2000, Integer.MAX_VALUE, 2147483647000L, "Integer overflow" ),
@@ -56,7 +56,7 @@ public class LdapNetworkConnectionTest
             Arguments.of( 30000, 31, 31000, "search time limit > connection timeout, use search time limit" ),
             Arguments.of( 30000, 60, 60000, "search time limit > connection timeout, use search time limit" ),
             Arguments.of( Long.MAX_VALUE, -1, Long.MAX_VALUE, "Invalid search time limit, use connection timeout" ),
-            Arguments.of( Long.MAX_VALUE, 0, 30000, "Search time limit is 0, use config default value" ),
+            Arguments.of( Long.MAX_VALUE, 0, Long.MAX_VALUE, "Search time limit is 0, use config default value" ),
             Arguments.of( Long.MAX_VALUE, 1, Long.MAX_VALUE,
                 "search time limit < connection timeout, use connection timeout" ) );
     }

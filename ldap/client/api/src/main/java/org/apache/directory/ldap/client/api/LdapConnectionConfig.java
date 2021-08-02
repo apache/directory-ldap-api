@@ -73,6 +73,21 @@ public class LdapConnectionConfig
     /** The session timeout in milliseconds */
     private long timeout = DEFAULT_TIMEOUT;
 
+    /** Timeout for connect and bind operations */
+    private Long connectTimeout;
+
+    /** Timeout for write operations (add, modify, delete, ...) */
+    private Long writeOperationTimeout;
+
+    /** Timeout for read operations (search, compare) */
+    private Long readOperationTimeout;
+
+    /** Timeout for close and unbind operations */
+    private Long closeTimeout;
+
+    /** Timeout for I/O (TCP) writes */
+    private Long sendTimeout;
+
     /** A flag indicating if we are using TLS or not, default value is false */
     private boolean useTls = false;
 
@@ -306,6 +321,9 @@ public class LdapConnectionConfig
 
     /**
      * Gets the timeout in milliseconds.
+     * This is a "global" timeout.
+     * It is used when operation-specific timeouts are not specified.
+     * It is also used for extended operations.
      *
      * @return the timeout in milliseconds
      */
@@ -317,12 +335,137 @@ public class LdapConnectionConfig
 
     /**
      * Sets the timeout in milliseconds.
+     * This is a "global" timeout.
+     * It is used when operation-specific timeouts are not specified.
+     * It is also used for extended operations.
      *
      * @param timeout the timeout in milliseconds to set
      */
     public void setTimeout( long timeout )
     {
         this.timeout = timeout;
+    }
+
+    /**
+     * Gets connect timeout in milliseconds.
+     * Connect timeout is applied to connect and bind operations.
+     * If not specified, global timeout setting is applied.
+     *
+     * @return the timeout in milliseconds
+     */
+    public Long getConnectTimeout()
+    {
+        return connectTimeout;
+    }
+
+    /**
+     * Sets connect timeout in milliseconds.
+     * Connect timeout is applied to connect and bind operations.
+     * If not specified, global timeout setting is applied.
+     *
+     * @param timeout the timeout in milliseconds to set
+     */
+    public void setConnectTimeout( Long timeout )
+    {
+        this.connectTimeout = timeout;
+    }
+
+    /**
+     * Gets write operation timeout in milliseconds.
+     * Write operation timeout is applied to operations that write data, such as add, modify and delete.
+     * If not specified, global timeout setting is applied.
+     *
+     * @return the timeout in milliseconds
+     */
+    public Long getWriteOperationTimeout()
+    {
+        return writeOperationTimeout;
+    }
+
+    /**
+     * Sets write operation timeout in milliseconds.
+     * Write operation timeout is applied to operations that write data, such as add, modify and delete.
+     * If not specified, global timeout setting is applied.
+     *
+     * @param timeout the timeout in milliseconds to set
+     */
+    public void setWriteOperationTimeout( Long timeout )
+    {
+        this.writeOperationTimeout = timeout;
+    }
+
+    /**
+     * Gets read operation timeout in milliseconds.
+     * This timeout is applied to read operations, such as search and compare.
+     * If not specified, global timeout setting is applied.
+     *
+     * @return the timeout in milliseconds
+     */
+    public Long getReadOperationTimeout()
+    {
+        return readOperationTimeout;
+    }
+
+    /**
+     * Sets read operation timeout in milliseconds.
+     * This timeout is applied to read operations, such as search and compare.
+     * If not specified, global timeout setting is applied.
+     *
+     * @param timeout the timeout in milliseconds to set
+     */
+    public void setReadOperationTimeout( Long timeout )
+    {
+        this.readOperationTimeout = timeout;
+    }
+
+    /**
+     * Gets close timeout in milliseconds.
+     * Close timeout is applied to close and unbind operations.
+     * If not specified, global timeout setting is applied.
+     *
+     * @return the timeout in milliseconds
+     */
+    public Long getCloseTimeout()
+    {
+        return closeTimeout;
+    }
+
+
+    /**
+     * Sets close timeout in milliseconds.
+     * Close timeout is applied to close and unbind operations.
+     * If not specified, global timeout setting is applied.
+     *
+     * @param timeout the timeout in milliseconds to set
+     */
+    public void setCloseTimeout( Long timeout )
+    {
+        this.closeTimeout = timeout;
+    }
+
+    /**
+     * Gets send timeout in milliseconds.
+     * Send timeout is used for I/O (TCP) write operations.
+     * If not specified, global timeout setting is applied.
+     *
+     * @return the timeout in milliseconds
+     */
+    public Long getSendTimeout()
+    {
+        return sendTimeout;
+    }
+
+
+    /**
+     * Sets the send timeout in milliseconds.
+     * Send timeout is used for I/O (TCP) write operations.
+     * If not specified, global timeout setting is applied.
+     *
+     * @param timeout the timeout in milliseconds to set
+     */
+    public void setSendTimeout( Long timeout )
+    {
+        this.sendTimeout = timeout;
     }
 
 
