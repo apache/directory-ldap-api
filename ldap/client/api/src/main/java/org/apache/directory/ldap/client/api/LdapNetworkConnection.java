@@ -2400,22 +2400,44 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( searchRequest == null )
         {
             String msg = I18n.err( I18n.ERR_04130_CANNOT_PROCESS_NULL_SEARCH_REQ );
-            
+
             if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( msg );
             }
-            
+
+            throw new IllegalArgumentException( msg );
+        }
+        long localSearchTimeout = getTimeout( readOperationTimeout, searchRequest.getTimeLimit() );
+        return search( searchRequest, localSearchTimeout );
+    }
+
+    /**
+     * Search operation with explicit specification of operation timeout.
+     * This is very useful for special-purpose search operations, such as connection liveliness test.
+     * In that case we want to make a very quick search with a very short timeout.
+     * We do not want to use the default search timeout in this case, as that is likely to be in order of seconds.
+     * That is too long for quick connection check.
+     * searchRequest.timeLimit is not going to work either, as it has very rough granularity (seconds).
+     */
+    public SearchCursor search( SearchRequest searchRequest, long localSearchTimeout ) throws LdapException
+    {
+        if ( searchRequest == null )
+        {
+            String msg = I18n.err( I18n.ERR_04130_CANNOT_PROCESS_NULL_SEARCH_REQ );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+
             throw new IllegalArgumentException( msg );
         }
 
         SearchFuture searchFuture = searchAsync( searchRequest );
 
-        long localSearchTimeout = getTimeout( readOperationTimeout, searchRequest.getTimeLimit() );
-
         return new SearchCursorImpl( searchFuture, localSearchTimeout, TimeUnit.MILLISECONDS );
     }
-
 
     //------------------------ The LDAP operations ------------------------//
     // Unbind operations                                                   //
