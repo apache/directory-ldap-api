@@ -139,8 +139,6 @@ public class LdapConnectionConfig
 
     /**
      * Sets the default trust manager based on the SunX509 trustManagement algorithm
-     * 
-     * We use a non-verification Trust Manager    
      **/
     private void setDefaultTrustManager()
     {
