@@ -105,7 +105,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
             LOG.debug( I18n.msg( I18n.MSG_04145_BIND_REQUEST, name ) );
         }
 
-        bind( new Dn( schemaManager, name ), null );
+        bind( new Dn( schemaManager, new Dn( name ) ), null );
     }
 
 
@@ -115,7 +115,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     @Override
     public void bind( String name, String credentials ) throws LdapException
     {
-        bind( new Dn( schemaManager, name ), credentials );
+        bind( new Dn( schemaManager, new Dn( name ) ), credentials );
     }
 
 
