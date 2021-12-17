@@ -171,7 +171,7 @@ public class SearchResultEntryDsml
                     }
 
                     Element valueElement = attributeElement.addElement( "value" ).addText(
-                        ParserUtils.base64Encode( value.getString() ) );
+                        ParserUtils.base64Encode( value.getBytes() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
                         + ParserUtils.BASE64BINARY );
                 }
