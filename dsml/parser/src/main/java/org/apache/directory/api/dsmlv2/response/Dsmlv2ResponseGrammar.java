@@ -22,6 +22,7 @@ package org.apache.directory.api.dsmlv2.response;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,7 +68,6 @@ import org.apache.directory.api.ldap.model.message.SearchResultReferenceImpl;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -1145,7 +1145,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        searchResultEntry.addAttributeValue( Base64.decode( nextText.toCharArray() ) );
+                        searchResultEntry.addAttributeValue( Base64.getDecoder().decode( nextText ) );
                     }
                     else
                     {
@@ -1282,7 +1282,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                 {
-                    extendedResponse.setResponseValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    extendedResponse.setResponseValue( Base64.getDecoder().decode( nextText.trim() ) );
                 }
                 else
                 {
@@ -2074,7 +2074,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             {
                 if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                 {
-                    control.setValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    control.setValue( Base64.getDecoder().decode( nextText.trim() ) );
                 }
                 else
                 {

@@ -24,6 +24,7 @@ package org.apache.directory.ldap.client.api;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
@@ -65,7 +66,6 @@ import org.apache.directory.api.ldap.model.schema.parsers.SyntaxCheckerDescripti
 import org.apache.directory.api.ldap.model.schema.registries.AbstractSchemaLoader;
 import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.slf4j.Logger;
@@ -1068,7 +1068,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         if ( comparatorDescription.getBytecode() != null )
         {
             entry.put( MetaSchemaConstants.M_BYTECODE_AT,
-                Base64.decode( comparatorDescription.getBytecode().toCharArray() ) );
+                Base64.getDecoder().decode( comparatorDescription.getBytecode() ) );
         }
 
         if ( comparatorDescription.getDescription() != null )
@@ -1095,7 +1095,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         if ( syntaxCheckerDescription.getBytecode() != null )
         {
             entry.put( MetaSchemaConstants.M_BYTECODE_AT,
-                Base64.decode( syntaxCheckerDescription.getBytecode().toCharArray() ) );
+                Base64.getDecoder().decode( syntaxCheckerDescription.getBytecode() ) );
         }
 
         if ( syntaxCheckerDescription.getDescription() != null )
@@ -1122,7 +1122,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         if ( normalizerDescription.getBytecode() != null )
         {
             entry.put( MetaSchemaConstants.M_BYTECODE_AT,
-                Base64.decode( normalizerDescription.getBytecode().toCharArray() ) );
+                Base64.getDecoder().decode( normalizerDescription.getBytecode() ) );
         }
 
         if ( normalizerDescription.getDescription() != null )

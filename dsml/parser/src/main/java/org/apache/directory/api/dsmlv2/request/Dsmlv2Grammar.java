@@ -23,6 +23,7 @@ package org.apache.directory.api.dsmlv2.request;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Base64;
 import java.util.HashMap;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -67,7 +68,6 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -380,7 +380,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     {
                         if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                         {
-                            addRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                            addRequest.addAttributeValue( Base64.getDecoder().decode( nextText.trim() ) );
                         }
                         else
                         {
@@ -562,7 +562,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        compareRequest.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        compareRequest.setAssertionValue( Base64.getDecoder().decode( nextText.trim() ) );
                     }
                     else
                     {
@@ -741,7 +741,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        extendedRequest.setRequestValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        extendedRequest.setRequestValue( Base64.getDecoder().decode( nextText.trim() ) );
                     }
                     else
                     {
@@ -1014,7 +1014,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        modifyRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        modifyRequest.addAttributeValue( Base64.getDecoder().decode( nextText.trim() ) );
                     }
                     else
                     {
@@ -1314,7 +1314,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
                         substringFilter
-                            .setInitialSubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
+                            .setInitialSubstrings( Strings.utf8ToString( Base64.getDecoder().decode( nextText.trim() ) ) );
                     }
                     else
                     {
@@ -1359,7 +1359,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        substringFilter.addAnySubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
+                        substringFilter.addAnySubstrings( Strings.utf8ToString( 
+                            Base64.getDecoder().decode( nextText.trim() ) ) );
                     }
                     else
                     {
@@ -1405,7 +1406,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
                         substringFilter
-                            .setFinalSubstrings( Strings.utf8ToString( Base64.decode( nextText.trim().toCharArray() ) ) );
+                            .setFinalSubstrings( Strings.utf8ToString( 
+                                Base64.getDecoder().decode( nextText.trim() ) ) );
                     }
                     else
                     {
@@ -1775,7 +1777,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        Value value = new Value( Base64.decode( nextText.trim().toCharArray() ) );
+                        Value value = new Value( Base64.getDecoder().decode( nextText.trim() ) );
                         assertion.setAssertionValue( value );
                     }
                     else
@@ -1972,7 +1974,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        filter.setMatchValue( new Value( Base64.decode( nextText.trim().toCharArray() ) ) );
+                        filter.setMatchValue( new Value( Base64.getDecoder().decode( nextText.trim() ) ) );
                     }
                     else
                     {
@@ -2082,7 +2084,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        control.setValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        control.setValue( Base64.getDecoder().decode( nextText.trim() ) );
                     }
                     else
                     {

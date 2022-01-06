@@ -36,6 +36,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,7 +56,6 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
@@ -555,7 +555,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     // This is a base 64 encoded Dn.
                     String trimmedLine = line.substring( 4 ).trim();
 
-                    dn = Strings.utf8ToString( Base64.decode( trimmedLine.toCharArray() ) );
+                    dn = Strings.utf8ToString( Base64.getDecoder().decode( trimmedLine ) );
                 }
                 else
                 {
@@ -604,7 +604,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 String value = Strings.trim( line.substring( pos + 2 ) );
 
-                return Base64.decode( value.toCharArray() );
+                return Base64.getDecoder().decode( value );
             }
             else
             {
@@ -666,7 +666,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 String value = Strings.trim( line.substring( pos + 2 ) );
 
-                byte[] decoded = Base64.decode( value.toCharArray() );
+                byte[] decoded = Base64.getDecoder().decode( value );
                 
                 return getValue( attributeName, decoded );
             }
@@ -896,14 +896,14 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 // Base 64 encoded value
 
                 // Skip the <fill>
-                pos = criticalPos + 2;
+                pos = criticalPos + 3;
 
                 while ( Chars.isCharASCII( controlValue, pos, ' ' ) )
                 {
                     pos++;
                 }
 
-                byte[] value = Base64.decode( line.substring( pos ).toCharArray() );
+                byte[] value = Base64.getDecoder().decode( line.substring( pos ) );
                 control.setValue( value );
             }
             else if ( Chars.isCharASCII( controlValue, criticalPos + 1, '<' ) )

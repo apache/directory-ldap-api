@@ -79,6 +79,7 @@ public final class Base64
      * @param data
      *            the array of bytes to encode
      * @return base64-coded character array.
+     * @deprecated Use the java.util.Base64.getEncoder().encode(byte[]) method instead
      */
     public static char[] encode( byte[] data )
     {
@@ -131,6 +132,7 @@ public final class Base64
      * @param data
      *            data to decode.
      * @return the decoded binary data.
+     * @deprecated Use the java.util.Base64.geDecoder().decode(String) method instead
      */
     public static byte[] decode( char[] data )
     {

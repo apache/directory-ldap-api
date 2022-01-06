@@ -21,6 +21,8 @@ package org.apache.directory.api.ldap.model.ldif;
 
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 import javax.naming.directory.Attributes;
 
@@ -35,7 +37,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 
 
@@ -395,7 +396,7 @@ public final class LdifUtils
 
                     if ( control.hasValue() )
                     {
-                        controlStr.append( "::" ).append( Base64.encode( control.getValue() ) );
+                        controlStr.append( "::" ).append( Base64.getEncoder().encode( control.getValue() ) );
                     }
 
                     sb.append( stripLineToNChars( controlStr.toString(), length ) );
@@ -538,7 +539,7 @@ public final class LdifUtils
     private static String encodeBase64( String str )
     {
         // force encoding using UTF-8 charset, as required in RFC2849 note 7
-        return new String( Base64.encode( Strings.getBytesUtf8( str ) ) );
+        return new String( Base64.getEncoder().encode( Strings.getBytesUtf8( str ) ), StandardCharsets.UTF_8 );
     }
 
 
@@ -604,9 +605,9 @@ public final class LdifUtils
             else
             {
                 // It is binary, so we have to encode it using Base64 before adding it
-                char[] encoded = Base64.encode( value.getBytes() );
+                String encoded = new String( Base64.getEncoder().encode( value.getBytes() ), StandardCharsets.UTF_8 );
 
-                lineBuffer.append( ":: " + new String( encoded ) );
+                lineBuffer.append( ":: " + encoded );
             }
 
             lineBuffer.append( '\n' );
@@ -730,7 +731,7 @@ public final class LdifUtils
                 else if ( ava instanceof byte[] )
                 {
                     sb.append( ":: " );
-                    sb.append( new String( Base64.encode( ( byte[] ) ava ) ) );
+                    sb.append( new String( Base64.getEncoder().encode( ( byte[] ) ava ), StandardCharsets.UTF_8 ) );
                     sb.append( '\n' );
                 }
                 else

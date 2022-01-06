@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,7 +63,6 @@ import org.apache.directory.api.ldap.model.schema.parsers.SyntaxCheckerDescripti
 import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -362,7 +362,7 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16051_CANNOT_LOAD_SC_CLASS, cnfe.getMessage() ) );
             }
             
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
         }
 
         // Create the syntaxChecker instance
@@ -545,7 +545,7 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16059_CANNOT_LOAD_CMP_CLASS, cnfe.getMessage() ) );
             }
 
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
         }
 
         // Create the comparator instance. Either we have a no argument constructor,
@@ -775,7 +775,7 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16071_CANNOT_LOAD_NORM_CLASS, cnfe.getMessage() ) );
             }
 
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
         }
 
         // Create the normalizer instance
@@ -1352,7 +1352,7 @@ public class SchemaEntityFactory implements EntityFactory
             throw new IllegalArgumentException( msg );
         }
 
-        byte[] bytecode = Base64.decode( byteCodeString.toCharArray() );
+        byte[] bytecode = Base64.getDecoder().decode( byteCodeString );
         
         return new DefaultAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
     }

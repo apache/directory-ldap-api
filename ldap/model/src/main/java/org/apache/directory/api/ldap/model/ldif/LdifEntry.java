@@ -24,6 +24,8 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -48,7 +50,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 
 
@@ -190,7 +191,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
         }
         else
         {
-            sb.append( "dn:: " ).append( Base64.encode( Strings.getBytesUtf8( dnStr ) ) ).append( '\n' );
+            sb.append( "dn:: " ).append( Base64.getEncoder().encode( Strings.getBytesUtf8( dnStr ) ) ).append( '\n' );
         }
 
         for ( Object ava : avas )
@@ -224,7 +225,7 @@ public class LdifEntry implements Cloneable, Externalizable, Iterable<Attribute>
                 else if ( ava instanceof byte[] )
                 {
                     sb.append( ":: " );
-                    sb.append( new String( Base64.encode( ( byte[] ) ava ) ) );
+                    sb.append( new String( Base64.getEncoder().encode( ( byte[] ) ava ), StandardCharsets.UTF_8 ) );
                     sb.append( '\n' );
                 }
                 else

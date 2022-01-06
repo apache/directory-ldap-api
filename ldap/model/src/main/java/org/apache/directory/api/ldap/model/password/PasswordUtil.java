@@ -27,6 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.SecretKeyFactory;
@@ -35,7 +36,6 @@ import javax.crypto.spec.PBEKeySpec;
 import org.apache.commons.codec.digest.Crypt;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.api.util.TimeProvider;
 import org.apache.directory.api.util.Strings;
@@ -258,11 +258,11 @@ public final class PasswordUtil
                 merge( hashedPasswordWithSaltBytes, hashedPassword, salt );
             }
 
-            sb.append( String.valueOf( Base64.encode( hashedPasswordWithSaltBytes ) ) );
+            sb.append( String.valueOf( Base64.getEncoder().encodeToString( hashedPasswordWithSaltBytes ) ) );
         }
         else
         {
-            sb.append( String.valueOf( Base64.encode( hashedPassword ) ) );
+            sb.append( String.valueOf( Base64.getEncoder().encodeToString( hashedPassword ) ) );
         }
 
         return Strings.getBytesUtf8( sb.toString() );
@@ -572,8 +572,8 @@ public final class PasswordUtil
         // in two parts, after having decoded the password.
         // The salt is at the end of the credentials.
         // The algorithm, salt, and password will be stored into the PasswordDetails structure.
-        byte[] passwordAndSalt = Base64
-            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
+        byte[] passwordAndSalt = Base64.getDecoder()
+            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ) );
 
         int saltLength = passwordAndSalt.length - hashLen;
         byte[] salt = saltLength == 0 ? null : new byte[saltLength];
@@ -674,8 +674,8 @@ public final class PasswordUtil
         // in two parts, after having decoded the password.
         // The salt is at the *beginning* of the credentials, and is 16 bytes long
         // The algorithm, salt, and password will be stored into the PasswordDetails structure.
-        byte[] passwordAndSalt = Base64
-            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ).toCharArray() );
+        byte[] passwordAndSalt = Base64.getDecoder()
+            .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ) );
 
         int saltLength = passwordAndSalt.length - PKCS5S2_LENGTH;
         byte[] salt = new byte[saltLength];

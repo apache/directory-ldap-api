@@ -22,7 +22,9 @@ package org.apache.directory.api.ldap.model.entry;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,7 +43,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -381,7 +382,7 @@ public final class DefaultEntry implements Entry
                 else if ( element instanceof byte[] )
                 {
                     sb.append( ":: " );
-                    sb.append( new String( Base64.encode( ( byte[] ) element ) ) );
+                    sb.append( new String( Base64.getEncoder().encode( ( byte[] ) element ), StandardCharsets.UTF_8 ) );
                     sb.append( '\n' );
                 }
                 else

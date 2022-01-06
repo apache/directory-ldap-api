@@ -2041,6 +2041,7 @@ public class LdifReaderTest
                 "control: 1.1.4 true:ABCDEF\n" +
                 "control: 1.1.5::RW1tYW51ZWwgTMOpY2hhcm55\n" +
                 "control: 1.1.6 true::RW1tYW51ZWwgTMOpY2hhcm55\n" +
+                "control: 1.1.7 true:a control\n" +
                 "changetype: delete\n";
 
         LdifReader reader = new LdifReader();
@@ -2058,7 +2059,7 @@ public class LdifReaderTest
         assertTrue( entry.isChangeDelete() );
 
         assertTrue( entry.hasControls() );
-        assertEquals( 6, entry.getControls().size() );
+        assertEquals( 7, entry.getControls().size() );
 
         // First control
         LdifControl control = entry.getControl( "1.1.1" );
@@ -2101,6 +2102,13 @@ public class LdifReaderTest
         assertEquals( "1.1.6", control.getOid() );
         assertTrue( control.isCritical() );
         assertEquals( "Emmanuel L\u00e9charny", Strings.utf8ToString( control.getValue() ) );
+
+        // Seventh control
+        control = entry.getControl( "1.1.7" );
+
+        assertEquals( "1.1.7", control.getOid() );
+        assertTrue( control.isCritical() );
+        assertEquals( "a control", Strings.utf8ToString( control.getValue() ) );
     }
 
 

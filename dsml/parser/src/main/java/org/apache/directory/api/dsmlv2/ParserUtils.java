@@ -20,7 +20,9 @@
 package org.apache.directory.api.dsmlv2;
 
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 
 import javax.xml.transform.Transformer;
@@ -39,7 +41,6 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -181,11 +182,11 @@ public final class ParserUtils
     {
         if ( value instanceof byte[] )
         {
-            return new String( Base64.encode( ( byte[] ) value ) );
+            return new String( Base64.getEncoder().encode( ( byte[] ) value ), StandardCharsets.UTF_8 );
         }
         else if ( value instanceof String )
         {
-            return new String( Base64.encode( Strings.getBytesUtf8( ( String ) value ) ) );
+            return new String( Base64.getEncoder().encode( Strings.getBytesUtf8( ( String ) value ) ), StandardCharsets.UTF_8 );
         }
 
         return "";
