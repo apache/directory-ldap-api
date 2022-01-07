@@ -18,15 +18,15 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<searchResponse>
-		<searchResultReference>
-			<ref>ldap://localhost</ref>
-		</searchResultReference>
-		<searchResultReference>
-			<ref>ldap://ldap.apache.org</ref>
-		</searchResultReference>
-		<searchResultDone>
-			<resultCode code="0" descr="success"/>
-		</searchResultDone>
-	</searchResponse>
+  <searchResponse>
+    <searchResultReference>
+      <ref>ldap://localhost</ref>
+    </searchResultReference>
+    <searchResultReference>
+      <ref>ldap://ldap.apache.org</ref>
+    </searchResultReference>
+    <searchResultDone>
+      <resultCode code="0" descr="success"/>
+    </searchResultDone>
+  </searchResponse>
 </batchResponse>

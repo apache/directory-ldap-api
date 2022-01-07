@@ -18,6 +18,6 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
-	<delRequest requestID="7" dn="CN=Bob Rush,DC=Example,DC=COM">
-	</delRequest>
+  <delRequest requestID="7" dn="CN=Bob Rush,DC=Example,DC=COM">
+  </delRequest>
 </batchRequest>

@@ -18,6 +18,6 @@
   under the License.
 -->
 <batchRequest processing="parallel" responseOrder="unordered" xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<delRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-	</delRequest>
+  <delRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+  </delRequest>
 </batchRequest>

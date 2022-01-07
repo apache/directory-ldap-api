@@ -18,8 +18,8 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<authResponse requestID="10">
-		<resultCode code="2" descr="protocolError"/>
-    	<referral>ldap://www.apache.org</referral>
-	</authResponse>
+  <authResponse requestID="10">
+    <resultCode code="2" descr="protocolError"/>
+      <referral>ldap://www.apache.org</referral>
+  </authResponse>
 </batchResponse>

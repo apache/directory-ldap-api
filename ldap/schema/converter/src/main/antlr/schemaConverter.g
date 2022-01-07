@@ -252,13 +252,13 @@ woidlist returns [List<String> list]
 objectClassDesc [ObjectClassHolder objectClass]
     : d:DESC
     {
-		String text = d.getText();
-		int start = text.indexOf( '\'' );
+        String text = d.getText();
+        int start = text.indexOf( '\'' );
         String desc = text.substring( start + 1, text.length() - 1 );
-		desc = desc.replace( "\\\"", "\"" );
-		desc = desc.replace( "\\'", "'" );
-		desc = desc.replace( "\\27", "'" );
-		desc = desc.replace( "\\5C", "\"" );
+        desc = desc.replace( "\\\"", "\"" );
+        desc = desc.replace( "\\'", "'" );
+        desc = desc.replace( "\\27", "'" );
+        desc = desc.replace( "\\5C", "\"" );
         objectClass.setDescription( desc );
     }
     ;
@@ -331,13 +331,13 @@ attributeType
 attributeTypeDesc [AttributeTypeHolder type]
     : d:DESC
     {
-		String text = d.getText();
-		int start = text.indexOf( '\'' );
+        String text = d.getText();
+        int start = text.indexOf( '\'' );
         String desc = text.substring( start +1, text.length() - 1 );
-		desc = desc.replace( "\\\"", "\"" );
-		desc = desc.replace( "\\'", "'" );
-		desc = desc.replace( "\\27", "'" );
-		desc = desc.replace( "\\5C", "\"" );
+        desc = desc.replace( "\\\"", "\"" );
+        desc = desc.replace( "\\'", "'" );
+        desc = desc.replace( "\\27", "'" );
+        desc = desc.replace( "\\5C", "\"" );
         type.setDescription( desc );
     }
     ;

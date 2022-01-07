@@ -18,10 +18,10 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<modDNRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM"
-								newrdn="CN=Bob Rush2">
-		<control type="1.2.840.113556.1.4.643" criticality="true">
-			<controlValue></controlValue>
-		</control>
-	</modDNRequest>
+  <modDNRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM"
+                newrdn="CN=Bob Rush2">
+    <control type="1.2.840.113556.1.4.643" criticality="true">
+      <controlValue></controlValue>
+    </control>
+  </modDNRequest>
 </batchRequest>

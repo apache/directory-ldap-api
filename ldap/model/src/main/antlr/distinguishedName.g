@@ -290,10 +290,10 @@ relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns
             relativeDistinguishedName[schemaManager, rdn] 
             { 
                 rdns.add( rdn ); 
-	            dnNormSb.append( ',' );
-	            dnNormSb.append( rdn.getNormName() );
+                dnNormSb.append( ',' );
+                dnNormSb.append( rdn.getNormName() );
                 rdn = new Rdn( schemaManager );
-				}
+                }
         )*
         EOF
     )?
@@ -402,10 +402,10 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
             
                 if ( ( schemaManager == null ) && ( val != null ) )
                 {
-	                if ( val.getNormalized() != null )
-	                {
-	                    rdnNormStr.append( val.getNormalized() );
-	                }
+                    if ( val.getNormalized() != null )
+                    {
+                        rdnNormStr.append( val.getNormalized() );
+                    }
                     else
                     {
                         // We can't tell if the value is HR or not. 

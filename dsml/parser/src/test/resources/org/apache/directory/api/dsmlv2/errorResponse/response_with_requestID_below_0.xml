@@ -18,6 +18,6 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="-1">
-	<errorResponse requestID="-1" type="couldNotConnect">
-	</errorResponse>	
+  <errorResponse requestID="-1" type="couldNotConnect">
+  </errorResponse>  
 </batchResponse>

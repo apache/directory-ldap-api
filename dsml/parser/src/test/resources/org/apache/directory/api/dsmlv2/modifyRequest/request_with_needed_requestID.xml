@@ -19,5 +19,5 @@
 -->
 <batchRequest processing="parallel" responseOrder="unordered" xmlns="urn:oasis:names:tc:DSML:2.0:core">
 <modifyRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-	</modifyRequest>
+  </modifyRequest>
 </batchRequest>

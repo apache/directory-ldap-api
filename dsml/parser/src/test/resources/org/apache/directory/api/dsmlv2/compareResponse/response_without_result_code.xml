@@ -18,6 +18,6 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<compareResponse requestID="10">
-	</compareResponse>
+  <compareResponse requestID="10">
+  </compareResponse>
 </batchResponse>

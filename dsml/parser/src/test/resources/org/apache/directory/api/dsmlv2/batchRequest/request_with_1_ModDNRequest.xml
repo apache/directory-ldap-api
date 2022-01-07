@@ -18,7 +18,7 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
-	<modDNRequest requestID="10" dn="CN=Bobby Rush,DC=Example,DC=COM"
-								newrdn="CN=Bob Rush">
-	</modDNRequest>
+  <modDNRequest requestID="10" dn="CN=Bobby Rush,DC=Example,DC=COM"
+                newrdn="CN=Bob Rush">
+  </modDNRequest>
 </batchRequest>

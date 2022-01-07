@@ -19,19 +19,19 @@
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
 <searchRequest dn="ou=marketing,dc=microsoft,dc=com"
-				scope="baseObject"
-				derefAliases="neverDerefAliases">
-		<control type="1.2.840.113556.1.4.643" criticality="true">
-			<controlValue><!-- comment -->Some text<!-- another --></controlValue>
-		</control>
-		<filter>
-			<approxMatch name="sn">
-				<value>toto</value>
-			</approxMatch>
-		</filter>
-		<attributes>
-			<attribute name="sn"/>
-			<attribute name="givenName"/>
-		</attributes>
-	</searchRequest>
+        scope="baseObject"
+        derefAliases="neverDerefAliases">
+    <control type="1.2.840.113556.1.4.643" criticality="true">
+      <controlValue><!-- comment -->Some text<!-- another --></controlValue>
+    </control>
+    <filter>
+      <approxMatch name="sn">
+        <value>toto</value>
+      </approxMatch>
+    </filter>
+    <attributes>
+      <attribute name="sn"/>
+      <attribute name="givenName"/>
+    </attributes>
+  </searchRequest>
 </batchRequest>

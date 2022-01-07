@@ -18,18 +18,18 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-<searchRequest dn="ou=marketing,dc=microsoft,dc=com"
-				scope="baseObject"
-				derefAliases="neverDerefAliases">
-		<filter>
-			<and>
-				<approxMatch name="sn">
-					<value>foobar</value>
-				</approxMatch>
-				<approxMatch name="sn">
-					<value>foobar</value>
-				</approxMatch>
-			</and>
-		</filter>
-	</searchRequest>
+  <searchRequest dn="ou=marketing,dc=microsoft,dc=com"
+        scope="baseObject"
+        derefAliases="neverDerefAliases">
+    <filter>
+      <and>
+        <approxMatch name="sn">
+          <value>foobar</value>
+        </approxMatch>
+        <approxMatch name="sn">
+          <value>foobar</value>
+        </approxMatch>
+      </and>
+    </filter>
+  </searchRequest>
 </batchRequest>

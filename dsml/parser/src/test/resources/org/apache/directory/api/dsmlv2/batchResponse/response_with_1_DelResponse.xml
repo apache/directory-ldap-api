@@ -18,7 +18,7 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<delResponse requestID="40">
-		<resultCode code="0" descr="success"/>
-	</delResponse>
+  <delResponse requestID="40">
+    <resultCode code="0" descr="success"/>
+  </delResponse>
 </batchResponse>

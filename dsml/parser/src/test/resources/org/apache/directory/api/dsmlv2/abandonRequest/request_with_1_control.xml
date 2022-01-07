@@ -18,9 +18,9 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<abandonRequest abandonID="123">
-		<control type="1.2.840.113556.1.4.643" criticality="true">
-			<controlValue><!-- comment -->Some text<!-- another --></controlValue>
-		</control>
-	</abandonRequest>
+  <abandonRequest abandonID="123">
+    <control type="1.2.840.113556.1.4.643" criticality="true">
+      <controlValue><!-- comment -->Some text<!-- another --></controlValue>
+    </control>
+  </abandonRequest>
 </batchRequest>

@@ -296,28 +296,28 @@ public class QuirkySchemaTest
             @Override
             public Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException
             {
-            	return lookup(new Dn(dn));
+                return lookup(new Dn(dn));
             }
             
             
             @Override
             public Entry lookup( String dn, String... attributes ) throws LdapException
             {
-            	return lookup(new Dn(dn));
+                return lookup(new Dn(dn));
             }
             
             
             @Override
             public Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException
             {
-            	return lookup(dn);
+                return lookup(dn);
             }
             
             
             @Override
             public Entry lookup( Dn dn, String... attributes ) throws LdapException
             {
-            	return lookup(dn);
+                return lookup(dn);
             }
             
             
@@ -331,23 +331,23 @@ public class QuirkySchemaTest
             @Override
             public Entry lookup( Dn dn ) throws LdapException
             {
-            	if ( dn.isRootDse() ) 
+                if ( dn.isRootDse() ) 
                 {
                     Entry entry = new DefaultEntry( dn );
                     entry.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT, SCHEMA_DN );
                     
                     return entry;
-            	} 
+                } 
                 else if ( dn.toString().equals( SCHEMA_DN ) ) 
                 {
                     Entry entry = loadSchemaEntry( schemaFileName );
 
                     return entry;
-            	} 
+                } 
                 else 
                 {
                     throw new UnsupportedOperationException( "Unexpected DN " + dn );
-            	}
+                }
             }
 
 
@@ -658,16 +658,16 @@ public class QuirkySchemaTest
     
     private Entry loadSchemaEntry( String schemaFileName )
     {
-    	LdifEntry ldifEntry = null;
+        LdifEntry ldifEntry = null;
 
-    	try
+        try
         {
-       	    InputStream in = new FileInputStream( schemaFileName );
-       	    LdifReader ldifReader = new LdifReader( in );
+               InputStream in = new FileInputStream( schemaFileName );
+               LdifReader ldifReader = new LdifReader( in );
             
             if (ldifReader.hasNext()) 
             {
-            	ldifEntry = ldifReader.next();
+                ldifEntry = ldifReader.next();
             }
         
             ldifReader.close();
@@ -676,13 +676,13 @@ public class QuirkySchemaTest
         {
             throw new IllegalStateException( "IO error with " + schemaFileName , e );
         }
-    	catch (LdapException e ) 
+        catch (LdapException e ) 
         {
-    		throw new IllegalStateException( "LDAP error with " + schemaFileName , e );
-    	}
+            throw new IllegalStateException( "LDAP error with " + schemaFileName , e );
+        }
         if (ldifEntry == null) 
         {
-        	throw new IllegalStateException( "No entry in LDIF " + schemaFileName );
+            throw new IllegalStateException( "No entry in LDIF " + schemaFileName );
         }
 
         return ldifEntry.getEntry();

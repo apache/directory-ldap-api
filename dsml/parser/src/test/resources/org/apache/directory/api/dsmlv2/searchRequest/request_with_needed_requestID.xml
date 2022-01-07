@@ -18,13 +18,13 @@
   under the License.
 -->
 <batchRequest processing="parallel" responseOrder="unordered" xmlns="urn:oasis:names:tc:DSML:2.0:core">
-<searchRequest dn="ou=marketing,dc=microsoft,dc=com"
-				scope="baseObject"
-				derefAliases="neverDerefAliases">
-		<filter>
-			<approxMatch name="sn">
-				<value>toto</value>
-			</approxMatch>
-		</filter>
-	</searchRequest>
+  <searchRequest dn="ou=marketing,dc=microsoft,dc=com"
+        scope="baseObject"
+        derefAliases="neverDerefAliases">
+    <filter>
+      <approxMatch name="sn">
+        <value>toto</value>
+      </approxMatch>
+    </filter>
+  </searchRequest>
 </batchRequest>

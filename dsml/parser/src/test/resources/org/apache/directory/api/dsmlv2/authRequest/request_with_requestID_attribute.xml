@@ -18,6 +18,6 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<authRequest requestID="456" principal="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-	</authRequest>
+  <authRequest requestID="456" principal="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+  </authRequest>
 </batchRequest>

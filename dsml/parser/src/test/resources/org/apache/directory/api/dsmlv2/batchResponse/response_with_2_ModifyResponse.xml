@@ -18,10 +18,10 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<modifyResponse requestID="50">
-		<resultCode code="0" descr="success"/>
-	</modifyResponse>
-	<modifyResponse requestID="50">
-		<resultCode code="0" descr="success"/>
-	</modifyResponse>
+  <modifyResponse requestID="50">
+    <resultCode code="0" descr="success"/>
+  </modifyResponse>
+  <modifyResponse requestID="50">
+    <resultCode code="0" descr="success"/>
+  </modifyResponse>
 </batchResponse>

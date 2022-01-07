@@ -18,7 +18,7 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<addResponse requestID="10">
-		<resultCode code="0" descr="success"/>
-	</addResponse>
+  <addResponse requestID="10">
+    <resultCode code="0" descr="success"/>
+  </addResponse>
 </batchResponse>

@@ -18,7 +18,7 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<delResponse requestID="10" matchedDN="This is a wrong matchedDN">
-		<resultCode code="0" descr="success"/>
-	</delResponse>
+  <delResponse requestID="10" matchedDN="This is a wrong matchedDN">
+    <resultCode code="0" descr="success"/>
+  </delResponse>
 </batchResponse>

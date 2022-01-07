@@ -18,12 +18,12 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<modifyRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-		<modification name="directReport" operation="add">
-			<value>CN=John Smith, DC=microsoft, DC=com</value>
-		</modification>
-		<modification name="sn" operation="replace">
-			<value>CN=Steve Jobs, DC=apple, DC=com</value>
-		</modification>
-	</modifyRequest>
+  <modifyRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+    <modification name="directReport" operation="add">
+      <value>CN=John Smith, DC=microsoft, DC=com</value>
+    </modification>
+    <modification name="sn" operation="replace">
+      <value>CN=Steve Jobs, DC=apple, DC=com</value>
+    </modification>
+  </modifyRequest>
 </batchRequest>

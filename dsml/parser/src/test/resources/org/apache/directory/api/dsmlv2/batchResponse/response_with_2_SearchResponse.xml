@@ -18,14 +18,14 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<searchResponse requestID="90">
-		<searchResultDone>
-			<resultCode code="0" descr="success"/>
-		</searchResultDone>
-	</searchResponse>
-	<searchResponse requestID="90">
-		<searchResultDone>
-			<resultCode code="0" descr="success"/>
-		</searchResultDone>
-	</searchResponse>
+  <searchResponse requestID="90">
+    <searchResultDone>
+      <resultCode code="0" descr="success"/>
+    </searchResultDone>
+  </searchResponse>
+  <searchResponse requestID="90">
+    <searchResultDone>
+      <resultCode code="0" descr="success"/>
+    </searchResultDone>
+  </searchResponse>
 </batchResponse>

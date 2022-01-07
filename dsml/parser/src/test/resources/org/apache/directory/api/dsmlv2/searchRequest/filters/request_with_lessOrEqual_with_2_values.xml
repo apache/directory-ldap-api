@@ -18,14 +18,14 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-<searchRequest dn="ou=marketing,dc=microsoft,dc=com"
-				scope="baseObject"
-				derefAliases="neverDerefAliases">
-		<filter>
-			<lessOrEqual name="sn">
-				<value>foobar</value>
-				<value>foobar</value>
-			</lessOrEqual>
-		</filter>
-	</searchRequest>
+  <searchRequest dn="ou=marketing,dc=microsoft,dc=com"
+        scope="baseObject"
+        derefAliases="neverDerefAliases">
+    <filter>
+      <lessOrEqual name="sn">
+        <value>foobar</value>
+        <value>foobar</value>
+      </lessOrEqual>
+    </filter>
+  </searchRequest>
 </batchRequest>

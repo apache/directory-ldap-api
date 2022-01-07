@@ -18,7 +18,7 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<extendedResponse requestID="456">
-		<resultCode code="0" descr="success"/>
-	</extendedResponse>	
+  <extendedResponse requestID="456">
+    <resultCode code="0" descr="success"/>
+  </extendedResponse>  
 </batchResponse>

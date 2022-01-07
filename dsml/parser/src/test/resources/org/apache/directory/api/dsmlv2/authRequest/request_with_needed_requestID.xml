@@ -18,6 +18,6 @@
   under the License.
 -->
 <batchRequest processing="parallel" responseOrder="unordered" xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<authRequest principal="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-	</authRequest>
+  <authRequest principal="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+  </authRequest>
 </batchRequest>

@@ -802,7 +802,7 @@ itemPermission returns [ ItemPermission itemPermission ]
         if ( !itemPermissionComponentsMonitor.finalStateValid() )
         {
             throw new RecognitionException( I18n.err( I18n.ERR_07005_MISSING_MANDATORY_ACIITEM, 
-				itemPermissionComponentsMonitor.getRemainingComponents() ) );
+                itemPermissionComponentsMonitor.getRemainingComponents() ) );
         }
         
         itemPermission = new ItemPermission( precedence, grantsAndDenials, userClasses );

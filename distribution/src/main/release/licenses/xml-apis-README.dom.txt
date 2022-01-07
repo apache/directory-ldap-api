@@ -28,6 +28,6 @@ The actual DOM Java Language Binding classes in xml-commons came from:
 The specification of DOM Level 2's various parts is at:
     http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/
     http://www.w3.org/TR/2000/REC-DOM-Level-2-Views-20001113/
-	http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/
-	http://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113/
-	http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113/
+    http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/
+    http://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113/
+    http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113/

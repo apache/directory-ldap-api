@@ -18,7 +18,7 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<authResponse requestID="10" matchedDN="CN=Bob Rush, OU=Dev, DC=Example, DC=COM">
-		<resultCode code="0" descr="success"/>
-	</authResponse>
+  <authResponse requestID="10" matchedDN="CN=Bob Rush, OU=Dev, DC=Example, DC=COM">
+    <resultCode code="0" descr="success"/>
+  </authResponse>
 </batchResponse>

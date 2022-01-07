@@ -18,14 +18,14 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
-	<searchRequest requestID="14" 
-				   dn="dc=example,dc=com"
-				   scope="wholeSubtree"
-				   derefAliases="neverDerefAliases">
-		<filter>
-			<substrings name="objectclass">
-				<any>o</any>
-			</substrings>		
-		</filter>
-	</searchRequest>
+  <searchRequest requestID="14" 
+           dn="dc=example,dc=com"
+           scope="wholeSubtree"
+           derefAliases="neverDerefAliases">
+    <filter>
+      <substrings name="objectclass">
+        <any>o</any>
+      </substrings>    
+    </filter>
+  </searchRequest>
 </batchRequest>

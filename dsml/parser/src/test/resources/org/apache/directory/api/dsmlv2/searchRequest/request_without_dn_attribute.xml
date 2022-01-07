@@ -18,12 +18,12 @@
   under the License.
 -->
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-<searchRequest scope="singleLevel"
-				derefAliases="neverDerefAliases">
-		<filter>
-			<approxMatch name="sn">
-				<value>toto</value>
-			</approxMatch>
-		</filter>
-	</searchRequest>
+  <searchRequest scope="singleLevel"
+        derefAliases="neverDerefAliases">
+    <filter>
+      <approxMatch name="sn">
+        <value>toto</value>
+      </approxMatch>
+    </filter>
+  </searchRequest>
 </batchRequest>

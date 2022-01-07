@@ -20,9 +20,9 @@
 <batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-	<addRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-		<attr name="objectclass">
-			<value xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</value>
-		</attr>
-	</addRequest>
+  <addRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+    <attr name="objectclass">
+      <value xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</value>
+    </attr>
+  </addRequest>
 </batchRequest>

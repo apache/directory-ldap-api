@@ -18,17 +18,17 @@
   under the License.
 -->
 <soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap-env:Body>
-		<dsml:batchRequest xmlns:dsml="urn:oasis:names:tc:DSML:2:0:core"
-			xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-			<searchRequest dn="uid=admin,ou=system" scope="baseObject"
-				derefAliases="neverDerefAliases" typesOnly="true">
-				<filter>
-					<approxMatch name="uid">
-						<value>admin</value>
-					</approxMatch>
-				</filter>
-			</searchRequest>
-		</dsml:batchRequest>
-	</soap-env:Body>
+  <soap-env:Body>
+    <dsml:batchRequest xmlns:dsml="urn:oasis:names:tc:DSML:2:0:core"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <searchRequest dn="uid=admin,ou=system" scope="baseObject"
+        derefAliases="neverDerefAliases" typesOnly="true">
+        <filter>
+          <approxMatch name="uid">
+            <value>admin</value>
+          </approxMatch>
+        </filter>
+      </searchRequest>
+    </dsml:batchRequest>
+  </soap-env:Body>
 </soap-env:Envelope>
