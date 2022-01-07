@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.endTransaction;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.util.Strings;
 
 
@@ -44,7 +44,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EndTransactionRequestImpl extends AbstractExtendedRequest implements EndTransactionRequest
+public class EndTransactionRequestImpl extends OpaqueExtendedRequest implements EndTransactionRequest
 {
     /** The transaction ID received from the StartTransactionResponse */
     private byte[] transactionId;

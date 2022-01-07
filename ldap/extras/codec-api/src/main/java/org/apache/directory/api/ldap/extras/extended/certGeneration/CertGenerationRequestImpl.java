@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.certGeneration;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 
 
 /**
@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationRequestImpl extends AbstractExtendedRequest implements CertGenerationRequest
+public class CertGenerationRequestImpl extends OpaqueExtendedRequest implements CertGenerationRequest
 {
     /** the Dn of the server entry which will be updated*/
     private String targetDN;

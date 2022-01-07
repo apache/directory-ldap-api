@@ -30,7 +30,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     static final long serialVersionUID = 7916990159044177480L;
 
     /** Extended request's Object Identifier or <b>requestName</b> */
-    private String oid;
+    protected String oid;
 
     /** The associated response */
     private ExtendedResponse response;
@@ -52,7 +52,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * 
      * @param id the sequential message identifier
      */
-    public AbstractExtendedRequest( final int id )
+    public AbstractExtendedRequest( int id )
     {
         super( id, MessageTypeEnum.EXTENDED_REQUEST, true );
     }
@@ -219,20 +219,26 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
         }
 
         ExtendedRequest req = ( ExtendedRequest ) obj;
+        
+        String requestName = req.getRequestName();
 
-        if ( ( oid != null ) && ( req.getRequestName() == null ) )
+        if ( oid == null )
         {
-            return false;
+            if ( requestName != null )
+            {
+                return false;
+            }
         }
-
-        if ( ( oid == null ) && ( req.getRequestName() != null ) )
+        else
         {
-            return false;
-        }
-
-        if ( ( oid != null ) && ( req.getRequestName() != null ) && !oid.equals( req.getRequestName() ) )
-        {
-            return false;
+            if ( requestName == null )
+            {
+                return false;
+            }
+            else if ( !oid.equals( requestName ) )
+            {
+                return false;
+            }
         }
 
         return true;

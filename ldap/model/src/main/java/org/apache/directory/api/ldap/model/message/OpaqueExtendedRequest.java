@@ -28,13 +28,10 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRequest
+public class OpaqueExtendedRequest extends AbstractExtendedRequest
 {
     static final long serialVersionUID = 7916990159044177480L;
 
-    /** Extended request's Object Identifier or <b>requestName</b> */
-    private String oid;
-    
     /** Extended request value as an opaque byte array */
     private byte[] requestValue;
 
@@ -48,7 +45,18 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
      */
     public OpaqueExtendedRequest()
     {
-        super( -1, MessageTypeEnum.EXTENDED_REQUEST, true );
+        super( -1 );
+    }
+
+
+    /**
+     * Creates an ExtendedRequest implementing object used to perform
+     * extended protocol operation on the server.
+     * @param id The message ID
+     */
+    public OpaqueExtendedRequest( int id )
+    {
+        super( id );
     }
 
 
@@ -60,7 +68,7 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
      */
     public OpaqueExtendedRequest( String requestName )
     {
-        super( -1, MessageTypeEnum.EXTENDED_REQUEST, true );
+        super( -1 );
         this.oid = requestName;
     }
 
@@ -73,7 +81,7 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
      */
     public OpaqueExtendedRequest( byte[] requestValue )
     {
-        super( -1, MessageTypeEnum.EXTENDED_REQUEST, true );
+        super( -1 );
         this.requestValue = requestValue;
     }
 
@@ -87,7 +95,7 @@ public class OpaqueExtendedRequest extends AbstractRequest implements ExtendedRe
      */
     public OpaqueExtendedRequest( String requestName, byte[] requestValue )
     {
-        super( -1, MessageTypeEnum.EXTENDED_REQUEST, true );
+        super( -1 );
         this.oid = requestName;
         this.requestValue = requestValue;
     }

@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.pwdModify;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.util.Strings;
 
 
@@ -36,7 +36,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyRequestImpl extends AbstractExtendedRequest implements PasswordModifyRequest
+public class PasswordModifyRequestImpl extends OpaqueExtendedRequest implements PasswordModifyRequest
 {
     /** The user identity */
     private byte[] userIdentity;

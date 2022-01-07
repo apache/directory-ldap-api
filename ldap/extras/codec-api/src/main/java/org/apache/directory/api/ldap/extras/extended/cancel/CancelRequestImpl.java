@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.cancel;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 
 
 /**
@@ -37,7 +37,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelRequestImpl extends AbstractExtendedRequest implements CancelRequest
+public class CancelRequestImpl extends OpaqueExtendedRequest implements CancelRequest
 {
     /** The cancelId of the request to be canceled */
     private int cancelId;

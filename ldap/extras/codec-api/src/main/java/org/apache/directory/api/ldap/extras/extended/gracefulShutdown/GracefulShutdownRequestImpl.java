@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.gracefulShutdown;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 
 
 /**
@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownRequestImpl extends AbstractExtendedRequest implements GracefulShutdownRequest
+public class GracefulShutdownRequestImpl extends OpaqueExtendedRequest implements GracefulShutdownRequest
 {
     /** Offline time after disconnection */
     private int timeOffline;

@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.startTls;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 
 
 /**
@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartTlsRequestImpl extends AbstractExtendedRequest implements StartTlsRequest
+public class StartTlsRequestImpl extends OpaqueExtendedRequest implements StartTlsRequest
 {
     /**
      * Create a new instance of the StartTlsRequest extended operation

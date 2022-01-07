@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.whoAmI;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 
 
 /**
@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoAmIRequestImpl extends AbstractExtendedRequest implements WhoAmIRequest
+public class WhoAmIRequestImpl extends OpaqueExtendedRequest implements WhoAmIRequest
 {
     /**
      * Create a new instance of the WhoAmIRequest extended operation

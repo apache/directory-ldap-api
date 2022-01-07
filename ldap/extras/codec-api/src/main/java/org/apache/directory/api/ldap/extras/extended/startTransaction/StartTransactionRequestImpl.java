@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.extras.extended.startTransaction;
 
 
-import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 
 
 /**
@@ -37,7 +37,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartTransactionRequestImpl extends AbstractExtendedRequest implements StartTransactionRequest
+public class StartTransactionRequestImpl extends OpaqueExtendedRequest implements StartTransactionRequest
 {
     /**
      * Creates a new instance of StartTransactionRequestImpl.
