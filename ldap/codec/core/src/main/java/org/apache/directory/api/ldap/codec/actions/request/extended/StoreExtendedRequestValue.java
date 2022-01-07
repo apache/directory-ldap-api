@@ -75,18 +75,16 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
         // value
         try
         {
-            if ( factory == null )
+            if ( tlv.getLength() == 0 )
             {
-                if ( tlv.getLength() == 0 )
-                {
-                    ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( Strings.EMPTY_BYTES );
-                } 
-                else
-                {
-                    ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( tlv.getValue().getData() );
-                }
-            }
+                ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( Strings.EMPTY_BYTES );
+            } 
             else
+            {
+                ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( tlv.getValue().getData() );
+            }
+
+            if ( factory != null )
             {
                 factory.decodeValue( extendedRequest, tlv.getValue().getData() );
             }
