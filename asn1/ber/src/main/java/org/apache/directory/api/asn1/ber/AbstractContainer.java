@@ -329,7 +329,6 @@ public ByteBuffer getStream()
     @Override
     public void rewind()
     {
-
         int start = stream.position() - 1 - tlv.getLengthNbBytes();
         stream.position( start );
     }
