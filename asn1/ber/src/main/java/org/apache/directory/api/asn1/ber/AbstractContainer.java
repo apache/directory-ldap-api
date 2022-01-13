@@ -20,6 +20,7 @@
 package org.apache.directory.api.asn1.ber;
 
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
@@ -307,7 +308,7 @@ public abstract class AbstractContainer implements Asn1Container
      * {@inheritDoc}
      */
     @Override
-public ByteBuffer getStream()
+    public ByteBuffer getStream()
     {
         return stream;
     }
@@ -330,7 +331,7 @@ public ByteBuffer getStream()
     public void rewind()
     {
         int start = stream.position() - 1 - tlv.getLengthNbBytes();
-        stream.position( start );
+        ( ( Buffer ) stream ).position( start );
     }
 
 
