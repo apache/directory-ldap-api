@@ -33,7 +33,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,8 +43,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.filter.FilterParser;
-import org.apache.directory.api.ldap.model.filter.SimpleNode;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
@@ -2127,12 +2124,5 @@ public class SchemaAwareAttributeTest
         assertEquals( 1, dsaSer.size() );
         assertTrue( dsaSer.contains( password ) );
         assertFalse( dsaSer.isHumanReadable() );
-    }
-    
-    
-    @Test
-    public void testFilter() throws ParseException
-    {
-        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( schemaManager, "(uniqueMember=cn=abc*)" );
     }
 }

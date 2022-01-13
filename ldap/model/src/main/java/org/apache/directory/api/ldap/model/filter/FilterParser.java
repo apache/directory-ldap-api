@@ -138,7 +138,7 @@ public final class FilterParser
         {
             ExprNode node = parseFilterInternal( schemaManager, filterBytes, pos, relaxed );
             
-            if ( node == UndefinedNode.UNDEFINED_NODE )
+            if ( node instanceof UndefinedNode )
             {
                 return null;
             }
@@ -187,7 +187,7 @@ public final class FilterParser
             }
             else
             {
-                return UndefinedNode.UNDEFINED_NODE;
+                return new UndefinedNode( attribute );
             }
         }
         else
@@ -907,7 +907,7 @@ public final class FilterParser
                         }
                         else
                         {
-                            return UndefinedNode.UNDEFINED_NODE;
+                            return new UndefinedNode( attribute );
                         }
                     }
 
@@ -1018,7 +1018,7 @@ public final class FilterParser
         // We must have at least one filter
         ExprNode child = parseFilterInternal( schemaManager, filterBytes, pos, relaxed );
 
-        if ( child != UndefinedNode.UNDEFINED_NODE )
+        if ( !( child instanceof UndefinedNode ) )
         {
             // Add the child to the node children
             branchNode.addNode( child );

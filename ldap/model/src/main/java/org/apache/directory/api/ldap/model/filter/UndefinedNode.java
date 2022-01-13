@@ -28,15 +28,20 @@ package org.apache.directory.api.ldap.model.filter;
 public final class UndefinedNode extends AbstractExprNode
 {
     /** A static instance of this node */
-    public static final UndefinedNode UNDEFINED_NODE = new UndefinedNode();
+    public static final UndefinedNode UNDEFINED_NODE = new UndefinedNode( "" );
+
+    /** attribute on which this leaf is based */
+    protected String attribute;
 
 
     /**
      * Creates a new instance of UndefinedNode.
      */
-    private UndefinedNode()
+    public UndefinedNode( String attribute )
     {
         super( AssertionType.UNDEFINED );
+
+        this.attribute = attribute;
     }
 
 
@@ -75,6 +80,12 @@ public final class UndefinedNode extends AbstractExprNode
         return false;
     }
 
+    
+    public void setAttribute( String attribute )
+    {
+        this.attribute = attribute;
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -82,6 +93,6 @@ public final class UndefinedNode extends AbstractExprNode
     @Override
     public String toString()
     {
-        return "Undefined";
+        return "(Undefined:" + attribute + ")";
     }
 }
