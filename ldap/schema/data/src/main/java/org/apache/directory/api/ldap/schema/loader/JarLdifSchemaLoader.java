@@ -70,6 +70,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
     private static final Map<String, Boolean> RESOURCE_MAP = ResourceMap.getResources( Pattern
         .compile( "schema" + SEPARATOR_PATTERN + "ou=schema.*" ) );
 
+    private final boolean allowDuplicateResources;
 
     /**
      * Creates a new LDIF based SchemaLoader. The constructor checks to make
@@ -82,7 +83,41 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      */
     public JarLdifSchemaLoader() throws IOException, LdapException
     {
+        this.allowDuplicateResources = false;
         initializeSchemas();
+    }
+
+    /**
+     * Creates a new LDIF based SchemaLoader. The constructor checks to make
+     * sure the supplied base directory exists and contains a schema.ldif file
+     * and if not complains about it.
+     *
+     * @prarm allowDuplicateResources If set to true, loading duplicate resources is allowed.
+     * E.g. loading schema definitions that are loaded several times on the classpath.
+     * In case of several files with the same name, it returns any of them.
+     * This is useful in cases when the same artefacts are loaded several times, e.g. in some testing scenarios
+     * or weird classloading situations.
+     *
+     * @throws LdapException if the base directory does not exist or does not
+     * a valid schema.ldif file
+     * @throws IOException If we can't load the schema
+     */
+    public JarLdifSchemaLoader( boolean allowDuplicateResources ) throws IOException, LdapException
+    {
+        this.allowDuplicateResources = allowDuplicateResources;
+        initializeSchemas();
+    }
+
+    /**
+     * Returns true, if loading duplicate resources is allowed.
+     * E.g. loading schema definitions that are loaded several times on the classpath.
+     * In case of several files with the same name, it returns any of them.
+     * This is useful in cases when the same artefacts are loaded several times, e.g. in some testing scenarios
+     * or weird classloading situations.
+     */
+    public boolean isAllowDuplicateResources()
+    {
+        return allowDuplicateResources;
     }
 
 
@@ -90,7 +125,14 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
     {
         if ( RESOURCE_MAP.get( resource ) )
         {
-            return DefaultSchemaLdifExtractor.getUniqueResource( resource, msg );
+            if ( allowDuplicateResources )
+            {
+                return DefaultSchemaLdifExtractor.getAnyResource( resource, msg );
+            }
+            else
+            {
+                return DefaultSchemaLdifExtractor.getUniqueResource( resource, msg );
+            }
         }
         else
         {

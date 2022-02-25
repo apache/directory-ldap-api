@@ -393,6 +393,27 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
 
 
     /**
+     * Gets resource from the class loader.
+     * In case of several files with the same name, it returns any of them.
+     * This is useful in cases when the same artefacts are loaded several times, e.g. in some testing scenarios.
+     *
+     * @param resourceName the name of the resource
+     * @param resourceDescription the description of the resource
+     * @return the URL to the resource in the class loader
+     * @throws IOException if there is an IO error
+     */
+    public static URL getAnyResource( String resourceName, String resourceDescription ) throws IOException
+    {
+        Enumeration<URL> resources = DefaultSchemaLdifExtractor.class.getClassLoader().getResources( resourceName );
+        if ( !resources.hasMoreElements() )
+        {
+            throw new UniqueResourceException( resourceName, resourceDescription );
+        }
+        URL result = resources.nextElement();
+        return result;
+    }
+
+    /**
      * Extracts the LDIF schema resource from class loader.
      *
      * @param resource the LDIF schema resource
