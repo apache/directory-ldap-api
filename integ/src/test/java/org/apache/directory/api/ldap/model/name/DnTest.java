@@ -1246,13 +1246,13 @@ public class DnTest
 
 
     /**
-     * Class to test for void LdapName(String)
+     * Class to test for Dn(String)
      *
      * @throws Exception
      *             if anything goes wrong.
      */
     @Test
-    public void testLdapNameString() throws Exception
+    public void testDnString() throws Exception
     {
         Dn name = new Dn( "" );
         Dn name50 = new Dn();
@@ -1280,12 +1280,34 @@ public class DnTest
         assertNotSame( name2, name5 );
     }
 
-
     /**
-     * Class to test for void LdapName()
+     * Class to test for Dn(SchemaManager, String)
+     *
+     * @throws Exception
+     *             if anything goes wrong.
      */
     @Test
-    public void testLdapName()
+    public void testDnStringSchemaAware() throws Exception
+    {
+
+        Dn dnPeople = new Dn( schemaManager, "ou=People,dc=example,dc=com" );
+        Dn dnPeopleCase = new Dn( schemaManager, "ou=people,dc=ExAmPLE,dc=COM" );
+        Dn dnJack = new Dn( schemaManager, "uid=jack,ou=People,dc=example,dc=com" );
+
+        assertEquals( dnPeople, dnPeopleCase );
+        assertTrue( dnPeople.isAncestorOf( dnJack ) );
+        assertTrue( dnPeopleCase.isAncestorOf( dnJack ) );
+        assertTrue( dnJack.isDescendantOf( dnPeople ) );
+        assertTrue( dnJack.isDescendantOf( dnPeopleCase ) );
+        assertNotSame( dnPeople, dnJack );
+    }
+
+
+    /**
+     * Class to test for Dn()
+     */
+    @Test
+    public void testDn()
     {
         Dn name = new Dn();
         assertTrue( name.toString().equals( "" ) );

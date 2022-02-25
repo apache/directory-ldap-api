@@ -133,6 +133,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     public Ava( SchemaManager schemaManager, Ava ava ) throws LdapInvalidDnException
     {
         upType = ava.upType;
+        this.schemaManager = schemaManager;
         
         if ( ava.isSchemaAware() )
         {
