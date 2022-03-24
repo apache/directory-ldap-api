@@ -4848,6 +4848,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         authenticated.set( false );
         
+        if ( handshakeFuture != null )
+        {
+            handshakeFuture.cancel();
+        }
+        
         // Close all the Future for this session
         for ( ResponseFuture<? extends Response> responseFuture : futureMap.values() )
         {
@@ -5458,5 +5463,4 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             return null;
         }
     }
-
 }
