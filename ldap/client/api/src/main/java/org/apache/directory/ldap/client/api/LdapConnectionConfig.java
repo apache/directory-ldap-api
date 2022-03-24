@@ -337,12 +337,20 @@ public class LdapConnectionConfig
      * It is used when operation-specific timeouts are not specified.
      * It is also used for extended operations.
      *
-     * @param timeout the timeout in milliseconds to set
+     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
      */
     public void setTimeout( long timeout )
     {
-        this.timeout = timeout;
+        if ( timeout == -1L )
+        {
+            this.timeout = Long.MAX_VALUE;
+        }
+        else
+        {
+            this.timeout = timeout;
+        }
     }
+    
 
     /**
      * Gets connect timeout in milliseconds.
@@ -355,18 +363,27 @@ public class LdapConnectionConfig
     {
         return connectTimeout;
     }
+    
 
     /**
      * Sets connect timeout in milliseconds.
      * Connect timeout is applied to connect and bind operations.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set
+     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
      */
     public void setConnectTimeout( Long timeout )
     {
-        this.connectTimeout = timeout;
+        if ( timeout == -1L )
+        {
+            this.connectTimeout = Long.MAX_VALUE;
+        }
+        else
+        {
+            this.connectTimeout = timeout;
+        }
     }
+    
 
     /**
      * Gets write operation timeout in milliseconds.
@@ -379,18 +396,27 @@ public class LdapConnectionConfig
     {
         return writeOperationTimeout;
     }
+    
 
     /**
      * Sets write operation timeout in milliseconds.
      * Write operation timeout is applied to operations that write data, such as add, modify and delete.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set
+     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
      */
     public void setWriteOperationTimeout( Long timeout )
     {
-        this.writeOperationTimeout = timeout;
+        if ( timeout == -1L )
+        {
+            this.writeOperationTimeout = Long.MAX_VALUE;
+        }
+        else
+        {
+            this.writeOperationTimeout = timeout;
+        }
     }
+    
 
     /**
      * Gets read operation timeout in milliseconds.
@@ -403,18 +429,27 @@ public class LdapConnectionConfig
     {
         return readOperationTimeout;
     }
+    
 
     /**
      * Sets read operation timeout in milliseconds.
      * This timeout is applied to read operations, such as search and compare.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set
+     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
      */
     public void setReadOperationTimeout( Long timeout )
     {
-        this.readOperationTimeout = timeout;
+        if ( timeout == -1L )
+        {
+            this.readOperationTimeout = Long.MAX_VALUE;
+        }
+        else
+        {
+            this.readOperationTimeout = timeout;
+        }
     }
+    
 
     /**
      * Gets close timeout in milliseconds.
@@ -434,13 +469,21 @@ public class LdapConnectionConfig
      * Close timeout is applied to close and unbind operations.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set
+     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
      */
     public void setCloseTimeout( Long timeout )
     {
-        this.closeTimeout = timeout;
+        if ( timeout == -1L )
+        {
+            this.closeTimeout = Long.MAX_VALUE;
+        }
+        else
+        {
+            this.closeTimeout = timeout;
+        }
     }
 
+    
     /**
      * Gets send timeout in milliseconds.
      * Send timeout is used for I/O (TCP) write operations.
@@ -459,11 +502,18 @@ public class LdapConnectionConfig
      * Send timeout is used for I/O (TCP) write operations.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set
+     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
      */
     public void setSendTimeout( Long timeout )
     {
-        this.sendTimeout = timeout;
+        if ( timeout == -1L )
+        {
+            this.sendTimeout = Long.MAX_VALUE;
+        }
+        else
+        {
+            this.sendTimeout = timeout;
+        }
     }
 
 
