@@ -4985,7 +4985,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
 
             SslFilter sslFilter = new SslFilter( sslContext );
-            sslFilter.setUseClientMode( true );
+            //sslFilter.setUseClientMode( true );
 
             // Configure the enabled cipher lists
             String[] enabledCipherSuite = config.getEnabledCipherSuites();
@@ -5454,8 +5454,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( isSecured() )
         {
-            SslFilter filter = ( SslFilter ) ioSession.getFilterChain().get( SSL_FILTER_KEY );
-            SSLSession sslSession = filter.getSslSession( ioSession );
+            SSLSession sslSession = ( SSLSession ) ioSession.getAttribute( SslFilter.SSL_SECURED );
+
             return sslSession;
         }
         else
