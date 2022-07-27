@@ -148,12 +148,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 batchResponse.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                batchResponse.setRequestID( -1 );
             }
         }
     };
@@ -179,12 +185,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 addResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                addResponse.setMessageId( -1 );
             }
 
             // MatchedDN
@@ -225,6 +237,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
@@ -232,6 +245,11 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             {
                 bindResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
 
+            }
+            else
+            {
+                // The request ID is optional 
+                bindResponse.setMessageId( -1 );
             }
 
             // MatchedDN
@@ -272,12 +290,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 compareResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                compareResponse.setMessageId( -1 );
             }
 
             // MatchedDN
@@ -318,12 +342,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 delResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                delResponse.setMessageId( -1 );
             }
 
             // MatchedDN
@@ -364,12 +394,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 modifyResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                modifyResponse.setMessageId( -1 );
             }
 
             // MatchedDN
@@ -410,12 +446,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 modDNResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                modDNResponse.setMessageId( -1 );
             }
 
             // MatchedDN
@@ -514,6 +556,14 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 errorResponse = new ErrorResponse( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ), null );
 
                 container.getBatchResponse().addResponse( errorResponse );
+            }
+            else
+            {
+                // No request ID: no problem, it's optional
+                errorResponse = new ErrorResponse( -1, null );
+
+                container.getBatchResponse().addResponse( errorResponse );
+
             }
 
             // type
@@ -929,7 +979,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             else
             {
-                searchResponse = new SearchResponse();
+                searchResponse = new SearchResponse( -1 );
             }
 
             container.getBatchResponse().addResponse( new SearchResponseDsml(
@@ -960,12 +1010,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the request's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
             if ( attributeValue != null )
             {
                 searchResultEntry.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                // The request ID is optional 
+                searchResultEntry.setMessageId( -1 );
             }
 
             // dn
@@ -1015,6 +1071,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the request's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
@@ -1022,6 +1079,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             {
                 searchResultReference.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
+            else
+            {
+                // The request ID is optional 
+                searchResultReference.setMessageId( -1 );
+            }
+
         }
     };
 
@@ -1049,6 +1112,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
             // Checking and adding the batchRequest's attributes
             String attributeValue;
+            
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
 
@@ -1056,6 +1120,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             {
                 searchResultDone.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
+            else
+            {
+                // The request ID is optional 
+                searchResultDone.setMessageId( -1 );
+            }
+
 
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );

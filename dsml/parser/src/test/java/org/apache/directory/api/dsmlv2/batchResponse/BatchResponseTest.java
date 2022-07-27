@@ -30,6 +30,7 @@ import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ErrorResponse;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.dsmlv2.response.SearchResponse;
 import org.apache.directory.api.ldap.model.message.AddResponse;
 import org.apache.directory.api.ldap.model.message.BindResponse;
@@ -791,6 +792,46 @@ public class BatchResponseTest extends AbstractResponseTest
         if ( response.getDecorated() instanceof SearchResponse )
         {
             assertTrue( true );
+        }
+        else
+        {
+            fail();
+        }
+    }
+    
+    
+    /**
+     * Test parsing of a Response with the 2 SearchResponse
+     */
+    @Test
+    public void testResponseWithEmptyIDErrorResponse()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser( getCodec() );
+
+            parser.setInput( BatchResponseTest.class.getResource( "response_with_empty_ID_ErrorResponse.xml" ).openStream(),
+                "UTF-8" );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            fail( e.getMessage() );
+        }
+
+        BatchResponseDsml batchResponse = parser.getBatchResponse();
+
+        assertEquals( 1, batchResponse.getResponses().size() );
+
+        DsmlDecorator<? extends Response> response = batchResponse.getCurrentResponse();
+
+        if ( response instanceof ErrorResponse )
+        {
+            assertTrue( true );
+            assertEquals( ErrorResponseType.COULD_NOT_CONNECT, ((ErrorResponse)response).getErrorType());
         }
         else
         {
