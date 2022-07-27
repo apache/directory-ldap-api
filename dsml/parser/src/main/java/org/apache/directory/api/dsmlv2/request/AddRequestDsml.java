@@ -20,6 +20,8 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -162,7 +164,7 @@ public class AddRequestDsml
         // Dn
         if ( getDecorated().getEntry() != null )
         {
-            element.addAttribute( "dn", getDecorated().getEntry().getDn().getName() );
+            element.addAttribute( DsmlLiterals.DN, getDecorated().getEntry().getDn().getName() );
         }
 
         // Attributes
@@ -171,26 +173,27 @@ public class AddRequestDsml
         {
             for ( Attribute attribute : entry )
             {
-                Element attributeElement = element.addElement( "attr" );
-                attributeElement.addAttribute( "name", attribute.getId() );
+                Element attributeElement = element.addElement( DsmlLiterals.ATTR );
+                attributeElement.addAttribute( DsmlLiterals.NAME, attribute.getId() );
+                
                 // Looping on Values
                 for ( Value value : attribute )
                 {
-                    if ( ParserUtils.needsBase64Encoding( value.getString() ) )
+                    if ( value.isHumanReadable() )
                     {
-                        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                        attributeElement.getDocument().getRootElement().add( xsdNamespace );
-                        attributeElement.getDocument().getRootElement().add( xsiNamespace );
-
-                        Element valueElement = attributeElement.addElement( "value" ).addText(
-                            ParserUtils.base64Encode( value.getString() ) );
-                        valueElement
-                            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                        attributeElement.addElement( DsmlLiterals.VALUE ).addText( StringEscapeUtils.escapeXml11( value.getString() ) );
                     }
                     else
                     {
-                        attributeElement.addElement( "value" ).addText( value.getString() );
+                        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        attributeElement.getDocument().getRootElement().add( xsdNamespace );
+                        attributeElement.getDocument().getRootElement().add( xsiNamespace );
+
+                        Element valueElement = attributeElement.addElement( DsmlLiterals.VALUE ).addText(
+                            ParserUtils.base64Encode( value.getString() ) );
+                        valueElement
+                            .addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON + ParserUtils.BASE64BINARY );
                     }
                 }
             }

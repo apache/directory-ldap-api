@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
@@ -86,22 +87,22 @@ public class ModifyDNRequestDsml
         // Dn
         if ( request.getName() != null )
         {
-            element.addAttribute( "dn", request.getName().getName() );
+            element.addAttribute( DsmlLiterals.DN, request.getName().getName() );
         }
 
         // NewRDN
         if ( request.getNewRdn() != null )
         {
-            element.addAttribute( "newrdn", request.getNewRdn().getName() );
+            element.addAttribute( DsmlLiterals.NEW_RDN, request.getNewRdn().getName() );
         }
 
         // DeleteOldRDN
-        element.addAttribute( "deleteoldrdn", request.getDeleteOldRdn() ? "true" : "false" );
+        element.addAttribute( DsmlLiterals.DELETE_OLD_RDN, request.getDeleteOldRdn() ? DsmlLiterals.TRUE : DsmlLiterals.FALSE );
 
         // NewSuperior
         if ( request.getNewRdn() != null )
         {
-            element.addAttribute( "newSuperior", request.getNewSuperior().getName() );
+            element.addAttribute( DsmlLiterals.NEW_SUPERIOR, request.getNewSuperior().getName() );
         }
 
         return element;

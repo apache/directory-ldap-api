@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
@@ -86,18 +87,18 @@ public class CompareRequestDsml
         // Dn
         if ( request.getName() != null )
         {
-            element.addAttribute( "dn", request.getName().getName() );
+            element.addAttribute( DsmlLiterals.DN, request.getName().getName() );
         }
 
         // Assertion
-        Element assertionElement = element.addElement( "assertion" );
+        Element assertionElement = element.addElement( DsmlLiterals.ASSERTION );
         if ( request.getAttributeId() != null )
         {
-            assertionElement.addAttribute( "name", request.getAttributeId() );
+            assertionElement.addAttribute( DsmlLiterals.NAME, request.getAttributeId() );
         }
         if ( request.getAssertionValue() != null )
         {
-            assertionElement.addElement( "value" ).setText( request.getAssertionValue().getString() );
+            assertionElement.addElement( DsmlLiterals.VALUE ).setText( request.getAssertionValue().getString() );
         }
 
         return element;

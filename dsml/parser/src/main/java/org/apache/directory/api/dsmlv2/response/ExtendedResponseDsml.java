@@ -20,7 +20,9 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
@@ -41,7 +43,6 @@ import org.dom4j.tree.DefaultElement;
 public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedResponse>
     implements ExtendedResponse
 {
-    private static final String EXTENDED_RESPONSE_TAG = "extendedResponse";
     private byte[] response;
 
 
@@ -52,7 +53,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
      */
     public ExtendedResponseDsml( LdapApiService codec )
     {
-        super( codec, new OpaqueExtendedResponse( "" ) );
+        super( codec, new OpaqueExtendedResponse( Strings.EMPTY_STRING ) );
     }
 
 
@@ -88,11 +89,11 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
 
         if ( root != null )
         {
-            element = root.addElement( EXTENDED_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.EXTENDED_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( EXTENDED_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.EXTENDED_RESPONSE );
         }
 
         ExtendedResponse extendedResponse = getDecorated();
@@ -106,7 +107,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
         String responseName = extendedResponse.getResponseName();
         if ( responseName != null )
         {
-            element.addElement( "responseName" ).addText( responseName );
+            element.addElement(  DsmlLiterals.RESPONSE_NAME ).addText( responseName );
         }
 
         // Response
@@ -121,14 +122,14 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
                 element.getDocument().getRootElement().add( xsdNamespace );
                 element.getDocument().getRootElement().add( xsiNamespace );
 
-                Element responseElement = element.addElement( "response" )
+                Element responseElement = element.addElement( DsmlLiterals.RESPONSE )
                     .addText( ParserUtils.base64Encode( responseValue ) );
-                responseElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                responseElement.addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON
                     + ParserUtils.BASE64BINARY );
             }
             else
             {
-                element.addElement( "response" ).addText( Strings.utf8ToString( ( byte[] ) responseValue ) );
+                element.addElement( DsmlLiterals.RESPONSE ).addText( StringEscapeUtils.escapeXml11( Strings.utf8ToString( ( byte[] ) responseValue ) ) );
             }
         }
 

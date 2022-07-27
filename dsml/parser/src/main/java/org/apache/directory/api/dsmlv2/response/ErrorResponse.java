@@ -21,11 +21,13 @@ package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.AbstractResponse;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.message.Response;
+import org.apache.directory.api.util.Strings;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -52,8 +54,6 @@ import org.dom4j.tree.DefaultElement;
  */
 public class ErrorResponse extends AbstractResponse implements Response, DsmlDecorator<Response>
 {
-    private static final String ERROR_RESPONSE_TAG = "errorResponse";
-
     /**
      * This enum represents the different types of error response
      *
@@ -130,27 +130,27 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
 
         if ( root != null )
         {
-            element = root.addElement( ERROR_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.ERROR_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( ERROR_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.ERROR_RESPONSE );
         }
 
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", Integer.toString( requestID ) );
+            element.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
         }
 
         // Type
-        element.addAttribute( "type", getTypeDescr( errorType ) );
+        element.addAttribute( DsmlLiterals.TYPE, getTypeDescr( errorType ) );
 
         // TODO Add Detail
 
-        if ( ( message != null ) && ( !"".equals( message ) ) )
+        if ( Strings.isNotEmpty( message ) )
         {
-            Element messageElement = element.addElement( "message" );
+            Element messageElement = element.addElement( DsmlLiterals.MESSAGE );
             messageElement.addText( message );
         }
 

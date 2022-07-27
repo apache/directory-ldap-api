@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
@@ -80,7 +81,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
         // AbandonID
         if ( getDecorated().getAbandoned() != 0 )
         {
-            element.addAttribute( "abandonID", Integer.toString( getDecorated().getAbandoned() ) );
+            element.addAttribute( DsmlLiterals.ABANDON_ID, Integer.toString( getDecorated().getAbandoned() ) );
         }
 
         return element;

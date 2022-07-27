@@ -21,6 +21,7 @@ package org.apache.directory.api.dsmlv2.request;
 
 
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -80,20 +81,20 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedRe
         // Request Name
         if ( getDecorated().getRequestName() != null )
         {
-            element.addElement( "requestName" ).setText(
+            element.addElement( DsmlLiterals.REQUEST_NAME ).setText(
                 getDecorated().getRequestName() );
         }
 
         // Request Value        
-        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
         element.getDocument().getRootElement().add( xsdNamespace );
         element.getDocument().getRootElement().add( xsiNamespace );
 
-        Element valueElement = element.addElement( "requestValue" ).addText(
+        Element valueElement = element.addElement( DsmlLiterals.REQUEST_VALUE ).addText(
             ParserUtils.base64Encode( getRequestValue() ) );
-        valueElement.addAttribute( new QName( "type", xsiNamespace ),
-            "xsd:" + ParserUtils.BASE64BINARY );
+        valueElement.addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ),
+            ParserUtils.XSD_COLON + ParserUtils.BASE64BINARY );
 
         return element;
     }

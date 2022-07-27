@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
@@ -36,9 +37,6 @@ import org.dom4j.tree.DefaultElement;
 public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResultDone>
     implements SearchResultDone
 {
-    private static final String SEARCH_RESULT_DONE_TAG = "searchResultDone";
-
-
     /**
      * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
      * 
@@ -82,11 +80,11 @@ public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResul
 
         if ( root != null )
         {
-            element = root.addElement( SEARCH_RESULT_DONE_TAG );
+            element = root.addElement( DsmlLiterals.SEARCH_RESULT_DONE );
         }
         else
         {
-            element = new DefaultElement( SEARCH_RESULT_DONE_TAG );
+            element = new DefaultElement( DsmlLiterals.SEARCH_RESULT_DONE );
         }
 
         LdapResultDsml ldapResultDsml =

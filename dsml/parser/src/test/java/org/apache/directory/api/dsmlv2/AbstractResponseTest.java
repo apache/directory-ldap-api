@@ -61,6 +61,7 @@ public abstract class AbstractResponseTest extends AbstractTest
         {
             fail( e.getMessage() );
         }
+        
         fail();
     }
 }

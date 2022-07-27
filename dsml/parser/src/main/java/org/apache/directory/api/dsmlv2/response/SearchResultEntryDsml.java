@@ -20,6 +20,8 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -47,8 +49,6 @@ public class SearchResultEntryDsml
     extends AbstractResponseDsml<SearchResultEntry>
     implements SearchResultEntry
 {
-    private static final String SEARCH_RESULT_ENTRY_TAG = "searchResultEntry";
-
     /** The current attribute being processed */
     private Attribute currentAttribute;
 
@@ -138,26 +138,30 @@ public class SearchResultEntryDsml
 
         if ( root != null )
         {
-            element = root.addElement( SEARCH_RESULT_ENTRY_TAG );
+            element = root.addElement( DsmlLiterals.SEARCH_RESULT_ENTRY );
         }
         else
         {
-            element = new DefaultElement( SEARCH_RESULT_ENTRY_TAG );
+            element = new DefaultElement( DsmlLiterals.SEARCH_RESULT_ENTRY );
         }
 
         SearchResultEntry searchResultEntry = getDecorated();
-        element.addAttribute( "dn", searchResultEntry.getObjectName().getName() );
+        element.addAttribute( DsmlLiterals.DN, searchResultEntry.getObjectName().getName() );
 
         Entry entry = searchResultEntry.getEntry();
         for ( Attribute attribute : entry )
         {
 
-            Element attributeElement = element.addElement( "attr" );
-            attributeElement.addAttribute( "name", attribute.getUpId() );
+            Element attributeElement = element.addElement( DsmlLiterals.ATTR );
+            attributeElement.addAttribute( DsmlLiterals.NAME, attribute.getUpId() );
 
             for ( Value value : attribute )
             {
-                if ( ParserUtils.needsBase64Encoding( value.getString() ) )
+                if ( value.isHumanReadable() )
+                {
+                    attributeElement.addElement( DsmlLiterals.VALUE ).addText( StringEscapeUtils.escapeXml11( value.getString() ) );
+                }
+                else
                 {
                     Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                     Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -170,14 +174,10 @@ public class SearchResultEntryDsml
                         docRoot.add( xsiNamespace );
                     }
 
-                    Element valueElement = attributeElement.addElement( "value" ).addText(
+                    Element valueElement = attributeElement.addElement( DsmlLiterals.VALUE ).addText(
                         ParserUtils.base64Encode( value.getBytes() ) );
-                    valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                    valueElement.addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON
                         + ParserUtils.BASE64BINARY );
-                }
-                else
-                {
-                    attributeElement.addElement( "value" ).addText( value.getString() );
                 }
             }
         }

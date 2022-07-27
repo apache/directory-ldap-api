@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
@@ -89,7 +90,7 @@ public class BindRequestDsml
         {
             // A DN has been provided
 
-            element.addAttribute( "principal", dn.getName() );
+            element.addAttribute( DsmlLiterals.PRINCIPAL, dn.getName() );
         }
         else
         {
@@ -97,7 +98,7 @@ public class BindRequestDsml
 
             String name = request.getName();
 
-            element.addAttribute( "principal", name );
+            element.addAttribute( DsmlLiterals.PRINCIPAL, name );
         }
 
         return element;

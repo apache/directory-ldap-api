@@ -38,8 +38,6 @@ import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.ldif.LdifUtils;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.dom4j.Document;
@@ -75,6 +73,9 @@ public final class ParserUtils
 
     /** XSD namespace prefix. */
     public static final String XSD = "xsd";
+
+    /** XSD namespace prefix with ':'. */
+    public static final String XSD_COLON = "xsd:";
 
     /** The DSML namespace */
     public static final Namespace DSML_NAMESPACE = new Namespace( null, "urn:oasis:names:tc:DSML:2:0:core" );
@@ -112,7 +113,7 @@ public final class ParserUtils
         for ( int i = 0; i < nbAttributes; i++ )
         {
             // Checking if the attribute 'type' from XML Schema Instance namespace is used.
-            if ( "type".equals( xpp.getAttributeName( i ) )
+            if ( DsmlLiterals.TYPE.equals( xpp.getAttributeName( i ) )
                 && xpp.getNamespace( xpp.getAttributePrefix( i ) ).equals( XML_SCHEMA_INSTANCE_URI ) )
             {
                 type = xpp.getAttributeValue( i );
@@ -155,20 +156,7 @@ public final class ParserUtils
      */
     public static boolean needsBase64Encoding( Object value )
     {
-        if ( value instanceof Value )
-        {
-            return false;
-        }
-        else if ( value instanceof byte[] )
-        {
-            return true;
-        }
-        else if ( value instanceof String )
-        {
-            return !LdifUtils.isLDIFSafe( ( String ) value );
-        }
-
-        return true;
+        return ( value instanceof byte[] );
     }
 
 
@@ -189,7 +177,7 @@ public final class ParserUtils
             return new String( Base64.getEncoder().encode( Strings.getBytesUtf8( ( String ) value ) ), StandardCharsets.UTF_8 );
         }
 
-        return "";
+        return Strings.EMPTY_STRING;
     }
 
 
@@ -235,16 +223,16 @@ public final class ParserUtils
         {
             for ( Control control : controls )
             {
-                Element controlElement = element.addElement( "control" );
+                Element controlElement = element.addElement( DsmlLiterals.CONTROL );
 
                 if ( control.getOid() != null )
                 {
-                    controlElement.addAttribute( "type", control.getOid() );
+                    controlElement.addAttribute( DsmlLiterals.TYPE, control.getOid() );
                 }
 
                 if ( control.isCritical() )
                 {
-                    controlElement.addAttribute( "criticality", "true" );
+                    controlElement.addAttribute( DsmlLiterals.CRITICALITY, DsmlLiterals.TRUE );
                 }
 
                 Asn1Buffer asn1Buffer = new Asn1Buffer();
@@ -267,14 +255,14 @@ public final class ParserUtils
                         element.getDocument().getRootElement().add( XSD_NAMESPACE );
                         element.getDocument().getRootElement().add( XSI_NAMESPACE );
 
-                        Element valueElement = controlElement.addElement( "controlValue" ).addText(
+                        Element valueElement = controlElement.addElement( DsmlLiterals.CONTROL_VALUE ).addText(
                             ParserUtils.base64Encode( value ) );
-                        valueElement.addAttribute( new QName( "type", XSI_NAMESPACE ), ParserUtils.XSD + ":"
+                        valueElement.addAttribute( new QName( DsmlLiterals.TYPE, XSI_NAMESPACE ), ParserUtils.XSD_COLON
                             + ParserUtils.BASE64BINARY );
                     }
                     else
                     {
-                        controlElement.addElement( "controlValue" ).setText( Arrays.toString( value ) );
+                        controlElement.addElement( DsmlLiterals.CONTROL_VALUE ).setText( Arrays.toString( value ) );
                     }
                 }
             }
@@ -319,8 +307,8 @@ public final class ParserUtils
             factory.setFeature( javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE );
             try
             {
-                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, "" );
-                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "" );
+                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, Strings.EMPTY_STRING );
+                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, Strings.EMPTY_STRING );
             }
             catch ( IllegalArgumentException ex )
             {

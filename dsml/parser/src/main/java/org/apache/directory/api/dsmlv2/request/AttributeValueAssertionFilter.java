@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.dsmlv2.request;
 
+import org.apache.directory.api.util.Strings;
 
 /**
  * Object to store the filter. A filter is seen as a tree with a root.
@@ -97,6 +98,6 @@ public class AttributeValueAssertionFilter extends Filter
     @Override
     public String toString()
     {
-        return assertion != null ? assertion.toStringRFC2254( filterType ) : "";
+        return assertion != null ? assertion.toStringRFC2254( filterType ) : Strings.EMPTY_STRING;
     }
 }

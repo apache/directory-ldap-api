@@ -33,6 +33,7 @@ import org.apache.directory.api.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.api.dsmlv2.AbstractGrammar;
 import org.apache.directory.api.dsmlv2.DsmlControl;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.Dsmlv2Container;
 import org.apache.directory.api.dsmlv2.Dsmlv2StatesEnum;
 import org.apache.directory.api.dsmlv2.Grammar;
@@ -150,7 +151,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -187,7 +188,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -200,7 +201,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -239,7 +240,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -253,7 +254,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -292,7 +293,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -305,7 +306,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -344,7 +345,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -357,7 +358,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -396,7 +397,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -409,7 +410,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -448,7 +449,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -461,7 +462,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -496,7 +497,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             XmlPullParser xpp = container.getParser();
 
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -515,7 +516,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             LdapResult ldapResult = extendedResponse.getLdapResult();
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -549,7 +550,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
 
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -567,7 +568,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // type
-            attributeValue = xpp.getAttributeValue( "", "type" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.TYPE );
 
             if ( attributeValue != null )
             {
@@ -820,7 +821,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             // Checking and adding the request's attributes
             String attributeValue;
             // code
-            attributeValue = xpp.getAttributeValue( "", "code" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.CODE );
 
             if ( attributeValue != null )
             {
@@ -839,7 +840,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // descr
-            attributeValue = xpp.getAttributeValue( "", "descr" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.DESCR );
 
             if ( ( attributeValue != null ) && !DSMLV2_DESCR_TAGS.contains( attributeValue ) )
             {
@@ -970,7 +971,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             SearchResponse searchResponse;
 
             // Checking and adding the batchRequest's attributes
-            String attributeValue = xpp.getAttributeValue( "", "requestID" );
+            String attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -1012,7 +1013,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -1025,7 +1026,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
 
             // dn
-            attributeValue = xpp.getAttributeValue( "", "dn" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.DN );
 
             if ( attributeValue != null )
             {
@@ -1073,7 +1074,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -1114,7 +1115,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             String attributeValue;
             
             // requestID
-            attributeValue = xpp.getAttributeValue( "", "requestID" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING,  DsmlLiterals.REQUEST_ID );
 
             if ( attributeValue != null )
             {
@@ -1128,7 +1129,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
 
             // MatchedDN
-            attributeValue = xpp.getAttributeValue( "", "matchedDN" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.MATCHED_DN );
 
             if ( attributeValue != null )
             {
@@ -1165,7 +1166,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             // Checking and adding the request's attributes
             String attributeValue;
             // name
-            attributeValue = xpp.getAttributeValue( "", "name" );
+            attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.NAME );
 
             if ( attributeValue != null )
             {
@@ -1382,7 +1383,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
         // ** OPEN BATCH Reponse **
         // State: [INIT_GRAMMAR_STATE] - Tag: <batchResponse>
-        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( "batchResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( DsmlLiterals.BATCH_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 batchResponseCreation ) );
 
@@ -1392,53 +1393,53 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <addResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "addResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.ADD_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 addResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <authResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "authResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.AUTH_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 authResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <compareResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "compareResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.COMPARE_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 compareResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <delResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "delResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.DEL_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 delResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "modifyResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.MODIFY_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 modifyResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "modDNResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.MOD_DN_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 modDNResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <extendedResponse>
         super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put(
-            new Tag( "extendedResponse", Tag.START ),
+            new Tag( DsmlLiterals.EXTENDED_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.EXTENDED_RESPONSE,
                 extendedResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <errorResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "errorResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.ERROR_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.ERROR_RESPONSE,
                 errorResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: <searchReponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "searchResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.SEARCH_RESPONSE,
                 searchResponseCreation ) );
 
         // State: [BATCH_RESPONSE_LOOP] - Tag: </batchResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( "batchResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP.ordinal()].put( new Tag( DsmlLiterals.BATCH_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
 
         //====================================================
@@ -1450,36 +1451,36 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.DETAIL_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [ERROR_RESPONSE] - Tag: <message>
-        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( "message", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.MESSAGE, Tag.START ),
             new GrammarTransition(
                 Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.MESSAGE_END, errorResponseAddMessage ) );
 
         // State: [ERROR_RESPONSE] - Tag: <detail>
-        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( "detail", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.DETAIL, Tag.START ),
             new GrammarTransition(
                 Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.DETAIL_START, ERROR_RESPONSE_ADD_DETAIL ) );
 
         // State: [MESSAGE_END] - Tag: </errorResponse>
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_END.ordinal()].put( new Tag( "errorResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.ERROR_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [MESSAGE_END] - Tag: <detail>
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_END.ordinal()].put( new Tag( "detail", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.DETAIL, Tag.START ),
             new GrammarTransition(
                 Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.DETAIL_START, ERROR_RESPONSE_ADD_DETAIL ) );
 
         // State: [DETAIL_START] - Tag: </detail>
-        super.transitions[Dsmlv2StatesEnum.DETAIL_START.ordinal()].put( new Tag( "detail", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.DETAIL_START.ordinal()].put( new Tag( DsmlLiterals.DETAIL, Tag.END ),
             new GrammarTransition(
                 Dsmlv2StatesEnum.DETAIL_START, Dsmlv2StatesEnum.DETAIL_END, null ) );
 
         // State: [DETAIL_END] - Tag: <detail>
-        super.transitions[Dsmlv2StatesEnum.DETAIL_END.ordinal()].put( new Tag( "detail", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.DETAIL_END.ordinal()].put( new Tag( DsmlLiterals.DETAIL, Tag.END ),
             new GrammarTransition(
                 Dsmlv2StatesEnum.DETAIL_END, Dsmlv2StatesEnum.DETAIL_END, ERROR_RESPONSE_ADD_DETAIL ) );
 
         // State: [ERROR_RESPONSE] - Tag: </errorResponse>
-        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( "errorResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.ERROR_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         //====================================================
@@ -1497,139 +1498,139 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.RESPONSE_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [EXTENDED_RESPONSE] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, ldapResultControlCreation ) );
 
         // State: [EXTENDED_RESPONSE_CONTROL_START] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START.ordinal()].put( new Tag( "controlValue",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START.ordinal()].put( new Tag( DsmlLiterals.CONTROL_VALUE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END, ldapResultControlValueCreation ) );
 
         // State: [EXTENDED_RESPONSE_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END.ordinal()].put( new Tag( "control",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END.ordinal()].put( new Tag( DsmlLiterals.CONTROL,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, null ) );
 
         // State: [EXTENDED_RESPONSE_CONTROL_START] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START.ordinal()].put(
-            new Tag( "control", Tag.END ),
+            new Tag( DsmlLiterals.CONTROL, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, null ) );
 
         // State: [EXTENDED_RESPONSE_CONTROL_END] - Tag: <control>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END.ordinal()].put(
-            new Tag( "control", Tag.START ),
+            new Tag( DsmlLiterals.CONTROL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, ldapResultControlCreation ) );
 
         // State: [EXTENDED_RESPONSE_CONTROL_END] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END.ordinal()].put( new Tag( "resultCode",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END.ordinal()].put( new Tag( DsmlLiterals.RESULT_CODE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, extendedResponseAddResultCode ) );
 
         // State: [EXTENDED_RESPONSE] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE.ordinal()].put( new Tag( "resultCode", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.RESULT_CODE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, extendedResponseAddResultCode ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_START] - Tag: </resultCode>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START.ordinal()].put( new Tag( "resultCode",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START.ordinal()].put( new Tag( DsmlLiterals.RESULT_CODE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, null ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <errorMessage>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put(
-            new Tag( "errorMessage", Tag.START ), new GrammarTransition(
+            new Tag( DsmlLiterals.ERROR_MESSAGE, Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, extendedResponseAddErrorMessage ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put( new Tag( "referral",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.REFERRAL,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, extendedResponseAddReferral ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <responseName>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put(
-            new Tag( "responseName", Tag.START ), new GrammarTransition(
+            new Tag( DsmlLiterals.RESPONSE_NAME, Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_NAME_END,
                 extendedResponseAddResponseName ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <response>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put( new Tag( "response",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.RESPONSE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: </extendedResponse>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END.ordinal()].put(
-            new Tag( "extendedResponse", Tag.END ), new GrammarTransition(
+            new Tag( DsmlLiterals.EXTENDED_RESPONSE, Tag.END ), new GrammarTransition(
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END.ordinal()].put( new Tag( "referral",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.REFERRAL,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, extendedResponseAddReferral ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <responseName>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END.ordinal()].put(
-            new Tag( "responseName", Tag.START ), new GrammarTransition(
+            new Tag( DsmlLiterals.RESPONSE_NAME, Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_NAME_END,
                 extendedResponseAddResponseName ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <response>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END.ordinal()].put( new Tag( "response",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.RESPONSE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: </extendedResponse>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END.ordinal()].put( new Tag(
-            "extendedResponse",
+            DsmlLiterals.EXTENDED_RESPONSE,
             Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
             Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put( new Tag( "referral",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.REFERRAL,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, extendedResponseAddReferral ) );
 
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <responseName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put( new Tag( "responseName",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.RESPONSE_NAME,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_NAME_END,
                 extendedResponseAddResponseName ) );
 
-        // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <reponse>
+        // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <response>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put(
-            new Tag( "reponse", Tag.START ),
+            new Tag( DsmlLiterals.RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put( new Tag( "extendedResponse",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.EXTENDED_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [RESPONSE_NAME_END] - Tag: <response>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END.ordinal()].put( new Tag( "response", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END.ordinal()].put( new Tag( DsmlLiterals.RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [RESPONSE_NAME_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END.ordinal()].put( new Tag( "extendedResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END.ordinal()].put( new Tag( DsmlLiterals.EXTENDED_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [RESPONSE_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_END.ordinal()].put( new Tag( "extendedResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_END.ordinal()].put( new Tag( DsmlLiterals.EXTENDED_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         //====================================================
@@ -1646,194 +1647,194 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [LDAP_RESULT] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.START ),
             new GrammarTransition(
                 Dsmlv2StatesEnum.LDAP_RESULT, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, ldapResultControlCreation ) );
 
         // State: [LDAP_RESULT] - Tag: <resultCode>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT.ordinal()]
-            .put( new Tag( "resultCode", Tag.START ), new GrammarTransition(
+            .put( new Tag( DsmlLiterals.RESULT_CODE, Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.LDAP_RESULT, Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, ldapResultAddResultCode ) );
 
         // State: [LDAP_RESULT_CONTROL_START] - Tag: <controlValue>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START.ordinal()].put(
-            new Tag( "controlValue", Tag.START ),
+            new Tag( DsmlLiterals.CONTROL_VALUE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START,
                 Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END, ldapResultControlValueCreation ) );
 
         // State: [LDAP_RESULT_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, null ) );
 
         // State: [LDAP_RESULT_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START,
                 Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, null ) );
 
         // State: [LDAP_RESULT_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, ldapResultControlCreation ) );
 
         // State: [LDAP_RESULT_CONTROL_END] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END.ordinal()].put( new Tag( "resultCode", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END.ordinal()].put( new Tag( DsmlLiterals.RESULT_CODE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, ldapResultAddResultCode ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_START] - Tag: </resultCode>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START.ordinal()].put(
-            new Tag( "resultCode", Tag.END ),
+            new Tag( DsmlLiterals.RESULT_CODE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START,
                 Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: <errorMessage>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( "errorMessage",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.ERROR_MESSAGE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, ldapResultAddErrorMessage ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put(
-            new Tag( "referral", Tag.START ),
+            new Tag( DsmlLiterals.REFERRAL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, ldapResultAddReferral ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </addResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put(
-            new Tag( "addResponse", Tag.END ),
+            new Tag( DsmlLiterals.ADD_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </authResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put(
-            new Tag( "authResponse", Tag.END ),
+            new Tag( DsmlLiterals.AUTH_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </compareResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( "compareResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.COMPARE_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </delResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put(
-            new Tag( "delResponse", Tag.END ),
+            new Tag( DsmlLiterals.DEL_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( "modifyResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.MODIFY_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( "modDNResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.MOD_DN_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( "searchResultDone",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_DONE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ) );
 
         // State: [SEARCH_RESULT_DONE_END] - Tag: </searchResponse>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END.ordinal()]
-            .put( new Tag( "searchResponse", Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END,
+            .put( new Tag( DsmlLiterals.SEARCH_RESPONSE, Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put(
-            new Tag( "referral", Tag.START ),
+            new Tag( DsmlLiterals.REFERRAL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, ldapResultAddReferral ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </addResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "addResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.ADD_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </authResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "authResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.AUTH_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </compareResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "compareResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.COMPARE_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </delResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "delResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.DEL_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "modifyResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.MODIFY_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "modDNResponse",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.MOD_DN_RESPONSE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( "searchResultDone",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_DONE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( "referral", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.REFERRAL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END,
                 Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, ldapResultAddReferral ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </addResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( "addResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.ADD_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </authResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( "authResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.AUTH_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </compareResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put(
-            new Tag( "compareResponse", Tag.END ),
+            new Tag( DsmlLiterals.COMPARE_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </delResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( "delResponse", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.DEL_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </modifyResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put(
-            new Tag( "modifyResponse", Tag.END ),
+            new Tag( DsmlLiterals.MODIFY_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </modDNResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put(
-            new Tag( "modDNResponse", Tag.END ),
+            new Tag( DsmlLiterals.MOD_DN_RESPONSE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 null ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( "searchResultDone",
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_DONE,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END,
                 null ) );
@@ -1844,18 +1845,18 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_REPONSE] - Tag: <searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE.ordinal()].put( new Tag( "searchResultEntry", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_ENTRY, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
                 searchResultEntryCreation ) );
 
         // State: [SEARCH_REPONSE] - Tag: <searchResultReference>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE.ordinal()].put(
-            new Tag( "searchResultReference", Tag.START ),
+            new Tag( DsmlLiterals.SEARCH_RESULT_REFERENCE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
                 searchResultReferenceCreation ) );
 
         // State: [SEARCH_REPONSE] - Tag: <searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE.ordinal()].put( new Tag( "searchResultDone", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_DONE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.LDAP_RESULT,
                 searchResultDoneCreation ) );
 
@@ -1871,84 +1872,84 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_RESULT_ENTRY] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, searchResultEntryControlCreation ) );
 
         // State: [SEARCH_RESULT_ENTRY] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY.ordinal()].put( new Tag( "attr", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY.ordinal()].put( new Tag( DsmlLiterals.ATTR, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, searchResultEntryAddAttr ) );
 
         // State: [SEARCH_RESULT_ENTRY] - Tag: </searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY.ordinal()].put( new Tag( "searchResultEntry", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_ENTRY, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP,
                 null ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_START] - Tag: <controlValue>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START.ordinal()].put(
-            new Tag( "controlValue", Tag.START ), new GrammarTransition(
+            new Tag( DsmlLiterals.CONTROL_VALUE, Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END, searchResultEntryControlValueCreation ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END.ordinal()].put( new Tag( "control",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END.ordinal()].put( new Tag( DsmlLiterals.CONTROL,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, null ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START.ordinal()].put( new Tag( "control",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START.ordinal()].put( new Tag( DsmlLiterals.CONTROL,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, null ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END.ordinal()].put( new Tag( "control",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END.ordinal()].put( new Tag( DsmlLiterals.CONTROL,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, searchResultEntryControlCreation ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_END] - Tag: </searchResultEntry>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END.ordinal()].put(
-            new Tag( "searchResultEntry", Tag.END ), new GrammarTransition(
+            new Tag( DsmlLiterals.SEARCH_RESULT_ENTRY, Tag.END ), new GrammarTransition(
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_END] - Tag: <attr>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END.ordinal()].put(
-            new Tag( "attr", Tag.START ),
+            new Tag( DsmlLiterals.ATTR, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, null ) );
 
         // State: [SEARCH_RESULT_ENTRY_ATTR_START] - Tag: </attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START.ordinal()].put( new Tag( "attr", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START.ordinal()].put( new Tag( DsmlLiterals.ATTR, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, null ) );
 
         // State: [SEARCH_RESULT_ENTRY_ATTR_START] - Tag: <value>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START.ordinal()].put(
-            new Tag( "value", Tag.START ),
+            new Tag( DsmlLiterals.VALUE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, searchResultEntryAddValue ) );
 
         // State: [SEARCH_RESULT_ENTRY_ATTR_END] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END.ordinal()].put( new Tag( "attr", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END.ordinal()].put( new Tag( DsmlLiterals.ATTR, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, searchResultEntryAddAttr ) );
 
         // State: [SEARCH_RESULT_ENTRY_ATTR_END] - Tag: </searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END.ordinal()].put( new Tag( "searchResultEntry",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_ENTRY,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ) );
 
         // State: [SEARCH_RESULT_ENTRY_VALUE_END] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END.ordinal()].put( new Tag( DsmlLiterals.VALUE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, searchResultEntryAddValue ) );
 
         // State: [SEARCH_RESULT_ENTRY_VALUE_END] - Tag: </attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END.ordinal()].put( new Tag( "attr", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END.ordinal()].put( new Tag( DsmlLiterals.ATTR, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, null ) );
 
@@ -1958,19 +1959,19 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_RESULT_ENTRY_LOOP] - Tag: <searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP.ordinal()].put( new Tag( "searchResultEntry",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_ENTRY,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
                 searchResultEntryCreation ) );
 
         // State: [SEARCH_RESULT_ENTRY_LOOP] - Tag: <searchResultReference>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP.ordinal()].put(
-            new Tag( "searchResultReference", Tag.START ), new GrammarTransition(
+            new Tag( DsmlLiterals.SEARCH_RESULT_REFERENCE, Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
                 searchResultReferenceCreation ) );
 
         // State: [SEARCH_RESULT_ENTRY_LOOP] - Tag: <searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP.ordinal()].put( new Tag( "searchResultDone",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_DONE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 searchResultDoneCreation ) );
@@ -1985,53 +1986,53 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_RESULT_REFERENCE] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE.ordinal()].put( new Tag( DsmlLiterals.CONTROL, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, searchResultReferenceControlCreation ) );
 
         // State: [SEARCH_RESULT_REFERENCE] - Tag: <ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE.ordinal()].put( new Tag( "ref", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE.ordinal()].put( new Tag( DsmlLiterals.REF, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, searchResultReferenceAddRef ) );
 
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_START] - Tag: <controlValue>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START.ordinal()].put( new Tag(
-            "controlValue",
+            DsmlLiterals.CONTROL_VALUE,
             Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START,
             Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END, searchResultReferenceControlValueCreation ) );
 
         // State: [sEARCH_RESULT_REFERENCE_CONTROL_VALUE_END] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END.ordinal()].put(
-            new Tag( "control", Tag.END ), new GrammarTransition(
+            new Tag( DsmlLiterals.CONTROL, Tag.END ), new GrammarTransition(
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, null ) );
 
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START.ordinal()].put( new Tag( "control",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START.ordinal()].put( new Tag( DsmlLiterals.CONTROL,
             Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, null ) );
 
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END.ordinal()].put( new Tag( "control",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END.ordinal()].put( new Tag( DsmlLiterals.CONTROL,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, searchResultReferenceControlCreation ) );
 
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_END] - Tag: <ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END.ordinal()].put( new Tag( "ref",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END.ordinal()].put( new Tag( DsmlLiterals.REF,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, searchResultReferenceAddRef ) );
 
         // State: [SEARCH_RESULT_REFERENCE_REF_END] - Tag: <ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END.ordinal()].put( new Tag( "ref", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END.ordinal()].put( new Tag( DsmlLiterals.REF, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, searchResultReferenceAddRef ) );
 
         // State: [SEARCH_RESULT_REFERENCE_REF_END] - Tag: </searchResultReference>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END.ordinal()].put( new Tag(
-            "searchResultReference",
+            DsmlLiterals.SEARCH_RESULT_REFERENCE,
             Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END,
             Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, null ) );
 
@@ -2042,12 +2043,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
         // State: [SEARCH_RESULT_REFERENCE_LOOP] - Tag: <searchResultReference>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP.ordinal()].put( new Tag(
-            "searchResultReference",
+            DsmlLiterals.SEARCH_RESULT_REFERENCE,
             Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP,
             Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, searchResultReferenceCreation ) );
 
         // State: [SEARCH_RESULT_REFERENCE_LOOP] - Tag: <searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP.ordinal()].put( new Tag( "searchResultDone",
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP.ordinal()].put( new Tag( DsmlLiterals.SEARCH_RESULT_DONE,
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 searchResultDoneCreation ) );
@@ -2062,34 +2063,34 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [INIT_GRAMMAR_STATE] - Tag: <envelope>
-        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( "envelope", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( DsmlLiterals.ENVELOPE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG,
                 null ) );
 
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
-        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( DsmlLiterals.HEADER, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
                 ParserUtils.READ_SOAP_HEADER ) );
 
         // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]
-            .put( new Tag( "header", Tag.END ),
+            .put( new Tag( DsmlLiterals.HEADER, Tag.END ),
                 new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_END_TAG,
                     null ) );
 
         // state: [SOAP_HEADER_END_TAG] -> Tag: <body>
-        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()].put( new Tag( "body", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()].put( new Tag( DsmlLiterals.BODY, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG, null ) );
 
         // state: [SOAP_BODY_START_TAG] -> Tag: <batchResponse>
-        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()].put( new Tag( "batchResponse", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()].put( new Tag( DsmlLiterals.BATCH_RESPONSE, Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_BODY_START_TAG, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
                 batchResponseCreation ) );
 
         // the optional transition if no soap header is present
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <body>
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()]
-            .put( new Tag( "body", Tag.START ),
+            .put( new Tag( DsmlLiterals.BODY, Tag.START ),
                 new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG,
                     null ) );
 
@@ -2097,10 +2098,10 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // when the </batchRequest> tag is encountered by the parser and the corresponding action gets executed but in
         // a SOAP envelop we still have two more end tags(</body> and </envelope>) are left so we set those corresponding
         // current and next transition states always to GRAMMAR_END
-        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( "body", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( DsmlLiterals.BODY, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.GRAMMAR_END, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
 
-        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( "envelope", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( DsmlLiterals.ENVELOPE, Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.GRAMMAR_END, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
 
         //------------------------------------------
@@ -2175,7 +2176,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // Checking and adding the Control's attributes
         String attributeValue;
         // TYPE
-        attributeValue = xpp.getAttributeValue( "", "type" );
+        attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.TYPE );
 
         if ( attributeValue != null )
         {
@@ -2204,15 +2205,15 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         }
 
         // CRITICALITY
-        attributeValue = xpp.getAttributeValue( "", "criticality" );
+        attributeValue = xpp.getAttributeValue( Strings.EMPTY_STRING, DsmlLiterals.CRITICALITY );
 
         if ( attributeValue != null )
         {
-            if ( "true".equals( attributeValue ) )
+            if ( DsmlLiterals.TRUE.equals( attributeValue ) )
             {
                 control.setCritical( true );
             }
-            else if ( "false".equals( attributeValue ) )
+            else if ( DsmlLiterals.FALSE.equals( attributeValue ) )
             {
                 control.setCritical( false );
             }

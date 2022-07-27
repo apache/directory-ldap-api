@@ -44,6 +44,11 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>api-util</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-codec-core</artifactId>
     </dependency>
     
@@ -61,6 +66,12 @@
       <groupId>org.apache.servicemix.bundles</groupId>
       <artifactId>org.apache.servicemix.bundles.xpp3</artifactId>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -90,6 +101,7 @@
           </properties>
         </configuration>
       </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

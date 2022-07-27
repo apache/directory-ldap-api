@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.BindResponseImpl;
@@ -34,8 +35,6 @@ import org.dom4j.tree.DefaultElement;
  */
 public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> implements BindResponse
 {
-    private static final String AUTH_RESPONSE_TAG = "authResponse";
-
     /**
      * Creates a new getDecoratedMessage() of AuthResponseDsml.
      * 
@@ -69,11 +68,11 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
 
         if ( root != null )
         {
-            element = root.addElement( AUTH_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.AUTH_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( AUTH_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.AUTH_RESPONSE );
         }
 
 

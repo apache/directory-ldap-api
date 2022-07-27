@@ -23,7 +23,9 @@ package org.apache.directory.api.dsmlv2.request;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -53,6 +55,7 @@ import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -67,11 +70,6 @@ public class SearchRequestDsml
     extends AbstractResultResponseRequestDsml<SearchRequest, SearchResultDone>
     implements SearchRequest
 {
-    /** Some string constants */
-    private static final String DEREF_ALIASES = "derefAliases";
-    private static final String NAME = "name";
-    private static final String VALUE = "value";
-    
     /** A temporary storage for a terminal Filter */
     private Filter terminalFilter;
 
@@ -367,7 +365,7 @@ public class SearchRequestDsml
         // Dn
         if ( request.getBase() != null )
         {
-            element.addAttribute( "dn", request.getBase().getName() );
+            element.addAttribute( DsmlLiterals.DN, request.getBase().getName() );
         }
 
         // Scope
@@ -376,15 +374,15 @@ public class SearchRequestDsml
         {
             if ( scope == SearchScope.OBJECT )
             {
-                element.addAttribute( "scope", "baseObject" );
+                element.addAttribute( DsmlLiterals.SCOPE, DsmlLiterals.BASE_OBJECT );
             }
             else if ( scope == SearchScope.ONELEVEL )
             {
-                element.addAttribute( "scope", "singleLevel" );
+                element.addAttribute( DsmlLiterals.SCOPE, DsmlLiterals.SINGLE_LEVEL );
             }
             else if ( scope == SearchScope.SUBTREE )
             {
-                element.addAttribute( "scope", "wholeSubtree" );
+                element.addAttribute( DsmlLiterals.SCOPE, DsmlLiterals.WHOLE_SUBTREE );
             }
         }
 
@@ -394,19 +392,19 @@ public class SearchRequestDsml
         switch ( derefAliases )
         {
             case NEVER_DEREF_ALIASES:
-                element.addAttribute( DEREF_ALIASES, "neverDerefAliases" );
+                element.addAttribute( DsmlLiterals.DEREF_ALIASES, DsmlLiterals.NEVER_DEREF_ALIASES );
                 break;
 
             case DEREF_ALWAYS:
-                element.addAttribute( DEREF_ALIASES, "derefAlways" );
+                element.addAttribute( DsmlLiterals.DEREF_ALIASES, DsmlLiterals.DEREF_ALWAYS );
                 break;
 
             case DEREF_FINDING_BASE_OBJ:
-                element.addAttribute( DEREF_ALIASES, "derefFindingBaseObj" );
+                element.addAttribute( DsmlLiterals.DEREF_ALIASES, DsmlLiterals.DEREF_FINDING_BASE_OBJ );
                 break;
 
             case DEREF_IN_SEARCHING:
-                element.addAttribute( DEREF_ALIASES, "derefInSearching" );
+                element.addAttribute( DsmlLiterals.DEREF_ALIASES, DsmlLiterals.DEREF_IN_SEARCHING );
                 break;
 
             default:
@@ -416,23 +414,23 @@ public class SearchRequestDsml
         // SizeLimit
         if ( request.getSizeLimit() != 0L )
         {
-            element.addAttribute( "sizeLimit", Long.toString( request.getSizeLimit() ) );
+            element.addAttribute( DsmlLiterals.SIZE_LIMIT, Long.toString( request.getSizeLimit() ) );
         }
 
         // TimeLimit
         if ( request.getTimeLimit() != 0 )
         {
-            element.addAttribute( "timeLimit", Integer.toString( request.getTimeLimit() ) );
+            element.addAttribute( DsmlLiterals.TIME_LIMIT, Integer.toString( request.getTimeLimit() ) );
         }
 
         // TypesOnly
         if ( request.getTypesOnly() )
         {
-            element.addAttribute( "typesOnly", "true" );
+            element.addAttribute( DsmlLiterals.TYPES_ONLY,  DsmlLiterals.TRUE );
         }
 
         // Filter
-        Element filterElement = element.addElement( "filter" );
+        Element filterElement = element.addElement( DsmlLiterals.FILTER );
         toDsml( filterElement, request.getFilter() );
 
         // Attributes
@@ -440,11 +438,11 @@ public class SearchRequestDsml
 
         if ( !attributes.isEmpty() )
         {
-            Element attributesElement = element.addElement( "attributes" );
+            Element attributesElement = element.addElement( DsmlLiterals.ATTRIBUTES );
 
             for ( String entryAttribute : attributes )
             {
-                attributesElement.addElement( "attribute" ).addAttribute( NAME, entryAttribute );
+                attributesElement.addElement( DsmlLiterals.ATTRIBUTE ).addAttribute( DsmlLiterals.NAME, entryAttribute );
             }
         }
 
@@ -466,7 +464,7 @@ public class SearchRequestDsml
         // AND FILTER
         if ( filter instanceof AndNode )
         {
-            Element newElement = element.addElement( "and" );
+            Element newElement = element.addElement( DsmlLiterals.AND );
 
             List<ExprNode> filterList = ( ( AndNode ) filter ).getChildren();
 
@@ -479,7 +477,7 @@ public class SearchRequestDsml
         // OR FILTER
         else if ( filter instanceof OrNode )
         {
-            Element newElement = element.addElement( "or" );
+            Element newElement = element.addElement( DsmlLiterals.OR );
 
             List<ExprNode> filterList = ( ( OrNode ) filter ).getChildren();
 
@@ -492,7 +490,7 @@ public class SearchRequestDsml
         // NOT FILTER
         else if ( filter instanceof NotNode )
         {
-            Element newElement = element.addElement( "not" );
+            Element newElement = element.addElement( DsmlLiterals.NOT );
 
             toDsml( newElement, ( ( NotNode ) filter ).getFirstChild() );
         }
@@ -500,31 +498,31 @@ public class SearchRequestDsml
         // SUBSTRING FILTER
         else if ( filter instanceof SubstringNode )
         {
-            Element newElement = element.addElement( "substrings" );
+            Element newElement = element.addElement( DsmlLiterals.SUBSTRINGS );
 
             SubstringNode substringFilter = ( SubstringNode ) filter;
 
-            newElement.addAttribute( NAME, substringFilter.getAttribute() );
+            newElement.addAttribute( DsmlLiterals.NAME, substringFilter.getAttribute() );
 
             String initial = substringFilter.getInitial();
 
-            if ( ( initial != null ) && ( !"".equals( initial ) ) )
+            if ( Strings.isNotEmpty( initial ) )
             {
-                newElement.addElement( "initial" ).setText( initial );
+                newElement.addElement( DsmlLiterals.INITIAL ).setText( initial );
             }
 
             List<String> anyList = substringFilter.getAny();
 
             for ( int i = 0; i < anyList.size(); i++ )
             {
-                newElement.addElement( "any" ).setText( anyList.get( i ) );
+                newElement.addElement( DsmlLiterals.ANY ).setText( anyList.get( i ) );
             }
 
             String finalString = substringFilter.getFinal();
 
-            if ( ( finalString != null ) && ( !"".equals( finalString ) ) )
+            if ( Strings.isNotEmpty( finalString  ) )
             {
-                newElement.addElement( "final" ).setText( finalString );
+                newElement.addElement( DsmlLiterals.FINAL ).setText( finalString );
             }
         }
 
@@ -535,44 +533,44 @@ public class SearchRequestDsml
 
             if ( filter instanceof ApproximateNode )
             {
-                newElement = element.addElement( "approxMatch" );
+                newElement = element.addElement( DsmlLiterals.APPROX_MATCH );
             }
             else if ( filter instanceof EqualityNode )
             {
-                newElement = element.addElement( "equalityMatch" );
+                newElement = element.addElement( DsmlLiterals.EQUALITY_MATCH );
             }
             else if ( filter instanceof GreaterEqNode )
             {
-                newElement = element.addElement( "greaterOrEqual" );
+                newElement = element.addElement( DsmlLiterals.GREATER_OR_EQUAL );
             }
             else
             // it is a LessEqNode )
             {
-                newElement = element.addElement( "lessOrEqual" );
+                newElement = element.addElement( DsmlLiterals.LESS_OR_EQUAL );
             }
 
             String attributeName = ( ( SimpleNode<?> ) filter ).getAttribute();
-            newElement.addAttribute( NAME, attributeName );
+            newElement.addAttribute( DsmlLiterals.NAME, attributeName );
 
             Value value = ( ( SimpleNode<?> ) filter ).getValue();
             
             if ( value != null )
             {
-                if ( ParserUtils.needsBase64Encoding( value ) )
+                if ( value.isHumanReadable() )
                 {
-                    Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                    Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                    element.getDocument().getRootElement().add( xsdNamespace );
-                    element.getDocument().getRootElement().add( xsiNamespace );
-
-                    Element valueElement = newElement.addElement( VALUE ).addText(
-                        ParserUtils.base64Encode( value ) );
-                    valueElement
-                        .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                    newElement.addElement( DsmlLiterals.VALUE ).setText( StringEscapeUtils.escapeXml11( value.getString() ) );
                 }
                 else
                 {
-                    newElement.addElement( VALUE ).setText( value.getString() );
+                    Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                    Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                    element.getDocument().getRootElement().add( xsdNamespace );
+                    element.getDocument().getRootElement().add( xsiNamespace );
+
+                    Element valueElement = newElement.addElement( DsmlLiterals.VALUE ).addText(
+                        ParserUtils.base64Encode( value ) );
+                    valueElement
+                        .addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON + ParserUtils.BASE64BINARY );
                 }
             }
         }
@@ -580,15 +578,15 @@ public class SearchRequestDsml
         // PRESENT FILTER
         else if ( filter instanceof PresenceNode )
         {
-            Element newElement = element.addElement( "present" );
+            Element newElement = element.addElement( DsmlLiterals.PRESENT );
 
-            newElement.addAttribute( NAME, ( ( PresenceNode ) filter ).getAttribute() );
+            newElement.addAttribute( DsmlLiterals.NAME, ( ( PresenceNode ) filter ).getAttribute() );
         }
 
         // EXTENSIBLEMATCH
         else if ( filter instanceof ExtensibleNode )
         {
-            Element newElement = element.addElement( "extensibleMatch" );
+            Element newElement = element.addElement( DsmlLiterals.EXTENSIBLE_MATCH );
 
             Value value = ( ( ExtensibleNode ) filter ).getValue();
             
@@ -596,30 +594,31 @@ public class SearchRequestDsml
             {
                 if ( ParserUtils.needsBase64Encoding( value ) )
                 {
-                    Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                    Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                    Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                    Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
 
-                    Element valueElement = newElement.addElement( VALUE ).addText(
+                    Element valueElement = newElement.addElement( DsmlLiterals.VALUE ).addText(
                         ParserUtils.base64Encode( value.getString() ) );
-                    valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                    valueElement.addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( VALUE ).setText( value.getString() );
+                    newElement.addElement( DsmlLiterals.VALUE ).setText( value.getString() );
                 }
             }
 
             if ( ( ( ExtensibleNode ) filter ).hasDnAttributes() )
             {
-                newElement.addAttribute( "dnAttributes", "true" );
+                newElement.addAttribute( DsmlLiterals.DN_ATTRIBUTES,  DsmlLiterals.TRUE );
             }
 
             String matchingRule = ( ( ExtensibleNode ) filter ).getMatchingRuleId();
-            if ( ( matchingRule != null ) && ( "".equals( matchingRule ) ) )
+            
+            if ( Strings.isNotEmpty( matchingRule ) )
             {
-                newElement.addAttribute( "matchingRule", matchingRule );
+                newElement.addAttribute( DsmlLiterals.MATCHING_RULE, matchingRule );
             }
         }
     }

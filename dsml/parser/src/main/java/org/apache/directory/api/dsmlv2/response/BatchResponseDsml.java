@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.dom4j.Document;
@@ -145,7 +146,7 @@ public class BatchResponseDsml
     public String toDsml( boolean prettyPrint )
     {
         Document document = DocumentHelper.createDocument();
-        Element element = document.addElement( "batchResponse" );
+        Element element = document.addElement( DsmlLiterals.BATCH_RESPONSE );
 
         element.add( ParserUtils.DSML_NAMESPACE );
         element.add( ParserUtils.XSD_NAMESPACE );
@@ -154,7 +155,7 @@ public class BatchResponseDsml
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", Integer.toString( requestID ) );
+            element.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
         }
 
         for ( DsmlDecorator<? extends Response> response : responses )

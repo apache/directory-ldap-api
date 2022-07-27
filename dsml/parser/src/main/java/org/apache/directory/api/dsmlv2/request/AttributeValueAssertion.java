@@ -82,7 +82,7 @@ public class AttributeValueAssertion
         }
         else
         {
-            return "";
+            return Strings.EMPTY_STRING;
         }
     }
 
@@ -203,6 +203,6 @@ public class AttributeValueAssertion
     @Override
     public String toString()
     {
-        return toString( "" );
+        return toString( Strings.EMPTY_STRING );
     }
 }

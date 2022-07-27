@@ -21,6 +21,7 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
 import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
@@ -37,9 +38,6 @@ import org.dom4j.tree.DefaultElement;
 public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
     implements DeleteResponse
 {
-    private static final String DEL_RESPONSE_TAG = "delResponse";
-
-
     /**
      * Creates a new getDecoratedMessage() of DelResponseDsml.
      * 
@@ -83,11 +81,11 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
 
         if ( root != null )
         {
-            element = root.addElement( DEL_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.DEL_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( DEL_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.DEL_RESPONSE );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),

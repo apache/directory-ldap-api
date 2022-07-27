@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -44,8 +45,6 @@ import org.dom4j.tree.DefaultElement;
  */
 public class SearchResponseDsml extends AbstractResponseDsml<Response>
 {
-    private static final String SEARCH_RESPONSE_TAG = "searchResponse";
-
     /** The responses */
     private List<DsmlDecorator<? extends Response>> responses =
         new ArrayList<>();
@@ -154,11 +153,11 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
 
         if ( root != null )
         {
-            element = root.addElement( SEARCH_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.SEARCH_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( SEARCH_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.SEARCH_RESPONSE );
         }
 
         // RequestID
@@ -167,7 +166,7 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
             int requestID = getDecorated().getMessageId();
             if ( requestID > 0 )
             {
-                element.addAttribute( "requestID", Integer.toString( requestID ) );
+                element.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
             }
         }
 

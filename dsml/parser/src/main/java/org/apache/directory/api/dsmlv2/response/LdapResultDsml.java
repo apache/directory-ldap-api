@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.LdapResult;
@@ -78,7 +79,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
         int requestID = message.getMessageId();
         if ( requestID > 0 )
         {
-            root.addAttribute( "requestID", Integer.toString( requestID ) );
+            root.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
         }
 
         // Matched Dn
@@ -86,23 +87,23 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
         if ( !Dn.isNullOrEmpty( matchedDn ) )
         {
-            root.addAttribute( "matchedDn", matchedDn.getName() );
+            root.addAttribute( DsmlLiterals.MATCHED_DN, matchedDn.getName() );
         }
 
         // Controls
         ParserUtils.addControls( codec, root, message.getControls().values(), false );
 
         // ResultCode
-        Element resultCodeElement = root.addElement( "resultCode" );
-        resultCodeElement.addAttribute( "code", Integer.toString( result.getResultCode().getResultCode() ) );
-        resultCodeElement.addAttribute( "descr", result.getResultCode().getMessage() );
+        Element resultCodeElement = root.addElement( DsmlLiterals.RESULT_CODE );
+        resultCodeElement.addAttribute( DsmlLiterals.CODE, Integer.toString( result.getResultCode().getResultCode() ) );
+        resultCodeElement.addAttribute( DsmlLiterals.DESCR, result.getResultCode().getMessage() );
 
         // ErrorMessage
         String errorMessage = result.getDiagnosticMessage();
 
         if ( ( errorMessage != null ) && ( errorMessage.length() != 0 ) )
         {
-            Element errorMessageElement = root.addElement( "errorMessage" );
+            Element errorMessageElement = root.addElement( DsmlLiterals.ERROR_MESSAGE );
             errorMessageElement.addText( errorMessage );
         }
 
@@ -115,7 +116,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
             {
                 for ( String ldapUrl : ldapUrls )
                 {
-                    Element referalElement = root.addElement( "referal" );
+                    Element referalElement = root.addElement( DsmlLiterals.REFERRAL );
                     referalElement.addText( ldapUrl );
                 }
             }

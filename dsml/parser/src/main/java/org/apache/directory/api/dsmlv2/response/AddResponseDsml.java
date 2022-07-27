@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.AddResponse;
 import org.apache.directory.api.ldap.model.message.AddResponseImpl;
@@ -36,9 +37,6 @@ import org.dom4j.tree.DefaultElement;
 public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
     implements AddResponse
 {
-    private static final String ADD_RESPONSE_TAG = "addResponse";
-
-
     /**
      * Creates a new getDecoratedMessage() of AddResponseDsml.
      * 
@@ -82,11 +80,11 @@ public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
 
         if ( root != null )
         {
-            element = root.addElement( ADD_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.ADD_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( ADD_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.ADD_RESPONSE );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),

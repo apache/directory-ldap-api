@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.model.message.Request;
 import org.dom4j.Document;
@@ -277,30 +278,30 @@ public class BatchRequestDsml
     public String toDsml()
     {
         Document document = DocumentHelper.createDocument();
-        Element element = document.addElement( "batchRequest" );
+        Element element = document.addElement( DsmlLiterals.BATCH_REQUEST );
 
         // RequestID
         if ( requestID != 0 )
         {
-            element.addAttribute( "requestID", Integer.toString( requestID ) );
+            element.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
         }
 
         // ResponseOrder
         if ( responseOrder == ResponseOrder.UNORDERED )
         {
-            element.addAttribute( "responseOrder", "unordered" );
+            element.addAttribute( DsmlLiterals.RESPONSE_ORDER, DsmlLiterals.UNORDERED );
         }
 
         // Processing
         if ( processing == Processing.PARALLEL )
         {
-            element.addAttribute( "processing", "parallel" );
+            element.addAttribute( DsmlLiterals.PROCESSING, DsmlLiterals.PARALLEL );
         }
 
         // On Error
         if ( onError == OnError.RESUME )
         {
-            element.addAttribute( "onError", "resume" );
+            element.addAttribute( DsmlLiterals.ON_ERROR, DsmlLiterals.RESUME );
         }
 
         // Requests

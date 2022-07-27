@@ -22,6 +22,8 @@ package org.apache.directory.api.dsmlv2.request;
 
 import java.util.Collection;
 
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -153,7 +155,7 @@ public class ModifyRequestDsml
         // Dn
         if ( request.getName() != null )
         {
-            element.addAttribute( "dn", request.getName().getName() );
+            element.addAttribute( DsmlLiterals.DN, request.getName().getName() );
         }
 
         // Modifications
@@ -161,32 +163,29 @@ public class ModifyRequestDsml
 
         for ( Modification modification : modifications )
         {
-            Element modElement = element.addElement( "modification" );
+            Element modElement = element.addElement( DsmlLiterals.MODIFICATION );
 
             if ( modification.getAttribute() != null )
             {
-                modElement.addAttribute( "name", modification.getAttribute().getId() );
+                modElement.addAttribute( DsmlLiterals.NAME, modification.getAttribute().getId() );
 
                 for ( Value value : modification.getAttribute() )
                 {
-                    if ( value.getString() != null )
+                    if ( value.isHumanReadable() )
                     {
-                        if ( ParserUtils.needsBase64Encoding( value.getString() ) )
-                        {
-                            Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                            Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                            element.getDocument().getRootElement().add( xsdNamespace );
-                            element.getDocument().getRootElement().add( xsiNamespace );
+                        modElement.addElement( DsmlLiterals.VALUE ).setText( StringEscapeUtils.escapeXml11( value.getString() ) );
+                    }
+                    else
+                    {
+                        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        element.getDocument().getRootElement().add( xsdNamespace );
+                        element.getDocument().getRootElement().add( xsiNamespace );
 
-                            Element valueElement = modElement.addElement( "value" ).addText(
-                                ParserUtils.base64Encode( value.getString() ) );
-                            valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
-                                + ParserUtils.BASE64BINARY );
-                        }
-                        else
-                        {
-                            modElement.addElement( "value" ).setText( value.getString() );
-                        }
+                        Element valueElement = modElement.addElement( DsmlLiterals.VALUE ).addText(
+                            ParserUtils.base64Encode( value.getString() ) );
+                        valueElement.addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON
+                            + ParserUtils.BASE64BINARY );
                     }
                 }
             }
@@ -195,19 +194,19 @@ public class ModifyRequestDsml
 
             if ( operation == ModificationOperation.ADD_ATTRIBUTE )
             {
-                modElement.addAttribute( "operation", "add" );
+                modElement.addAttribute( DsmlLiterals.OPERATION, DsmlLiterals.ADD );
             }
             else if ( operation == ModificationOperation.REPLACE_ATTRIBUTE )
             {
-                modElement.addAttribute( "operation", "replace" );
+                modElement.addAttribute( DsmlLiterals.OPERATION, DsmlLiterals.REPLACE );
             }
             else if ( operation == ModificationOperation.REMOVE_ATTRIBUTE )
             {
-                modElement.addAttribute( "operation", "delete" );
+                modElement.addAttribute( DsmlLiterals.OPERATION, DsmlLiterals.DELETE );
             }
             else if ( operation == ModificationOperation.INCREMENT_ATTRIBUTE )
             {
-                modElement.addAttribute( "operation", "increment" );
+                modElement.addAttribute( DsmlLiterals.OPERATION, DsmlLiterals.INCREMENT );
             }
         }
 

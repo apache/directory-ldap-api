@@ -22,6 +22,7 @@ package org.apache.directory.api.dsmlv2.response;
 
 import java.util.Collection;
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -41,9 +42,6 @@ public class SearchResultReferenceDsml
     extends AbstractResponseDsml<SearchResultReference>
     implements SearchResultReference
 {
-    private static final String SEARCH_RESULT_REFERENCE_TAG = "searchResultReference";
-
-
     /**
      * Creates a new getDecoratedMessage() of SearchResultReferenceDsml.
      * 
@@ -87,17 +85,17 @@ public class SearchResultReferenceDsml
 
         if ( root != null )
         {
-            element = root.addElement( SEARCH_RESULT_REFERENCE_TAG );
+            element = root.addElement( DsmlLiterals.SEARCH_RESULT_REFERENCE );
         }
         else
         {
-            element = new DefaultElement( SEARCH_RESULT_REFERENCE_TAG );
+            element = new DefaultElement( DsmlLiterals.SEARCH_RESULT_REFERENCE );
         }
 
         // Adding References
         for ( String url : getDecorated().getReferral().getLdapUrls() )
         {
-            element.addElement( "ref" ).addText( url );
+            element.addElement( DsmlLiterals.REF ).addText( url );
         }
 
         return element;

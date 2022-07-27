@@ -21,6 +21,7 @@
 package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
@@ -36,9 +37,6 @@ import org.dom4j.tree.DefaultElement;
  */
 public class CompareResponseDsml extends AbstractResultResponseDsml<CompareResponse> implements CompareResponse
 {
-    private static final String COMPARE_RESPONSE_TAG = "compareResponse";
-
-
     /**
      * Creates a new getDecoratedMessage() of CompareResponseDsml.
      * 
@@ -82,11 +80,11 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
 
         if ( root != null )
         {
-            element = root.addElement( COMPARE_RESPONSE_TAG );
+            element = root.addElement( DsmlLiterals.COMPARE_RESPONSE );
         }
         else
         {
-            element = new DefaultElement( COMPARE_RESPONSE_TAG );
+            element = new DefaultElement( DsmlLiterals.COMPARE_RESPONSE );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),

@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.dsmlv2.AbstractDsmlMessageDecorator;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Request;
@@ -68,7 +69,7 @@ public abstract class AbstractRequestDsml<E extends Request>
         int requestID = getDecorated().getMessageId();
         if ( requestID > 0 )
         {
-            element.addAttribute( "requestID", Integer.toString( requestID ) );
+            element.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
         }
 
         // Controls
@@ -88,34 +89,34 @@ public abstract class AbstractRequestDsml<E extends Request>
         switch ( getDecorated().getType() )
         {
             case ABANDON_REQUEST:
-                return "abandonRequest";
+                return DsmlLiterals.ABANDON_REQUEST;
 
             case ADD_REQUEST:
-                return "addRequest";
+                return DsmlLiterals.ADD_REQUEST;
 
             case BIND_REQUEST:
-                return "authRequest";
+                return DsmlLiterals.AUTH_REQUEST;
 
             case COMPARE_REQUEST:
-                return "compareRequest";
+                return DsmlLiterals.COMPARE_REQUEST;
 
             case DEL_REQUEST:
-                return "delRequest";
+                return DsmlLiterals.DEL_REQUEST;
 
             case EXTENDED_REQUEST:
-                return "extendedRequest";
+                return DsmlLiterals.EXTENDED_REQUEST;
 
             case MODIFYDN_REQUEST:
-                return "modDNRequest";
+                return DsmlLiterals.MOD_DN_REQUEST;
 
             case MODIFY_REQUEST:
-                return "modifyRequest";
+                return DsmlLiterals.MODIFY_REQUEST;
 
             case SEARCH_REQUEST:
-                return "searchRequest";
+                return DsmlLiterals.SEARCH_REQUEST;
 
             default:
-                return "error";
+                return DsmlLiterals.ERROR;
         }
     }
 

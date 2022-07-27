@@ -23,6 +23,7 @@ package org.apache.directory.api.dsmlv2.request;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.AbandonListener;
@@ -71,7 +72,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
         int requestID = getDecorated().getMessageId();
         if ( requestID > 0 )
         {
-            element.addAttribute( "requestID", Integer.toString( requestID ) );
+            element.addAttribute( DsmlLiterals.REQUEST_ID, Integer.toString( requestID ) );
         }
 
         // Controls

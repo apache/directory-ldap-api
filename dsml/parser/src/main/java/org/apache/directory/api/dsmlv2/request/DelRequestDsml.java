@@ -20,6 +20,7 @@
 package org.apache.directory.api.dsmlv2.request;
 
 
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
@@ -83,7 +84,7 @@ public class DelRequestDsml
         // Dn
         if ( getDecorated().getName() != null )
         {
-            element.addAttribute( "dn", getDecorated().getName().getName() );
+            element.addAttribute( DsmlLiterals.DN, getDecorated().getName().getName() );
         }
 
         return element;
