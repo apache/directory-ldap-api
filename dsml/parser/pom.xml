@@ -147,7 +147,8 @@
               org.dom4j.io;version=${dom4j.version},
               org.dom4j.tree;version=${dom4j.version},
               org.slf4j;version=${slf4j.api.bundleversion},
-              org.xmlpull.v1;version=${xpp3.version}
+              org.xmlpull.v1;version=${xpp3.version},
+              org.apache.commons.text;version=${commons.text.version}
             </Import-Package>
             <Automatic-Module-Name>apache.directory.ldap.api.dsml.parser</Automatic-Module-Name>
           </instructions>
