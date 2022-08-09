@@ -79,7 +79,7 @@
     <pax-url.version>2.6.2</pax-url.version>
     <slf4j.api.version>1.7.36</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
-    <velocity.version>1.5</velocity.version>
+    <velocity.version>1.7</velocity.version>
     <wagon.ssh.version>3.5.2</wagon.ssh.version>
     <wagon.ssh.external.version>3.5.2</wagon.ssh.external.version>
     <xml.apis.version>2.0.2</xml.apis.version>
@@ -770,6 +770,17 @@
          </plugin>
         </plugins>
       </build>
+    </profile>
+    
+    <!-- use JDK8 compilation for JDK9+ compiler -->
+    <profile>
+      <id>java-8-compilation</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.release>8</maven.compiler.release>
+      </properties>
     </profile>
   </profiles>
 
