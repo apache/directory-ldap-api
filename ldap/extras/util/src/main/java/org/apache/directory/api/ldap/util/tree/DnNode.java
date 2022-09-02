@@ -211,7 +211,7 @@ public class DnNode<N>
      * 
      * @param element The element to set
      */
-    private synchronized void setElement( N element )
+    public synchronized void setElement( N element )
     {
         this.nodeElement = element;
     }
