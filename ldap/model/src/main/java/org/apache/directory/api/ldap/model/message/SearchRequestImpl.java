@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidSearchFilterException;
 import org.apache.directory.api.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
@@ -181,7 +181,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         }
         catch ( ParseException pe )
         {
-            throw new LdapProtocolErrorException( I18n.err( I18n.ERR_13508_INVALID_FILTER, filter ), pe );
+            throw new LdapInvalidSearchFilterException( I18n.err( I18n.ERR_13508_INVALID_FILTER, filter, pe.getMessage() ) );
         }
 
         return this;
