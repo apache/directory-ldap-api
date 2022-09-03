@@ -1977,7 +1977,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
         catch ( LdapLdifException ne )
         {
-            LOG.error( I18n.err( I18n.ERR_13430_PREMATURE_LDIF_ITERATOR_TERMINATION ) );
+            LOG.error( I18n.err( I18n.ERR_13430_PREMATURE_LDIF_ITERATOR_TERMINATION, ne.getMessage() ) );
             error = ne;
             return null;
         }
