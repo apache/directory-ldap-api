@@ -107,7 +107,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * </p>
      *
      * @param alias an aliased name of the attribute identifier
-     * @return the attribute associated with the alias
+     * @return the attribute associated with the alias, <code>null</code> otherwise
      */
     Attribute get( String alias );
 
@@ -116,7 +116,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * Returns the attribute associated with an AttributeType
      *
      * @param attributeType the AttributeType we are looking for
-     * @return the associated attribute
+     * @return the associated attribute, <code>null</code> otherwise
      */
     Attribute get( AttributeType attributeType );
 
