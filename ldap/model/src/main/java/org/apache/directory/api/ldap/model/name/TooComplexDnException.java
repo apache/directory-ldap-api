@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
  */
 public class TooComplexDnException extends LdapInvalidDnException
 {
-    // The defualt serila version ID
+    // The default serial version ID
     private static final long serialVersionUID = 4854240181901296414L;
     
     /** An instance of this exception to avoid creation a new one every time we need it */
