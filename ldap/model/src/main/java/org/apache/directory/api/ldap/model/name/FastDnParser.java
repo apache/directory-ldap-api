@@ -189,9 +189,6 @@ import org.apache.directory.api.util.Strings;
         // stops at \ + # " -> Too Complex Exception
         String upValue = matchValue( chars, pos );
 
-        // SPACE*
-        matchSpaces( chars, pos );
-
         if ( rdn != null )
         {
             String upName = name.substring( rdnStart, pos.start );
@@ -603,8 +600,7 @@ import org.apache.directory.api.util.Strings;
         {
             if ( !hasMoreChars( pos ) )
             {
-                pos.start -= numTrailingSpaces;
-                return new String( name, start, pos.start - start );
+                return new String( name, start, pos.start - numTrailingSpaces - start );
             }
 
             char c = nextChar( name, pos, true );
@@ -620,7 +616,6 @@ import org.apache.directory.api.util.Strings;
                 case ',':
                 case ';':
                     pos.start--;
-                    //pos.start -= numTrailingSpaces;
                     return new String( name, start, pos.start - numTrailingSpaces - start );
 
                 case ' ':
