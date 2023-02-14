@@ -530,7 +530,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @param newAva The Ava to add
      * @return The list of Ava with the new Ava at the right position
      */
-    private List<Ava> addOrdered( List<Ava> avaList, Ava newAva )
+    /*package protected*/ static List<Ava> addOrdered( List<Ava> avaList, Ava newAva )
     {
         if ( avaList == null )
         {
@@ -540,6 +540,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         if ( avaList.isEmpty() )
         {
             avaList.add( newAva );
+            
             return avaList;
         }
         
@@ -1647,13 +1648,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @param dn The string to parse
      * @return <code>true</code> if the Rdn is valid
      */
-    public static boolean isValid( String dn )
+    public static boolean isValid( String rdn )
     {
-        Rdn rdn = new Rdn();
-
         try
         {
-            parse( null, dn, rdn );
+            parse( null, rdn, null );
 
             return true;
         }
@@ -1672,16 +1671,14 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * </p>
      *
      * @param schemaManager The Schemamanager to use
-     * @param dn The string to parse
+     * @param rdn The string to parse
      * @return <code>true</code> if the Rdn is valid
      */
-    public static boolean isValid( SchemaManager schemaManager, String dn )
+    public static boolean isValid( SchemaManager schemaManager, String rdn )
     {
-        Rdn rdn = new Rdn( schemaManager );
-
         try
         {
-            parse( schemaManager, dn, rdn );
+            parse( schemaManager, rdn, null );
 
             return true;
         }
@@ -1700,21 +1697,29 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * </p>
      *
      * @param schemaManager The SchemaManager
-     * @param dn The String to parse
+     * @param rdnStr The String to parse
      * @param rdn The Rdn to fill. Beware that if the Rdn is not empty, the new
      *            AttributeTypeAndValue will be added.
      * @throws LdapInvalidDnException If the NameComponent is invalid
      */
-    private static void parse( SchemaManager schemaManager, String dn, Rdn rdn ) throws LdapInvalidDnException
+    private static void parse( SchemaManager schemaManager, String rdnStr, Rdn rdn ) throws LdapInvalidDnException
     {
         try
         {
-            FastDnParser.parseRdn( schemaManager, dn, rdn );
+            FastDnParser.parseRdn( schemaManager, rdnStr, rdn );
         }
         catch ( TooComplexDnException e )
         {
-            rdn.clear();
-            new ComplexDnParser().parseRdn( schemaManager, dn, rdn );
+            if ( rdn != null )
+            {
+                rdn.clear();
+            }
+            else
+            {
+                rdn = new Rdn();
+            }
+            
+            new ComplexDnParser().parseRdn( schemaManager, rdnStr, rdn );
         }
     }
 
