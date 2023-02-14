@@ -143,6 +143,7 @@ import org.apache.directory.api.ldap.model.message.extended.ModifyDnNoDResponse;
 import org.apache.directory.api.ldap.model.message.extended.ModifyNoDResponse;
 import org.apache.directory.api.ldap.model.message.extended.NoticeOfDisconnect;
 import org.apache.directory.api.ldap.model.message.extended.SearchNoDResponse;
+import org.apache.directory.api.ldap.model.name.DefaultDnFactory;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -4584,9 +4585,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             schemaManager = tmp;
 
             // Change the container's BinaryDetector
-            ioSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
+            LdapMessageContainer<Message> ldapMessageContainer = 
                 new LdapMessageContainer<>( codec,
-                    new SchemaBinaryAttributeDetector( schemaManager ) ) );
+                    new SchemaBinaryAttributeDetector( schemaManager ) );
+            
+            // Associate a DnFactory to the container
+            ldapMessageContainer.setDnFactory( new DefaultDnFactory( schemaManager, 1000 ) );
+            
+            ioSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
 
         }
         catch ( LdapException le )
@@ -4835,6 +4841,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         LdapMessageContainer<Message> ldapMessageContainer =
             new LdapMessageContainer<>(
                 codec, config.getBinaryAttributeDetector() );
+        
+        ldapMessageContainer.setDnFactory( new DefaultDnFactory( schemaManager, 1000 ) );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
     }

@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -92,8 +93,19 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
 
             try
             {
-                Dn dn = new Dn( dnStr );
-                Rdn newRdn = dn.getRdn( dn.size() - 1 );
+                DnFactory dnFactory = container.getDnFactory();
+                Dn entryDn;
+                
+                if ( dnFactory == null )
+                {
+                    entryDn = new Dn( dnStr );
+                }
+                else
+                {
+                    entryDn = dnFactory.create( dnStr );
+                }
+                
+                Rdn newRdn = entryDn.getRdn( entryDn.size() - 1 );
                 modifyDnRequest.setNewRdn( newRdn );
             }
             catch ( LdapInvalidDnException ine )

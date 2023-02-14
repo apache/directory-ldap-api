@@ -28,6 +28,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
@@ -54,11 +55,15 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /** The logger */
     private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
 
+    /** The LDAP API Service instance */
+    private LdapApiService ldapApiService;
+
     /**
      * Creates a new instance of LdapProtocolEncoder.
      */
-    public LdapProtocolDecoder()
+    public LdapProtocolDecoder( LdapApiService ldapApiService )
     {
+        this.ldapApiService = ldapApiService;
     }
 
 
@@ -79,6 +84,8 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
             messageContainer.setMaxPDUSize( maxPDUSize );
         }
+        
+        messageContainer.setDnFactory( ldapApiService.getDnFactory() );
 
         List<Message> decodedMessages = new ArrayList<>();
         ByteBuffer buf = in.buf();

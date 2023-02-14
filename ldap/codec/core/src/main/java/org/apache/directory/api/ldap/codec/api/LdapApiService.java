@@ -28,6 +28,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 
 
@@ -356,4 +357,18 @@ public interface LdapApiService
      * none had been set earlier.
      */
     ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory factory );
+
+    
+    /**
+     * Associate a DnFactory to the service
+     * @param dnfactory The DnFactory instance
+     */
+    void setDnfactory( DnFactory dnfactory );
+    
+    
+    /**
+     * Get the DN Factory
+     * @return The DnFactory instance
+     */
+    DnFactory getDnFactory();
 }

@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,18 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
 
             try
             {
-                Dn newSuperior = new Dn( dnStr );
+                DnFactory dnFactory = container.getDnFactory();
+                Dn newSuperior;
+                
+                if ( dnFactory == null )
+                {
+                    newSuperior = new Dn( dnStr );
+                }
+                else
+                {
+                    newSuperior = dnFactory.create( dnStr );
+                }
+
                 modifyDnRequest.setNewSuperior( newSuperior );
             }
             catch ( LdapInvalidDnException ine )

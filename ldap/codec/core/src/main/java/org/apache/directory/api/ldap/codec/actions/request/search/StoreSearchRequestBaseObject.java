@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +82,18 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
 
             try
             {
-                Dn baseObject = new Dn( dnStr );
+                DnFactory dnFactory = container.getDnFactory();
+                Dn baseObject;
+
+                if ( dnFactory == null )
+                {
+                    baseObject = new Dn( dnStr );
+                }
+                else
+                {
+                    baseObject = new Dn( dnStr ); //dnFactory.create( dnStr );
+                }
+                
                 searchRequest.setBase( baseObject );
             }
             catch ( LdapInvalidDnException ine )

@@ -59,7 +59,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      */
     public LdapProtocolCodecFactory( LdapApiService ldapApiService ) 
     {
-        ldapDecoder = new LdapProtocolDecoder();
+        ldapDecoder = new LdapProtocolDecoder( ldapApiService );
         ldapEncoder = new LdapProtocolEncoder( ldapApiService );
     }
     

@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,16 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<Message>>
 
                     try
                     {
-                        matchedDn = new Dn( dnStr );
+                        DnFactory dnFactory = container.getDnFactory();
+                        
+                        if ( dnFactory == null )
+                        {
+                            matchedDn = new Dn( dnStr );
+                        }
+                        else
+                        {
+                            matchedDn = dnFactory.create( dnStr );
+                        }
                     }
                     catch ( LdapInvalidDnException ine )
                     {

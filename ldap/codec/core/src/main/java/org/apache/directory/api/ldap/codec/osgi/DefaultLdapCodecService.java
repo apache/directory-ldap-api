@@ -48,8 +48,8 @@ import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.OpaqueExtendedRequest;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
 import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
@@ -60,6 +60,7 @@ import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
@@ -95,6 +96,9 @@ public class DefaultLdapCodecService implements LdapApiService
 
     /** The registered ProtocolCodecFactory */
     private ProtocolCodecFactory protocolCodecFactory;
+    
+    /** The DN Factory */
+    private DnFactory dnFactory;
 
 
     /**
@@ -758,5 +762,24 @@ public class DefaultLdapCodecService implements LdapApiService
         }
 
         return sb.toString();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDnfactory( DnFactory dnfactory )
+    {
+        this.dnFactory = dnfactory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DnFactory getDnFactory()
+    {
+        return dnFactory;
     }
 }

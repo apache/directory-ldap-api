@@ -35,6 +35,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 
 
 /**
@@ -62,6 +63,9 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
     
     /** The current control factory, if any */
     private ControlFactory<?> controlFactory;
+    
+    /** The DN Factory used to speed up Ldap Message DN decoding */
+    private DnFactory dnFactory;
     
     /** The current Intermediate response factory */
     private IntermediateOperationFactory intermediateFactory;
@@ -538,5 +542,23 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
     public void setExtendedFactory( ExtendedOperationFactory extendedFactory )
     {
         this.extendedFactory = extendedFactory;
+    }
+
+
+    /**
+     * @return the dnFactory
+     */
+    public DnFactory getDnFactory()
+    {
+        return dnFactory;
+    }
+
+
+    /**
+     * @param dnFactory the dnFactory to set
+     */
+    public void setDnFactory( DnFactory dnFactory )
+    {
+        this.dnFactory = dnFactory;
     }
 }

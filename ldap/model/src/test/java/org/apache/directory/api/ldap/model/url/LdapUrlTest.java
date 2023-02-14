@@ -36,7 +36,6 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.ldap.model.url.LdapUrl.Extension;
 
 import org.junit.jupiter.api.Test;

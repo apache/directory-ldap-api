@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +91,18 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
 
             try
             {
-                Dn entryDn = new Dn( dnStr );
+                DnFactory dnFactory = container.getDnFactory();
+                Dn entryDn;
+                
+                if ( dnFactory == null )
+                {
+                    entryDn = new Dn( dnStr );
+                }
+                else
+                {
+                    entryDn = dnFactory.create( dnStr );
+                }
+
                 addRequest.setEntryDn( entryDn );
             }
             catch ( LdapInvalidDnException ine )

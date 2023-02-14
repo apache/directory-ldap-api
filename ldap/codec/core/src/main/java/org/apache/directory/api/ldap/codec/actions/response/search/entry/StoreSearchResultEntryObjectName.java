@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +80,18 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
 
             try
             {
-                Dn objectName = new Dn( dnStr );
+                DnFactory dnFactory = container.getDnFactory();
+                Dn objectName;
+                
+                if ( dnFactory == null )
+                {
+                    objectName = new Dn( dnStr );
+                }
+                else
+                {
+                    objectName = dnFactory.create( dnStr );
+                }
+                
                 searchResultEntry.setObjectName( objectName );
             }
             catch ( LdapInvalidDnException ine )

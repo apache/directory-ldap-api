@@ -49,7 +49,7 @@ public class ApiLdapNetMinaOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        new LdapProtocolDecoder();
+        new LdapProtocolDecoder( null );
         new LdapProtocolEncoder();
     }
 

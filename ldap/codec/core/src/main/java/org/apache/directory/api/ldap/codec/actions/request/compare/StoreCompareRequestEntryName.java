@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.DnFactory;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,8 +84,19 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
 
             try
             {
-                Dn entry = new Dn( dnStr );
-                compareRequest.setName( entry );
+                DnFactory dnFactory = container.getDnFactory();
+                Dn entryDn;
+                
+                if ( dnFactory == null )
+                {
+                    entryDn = new Dn( dnStr );
+                }
+                else
+                {
+                    entryDn = dnFactory.create( dnStr );
+                }
+                
+                compareRequest.setName( entryDn );
             }
             catch ( LdapInvalidDnException ine )
             {
