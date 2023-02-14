@@ -156,19 +156,11 @@ import org.apache.directory.api.util.Strings;
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13602_RDN_EMPTY ) );
         }
 
-        if ( rdn == null )
-        {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13603_NULL_RDN ) );
-        }
-
         Position pos = new Position();
         pos.start = 0;
         pos.length = name.length();
-        StringBuilder sb = new StringBuilder();
 
         parseRdnInternal( schemaManager, name, pos, rdn );
-        
-        sb.append( rdn.getNormName() );
     }
 
 
@@ -200,20 +192,29 @@ import org.apache.directory.api.util.Strings;
         // SPACE*
         matchSpaces( chars, pos );
 
-        String upName = name.substring( rdnStart, pos.start );
-        
-        Ava ava = new Ava( schemaManager, type, upValue );
-        rdn.addAVA( schemaManager, ava );
-
-        if ( schemaManager != null )
+        if ( rdn != null )
         {
-            AttributeType attributeType = ava.getAttributeType();
+            String upName = name.substring( rdnStart, pos.start );
+            Ava ava = new Ava( schemaManager, type, upValue );
             
-            if ( attributeType != null )
+            rdn.addAVA( schemaManager, ava );
+        
+            if ( schemaManager != null )
             {
-                sbNormName.append( ava.getNormType() );
-                sbNormName.append( '=' );
-                sbNormName.append( ava.getValue().getNormalized() );
+                AttributeType attributeType = ava.getAttributeType();
+                
+                if ( attributeType != null )
+                {
+                    sbNormName.append( ava.getNormType() );
+                    sbNormName.append( '=' );
+                    sbNormName.append( ava.getValue().getNormalized() );
+                }
+                else
+                {
+                    sbNormName.append( type );
+                    sbNormName.append( '=' );
+                    sbNormName.append( upValue );
+                }
             }
             else
             {
@@ -221,17 +222,11 @@ import org.apache.directory.api.util.Strings;
                 sbNormName.append( '=' );
                 sbNormName.append( upValue );
             }
-        }
-        else
-        {
-            sbNormName.append( type );
-            sbNormName.append( '=' );
-            sbNormName.append( upValue );
-        }
 
-        rdn.setUpName( upName );
-        rdn.setNormName( sbNormName.toString() );
-        rdn.hashCode();
+            rdn.setUpName( upName );
+            rdn.setNormName( sbNormName.toString() );
+            rdn.hashCode();
+        }
     }
 
 
@@ -625,8 +620,8 @@ import org.apache.directory.api.util.Strings;
                 case ',':
                 case ';':
                     pos.start--;
-                    pos.start -= numTrailingSpaces;
-                    return new String( name, start, pos.start - start );
+                    //pos.start -= numTrailingSpaces;
+                    return new String( name, start, pos.start - numTrailingSpaces - start );
 
                 case ' ':
                     numTrailingSpaces++;
