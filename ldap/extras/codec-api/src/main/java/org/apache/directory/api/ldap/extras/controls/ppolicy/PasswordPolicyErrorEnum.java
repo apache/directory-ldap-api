@@ -54,7 +54,10 @@ public enum PasswordPolicyErrorEnum
     PASSWORD_TOO_YOUNG(7),
     
     /** The password is in history */
-    PASSWORD_IN_HISTORY(8);
+    PASSWORD_IN_HISTORY(8),
+    
+    /** The length of the password is too long */
+    PASSWORD_TOO_LONG(9);
 
     private int value;
 
@@ -102,6 +105,9 @@ public enum PasswordPolicyErrorEnum
             case 8:
                 return PASSWORD_IN_HISTORY;
 
+            case 9:
+                return PASSWORD_TOO_LONG;
+                
             default:
 
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_9100_UNKNOWN_PASSWORD_POLICY_ERROR, val ) );

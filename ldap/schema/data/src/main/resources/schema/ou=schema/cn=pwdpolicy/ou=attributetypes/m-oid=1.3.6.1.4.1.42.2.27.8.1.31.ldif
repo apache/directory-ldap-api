@@ -9,4 +9,5 @@ objectclass: top
 m-name: pwdMaxLength
 creatorsname: uid=admin,ou=system
 m-equality: integerMatch
+m-ordering: integerOrderingMatch
 m-length: 0

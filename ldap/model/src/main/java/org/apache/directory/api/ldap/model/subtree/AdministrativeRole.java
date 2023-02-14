@@ -52,7 +52,10 @@ public enum AdministrativeRole
     TriggerExecutionSpecificArea("triggerExecutionSpecificArea"),
 
     /** The TriggerExecutionInnerArea role */
-    TriggerExecutionInnerArea("triggerExecutionInnerArea");
+    TriggerExecutionInnerArea("triggerExecutionInnerArea"),
+    
+    /** The PasswordPolicySpecificArea role */
+    PasswordPolicySpecificArea("passwordPolicySpecificArea");
 
     /** The AdministrativeRole as a String */
     private String role;
