@@ -153,22 +153,22 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\u00E4\\ +cn=TEST" .equals( rdn.getEscaped() ) )
+        if ( !"cn=TEST+OU=Exemple \\+ Rdn\u00E4\\ " .equals( rdn.getEscaped() ) )
         {
             errors = "\nRdn.getEscaped fails '" + rdn.getEscaped() + "'";
         }
         
-        if ( !"ou".equals( rdn.getNormType() ) )
+        if ( !"cn".equals( rdn.getNormType() ) )
         {
             errors += "\nRdn.getNormType fails '" + rdn.getNormType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue() ) )
+        if ( !"TEST".equals( rdn.getValue() ) )
         {
-            errors += "\nRdn.getEscaped fails '" + rdn.getValue() + "'";
+            errors += "\nRdn.getValue fails '" + rdn.getValue() + "'";
         }
         
-        if ( !"OU".equals( rdn.getType() ) )
+        if ( !"cn".equals( rdn.getType() ) )
         {
             errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }

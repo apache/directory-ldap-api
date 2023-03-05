@@ -1575,7 +1575,7 @@ public class LdifRevertorTest
         assertEquals( "cn=joe+sn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
 
@@ -1624,7 +1624,7 @@ public class LdifRevertorTest
         assertEquals( "sn=joe+cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
@@ -1686,7 +1686,7 @@ public class LdifRevertorTest
         assertEquals( "cn=joe+sn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
 
@@ -1735,7 +1735,7 @@ public class LdifRevertorTest
         assertEquals( "cn=joe+sn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
@@ -1797,7 +1797,7 @@ public class LdifRevertorTest
         assertEquals( "sn=joe+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
 
@@ -1846,7 +1846,7 @@ public class LdifRevertorTest
         assertEquals( "sn=big+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
 
@@ -1895,7 +1895,7 @@ public class LdifRevertorTest
         assertEquals( "sn=joe+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
 
@@ -1944,7 +1944,7 @@ public class LdifRevertorTest
         assertEquals( "sn=big+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
-        assertEquals( oldRdn.getName(), reversed.getNewRdn() );
+        assertEquals( oldRdn.getNormName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
 }

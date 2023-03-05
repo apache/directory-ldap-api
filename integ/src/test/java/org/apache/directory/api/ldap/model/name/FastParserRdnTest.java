@@ -85,7 +85,7 @@ public class FastParserRdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"Cn=TEST".equals( rdn.getNormName() ) )
+        if ( !"cn=TEST".equals( rdn.getNormName() ) )
         {
             errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
         }

@@ -107,6 +107,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /** the schema manager */
     private transient SchemaManager schemaManager;
+    
+    /** Two constants used to trim the DN UpName */
+    private static final boolean LEFT = true;
+    private static final boolean RIGHT = false;
 
     /**
      * An iterator over RDNs
@@ -197,7 +201,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             this.rdns.add( new Rdn( schemaManager, rdn ) );
         }
 
-        toUpName();
+        upName = toUpName();
     }
 
 
@@ -755,7 +759,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Get the descendant of a given DN, using the ancestr DN. Assuming that
+     * Get the descendant of a given DN, using the ancestor DN. Assuming that
      * a DN has two parts :<br>
      * DN = [descendant DN][ancestor DN]<br>
      * To get back the descendant from the full DN, you just pass the ancestor DN
@@ -807,6 +811,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
         }
 
+        // Short cut: if the last RDNs are equal, return ""
+        if ( rdns.get( 0 ).equals( rdnsAncestor.get( 0 ) ) )
+        {
+            return newDn;
+        }
+        
         for ( int i = 0; i < rdns.size() - length; i++ )
         {
             newDn.rdns.add( rdns.get( i ) );
@@ -862,17 +872,17 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn getAncestorOf( Dn descendant ) throws LdapInvalidDnException
     {
-        if ( ( descendant == null ) || ( descendant.size() == 0 ) )
+        int length = descendant.size();
+
+        if ( ( descendant == null ) || ( length == 0 ) )
         {
             return this;
         }
 
-        if ( rdns.isEmpty() )
+        if ( rdns.isEmpty() || length == rdns.size() )
         {
             return EMPTY_DN;
         }
-
-        int length = descendant.size();
 
         if ( length > rdns.size() )
         {
@@ -880,7 +890,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             LOG.error( message );
             throw new ArrayIndexOutOfBoundsException( message );
         }
-
+        
         Dn newDn = new Dn( schemaManager );
         List<Rdn> rdnsDescendant = descendant.getRdns();
 
@@ -900,7 +910,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             newDn.rdns.add( rdns.get( i ) );
         }
 
-        newDn.toUpName();
+        newDn.upName = upName.substring( descendant.upName.length() + 1 );
 
         return newDn;
     }
@@ -993,6 +1003,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         clonedDn.rdns.add( 0, new Rdn( schemaManager, newRdn ) );
         clonedDn.toUpName();
+        clonedDn.upName = newRdn.upName + ',' + upName;
 
         return clonedDn;
     }
@@ -1021,9 +1032,39 @@ public class Dn implements Iterable<Rdn>, Externalizable
             newDn.rdns.add( rdns.get( i ) );
         }
 
-        newDn.toUpName();
+        newDn.upName = removeUpName( rdns.get( 0 ).upName, LEFT );
 
         return newDn;
+    }
+    
+    
+    private String removeUpName( String removedUpName, boolean fromLeft )
+    {
+        int removedSize = removedUpName.length();
+        
+        if ( fromLeft )
+        {
+            for ( int i = removedSize; i < upName.length(); i++ )
+            {
+                if ( upName.charAt( i ) == ',' )
+                {
+                    return upName.substring( i + 1 );
+                }
+            }
+        }
+        else
+        {
+             for ( int i = upName.length() - removedSize; i > 0; i-- )
+             {
+                 if ( upName.charAt( i ) == ',' )
+                 {
+                     return upName.substring( 0, i - 1 );
+                 }
+             }
+        }
+        
+        // Nothing left
+        return Strings.EMPTY_STRING;
     }
 
 

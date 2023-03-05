@@ -2040,13 +2040,11 @@ public class DnTest
 
         Dn result = new Dn( schemaManager, name );
 
-        assertTrue( 
-            result.equals( 
-                "0.9.2342.19200300.100.1.25=and some animals+ou=some people,0.9.2342.19200300.100.1.25=eXample,dc=cOm" ) );
-        assertTrue( ( result )
-            .getName()
-            .equals(
-                "ou= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm" ) );
+        assertEquals( result,
+                "0.9.2342.19200300.100.1.25=and some animals+ou=some people,0.9.2342.19200300.100.1.25=eXample,dc=cOm" );
+        assertEquals(
+                "ou= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm",
+                result.getName() );
     }
 
 
@@ -2674,27 +2672,27 @@ public class DnTest
         Dn dn = new Dn( "  ou  =  Example + cn = TEST ,  ou  =  COM " );
 
         new Dn( schemaManager, dn );
-        assertEquals( "ou=Example+cn=TEST,ou=COM", dn.getEscaped() );
+        assertEquals( "cn=TEST+ou=Example,ou=COM", dn.getEscaped() );
         assertEquals( "  ou  =  Example + cn = TEST ,  ou  =  COM ", dn.getName() );
 
         Rdn rdn = dn.getRdn();
-        assertEquals( "ou", rdn.getNormType() );
-        assertEquals( "ou=Example+cn=TEST", rdn.getEscaped() );
-        assertEquals( "ou", rdn.getType() );
-        assertEquals( "Example", rdn.getValue() );
+        assertEquals( "cn", rdn.getNormType() );
+        assertEquals( "cn=TEST+ou=Example", rdn.getEscaped() );
+        assertEquals( "cn", rdn.getType() );
+        assertEquals( "TEST", rdn.getValue() );
         assertEquals( "  ou  =  Example + cn = TEST ", rdn.getName() );
 
         // The first ATAV
         Ava atav = rdn.getAva();
 
-        assertEquals( "ou=Example", atav.getEscaped() );
-        assertEquals( "ou", atav.getNormType() );
-        assertEquals( "Example", atav.getValue().getString() );
+        assertEquals( "cn=TEST", atav.getEscaped() );
+        assertEquals( "cn", atav.getNormType() );
+        assertEquals( "TEST", atav.getValue().getString() );
 
-        assertEquals( "ou", atav.getType() );
-        assertEquals( "Example", atav.getValue().getString() );
+        assertEquals( "cn", atav.getType() );
+        assertEquals( "TEST", atav.getValue().getString() );
 
-        assertEquals( "  ou  =  Example ", atav.getName() );
+        assertEquals( " cn = TEST ", atav.getName() );
 
         assertEquals( 2, rdn.size() );
 
@@ -2775,29 +2773,29 @@ public class DnTest
         // ------------------------------------------------------------------
         // Before normalization
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
-        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ,ou=COM", dn.getEscaped() );
+        assertEquals( "cn=T\\+ST\\ +OU=Ex\\+mple,ou=COM", dn.getEscaped() );
 
         // Check the first Rdn
         Rdn rdn = dn.getRdn();
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
-        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ", rdn.getEscaped() );
+        assertEquals( "cn=T\\+ST\\ +OU=Ex\\+mple", rdn.getEscaped() );
 
-        assertEquals( "OU", rdn.getType() );
-        assertEquals( "ou", rdn.getNormType() );
+        assertEquals( "cn", rdn.getType() );
+        assertEquals( "cn", rdn.getNormType() );
 
-        assertEquals( "Ex+mple", rdn.getValue() );
-        assertEquals( "Ex+mple", rdn.getAva().getValue().getString() );
+        assertEquals( "T+ST ", rdn.getValue() );
+        assertEquals( "T+ST ", rdn.getAva().getValue().getString() );
 
         // The first ATAV
         Ava atav = rdn.getAva();
 
-        assertEquals( "  OU  =  Ex\\+mple ", atav.getName() );
-        assertEquals( "OU=Ex\\+mple", atav.getEscaped() );
+        assertEquals( " cn = T\\+ST\\  ", atav.getName() );
+        assertEquals( "cn=T\\+ST\\ ", atav.getEscaped() );
 
-        assertEquals( "ou", atav.getNormType() );
-        assertEquals( "OU", atav.getType() );
+        assertEquals( "cn", atav.getNormType() );
+        assertEquals( "cn", atav.getType() );
 
-        assertEquals( "Ex+mple", atav.getValue().getString() );
+        assertEquals( "T+ST ", atav.getValue().getString() );
 
         assertEquals( 2, rdn.size() );
 
@@ -2824,47 +2822,47 @@ public class DnTest
         new Dn( schemaManager, dn );
 
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
-        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ,ou=COM", dn.getEscaped() );
+        assertEquals( "cn=T\\+ST\\ +OU=Ex\\+mple,ou=COM", dn.getEscaped() );
 
         // Check the first Rdn
         rdn = dn.getRdn();
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
-        assertEquals( "OU=Ex\\+mple+cn=T\\+ST\\ ", rdn.getEscaped() );
+        assertEquals( "cn=T\\+ST\\ +OU=Ex\\+mple", rdn.getEscaped() );
 
-        assertEquals( "OU", rdn.getType() );
-        assertEquals( "ou", rdn.getNormType() );
+        assertEquals( "cn", rdn.getType() );
+        assertEquals( "cn", rdn.getNormType() );
 
-        assertEquals( "Ex+mple", rdn.getValue() );
+        assertEquals( "T+ST ", rdn.getValue() );
 
         // The first ATAV
         atav = rdn.getAva();
 
-        assertEquals( "  OU  =  Ex\\+mple ", atav.getName() );
-        assertEquals( "OU=Ex\\+mple", atav.getEscaped() );
+        assertEquals( " cn = T\\+ST\\  ", atav.getName() );
+        assertEquals( "cn=T\\+ST\\ ", atav.getEscaped() );
 
-        assertEquals( "ou", atav.getNormType() );
-        assertEquals( "OU", atav.getType() );
+        assertEquals( "cn", atav.getNormType() );
+        assertEquals( "cn", atav.getType() );
 
-        assertEquals( "Ex+mple", atav.getValue().getString() );
+        assertEquals( "T+ST ", atav.getValue().getString() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "Ex+mple".equals( ava.getValue().getString() ) )
+            if ( "T+ST ".equals( ava.getValue().getString() ) )
             {
                 // Skip the first one
                 continue;
             }
 
-            assertEquals( " cn = T\\+ST\\  ", ava.getName() );
-            assertEquals( "cn=T\\+ST\\ ", ava.getEscaped() );
+            assertEquals( "  OU  =  Ex\\+mple ", ava.getName() );
+            assertEquals( "OU=Ex\\+mple", ava.getEscaped() );
 
-            assertEquals( "cn", ava.getType() );
-            assertEquals( "cn", ava.getNormType() );
+            assertEquals( "OU", ava.getType() );
+            assertEquals( "ou", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getValue().getString() );
+            assertEquals( "Ex+mple", ava.getValue().getString() );
         }
     }
 

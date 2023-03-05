@@ -77,19 +77,19 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     private static final Logger LOG = LoggerFactory.getLogger( Ava.class );
 
     /** The normalized Name type */
-    private String normType;
+    /* package protected */ String normType;
 
     /** The user provided Name type */
-    private String upType;
+    /* package protected */ String upType;
 
     /** The value. It can be a String or a byte array */
-    private Value value;
+    /* package protected */ Value value;
 
     /** The user provided Ava */
-    private String upName;
+    /* package protected */ String upName;
 
     /** The attributeType if the Ava is schemaAware */
-    private AttributeType attributeType;
+    /* package protected */ AttributeType attributeType;
 
     /** the schema manager */
     private transient SchemaManager schemaManager;
@@ -1294,6 +1294,46 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     public AttributeType getAttributeType()
     {
         return attributeType;
+    }
+    
+    
+    /* Package protected */ void setAttributeType( SchemaManager schemaManager, String upType )
+        throws LdapInvalidDnException
+    {
+        if ( schemaManager != null )
+        {
+            this.schemaManager = schemaManager;
+
+            try
+            {
+                attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
+            }
+            catch ( LdapException le )
+            {
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
+            }
+
+            normType = attributeType.getOid();
+        }
+        else
+        {
+            String upTypeTrimmed = Strings.trim( upType );
+
+            if ( Strings.isEmpty( upTypeTrimmed ) )
+            {
+                String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
+                // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                // Let the caller log the exception if needed.
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+            }
+            else
+            {
+                // In this case, we will use the upType instead
+                this.normType = Strings.lowerCaseAscii( upTypeTrimmed );
+                this.upType = upType;
+            }
+        }
     }
 
 

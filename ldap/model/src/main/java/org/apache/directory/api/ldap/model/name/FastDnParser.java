@@ -215,7 +215,7 @@ import org.apache.directory.api.util.Strings;
             }
             else
             {
-                sbNormName.append( type );
+                sbNormName.append( Strings.toLowerCaseAscii( type ) );
                 sbNormName.append( '=' );
                 sbNormName.append( upValue );
             }

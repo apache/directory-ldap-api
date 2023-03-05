@@ -401,7 +401,7 @@ public class DnParserTest
 
         assertEquals( "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
             nameRFC2253_2.getName(), "RFC2253_2 : " );
-        assertEquals( "OU=Sales+CN=J. Smith,O=Widget Inc.,C=US", nameRFC2253_2.getEscaped(), "RFC2253_2 : " );
+        assertEquals( "CN=J. Smith+OU=Sales,O=Widget Inc.,C=US", nameRFC2253_2.getEscaped(), "RFC2253_2 : " );
     }
 
 
@@ -658,7 +658,7 @@ public class DnParserTest
         
         try
         {
-            String dnStr = "workforceID=2# + a=b";
+            String dnStr = "workforceID=2# + z=b";
             assertTrue( Dn.isValid( dnStr ) );
             
             Dn dn = new Dn( dnStr );

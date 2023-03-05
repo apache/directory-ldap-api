@@ -426,7 +426,7 @@ public final class LdifRevertor
             reverted.setDn( newDn );
         }
 
-        reverted.setNewRdn( oldRdn.getName() );
+        reverted.setNewRdn( oldRdn.getNormName() );
 
         if ( newSuperior != null )
         {

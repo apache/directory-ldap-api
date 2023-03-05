@@ -129,10 +129,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     private static final long serialVersionUID = 1L;
 
     /** The User Provided Rdn */
-    private String upName = null;
+    /* package protected */ String upName = null;
     
     /** The normalized Rdn */
-    private String normName;
+    /* package protected */ String normName;
 
     /**
      * Stores all couple type = value. We may have more than one type, if the
@@ -140,31 +140,31 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * because we want the Avas to be sorted. An Ava may contain more than one
      * value. In this case, the values are String stored in a List.
      */
-    private transient List<Ava> avas = null;
+    /* package protected */ transient List<Ava> avas = null;
 
     /**
      * We also keep a set of types, in order to use manipulations. A type is
      * connected with the Ava it represents.
      */
-    private transient Map<String, List<Ava>> avaTypes;
+    /* package protected */ transient Map<String, List<Ava>> avaTypes;
 
     /**
      * We keep the type for a single valued Rdn, to avoid the creation of an HashMap
      */
-    private String avaType = null;
+    /* package protected */ String avaType = null;
 
     /**
      * A simple Ava is used to store the Rdn for the simple
      * case where we only have a single type=value. This will be 99.99% the
      * case. This avoids the creation of a HashMap.
      */
-    protected Ava ava = null;
+    /* package protected */ Ava ava = null;
 
     /**
      * The number of Avas. We store this number here to avoid complex
      * manipulation of Ava and Avas
      */
-    private int nbAvas = 0;
+    /* package protected */ int nbAvas = 0;
 
     /** CompareTo() results */
     public static final int UNDEFINED = Integer.MAX_VALUE;
@@ -225,6 +225,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public Rdn( SchemaManager schemaManager, String rdn ) throws LdapInvalidDnException
     {
+        this.schemaManager = schemaManager;
+        
         if ( Strings.isNotEmpty( rdn ) )
         {
             // Parse the string. The Rdn will be updated.
@@ -530,7 +532,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @param newAva The Ava to add
      * @return The list of Ava with the new Ava at the right position
      */
-    /*package protected*/ static List<Ava> addOrdered( List<Ava> avaList, Ava newAva )
+    /*package protected*/ static List<Ava> addOrdered( List<Ava> avaList, Ava newAva ) throws LdapInvalidDnException
     {
         if ( avaList == null )
         {
@@ -561,7 +563,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             else if ( comp == 0 )
             {
                 found = true;
-                break;
+             
+                throw new LdapInvalidDnException( I18n.err( I18n.ERR_13626_INVALID_RDN_DUPLICATE_AVA, avaElem.normType ) );
             }
             else 
             {

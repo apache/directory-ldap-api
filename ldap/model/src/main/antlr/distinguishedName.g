@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import javax.naming.NameParser;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
@@ -163,6 +164,32 @@ options    {
 
         // A flag set to false if we have a binary value
         boolean isHR = true;
+    }
+
+
+    private String createNormAva( Ava ava )
+    {
+        StringBuilder rdnNormStr = new StringBuilder();
+        Value value = ava.getValue(); 
+        AttributeType attributeType = ava.getAttributeType();
+        rdnNormStr.append( ava.getNormType() );
+        rdnNormStr.append( '=' );
+
+        if ( value != null )
+        {
+            if ( value.getNormalized() != null )
+            {
+                rdnNormStr.append( value.getNormalized() );
+            }
+            else
+            {
+                // We can't tell if the value is HR or not. 
+                // Use the Value User Provided value
+                rdnNormStr.append( value.getUpValue() );
+            }
+        }
+
+        return rdnNormStr.toString();
     }
 }
 
@@ -302,6 +329,7 @@ relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns
     }
     ;
 
+
 /**
  * Parses a Rdn string.
  *
@@ -335,120 +363,123 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
 
         // The rdnStr variable is used to gather the full RDN string
         // as provided
-        StringBuilder rdnStr = new StringBuilder();
+        StringBuilder rdnUpStr = new StringBuilder();
         StringBuilder rdnNormStr = new StringBuilder();
         int avaPos = 0;
-        Ava currentAva;
         AttributeType attributeType;
         Value val;
+        Ava ava = new Ava( schemaManager);
+        String upAva;
+
+        // The list of parsed Ava for a later post-processing
+        List<Ava> avas = new ArrayList<>();
     }
     :
     (
-        tmp = attributeTypeAndValue[schemaManager, rdn] 
+        // The first AVA
+        upAva = attributeTypeAndValue[schemaManager, ava] 
         {
-            rdnStr.append( tmp );
-            currentAva = rdn.getAva( avaPos );
-            
-            attributeType = currentAva.getAttributeType();
-            
-            if ( schemaManager == null )
-            {
-                rdnNormStr.append( currentAva.getNormType() );
-                rdnNormStr.append( '=' );
-            }
-            
-            val = currentAva.getValue();
-            
-            if ( ( schemaManager == null ) && ( val != null ) )
-            {
-                if ( val.getNormalized() != null )
-                {
-                    rdnNormStr.append( val.getNormalized() );
-                }
-                else
-                {
-                    // We can't tell if the value is HR or not. 
-                    // Use the Value User Provided value
-                    rdnNormStr.append( val.getUpValue() );
-                }
-            }
+            ava.hashCode();
+            rdnUpStr.append( upAva );
+            avas.add( ava );
         }
         (
             PLUS 
-            { 
-                rdnStr.append( '+' ); 
-                
-                if ( schemaManager == null )
-                {
-                    rdnNormStr.append( '+' );
-                }
-                
-                avaPos++;
-            }
-
-            tmp = attributeTypeAndValue[schemaManager, rdn] 
             {
-                rdnStr.append( tmp );
-                currentAva = rdn.getAva( avaPos );
-                attributeType = currentAva.getAttributeType();
-            
-                if ( schemaManager == null )
+                ava = new Ava( schemaManager);
+            }
+            upAva = attributeTypeAndValue[schemaManager, ava] 
+            {
+                ava.hashCode();
+                rdnUpStr.append( '+' ).append( upAva );
+
+                try 
                 {
-                    rdnNormStr.append( tmp );
-                    rdnNormStr.append( '=' );
+                    Rdn.addOrdered( avas, ava );
                 }
-            
-                val = currentAva.getValue();
-            
-                if ( ( schemaManager == null ) && ( val != null ) )
+                catch ( LdapInvalidDnException lide )
                 {
-                    if ( val.getNormalized() != null )
-                    {
-                        rdnNormStr.append( val.getNormalized() );
-                    }
-                    else
-                    {
-                        // We can't tell if the value is HR or not. 
-                        // Use the Value User Provided value
-                        rdnNormStr.append( val.getUpValue() );
-                    }
+                    throw new SemanticException( lide.getMessage() );
                 }
             }
         )*
     )
     {
-        rdn.hashCode();
-        rdn.setUpName( rdnStr.toString() );
-        
-        if ( schemaManager != null )
+        // Now, build the Rdn
+        switch ( avas.size() )
         {
-            // process the multi-value RDN, ordering them by attributes
-            boolean isFirst = true;
-            
-            for ( Ava ava : rdn )
-            {
-                if ( isFirst )
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    rdnNormStr.append( '+' );
-                }
-                
-                rdnNormStr.append( ava.getAttributeType().getOid() );
-                rdnNormStr.append( '=' );
-                
-                val = ava.getValue();
+            case 0:
+                // Can't be...
+            case 1:
+                // One single Ava
+                rdn.upName = rdnUpStr.toString();
+                rdn.normName = createNormAva( ava );
+                rdn.ava = ava;
+                rdn.avaType = ava.getType();
+                rdn.nbAvas = 1; 
+                break;
 
-                if ( ( val != null ) && ( val.getNormalized() != null ) )
+            default:
+                rdn.nbAvas = avas.size();
+                rdn.avaTypes = new HashMap<String, List<Ava>>();
+                boolean isFirst = true;
+
+                for ( Ava parsedAva : avas )
                 {
-                    rdnNormStr.append( val.getNormalized() );
+                    if ( isFirst  )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        rdnNormStr.append( '+' );
+                    }
+
+                    String type;
+
+                    if ( schemaManager != null )
+                    {
+                        type = parsedAva.getAttributeType().getOid();
+                        rdnNormStr.append( type );
+                    }
+                    else
+                    {
+                        type = parsedAva.normType;
+                        rdnNormStr.append( type );
+                    }
+
+                    rdnNormStr.append( '=' );
+
+                    val = parsedAva.getValue();
+
+                    if ( ( val != null ) && ( val.getNormalized() != null ) )
+                    {
+                        rdnNormStr.append( val.getNormalized() );
+                    }
+                    else
+                    {
+                        rdnNormStr.append( val.getUpValue() );
+                    }
+
+                    List<Ava> avaList = rdn.avaTypes.get( type );
+
+                    if ( avaList == null )
+                    {
+                        avaList = new ArrayList<>();
+                    }
+
+                    avaList.add( parsedAva );
+                    rdn.avaTypes.put( type, avaList );
                 }
-            }
+
+                rdn.upName = rdnUpStr.toString();
+                rdn.normName = rdnNormStr.toString();
+                rdn.avas = avas;
+
+                break;
         }
-        
-        rdn.setNormName( rdnNormStr.toString() );
+
+        rdn.hashCode();
     }
     ;
     
@@ -465,12 +496,12 @@ relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
  * </pre>
  *
  * @param schemaManager The SchemaManager
- * @param rdn The Rdn to update
+ * @param ava The parsed Ava
  * @return The user provided Ava
  * @throws RecognitionException If the token is invalid
  * @throws TokenStreamException When we weren't able to fetch a token
  */
-attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upNameStr]
+attributeTypeAndValue [SchemaManager schemaManager, Ava ava] returns [String upNameStr]
     {
         matchedProduction( "attributeTypeAndValue()" );
         String type = null;
@@ -492,7 +523,6 @@ attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upN
                 // cannot be processed
                 rdnUpName.append( value.upValue );
                 AttributeType attributeType = null;
-                Ava ava = null;
 
                 if ( schemaManager != null )
                 {
@@ -502,6 +532,14 @@ attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upN
                     }
 
                     attributeType = schemaManager.getAttributeType( type );
+                    ava.attributeType = attributeType;
+                    ava.upType = type;
+                    ava.normType = attributeType.getOid();
+                }
+                else
+                {
+                    ava.upType = type;
+                    ava.normType = Strings.lowerCaseAscii( Strings.trim( type ) );
                 }
 
                 if ( ( ( attributeType != null ) && attributeType.isHR() ) || value.isHR )
@@ -538,17 +576,45 @@ attributeTypeAndValue [SchemaManager schemaManager, Rdn rdn] returns [String upN
                         }
                     }
 
-                    if ( ava == null )
+                    if ( attributeType != null )
                     {
-                        ava = new Ava( schemaManager, type, rdnUpName.toString(), Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
+                        try 
+                        {
+                            if ( ava == null )
+                            {
+                                ava.upName = rdnUpName.toString();
+                                ava.value = new Value( attributeType, Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
+                            }
+                            else
+                            {
+                                ava.upName = rdnUpName.toString();
+                                ava.value = new Value( attributeType, Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
+                            }
+                        }
+                        catch ( LdapInvalidAttributeValueException liave )
+                        {
+                            throw new SemanticException( liave.getMessage() );
+                        }
+                    }
+                    else
+                    {
+                        if ( ava == null )
+                        {
+                            ava.upName = rdnUpName.toString();
+                            ava.value = new Value( Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
+                        }
+                        else
+                        {
+                            ava.upName = rdnUpName.toString();
+                            ava.value = new Value( Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
+                        }
                     }
                 }
                 else
                 {
-                    ava = new Ava( schemaManager, type, rdnUpName.toString(), value.bytes.copyOfUsedBytes() );
+                    ava.upName = rdnUpName.toString();
+                    ava.value = new Value( value.bytes.copyOfUsedBytes() );
                 }
-           
-                rdn.addAVA( schemaManager, ava );
             }
             catch ( LdapInvalidDnException e )
             {
