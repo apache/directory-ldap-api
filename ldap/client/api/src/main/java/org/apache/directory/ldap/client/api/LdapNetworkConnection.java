@@ -1336,7 +1336,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ResponseFuture<? extends Response> rf = getFromFutureMap( abandonId );
 
         // if the listener is not null, this is a async operation and no need to
-        // send cancel signal on future, sending so will leave a dangling poision object in the corresponding queue
+        // send cancel signal on future, sending so will leave a dangling poison object in the corresponding queue
         // this is a sync operation send cancel signal to the corresponding ResponseFuture
         if ( rf != null )
         {
@@ -1350,9 +1350,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else
         {
             // this shouldn't happen
-            if ( LOG.isWarnEnabled() )
+            if ( LOG.isInfoEnabled() )
             {
-                LOG.warn( I18n.msg( I18n.MSG_04165_NO_FUTURE_ASSOCIATED_TO_MSG_ID_COMPLETED, abandonId ) );
+                LOG.info( I18n.msg( I18n.MSG_04165_NO_FUTURE_ASSOCIATED_TO_MSG_ID_COMPLETED, abandonId ) );
             }
         }
     }
