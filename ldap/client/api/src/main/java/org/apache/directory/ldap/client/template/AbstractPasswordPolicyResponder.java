@@ -77,7 +77,14 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
     protected PasswordException fail( ResultResponse resultResponse, 
             PasswordPolicyResponse passwordPolicyResponse, ResultCodeEnum resultCode )
     {
-        PasswordException exception = new PasswordException();
+        String diagnosticMessage = "";
+        
+        if  ( ( resultResponse != null ) && resultResponse.getLdapResult() != null )
+        {
+            diagnosticMessage = resultResponse.getLdapResult().getDiagnosticMessage();
+        }
+
+        PasswordException exception = new PasswordException( diagnosticMessage );
         exception.setResultCode( resultCode );
         
         if ( passwordPolicyResponse != null

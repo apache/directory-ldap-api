@@ -48,6 +48,16 @@ public class PasswordException extends Exception
         super();
     }
 
+    /**
+     * Creates a new PasswordException instance
+     * 
+     * @param message The message to store
+     */
+    public PasswordException( String message )
+    {
+        super( message );
+    }
+
 
     /**
      * If an LdapException was thrown causing this exception, that 
