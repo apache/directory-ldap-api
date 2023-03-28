@@ -1031,7 +1031,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             newDn.rdns.add( rdns.get( i ) );
         }
 
-        newDn.toUpName();// = removeUpName( rdns.get( 0 ).upName, LEFT );
+        newDn.toUpName();
 
         return newDn;
     }
