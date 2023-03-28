@@ -1003,7 +1003,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         clonedDn.rdns.add( 0, new Rdn( schemaManager, newRdn ) );
         clonedDn.toUpName();
-        clonedDn.upName = newRdn.upName + ',' + upName;
 
         return clonedDn;
     }
@@ -1032,7 +1031,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             newDn.rdns.add( rdns.get( i ) );
         }
 
-        newDn.upName = removeUpName( rdns.get( 0 ).upName, LEFT );
+        newDn.toUpName();
 
         return newDn;
     }
