@@ -1,3 +1,20 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api/badge)](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api)
+
+Apache Directory LDAP API
+=========================
+
+The Apache Directory LDAP API is an ongoing effort to provide an enhanced LDAP API, as a replacement for JNDI and the existing LDAP API (jLdap and Mozilla LDAP API).
+
+This is a "schema aware" API with some convenient ways to access all types of LDAP servers, not only ApacheDS but any LDAP server.
+
+The API is OSGI ready and extensible. New controls, schema elements and network layer could be added or used in the near future.
+
+https://directory.apache.org/api/
+
+Export Notice
+==========================
+
 This distribution includes cryptographic software.  The country in 
    which you currently reside may have restrictions on the import, 
    possession, use, and/or re-export to another country, of 
