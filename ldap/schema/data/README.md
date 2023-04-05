@@ -16,7 +16,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-# Schemma Data
+# Schema Data
 
 ## OID Allocation Policy (generated using /src/main/scripts/oid_allocation.pl)
 
