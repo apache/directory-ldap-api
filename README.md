@@ -1,8 +1,8 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api/badge)](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api)
 
-Welcome to Apache CXF!
-======================
+Apache Directory LDAP API
+=========================
 
 The Apache Directory LDAP API is an ongoing effort to provide an enhanced LDAP API, as a replacement for JNDI and the existing LDAP API (jLdap and Mozilla LDAP API).
 
@@ -13,7 +13,7 @@ The API is OSGI ready and extensible. New controls, schema elements and network 
 https://directory.apache.org/api/
 
 Export Notice
-======================
+==========================
 
 This distribution includes cryptographic software.  The country in 
    which you currently reside may have restrictions on the import, 
