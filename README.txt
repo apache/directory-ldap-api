@@ -1,3 +1,6 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api/badge)](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api)
+
 This distribution includes cryptographic software.  The country in 
    which you currently reside may have restrictions on the import, 
    possession, use, and/or re-export to another country, of 
