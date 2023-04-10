@@ -117,13 +117,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <dependencies>
-            <dependency><!-- downgrade Velocity to 1.5 until skin is updated to Velocity 1.7 -->
-              <groupId>org.apache.velocity</groupId>
-              <artifactId>velocity</artifactId>
-              <version>${velocity.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
 
         <plugin>
@@ -340,12 +333,6 @@
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-ssh-external</artifactId>
             <version>${wagon.ssh.external.version}</version>
-          </dependency>
-          <!-- Needed for mvn site to work.-->
-          <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>${velocity.version}</version>
           </dependency>
         </dependencies>
       </plugin>
