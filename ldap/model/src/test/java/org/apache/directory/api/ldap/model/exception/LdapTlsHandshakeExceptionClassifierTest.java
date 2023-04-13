@@ -47,7 +47,7 @@ public class LdapTlsHandshakeExceptionClassifierTest
     {
         LdapTlsHandshakeFailCause classification = LdapTlsHandshakeExceptionClassifier.classify( null );
         assertThat( classification.getReason(), equalTo( ( Reason ) BasicReason.UNSPECIFIED ) );
-        assertThat( classification.getReasonPhrase(), equalTo( "Unspecified" ) );
+        assertThat( classification.getReasonPhrase(), equalTo( "Undefined" ) );
         assertThat( classification.getRootCause(), equalTo( null ) );
     }
 
@@ -58,7 +58,7 @@ public class LdapTlsHandshakeExceptionClassifierTest
         LdapTlsHandshakeFailCause classification = LdapTlsHandshakeExceptionClassifier
             .classify( new IOException( "foo" ) );
         assertThat( classification.getReason(), equalTo( ( Reason ) BasicReason.UNSPECIFIED ) );
-        assertThat( classification.getReasonPhrase(), equalTo( "Unspecified" ) );
+        assertThat( classification.getReasonPhrase(), equalTo( "Undefined, IOException" ) );
         assertThat( classification.getRootCause(), instanceOf( IOException.class ) );
     }
 

@@ -43,7 +43,7 @@ public class LdapTlsHandshakeExceptionTest
     public void testClassifyNull()
     {
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg", null );
-        assertThat( e.getMessage(), equalTo( "msg, reason: Unspecified" ) );
+        assertThat( e.getMessage(), equalTo( "msg, reason: Undefined" ) );
     }
 
 
@@ -51,7 +51,7 @@ public class LdapTlsHandshakeExceptionTest
     public void testClassifyOther()
     {
         LdapTlsHandshakeException e = new LdapTlsHandshakeException( "msg", new IOException( "foo" ) );
-        assertThat( e.getMessage(), equalTo( "msg, reason: Unspecified: foo" ) );
+        assertThat( e.getMessage(), equalTo( "msg, reason: Undefined, IOException: foo" ) );
     }
 
 

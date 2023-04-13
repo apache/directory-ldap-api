@@ -87,10 +87,16 @@ public final class LdapTlsHandshakeExceptionClassifier
         else
         {
             failCause.setReason( BasicReason.UNSPECIFIED );
-            failCause.setReasonPhrase( "Unspecified" );
+            String failMessage = "Undefined";
+            
+            if ( cause != null )
+            {
+                failMessage += ", " + cause.getClass().getSimpleName();
+            }
+            
+            failCause.setReasonPhrase( failMessage );
         }
 
         return failCause;
     }
-
 }

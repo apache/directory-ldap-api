@@ -58,6 +58,7 @@ public class LdapTlsHandshakeException extends LdapException
 
         message += ", reason: " + failCause.getReasonPhrase();
         Throwable rootCause = failCause.getRootCause();
+        
         if ( rootCause != null && rootCause != this )
         {
             message += ": " + rootCause.getMessage();
@@ -65,5 +66,4 @@ public class LdapTlsHandshakeException extends LdapException
 
         return message;
     }
-
 }
