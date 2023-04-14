@@ -118,28 +118,6 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 19') {
-          options {
-            timeout(time: 4, unit: 'HOURS')
-            retry(2)
-          }
-          agent {
-            docker {
-              label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-19'
-              alwaysPull true
-              args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
-          }
-          steps {
-            sh 'mvn -U -V clean verify'
-          }
-          post {
-            always {
-              deleteDir()
-            }
-          }
-        }
         stage ('Windows Java 8') {
           options {
             timeout(time: 4, unit: 'HOURS')
