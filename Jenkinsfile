@@ -118,7 +118,7 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 20') {
+        stage ('Linux Java 19') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -126,7 +126,7 @@ pipeline {
           agent {
             docker {
               label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-20'
+              image 'apachedirectory/maven-build:jdk-19'
               alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
