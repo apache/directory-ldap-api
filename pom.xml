@@ -71,7 +71,7 @@
     <dom4j.version>2.1.4</dom4j.version>
     <forbiddenapis.version>3.5.1</forbiddenapis.version>
     <hamcrest.version>2.2</hamcrest.version>
-    <junit.engine.version>5.9.2</junit.engine.version>
+    <junit.engine.version>5.9.3</junit.engine.version>
     <junit.platform.version>1.9.3</junit.platform.version>
     <mina.core.version>2.2.1</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
