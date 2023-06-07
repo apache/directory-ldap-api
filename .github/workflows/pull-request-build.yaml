@@ -56,19 +56,3 @@ jobs:
           cache: maven
       - name: Build with Apache Maven
         run: mvn -U clean install -Djava.awt.headless=true -fae -B
-  build-java-20:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read  
-      pull-requests: read
-    timeout-minutes: 130
-    steps:
-      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
-      - name: Set up JDK 20
-        uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 # v3.11.0
-        with:
-          java-version: '20'
-          distribution: 'temurin'
-          cache: maven
-      - name: Build with Apache Maven
-        run: mvn -U clean install -Djava.awt.headless=true -fae -B
