@@ -904,13 +904,15 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX );
             }
         }
-
+        
         for ( int i = length; i < rdns.size(); i++ )
         {
             newDn.rdns.add( rdns.get( i ) );
         }
+        
+        newDn.toUpName();
 
-        newDn.upName = upName.substring( descendant.upName.length() + 1 );
+        //newDn.upName = upName.substring( descendant.upName.length() + 1 );
 
         return newDn;
     }

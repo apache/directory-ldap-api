@@ -3176,4 +3176,15 @@ public class DnTest
         assertEquals( "UID = #4869", dn3.getName() );
         assertEquals( "0.9.2342.19200300.100.1.1= hi ", dn3.getNormName() );
     }
+    
+    @Test
+    public void ancestorCheck() throws LdapInvalidDnException
+    {
+        DefaultSchemaManager schemaManager = new DefaultSchemaManager();
+        Dn group = new Dn( schemaManager, "ou=group,ou=base" );
+        Dn base = new Dn( schemaManager, "ou=base" );
+
+        Dn ancestor = group.getAncestorOf( "ou=group" );
+        assertEquals( ancestor, base );
+    }
 }

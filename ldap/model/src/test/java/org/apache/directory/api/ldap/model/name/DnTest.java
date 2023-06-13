@@ -21,23 +21,8 @@ package org.apache.directory.api.ldap.model.name;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Iterator;
-
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -65,5 +50,15 @@ public class DnTest
         
         assertEquals( "C=c,B=b,A=a", dn.getName() );
         assertEquals( "c=c,b=b,a=a", dn.getNormName() );
+    }
+    
+    @Test
+    public void ancestorCheck() throws LdapInvalidDnException
+    {
+        Dn group = new Dn( "ou=group,ou=base" );
+        Dn base = new Dn( "ou=base" );
+
+        Dn ancestor = group.getAncestorOf( "ou=group" );
+        assertEquals( ancestor, base );
     }
 }
