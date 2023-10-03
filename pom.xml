@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>47</version>
+    <version>48-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -69,7 +69,7 @@
     <commons.pool.version>2.11.1</commons.pool.version>
     <commons.text.version>1.10.0</commons.text.version>
     <dom4j.version>2.1.4</dom4j.version>
-    <forbiddenapis.version>3.5.1</forbiddenapis.version>
+    <forbiddenapis.version>3.6</forbiddenapis.version>
     <hamcrest.version>2.2</hamcrest.version>
     <junit.engine.version>5.10.0</junit.engine.version>
     <junit.platform.version>1.10.0</junit.platform.version>
