@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>48-SNAPSHOT</version>
+    <version>48</version>
     <relativePath />
   </parent>
 
@@ -165,7 +165,7 @@
               <license implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
                 <notes>Also allow the license url to be https.</notes>
                 <patterns>
-                  <pattern>https://www.apache.org/licenses/LICENSE-2.0</pattern>
+                  <pattern>https://www.apache.org/licenses/LICENSE-2.0.txt</pattern>
                 </patterns>
               </license>
             </licenses>
