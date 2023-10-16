@@ -147,6 +147,8 @@ public class OpenLdapSchemaParser
     
     private class PosSchema
     {
+        final boolean isQuirksModeEnabled;
+
         /** The line number in the file */
         int lineNumber;
         
@@ -155,7 +157,12 @@ public class OpenLdapSchemaParser
         
         /** The line being processed */
         String line;
-        
+
+        PosSchema( boolean isQuirksModeEnabled )
+        {
+            this.isQuirksModeEnabled = isQuirksModeEnabled;
+        }
+
         /**
          * {@inheritDoc} 
          */
@@ -942,7 +949,32 @@ public class OpenLdapSchemaParser
         return Character.isDigit( pos.line.charAt( pos.start ) );
     }
 
-    
+    private static boolean isEscape( PosSchema pos ) throws LdapSchemaException
+    {
+        return isEscape( pos, pos.start );
+    }
+
+    private static boolean isEscape( PosSchema pos, int index ) throws LdapSchemaException
+    {
+        if ( ( pos.line == null ) || ( pos.line.length() - index < 2 ) || pos.line.charAt( index ) != ESCAPE )
+        {
+            return false;
+        }
+
+        char c1 = pos.line.charAt( index + 1 );
+        char c2 = Character.toUpperCase( pos.line.charAt( index + 2 ) );
+
+        boolean isEscape = c1 > '0' && c1 <= '7' && c2 >= '0' && c2 <= 'F';
+
+        if ( !pos.isQuirksModeEnabled && !isEscape )
+        {
+            throw new LdapSchemaException( I18n.err( I18n.ERR_13308_NOT_A_VALID_ESCAPED_VALUE,
+                    pos.lineNumber, pos.start ) );
+        }
+
+        return isEscape;
+    }
+
     /**
      * 
      * @param reader The stream reader
@@ -1757,10 +1789,8 @@ public class OpenLdapSchemaParser
             return pos.line.substring( start, pos.start );
         }
     }
-    
-    
+
     /**
-     * No relaxed version.
      * <pre>
      * qdstring ::== SQUOTE dstring SQUOTE
      * dstring  ::= ( QS | QQ | QUTF8 )+            ; escaped UTF-8 string
@@ -1775,7 +1805,24 @@ public class OpenLdapSchemaParser
      * UTF4     ::= %xF0 %x90-BF UTF0 UTF0 | %xF1-F3 UTF0 UTF0 UTF0 | %xF4 %x80-8F UTF0 UTF0
      * ESC      ::= %x5C                            ; backslash ("\")
      * </pre>
-     * 
+     *
+     * In quirksMode :
+     *
+     * <pre>
+     * qdstring ::== SQUOTE dstring SQUOTE
+     * dstring  ::= ( QS | QQ | QUTF8 | ESC )+      ; escaped UTF-8 string or backslash
+     * QS       ::= ESC %x35 ( %x43 | %x63 )        ; "\5C" | "\5c", escape char
+     * QQ       ::= ESC %x32 %x37                   ; "\27", simple quote char
+     * QUTF8    ::= QUTF1 | UTFMB
+     * QUTF1    ::= %x00-26 | %x28-5B | %x5D-7F     ; All ascii but ' and \
+     * UTFMB    ::= UTF2 | UTF3 | UTF4
+     * UTF0     ::= %x80-BF
+     * UTF2     ::= %xC2-DF UTF0
+     * UTF3     ::= %xE0 %xA0-BF UTF0 | %xE1-EC UTF0 UTF0 | %xED %x80-9F UTF0 | %xEE-EF UTF0 UTF0
+     * UTF4     ::= %xF0 %x90-BF UTF0 UTF0 | %xF1-F3 UTF0 UTF0 UTF0 | %xF4 %x80-8F UTF0 UTF0
+     * ESC      ::= %x5C                            ; backslash ("\")
+     * </pre>
+     *
      * @param reader The stream reader
      * @param pos The position in the Schema
      * @return The QDString
@@ -1794,15 +1841,15 @@ public class OpenLdapSchemaParser
         pos.start++;
         int start = pos.start;
         int nbEscapes = 0;
-        
+
         while ( !isEmpty( pos ) && !startsWith( pos, SQUOTE ) )
         {
             // At the moment, just swallow anything
-            if ( startsWith( pos, ESCAPE ) )
+            if ( isEscape( pos ) )
             {
                 nbEscapes++;
             }
-            
+
             pos.start++;
             
         }
@@ -1820,15 +1867,8 @@ public class OpenLdapSchemaParser
             {
                 char c = pos.line.charAt( i );
                 
-                if ( c == ESCAPE )
+                if ( isEscape( pos, i ) )
                 {
-                    if ( i + 2 > pos.start )
-                    {
-                        // Error : not enough hex value
-                        throw new LdapSchemaException( I18n.err( I18n.ERR_13792_SIMPLE_QUOTE_EXPECTED_AT_END, 
-                            pos.lineNumber, pos.start ) );
-                    }
-                    
                     int u = Character.digit( pos.line.charAt( i + 1 ), 16 );
                     int l = Character.digit( pos.line.charAt( i + 2 ), 16 );
 
@@ -1852,7 +1892,6 @@ public class OpenLdapSchemaParser
                 pos.lineNumber, pos.start ) );
         }
     }
-
 
     /**
      * <pre>
@@ -2804,7 +2843,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( attributeTypeDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -3319,7 +3358,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( ditContentRuleDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -3692,7 +3731,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( ditStructureRuleDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -4028,7 +4067,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( ldapComparatorDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -4322,7 +4361,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( ldapSyntaxDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -4543,7 +4582,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( matchingRuleDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -4840,7 +4879,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( matchingRuleUseDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -5139,7 +5178,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( nameFormDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -5500,7 +5539,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( normalizerDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -5802,7 +5841,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( objectClassDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -6202,7 +6241,7 @@ public class OpenLdapSchemaParser
         
         try ( Reader reader = new BufferedReader( new StringReader( syntaxCheckerDescription ) ) )
         {
-            PosSchema pos = new PosSchema();
+            PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
             if ( isQuirksModeEnabled )
             {
@@ -6558,7 +6597,7 @@ public class OpenLdapSchemaParser
      */
     public void parse( Reader reader ) throws LdapSchemaException, IOException
     {
-        PosSchema pos = new PosSchema();
+        PosSchema pos = new PosSchema( isQuirksModeEnabled );
 
         while ( true )
         {

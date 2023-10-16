@@ -719,6 +719,101 @@ public class SchemaParserTestUtils
         asd = parser.parse( value );
         assertEquals( "\\'\\", asd.getDescription() );
 
+        value = "( " + oid + " " + required + " DESC 'test\\";
+        try
+        {
+            asd = parser.parse( value );
+            fail( "Exception expected, DESC should have simple quote at the end of it\\" );
+        }
+        catch ( ParseException pe )
+        {
+            pe.printStackTrace();
+            // expected
+        }
+
+        if ( parser.isQuirksMode() )
+        {
+            value = "( " + oid + " " + required + " DESC 'test\\23test' )";
+            asd = parser.parse( value );
+            assertEquals( "test#test", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\24test' )";
+            asd = parser.parse( value );
+            assertEquals( "test$test", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\27test' )";
+            asd = parser.parse( value );
+            assertEquals( "test'test", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\5c' )";
+            asd = parser.parse( value );
+            assertEquals( "test\\", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\' )";
+            asd = parser.parse( value );
+            assertEquals( "test\\", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\.' )";
+            asd = parser.parse( value );
+            assertEquals( "test\\.", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\test' )";
+            asd = parser.parse( value );
+            assertEquals( "test\\test", asd.getDescription() );
+        }
+
+        if ( !parser.isQuirksMode() )
+        {
+            value = "( " + oid + " " + required + " DESC 'test\\23test' )";
+            asd = parser.parse( value );
+            assertEquals( "test#test", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\24test' )";
+            asd = parser.parse( value );
+            assertEquals( "test$test", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\27test' )";
+            asd = parser.parse( value );
+            assertEquals( "test'test", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\5c' )";
+            asd = parser.parse( value );
+            assertEquals( "test\\", asd.getDescription() );
+
+            value = "( " + oid + " " + required + " DESC 'test\\' )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, unescaped DESC not allowed.)" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+
+            value = "( " + oid + " " + required + " DESC 'test\\.' )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, unescaped DESC not allowed.)" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+
+            value = "( " + oid + " " + required + " DESC 'test\\test' )";
+            try
+            {
+                parser.parse( value );
+                fail( "Exception expected, unescaped DESC not allowed.)" );
+            }
+            catch ( ParseException pe )
+            {
+                // expected
+            }
+        }
+
         // lowercase DESC
         value = "( " + oid + " " + required + " desc 'Descripton' )";
         asd = parser.parse( value );
