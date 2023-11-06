@@ -72,7 +72,7 @@
     <forbiddenapis.version>3.6</forbiddenapis.version>
     <hamcrest.version>2.2</hamcrest.version>
     <junit.engine.version>5.10.0</junit.engine.version>
-    <junit.platform.version>1.10.0</junit.platform.version>
+    <junit.platform.version>1.10.1</junit.platform.version>
     <mina.core.version>2.2.3</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>7.0.5</org.apache.felix.version>
@@ -299,7 +299,7 @@
         <plugin>
           <groupId>org.cyclonedx</groupId>
           <artifactId>cyclonedx-maven-plugin</artifactId>
-          <version>2.7.9</version>
+          <version>2.7.10</version>
           <executions>
             <execution>
               <id>make-bom</id>
