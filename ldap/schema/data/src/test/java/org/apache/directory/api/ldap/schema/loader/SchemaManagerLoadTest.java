@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
@@ -797,5 +798,27 @@ public class SchemaManagerLoadTest
         AttributeType at = schemaManager.getAttributeType( "uidNumber" );
         // if nis schema was loaded then the at will not be null
         assertNotNull( at );
+    }
+
+
+    @Test
+    public void testLoadDisabledMozilla() throws Exception
+    {
+        SchemaManager schemaManager = new DefaultSchemaManager();
+
+        assertTrue( schemaManager.loadDisabled( "mozilla" ) );
+        
+        schemaManager.getRegistries().buildReferences();
+
+        assertTrue( schemaManager.getErrors().isEmpty() );
+
+        AttributeType at = schemaManager.getAttributeType( "mozillaNickname" );
+        MatchingRule substringMR = at.getSubstring();
+        
+        // if nis schema was loaded then the at will not be null
+        assertNotNull( at );
+        
+        // if nis schema was loaded then the MR will not be null
+        assertNotNull( substringMR );
     }
 }
