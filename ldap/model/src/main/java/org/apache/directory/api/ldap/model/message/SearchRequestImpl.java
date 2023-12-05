@@ -33,6 +33,7 @@ import org.apache.directory.api.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 
 /**
@@ -178,6 +179,25 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         try
         {
             filterNode = FilterParser.parse( filter );
+        }
+        catch ( ParseException pe )
+        {
+            throw new LdapInvalidSearchFilterException( I18n.err( I18n.ERR_13508_INVALID_FILTER, filter, pe.getMessage() ) );
+        }
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SearchRequest setFilter( SchemaManager schemaManager, String filter ) throws LdapException
+    {
+        try
+        {
+            filterNode = FilterParser.parse( schemaManager, filter );
         }
         catch ( ParseException pe )
         {

@@ -55,6 +55,7 @@ import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Strings;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -568,7 +569,7 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsiNamespace );
 
                     Element valueElement = newElement.addElement( DsmlLiterals.VALUE ).addText(
-                        ParserUtils.base64Encode( value ) );
+                        ParserUtils.base64Encode( value.getBytes() ) );
                     valueElement
                         .addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON + ParserUtils.BASE64BINARY );
                 }
@@ -592,7 +593,7 @@ public class SearchRequestDsml
             
             if ( value != null )
             {
-                if ( ParserUtils.needsBase64Encoding( value ) )
+                if ( !value.isHumanReadable() )
                 {
                     Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                     Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -600,7 +601,7 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsiNamespace );
 
                     Element valueElement = newElement.addElement( DsmlLiterals.VALUE ).addText(
-                        ParserUtils.base64Encode( value.getString() ) );
+                        ParserUtils.base64Encode( value.getBytes() ) );
                     valueElement.addAttribute( new QName( DsmlLiterals.TYPE, xsiNamespace ), ParserUtils.XSD_COLON + ParserUtils.BASE64BINARY );
                 }
                 else
@@ -795,6 +796,18 @@ public class SearchRequestDsml
     public SearchRequest setFilter( String filter ) throws LdapException
     {
         getDecorated().setFilter( filter );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SearchRequest setFilter( SchemaManager schemaManager, String filter ) throws LdapException
+    {
+        getDecorated().setFilter( schemaManager, filter );
 
         return this;
     }

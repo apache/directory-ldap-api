@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 
 /**
@@ -205,6 +206,17 @@ public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
      * @throws LdapException If the filter can't be added
      */
     SearchRequest setFilter( String filter ) throws LdapException;
+
+
+    /**
+     * Sets the search filter associated with this search request.
+     * 
+     * @param schemaManager the SchemaManager instance
+     * @param filter the expression node for the root of the filter expression tree.
+     * @return The SearchRequest instance
+     * @throws LdapException If the filter can't be added
+     */
+    SearchRequest setFilter( SchemaManager schemaManager, String filter ) throws LdapException;
 
 
     /**
