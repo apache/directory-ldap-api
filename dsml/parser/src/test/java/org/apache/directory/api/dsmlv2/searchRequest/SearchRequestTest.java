@@ -33,8 +33,11 @@ import java.util.Map;
 
 import org.apache.directory.api.dsmlv2.AbstractTest;
 import org.apache.directory.api.dsmlv2.DsmlControl;
+import org.apache.directory.api.dsmlv2.DsmlLiterals;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.dsmlv2.request.SearchRequestDsml;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
@@ -50,8 +53,13 @@ import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -2441,5 +2449,22 @@ public class SearchRequestTest extends AbstractTest
         assertEquals( "(&(|(sn=*foo*)(cn=*foo*))(|(ou=*josopuram*)(o=*k*)))", filter.toString() );
         
         //System.out.println( searchRequest.toDsml( new DefaultElement( "root" ) ).asXML() );
+    }
+    
+    
+    @Test
+    public void testGenerateWithBase64() throws LdapException
+    {
+        Document document = DocumentHelper.createDocument();
+        Element element = document.addElement( DsmlLiterals.BATCH_RESPONSE );
+
+        element.add( ParserUtils.DSML_NAMESPACE );
+        element.add( ParserUtils.XSD_NAMESPACE );
+        element.add( ParserUtils.XSI_NAMESPACE );
+
+        SearchRequestDsml searchRequest = new SearchRequestDsml( LdapApiServiceFactory.getSingleton() );
+        searchRequest.setFilter( "(memberOf=cn=MercyCenterHospitalGroup,ou=Relationship,dc=HPD,o=IHE-Europe,c=FRA)" );    	
+    	
+        System.out.println( searchRequest.toDsml( element ).asXML() );
     }
 }

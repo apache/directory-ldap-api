@@ -38,7 +38,7 @@ public class Asn1Buffer2
     private int size = DEFAULT_SIZE;
 
     /** The internal buffer storage */
-    private class InternalBuffer
+    private final class InternalBuffer
     {
         /** A buffer to store the encoded PDU */
         private byte[] buffer = new byte[DEFAULT_SIZE];

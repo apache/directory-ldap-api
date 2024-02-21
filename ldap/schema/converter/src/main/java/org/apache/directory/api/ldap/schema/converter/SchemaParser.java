@@ -204,7 +204,7 @@ public class SchemaParser
      * The thread which read the schema files and fill the
      * temporary buffer used by the lexical analyzer.
      */
-    private class DataProducer implements Runnable
+    private final class DataProducer implements Runnable
     {
         /**
          * {@inheritDoc}
