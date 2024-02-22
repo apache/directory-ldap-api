@@ -67,6 +67,6 @@ public class DefaultPoolableLdapConnectionFactory extends AbstractPoolableLdapCo
      */
     public DefaultPoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
     {
-        this.connectionFactory = connectionFactory;
+        super( connectionFactory );
     }
 }
