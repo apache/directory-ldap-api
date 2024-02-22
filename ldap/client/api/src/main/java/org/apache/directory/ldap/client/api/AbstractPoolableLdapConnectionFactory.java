@@ -49,6 +49,11 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     /** The validator to use */
     protected LdapConnectionValidator validator = new LookupLdapConnectionValidator();
 
+    public AbstractPoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
+    {
+        this.connectionFactory = new PooledLdapConnectionFactory( connectionFactory );
+    }
+
     /**
      * {@inheritDoc}
      * 
@@ -205,5 +210,55 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
         }
         
         return validator.validate( connection.getObject() );
+    }
+
+    private static class PooledLdapConnectionFactory implements LdapConnectionFactory
+    {
+        private final LdapConnectionFactory delegate;
+
+        PooledLdapConnectionFactory( LdapConnectionFactory delegate )
+        {
+            this.delegate = delegate;
+        }
+
+        private LdapConnection wrap( LdapConnection ldapConnection )
+        {
+            if ( ldapConnection instanceof PooledLdapConnection )
+            {
+                return ldapConnection;
+            }
+
+            return new PooledLdapConnection( ldapConnection );
+        }
+
+        @Override
+        public LdapConnection bindConnection( LdapConnection connection ) throws LdapException
+        {
+            return wrap( delegate.bindConnection( connection ) );
+        }
+
+        @Override
+        public LdapConnection configureConnection( LdapConnection connection )
+        {
+            return wrap( delegate.configureConnection( connection ) );
+        }
+
+        @Override
+        public LdapApiService getLdapApiService()
+        {
+            return delegate.getLdapApiService();
+        }
+
+        @Override
+        public LdapConnection newLdapConnection() throws LdapException
+        {
+            return wrap( delegate.newLdapConnection() );
+        }
+
+        @Override
+        public LdapConnection newUnboundLdapConnection()
+        {
+            return wrap( delegate.newUnboundLdapConnection() );
+        }
     }
 }

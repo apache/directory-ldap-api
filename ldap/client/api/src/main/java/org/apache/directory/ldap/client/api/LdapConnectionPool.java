@@ -123,6 +123,10 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         try
         {
             connection = super.borrowObject();
+            if ( connection instanceof PooledLdapConnection )
+            {
+                ( ( PooledLdapConnection ) connection ).setConnectionPool( this );
+            }
             
             if ( LOG.isTraceEnabled() )
             {
