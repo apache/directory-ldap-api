@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>48</version>
+    <version>49-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -158,17 +158,17 @@
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
           <configuration>
-            <licenses>
+            <!--licenses-->
               <!-- TODO (low prio): Remove this simple workaround when Apache Rat 0.14 has been released. -->
               <!-- See also: https://issues.apache.org/jira/browse/RAT-212 -->
               <!-- and       https://issues.apache.org/jira/browse/LEGAL-265 -->
-              <license implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
+              <!-- license implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
                 <notes>Also allow the license url to be https.</notes>
                 <patterns>
                   <pattern>https://www.apache.org/licenses/LICENSE-2.0.txt</pattern>
                 </patterns>
               </license>
-            </licenses>
+            </licenses-->
             <excludeSubProjects>true</excludeSubProjects>
             <excludes>
               <!-- MAVEN_DEFAULT_EXCLUDES -->
