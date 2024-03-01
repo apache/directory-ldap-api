@@ -38,11 +38,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-    </dependency>
-    
-    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>api-i18n</artifactId>
     </dependency>
