@@ -58,7 +58,7 @@
 
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
-    <org.apache.directory.checkstyle-configuration.version>2.0.1</org.apache.directory.checkstyle-configuration.version>
+    <org.apache.directory.checkstyle-configuration.version>2.0.2-SNAPSHOT</org.apache.directory.checkstyle-configuration.version>
     
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
@@ -76,7 +76,10 @@
     <mina.core.version>2.2.3</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>7.0.5</org.apache.felix.version>
+
+    <!-- pax-exam 4.13.5 has an issue, don't use it now... -->
     <pax-exam.version>4.13.4</pax-exam.version>
+
     <pax-url.version>2.6.14</pax-url.version>
     <slf4j.api.version>1.7.36</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
