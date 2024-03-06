@@ -102,7 +102,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      */
     public ValidatingPoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
     {
-        this.connectionFactory = connectionFactory;
+        super( connectionFactory );
     }
 
 
