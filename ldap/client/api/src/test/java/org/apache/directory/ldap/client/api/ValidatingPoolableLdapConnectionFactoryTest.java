@@ -516,7 +516,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 connection = pool.getConnection();
                 assertNotNull( connection );
-                internal = ( InternalMonitoringLdapConnection ) ( ( LdapConnectionWrapper ) connection ).wrapped();
+                internal = ( InternalMonitoringLdapConnection ) unwrap( unwrap( connection ) ); // two levels of wrapping
                 borrowedCount = internal.incrementBorrowedCount();
                 org.mockito.Mockito.verify( validator, times( 2 * borrowedCount - 1 ) ).validate( connection );
                 internal.resetMonitors();
@@ -551,6 +551,11 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 }
             }
         }
+    }
+
+    private static LdapConnection unwrap( LdapConnection connection )
+    {
+        return ( ( LdapConnectionWrapper ) connection ).wrapped();
     }
 
     private static interface WithConnection
