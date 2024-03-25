@@ -69,7 +69,7 @@
     <commons.pool.version>2.12.0</commons.pool.version>
     <commons.text.version>1.11.0</commons.text.version>
     <dom4j.version>2.1.4</dom4j.version>
-    <forbiddenapis.version>3.6</forbiddenapis.version>
+    <forbiddenapis.version>3.7</forbiddenapis.version>
     <hamcrest.version>2.2</hamcrest.version>
     <junit.engine.version>5.10.2</junit.engine.version>
     <junit.platform.version>1.10.2</junit.platform.version>
