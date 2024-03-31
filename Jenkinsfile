@@ -35,7 +35,7 @@ pipeline {
       agent {
         docker {
           label 'ubuntu'
-          image 'apachedirectory/maven-build:jdk-8'
+          image 'apachedirectory/maven-build:jdk-11'
           alwaysPull true
           args '-v $HOME/.m2:/home/hnelson/.m2'
         }
@@ -51,7 +51,7 @@ pipeline {
     }
     stage ('Build and Test') {
       parallel {
-        stage ('Linux Java 8') {
+        stage ('Linux Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -59,7 +59,7 @@ pipeline {
           agent {
             docker {
               label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-8'
+              image 'apachedirectory/maven-build:jdk-11'
               alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
@@ -74,7 +74,7 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 11') {
+        stage ('Linux Java 21') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -82,7 +82,7 @@ pipeline {
           agent {
             docker {
               label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-11'
+              image 'apachedirectory/maven-build:jdk-21'
               alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
@@ -118,7 +118,7 @@ pipeline {
             }
           }
         }
-        stage ('Windows Java 8') {
+        stage ('Windows Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -128,7 +128,7 @@ pipeline {
           }
           steps {
             bat '''
-            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.11
             set MAVEN_OPTS="-Xmx512m"
             F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -U -V clean verify
             '''
