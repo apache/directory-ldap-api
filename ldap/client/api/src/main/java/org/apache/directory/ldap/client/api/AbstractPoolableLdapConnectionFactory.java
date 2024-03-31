@@ -49,6 +49,84 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     /** The validator to use */
     protected LdapConnectionValidator validator = new LookupLdapConnectionValidator();
 
+    /** A internal class to wrap a standard LDAP connection */ 
+    private static class PooledLdapConnectionFactory implements LdapConnectionFactory
+    {
+        private final LdapConnectionFactory delegate;
+
+        private final LdapConnectionPool connectionPool;
+
+        PooledLdapConnectionFactory( LdapConnectionFactory delegate, LdapConnectionPool connectionPool )
+        {
+            this.delegate = delegate;
+            this.connectionPool = connectionPool;
+        }
+
+
+        private LdapConnection wrap( LdapConnection ldapConnection )
+        {
+            if ( ldapConnection instanceof PooledLdapConnection )
+            {
+                return ldapConnection;
+            }
+
+            return new PooledLdapConnection( ldapConnection, connectionPool );
+        }
+
+
+        @Override
+        public LdapConnection bindConnection( LdapConnection connection ) throws LdapException
+        {
+            return wrap( delegate.bindConnection( connection ) );
+        }
+
+
+        @Override
+        public LdapConnection configureConnection( LdapConnection connection )
+        {
+            return wrap( delegate.configureConnection( connection ) );
+        }
+
+
+        @Override
+        public LdapApiService getLdapApiService()
+        {
+            return delegate.getLdapApiService();
+        }
+
+
+        @Override
+        public LdapConnection newLdapConnection() throws LdapException
+        {
+            return wrap( delegate.newLdapConnection() );
+        }
+
+
+        @Override
+        public LdapConnection newUnboundLdapConnection()
+        {
+            return wrap( delegate.newUnboundLdapConnection() );
+        }
+    }
+    
+    
+    /**
+     * Constructor that takes a LdapConnection factory for poolable connections
+     * 
+     * @param connectionFactory
+     */
+    public AbstractPoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
+    {
+        this.connectionFactory = connectionFactory;
+    }
+
+    
+    void configurePooledLdapConnectionFactory( LdapConnectionPool connectionPool )
+    {
+        this.connectionFactory = new PooledLdapConnectionFactory( connectionFactory, connectionPool );
+    }
+    
+    
     /**
      * {@inheritDoc}
      * 
