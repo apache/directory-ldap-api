@@ -23,7 +23,7 @@ including the following items in the xml-commons project:
 
 The actual DOM Java Language Binding classes in xml-commons came from: 
     http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/java-binding.html
-	The original versions are tagged 'DOM_LEVEL_2'
+The original versions are tagged 'DOM_LEVEL_2'
 
 The specification of DOM Level 2's various parts is at:
     http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/

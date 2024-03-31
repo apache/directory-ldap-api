@@ -2463,8 +2463,8 @@ public class SearchRequestTest extends AbstractTest
         element.add( ParserUtils.XSI_NAMESPACE );
 
         SearchRequestDsml searchRequest = new SearchRequestDsml( LdapApiServiceFactory.getSingleton() );
-        searchRequest.setFilter( "(memberOf=cn=MercyCenterHospitalGroup,ou=Relationship,dc=HPD,o=IHE-Europe,c=FRA)" );    	
-    	
+        searchRequest.setFilter( "(memberOf=cn=MercyCenterHospitalGroup,ou=Relationship,dc=HPD,o=IHE-Europe,c=FRA)" );
+ 
         System.out.println( searchRequest.toDsml( element ).asXML() );
     }
 }

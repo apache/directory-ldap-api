@@ -20,5 +20,5 @@ megginson.com including the following in the xml-commons project:
 
 The actual SAX classes in xml-commons came from: 
     http://www.megginson.com/Software/index.html
-	The original versions are tagged 'SAX-2_0-r2-prerelease'
+The original versions are tagged 'SAX-2_0-r2-prerelease'
 
