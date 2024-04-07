@@ -74,7 +74,7 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 21') {
+        stage ('Linux Java 17') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -82,7 +82,7 @@ pipeline {
           agent {
             docker {
               label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-21'
+              image 'apachedirectory/maven-build:jdk-17'
               alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
@@ -96,7 +96,7 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 17') {
+        stage ('Linux Java 21') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -104,7 +104,7 @@ pipeline {
           agent {
             docker {
               label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-17'
+              image 'apachedirectory/maven-build:jdk-21'
               alwaysPull true
               args '-v $HOME/.m2:/home/hnelson/.m2'
             }
