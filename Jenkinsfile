@@ -128,7 +128,7 @@ pipeline {
           }
           steps {
             bat '''
-            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.11
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest11
             set MAVEN_OPTS="-Xmx512m"
             F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -U -V clean verify
             '''
