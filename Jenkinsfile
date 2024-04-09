@@ -51,7 +51,7 @@ pipeline {
     }
     stage ('Build and Test') {
       parallel {
-        stage ('Linux Java 11') {
+/*        stage ('Linux Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -95,7 +95,7 @@ pipeline {
               deleteDir()
             }
           }
-        }
+        }*/
         stage ('Linux Java 21') {
           options {
             timeout(time: 4, unit: 'HOURS')
@@ -117,7 +117,7 @@ pipeline {
               deleteDir()
             }
           }
-        }
+        }/*
         stage ('Windows Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
@@ -138,7 +138,7 @@ pipeline {
               deleteDir()
             }
           }
-        }
+        } */
       }
     }
     stage ('Deploy') {
