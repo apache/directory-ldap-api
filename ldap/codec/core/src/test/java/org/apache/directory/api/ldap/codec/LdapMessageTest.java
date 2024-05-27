@@ -36,6 +36,7 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 import org.junit.jupiter.api.Test;
@@ -269,5 +270,29 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         ByteBuffer result = LdapEncoder.encodeMessage( buffer, codec, unbindRequest );
 
         assertArrayEquals( stream.array(), result.array() );
+    }
+    
+    
+    /**
+     * test a negative length
+     */
+    @Test
+    public void testNegativeLength() throws LdapURLEncodingException
+    {
+    	String base64Bytes = String.join("", "CoT/gwr/Jg==");
+    	
+    	byte[] input = java.util.Base64.getDecoder().decode(base64Bytes);
+    	
+    	ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        org.apache.directory.api.ldap.codec.api.LdapApiService codec = new org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode(stream, container);
+        } );
     }
 }

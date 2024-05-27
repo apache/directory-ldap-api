@@ -246,8 +246,9 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
      * the result and other informations.
      * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
+     * @throws DecoderException Thrown if anything went wrong
      */
-    private static boolean treatLengthPendingState( ByteBuffer stream, Asn1Container container )
+    private static boolean treatLengthPendingState( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         if ( stream.hasRemaining() )
         {
@@ -265,6 +266,13 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
 
                 tlv.incLengthBytesRead();
                 length = ( length << 8 ) | ( octet & 0x00FF );
+                
+                if ( length < 0 )
+                {
+                    String msg = I18n.err( I18n.ERR_01002_TLV_NULL );
+                    LOG.error( msg );
+                    throw new DecoderException( msg );
+                }
 
                 if ( !stream.hasRemaining() )
                 {
