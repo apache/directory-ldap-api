@@ -223,8 +223,14 @@ public class LdapUrl
         }
         scheme = new String( chars, 0, pos );
 
-        // The hostport
+        // The hostport, if it exists
+        if ( pos == chars.length )
+        {
+            return;
+        }
+        
         pos = parseHostPort( chars, pos );
+        
         if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13031_INVALID_HOST_PORT ) );

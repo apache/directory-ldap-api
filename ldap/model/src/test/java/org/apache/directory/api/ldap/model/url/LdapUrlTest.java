@@ -1690,4 +1690,13 @@ public class LdapUrlTest
     {
     	assertThrows( LdapURLEncodingException.class, () -> new LdapUrl( "ldap://[1:2:ldap:///o" ) );
     }
+    
+    
+    @Test
+    public void indexOutOfRangeLdapUrl() throws LdapURLEncodingException
+    {
+        LdapUrl ldapUrl = new LdapUrl( "ldap://" );
+    
+        assertNull( ldapUrl.getHost() );
+    }
 }
