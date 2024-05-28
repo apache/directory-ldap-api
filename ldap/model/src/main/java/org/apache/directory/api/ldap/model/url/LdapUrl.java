@@ -638,7 +638,7 @@ public class LdapUrl
         // Search for the closing ']'
         int start = pos;
 
-        while ( !Chars.isCharASCII( chars, pos, ']' ) )
+        while ( !Chars.isCharASCII( chars, pos, ']' ) && ( pos < chars.length ) )
         {
             pos++;
         }
@@ -699,7 +699,7 @@ public class LdapUrl
         // Now, we should have at least one char in unreserved / sub-delims / ":"
         boolean valueFound = false;
 
-        while ( !Chars.isCharASCII( chars, pos, ']' ) )
+        while ( !Chars.isCharASCII( chars, pos, ']' ) && ( pos < chars.length ) )
         {
             switch ( chars[pos] )
             {
@@ -901,7 +901,7 @@ public class LdapUrl
         boolean ipElemSeen = false;
         boolean hasHeadingZeroes = false;
 
-        while ( Chars.isDigit( chars, pos ) )
+        while ( Chars.isDigit( chars, pos ) && ( pos < chars.length ) )
         {
             ipElemSeen = true;
             
@@ -974,7 +974,7 @@ public class LdapUrl
 
         pos++;
 
-        while ( Chars.isDigit( chars, pos ) )
+        while ( Chars.isDigit( chars, pos ) && ( pos < chars.length ) )
         {
             port = ( port * 10 ) + ( chars[pos] - '0' );
 

@@ -1683,4 +1683,11 @@ public class LdapUrlTest
             "ldap://localhost:123/????X-CONNECTION-NAME=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~",
             url2.toString() );
     }
+    
+    
+    @Test
+    public void hangingLdapUrl()
+    {
+    	assertThrows( LdapURLEncodingException.class, () -> new LdapUrl( "ldap://[1:2:ldap:///o" ) );
+    }
 }
