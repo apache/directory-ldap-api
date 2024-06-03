@@ -541,16 +541,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         // Use only one thread inside the connector
         connector = new NioSocketConnector( 1 );
+        SocketSessionConfig socketSessionConfig = ( ( SocketSessionConfig ) connector.getSessionConfig() );
         
-        if ( socketSessionConfig != null )
+        if ( this.socketSessionConfig != null )
         {
-            ( ( SocketSessionConfig ) connector.getSessionConfig() ).setAll( socketSessionConfig );
+            socketSessionConfig.setAll( this.socketSessionConfig );
         }
         else
         {
-            ( ( SocketSessionConfig ) connector.getSessionConfig() ).setReuseAddress( true );
+            socketSessionConfig.setReuseAddress( true );
+            socketSessionConfig.setTcpNoDelay( true );
         }
-
+        
         // Add the codec to the chain
         connector.getFilterChain().addLast( LDAP_CODEC_FILTER_KEY, ldapProtocolFilter );
 

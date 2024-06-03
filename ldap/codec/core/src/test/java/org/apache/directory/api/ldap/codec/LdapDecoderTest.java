@@ -518,4 +518,24 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         // Check the decoded length
         assertEquals( 384, container.getCurrentTLV().getLength() );
     }
+
+
+    /**
+     * Test that a big PDU is not accepted when the MaxPDU size is set
+     */
+    @Test
+    public void testDecodeOOM() throws DecoderException
+    {
+        byte[] input = java.util.Base64.getDecoder().decode( "QIR+fnR+yvD/" );
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>( codec );
+        container.setMaxPDUSize( 1024 );
+
+        // Decode a PDU which is going to be bigger than the MAX PDU size: should throw an exception
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode( stream, container ); } );
+    }
 }

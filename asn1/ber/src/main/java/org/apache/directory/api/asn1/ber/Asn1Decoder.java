@@ -355,6 +355,12 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
         }
 
         int length = tlv.getLength();
+        
+        // Check we arent above the MAX PDU
+        if ( length > container.getMaxPDUSize() )
+        {
+            throw new DecoderException( I18n.err( I18n.ERR_01007_PDU_SIZE_TOO_LONG, length, container.getMaxPDUSize() ) );
+        }
 
         // We will check the length here. What we must control is
         // that the enclosing constructed TLV expected length is not
