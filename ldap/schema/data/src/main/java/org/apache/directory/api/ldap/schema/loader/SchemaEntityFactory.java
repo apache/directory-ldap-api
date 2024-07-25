@@ -362,7 +362,7 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16051_CANNOT_LOAD_SC_CLASS, cnfe.getMessage() ) );
             }
             
-            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
+            byteCodeStr = Base64.getEncoder().encodeToString( byteCode.getBytes() );
         }
 
         // Create the syntaxChecker instance
@@ -545,7 +545,7 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16059_CANNOT_LOAD_CMP_CLASS, cnfe.getMessage() ) );
             }
 
-            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
+            byteCodeStr = Base64.getEncoder().encodeToString( byteCode.getBytes() );
         }
 
         // Create the comparator instance. Either we have a no argument constructor,
@@ -775,7 +775,7 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16071_CANNOT_LOAD_NORM_CLASS, cnfe.getMessage() ) );
             }
 
-            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
+            byteCodeStr = Base64.getEncoder().encodeToString( byteCode.getBytes() );
         }
 
         // Create the normalizer instance
