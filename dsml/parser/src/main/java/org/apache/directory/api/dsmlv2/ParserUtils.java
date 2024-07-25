@@ -20,11 +20,14 @@
 package org.apache.directory.api.dsmlv2;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -302,20 +305,21 @@ public final class ParserUtils
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = null;
 
-        try
+        try ( InputStream xslt = ParserUtils.class.getResourceAsStream( "/org/apache/directory/shared/dsmlv2/DSMLv2.xslt" ) )
         {
-            factory.setFeature( javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE );
+            factory.setFeature( XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE );
+            
             try
             {
-                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD, Strings.EMPTY_STRING );
-                factory.setAttribute( javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET, Strings.EMPTY_STRING );
+                factory.setAttribute( XMLConstants.ACCESS_EXTERNAL_DTD, Strings.EMPTY_STRING );
+                factory.setAttribute( XMLConstants.ACCESS_EXTERNAL_STYLESHEET, Strings.EMPTY_STRING );
             }
             catch ( IllegalArgumentException ex )
             {
                 // ignore
             }
-            transformer = factory.newTransformer( new StreamSource( ParserUtils.class
-                .getResourceAsStream( "/org/apache/directory/shared/dsmlv2/DSMLv2.xslt" ) ) );
+            
+            transformer = factory.newTransformer( new StreamSource( xslt ) );
         }
         catch ( TransformerConfigurationException e1 )
         {
@@ -326,6 +330,10 @@ public final class ParserUtils
 
             // return original document
             return document;
+        }
+        catch ( IOException ioe )
+        {
+            // Can't happen
         }
 
         // now lets style the given document
