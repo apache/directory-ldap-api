@@ -1979,6 +1979,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         
         // Read the Ava number
         nbAvas = in.readInt();
+        
+        if ( nbAvas < 0 )
+        {
+            // We should never have a negative number of AVAs...
+            throw new IOException( I18n.err( I18n.ERR_13628_NEGATIVE_NUMBER_OF_AVAS ) );
+        }
 
         // Read the UPName
         upName = in.readUTF();

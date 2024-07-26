@@ -2100,6 +2100,14 @@ public class DefaultAttribute implements Attribute, Cloneable
         // Read the number of values
         int nbValues = in.readInt();
 
+        // Check it's not negative, just in case a hand drafted entry has been injected
+        if ( nbValues < 0 )
+        {
+            // We should never have a negative number of values...
+            throw new IOException( I18n.err( I18n.ERR_13252_NEGATIVE_NB_VALUES ) );
+        }
+
+
         if ( nbValues > 0 )
         {
             for ( int i = 0; i < nbValues; i++ )

@@ -1619,6 +1619,13 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             if ( in.readBoolean() )
             {
                 int length = in.readInt();
+                
+                // Check the value's length. It should not be negative
+                if ( length < 0 )
+                {
+                    throw new IOException( I18n.err( I18n.ERR_13253_NEGATIVE_VALUE_LENGTH ) );
+                }
+                
                 bytes = new byte[length];
                 
                 if ( length != 0 )
@@ -1640,6 +1647,13 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
             if ( in.readBoolean() )
             {
                 int length = in.readInt();
+                
+                // Check the value's length. It should not be negative
+                if ( length < 0 )
+                {
+                    throw new IOException( I18n.err( I18n.ERR_13253_NEGATIVE_VALUE_LENGTH ) );
+                }
+
                 bytes = new byte[length];
                 
                 if ( length != 0 )
