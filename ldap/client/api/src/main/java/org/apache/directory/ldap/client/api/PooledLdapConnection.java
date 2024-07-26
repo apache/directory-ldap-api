@@ -26,7 +26,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 /**
  * A wrapper around an LdapConnection that returns the connection to the pool when closed.
  */
-class PooledLdapConnection extends LdapConnectionWrapper
+public class PooledLdapConnection extends LdapConnectionWrapper
 {
     private LdapConnectionPool pool;
 
