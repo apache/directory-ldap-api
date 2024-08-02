@@ -987,14 +987,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         
         try
         {
-            // Create the connector if needed
-            if ( connector == null )
-            {
-                createConnector();
-            }
-    
             // And create the connection future
-            ConnectFuture connectionFuture = tryConnect();
+            ConnectFuture connectionFuture = connectAsync();
     
             // Check if we are good to go
             if ( !connectionFuture.isConnected() )
@@ -1044,6 +1038,25 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             throw e;
         }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConnectFuture connectAsync()  throws LdapException
+    {
+        // Create the connector if needed
+        if ( connector == null )
+        {
+            createConnector();
+        }
+
+        // And create the connection future
+        ConnectFuture connectionFuture = tryConnect();
+        
+        return connectionFuture;
     }
 
 

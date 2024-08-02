@@ -83,7 +83,7 @@ public final class IntegerDecoder
      * Helper method used to parse the integer. We don't check any minimal or maximal
      * bound.
      * An BER encoded int can be either positive or negative. It uses the minimum
-     * number of byts necessary to encode the value. The high order bit gives the
+     * number of bytes necessary to encode the value. The high order bit gives the
      * sign of the integer : if it's 1, then it's a negative value, otherwise it's
      * a positive value. Integer with a high order bit set to 1 but prefixed by a 0x00
      * are positive. If the integer is negative, then the 2 complement value is

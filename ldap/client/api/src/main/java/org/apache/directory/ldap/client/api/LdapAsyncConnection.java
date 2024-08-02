@@ -42,6 +42,7 @@ import org.apache.directory.ldap.client.api.future.ExtendedFuture;
 import org.apache.directory.ldap.client.api.future.ModifyDnFuture;
 import org.apache.directory.ldap.client.api.future.ModifyFuture;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
+import org.apache.mina.core.future.ConnectFuture;
 
 
 /**
@@ -51,6 +52,13 @@ import org.apache.directory.ldap.client.api.future.SearchFuture;
  */
 public interface LdapAsyncConnection extends LdapConnection
 {
+    /**
+     * Do an asynchronous connection attempt
+     * 
+     * @return the connection's future
+     * @throws LdapException if some error occurred
+     */
+    ConnectFuture connectAsync() throws LdapException;
 
     /**
      * Add an entry to the server asynchronously. This is a non blocking add :
