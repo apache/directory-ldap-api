@@ -34,6 +34,4 @@ public interface RelaxControl extends Control
 {
     /** The LDAP Relax Rules Control OID */
     String OID = "1.3.6.1.4.1.4203.666.5.12";
-
-    String getOID();
 }

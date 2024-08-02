@@ -60,6 +60,7 @@ public class StandaloneLdapCodecServiceTest
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdPolicyHintsFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory,"
             + "org.apache.directory.api.ldap.extras.controls.changeNotifications_impl.ChangeNotificationsFactory,"
+            + "org.apache.directory.api.ldap.extras.controls.nameWithEntryUUID_impl.NameWithEntryUUIDFactory,"
             + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyRequestFactory,"
             + "org.apache.directory.api.ldap.extras.controls.permissiveModify_impl.PermissiveModifyFactory,"
             + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"

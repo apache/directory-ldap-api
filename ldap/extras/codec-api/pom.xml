@@ -61,6 +61,7 @@
               org.apache.directory.api.ldap.extras.controls;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.ad;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.changeNotifications;version=${project.version},
+              org.apache.directory.api.ldap.extras.controls.nameWithEntryUUID;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.passwordExpired;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.permissiveModify;version=${project.version};-noimport:=true,
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version};-noimport:=true,
