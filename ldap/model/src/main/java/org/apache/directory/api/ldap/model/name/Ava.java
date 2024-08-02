@@ -1263,9 +1263,13 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             {
                 attributeType = schemaManager.getAttributeType( upType );
             }
-            else
+            else if ( !Strings.isEmpty( normType ) )
             {
                 attributeType = schemaManager.getAttributeType( normType );
+            }
+            else
+            {
+                throw new IOException( I18n.err( I18n.ERR_13629_NO_ATTRIBUTE_TYPE ) );
             }
         }
 

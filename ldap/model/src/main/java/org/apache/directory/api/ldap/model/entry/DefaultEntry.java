@@ -2489,6 +2489,13 @@ public final class DefaultEntry implements Entry
 
         // Read the number of attributes
         int nbAttributes = in.readInt();
+        
+        // Check it's not negative, just in case a hand drafted entry has been injected
+        if ( nbAttributes < 0 )
+        {
+            // We should never have a negative number of attributes...
+            throw new IOException( I18n.err( I18n.ERR_13251_NEGATIVE_NB_ATTRIBUTES ) );
+        }
 
         // Read the attributes
         for ( int i = 0; i < nbAttributes; i++ )

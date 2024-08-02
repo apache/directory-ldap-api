@@ -1277,6 +1277,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         // Read the RDNs. Is it's null, the number will be -1.
         int nbRdns = in.readInt();
+        
+        // Check that the number of RDNs is not negative (it should never bee)
+        if ( nbRdns < 0 )
+        {
+            // We should never have a negative number of RDNs...
+            throw new IOException( I18n.err( I18n.ERR_13627_NEGATIVE_NUMBER_OF_RDNS ) );
+        }
 
         rdns = new ArrayList<>( nbRdns );
 
