@@ -81,7 +81,7 @@
     <pax-exam.version>4.13.4</pax-exam.version>
 
     <pax-url.version>2.6.14</pax-url.version>
-    <slf4j.api.version>1.7.36</slf4j.api.version>
+    <slf4j.api.version>2.0.14</slf4j.api.version>
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
     <velocity.version>1.7</velocity.version>
     <wagon.ssh.version>3.5.3</wagon.ssh.version>
