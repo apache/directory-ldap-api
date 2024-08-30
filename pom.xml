@@ -65,7 +65,7 @@
     <caffeine.version>2.9.3</caffeine.version>
     <commons.codec.version>1.17.1</commons.codec.version>
     <commons.collections.version>4.4</commons.collections.version>
-    <commons.lang.version>3.16.0</commons.lang.version>
+    <commons.lang.version>3.17.0</commons.lang.version>
     <commons.pool.version>2.12.0</commons.pool.version>
     <commons.text.version>1.12.0</commons.text.version>
     <dom4j.version>2.1.4</dom4j.version>
