@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>49</version>
+    <version>50-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -71,8 +71,8 @@
     <dom4j.version>2.1.4</dom4j.version>
     <forbiddenapis.version>3.7</forbiddenapis.version>
     <hamcrest.version>3.0</hamcrest.version>
-    <junit.engine.version>5.10.3</junit.engine.version>
-    <junit.platform.version>1.10.3</junit.platform.version>
+    <junit.engine.version>5.11.0</junit.engine.version>
+    <junit.platform.version>1.11.0</junit.platform.version>
     <mina.core.version>2.2.3</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>7.0.5</org.apache.felix.version>
@@ -82,6 +82,7 @@
 
     <pax-url.version>2.6.14</pax-url.version>
     <slf4j.api.version>1.7.36</slf4j.api.version>
+    <!--slf4j.api.version>2.0.6</slf4j.api.version-->
     <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
     <velocity.version>1.7</velocity.version>
     <wagon.ssh.version>3.5.3</wagon.ssh.version>
