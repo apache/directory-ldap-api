@@ -709,6 +709,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public ConnectFuture tryConnect() throws LdapException
     {
+        if ( connector == null )
+        {
+            throw new InvalidConnectionException( I18n.err( I18n.ERR_04104_NULL_CONNECTION_CANNOT_CONNECT ) );
+        }
+        
         // Build the connection address
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
         ConnectFuture connectionFuture = connector.connect( address );

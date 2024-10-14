@@ -91,7 +91,7 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
                 }
                 else
                 {
-                    baseObject = new Dn( dnStr ); //dnFactory.create( dnStr );
+                    baseObject = dnFactory.create( dnStr );
                 }
                 
                 searchRequest.setBase( baseObject );

@@ -924,7 +924,7 @@ public class DnNode<N>
         Dn tmpDn = null;
 
         // check if the new parent Dn is child of the parent
-        if ( newParent.isDescendantOf( parent.nodeDn ) )
+        if ( ( parent != null ) && newParent.isDescendantOf( parent.nodeDn ) )
         {
             tmp = parent;
             tmpDn = parent.nodeDn;

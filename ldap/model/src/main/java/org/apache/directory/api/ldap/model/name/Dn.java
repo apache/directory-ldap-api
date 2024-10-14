@@ -872,9 +872,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn getAncestorOf( Dn descendant ) throws LdapInvalidDnException
     {
+        if ( descendant == null )
+        {
+            return this;
+        }
+        
         int length = descendant.size();
 
-        if ( ( descendant == null ) || ( length == 0 ) )
+        if ( length == 0 )
         {
             return this;
         }
