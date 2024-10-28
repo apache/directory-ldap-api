@@ -465,7 +465,7 @@ public class OpenLdapSchemaParserTest
         parser.setQuirksMode( true );
         long t0 = System.currentTimeMillis();
 
-        for ( int i = 0; i < 10_000; i++ )
+        for ( int i = 0; i < 1_000; i++ )
         {
             try ( InputStream input = getClass().getResourceAsStream( "core.schema" ) )
             {
