@@ -1210,6 +1210,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             out.writeBoolean( false );
         }
 
+        // Useless... See #readExternal
         boolean isHR = value.isHumanReadable();
 
         out.writeBoolean( isHR );
@@ -1273,7 +1274,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
         }
 
-        in.readBoolean();
+        // We need to read this useless value because we are writing in in the writeExternal meythod
+        // The problem is that when a Ldap Server uses this class to read back entries from the database
+        // it will expect to read this extra boolean, so removing it without migrating the database will
+        // break it...
+        boolean isHr = in.readBoolean();
 
         value = Value.deserialize( attributeType, in );
 

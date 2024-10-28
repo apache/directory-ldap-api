@@ -37,6 +37,7 @@ import javax.naming.ldap.ExtendedResponse;
 import javax.naming.ldap.LdapContext;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -83,7 +84,13 @@ public final class JavaStoredProcUtils
             File file = new File( url.toURI() );
             int size = ( int ) file.length();
             byte[] buf = new byte[size];
-            in.read( buf );
+            int nbRead = in.read( buf );
+            
+            if ( nbRead == -1 ) 
+            {
+                NamingException ne = new NamingException( I18n.err( I18n.ERR_10000_EMPTY_SP_CLASS, url.toURI() ) );
+                throw ne;
+            }
 
             return buf;
         }
