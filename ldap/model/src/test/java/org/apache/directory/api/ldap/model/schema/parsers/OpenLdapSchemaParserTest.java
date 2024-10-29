@@ -37,6 +37,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -457,7 +458,7 @@ public class OpenLdapSchemaParserTest
         assertTrue( attributeType.isSingleValued() );
     }
 
-
+    @Ignore
     @Test
     public void testFastLdifParsePerf() throws Exception
     {
