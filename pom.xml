@@ -56,6 +56,9 @@
     <!-- Activate reproductible builds -->
     <project.build.outputTimestamp>1722609791</project.build.outputTimestamp>
 
+    <!-- SBOM generation versions -->
+    <version.cyclonedx>2.9.0</version.cyclonedx>
+
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
     <org.apache.directory.checkstyle-configuration.version>2.0.2</org.apache.directory.checkstyle-configuration.version>
@@ -303,7 +306,7 @@
         <plugin>
           <groupId>org.cyclonedx</groupId>
           <artifactId>cyclonedx-maven-plugin</artifactId>
-          <version>2.9.0</version>
+          <version>${version.cyclonedx}</version>
           <executions>
             <execution>
               <id>make-bom</id>
