@@ -20,15 +20,12 @@ header {
  */
 package org.apache.directory.api.ldap.model.name;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import javax.naming.NameParser;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -158,9 +155,6 @@ options    {
 
         // The user provided value
         StringBuilder upValue = new StringBuilder();
-
-        // The normalized value
-        StringBuilder normValue = new StringBuilder();
 
         // A flag set to false if we have a binary value
         boolean isHR = true;
