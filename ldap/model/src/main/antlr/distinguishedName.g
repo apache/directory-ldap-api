@@ -165,7 +165,7 @@ options    {
     {
         StringBuilder rdnNormStr = new StringBuilder();
         Value value = ava.getValue(); 
-        AttributeType attributeType = ava.getAttributeType();
+        //AttributeType attributeType = ava.getAttributeType();
         rdnNormStr.append( ava.getNormType() );
         rdnNormStr.append( '=' );
 
@@ -353,14 +353,11 @@ relativeDistinguishedNames [SchemaManager schemaManager, List<Rdn> rdns] returns
 relativeDistinguishedName [SchemaManager schemaManager, Rdn rdn]
     {
         matchedProduction( "relativeDistinguishedName()" );
-        String tmp;
 
         // The rdnStr variable is used to gather the full RDN string
         // as provided
         StringBuilder rdnUpStr = new StringBuilder();
         StringBuilder rdnNormStr = new StringBuilder();
-        int avaPos = 0;
-        AttributeType attributeType;
         Value val;
         Ava ava = new Ava( schemaManager);
         String upAva;
@@ -574,16 +571,8 @@ attributeTypeAndValue [SchemaManager schemaManager, Ava ava] returns [String upN
                     {
                         try 
                         {
-                            if ( ava == null )
-                            {
-                                ava.upName = rdnUpName.toString();
-                                ava.value = new Value( attributeType, Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
-                            }
-                            else
-                            {
-                                ava.upName = rdnUpName.toString();
-                                ava.value = new Value( attributeType, Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
-                            }
+                            ava.upName = rdnUpName.toString();
+                            ava.value = new Value( attributeType, Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
                         }
                         catch ( LdapInvalidAttributeValueException liave )
                         {
@@ -592,16 +581,8 @@ attributeTypeAndValue [SchemaManager schemaManager, Ava ava] returns [String upN
                     }
                     else
                     {
-                        if ( ava == null )
-                        {
-                            ava.upName = rdnUpName.toString();
-                            ava.value = new Value( Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
-                        }
-                        else
-                        {
-                            ava.upName = rdnUpName.toString();
-                            ava.value = new Value( Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
-                        }
+                        ava.upName = rdnUpName.toString();
+                        ava.value = new Value( Strings.utf8ToString( value.bytes.copyOfUsedBytes() ) );
                     }
                 }
                 else
