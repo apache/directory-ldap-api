@@ -825,7 +825,8 @@ public final class Strings
      * @param bytes The buffer which contains the data
      * @param index Current position in the buffer
      * @param text The text we want to check
-     * @return <code>true</code> if the buffer contains the text.
+     * @return The position after the found text if it's present in the buffer: it's the current position plus the text length.
+     * If the text is not present, then <code>StringConstants.NOT_EQUAL</code> is returned (-1)
      */
     public static int areEquals( byte[] bytes, int index, String text )
     {
@@ -849,7 +850,8 @@ public final class Strings
      * @param chars The buffer which contains the data
      * @param index Current position in the buffer
      * @param text The text we want to check
-     * @return <code>true</code> if the buffer contains the text.
+     * @return The position after the found text if it's present in the buffer: it's the current position plus the text length.
+     * If the text is not present, then <code>StringConstants.NOT_EQUAL</code> is returned (-1)
      */
     public static int areEquals( char[] chars, int index, String text )
     {
@@ -864,7 +866,8 @@ public final class Strings
      * @param index Current position in the buffer
      * @param text The text we want to check
      * @param caseSensitive If the comparison is case-sensitive
-     * @return <code>true</code> if the buffer contains the text.
+     * @return The position after the found text if it's present in the buffer: it's the current position plus the text length.
+     * If the text is not present, then <code>StringConstants.NOT_EQUAL</code> is returned (-1)
      */
     public static int areEquals( char[] chars, int index, String text, boolean caseSensitive )
     {
@@ -888,7 +891,8 @@ public final class Strings
      * @param chars The buffer which contains the data
      * @param index Current position in the buffer
      * @param chars2 The text we want to check
-     * @return <code>true</code> if the buffer contains the text.
+     * @return The position after the found text if it's present in the buffer: it's the current position plus the text length.
+     * If the text is not present, then <code>StringConstants.NOT_EQUAL</code> is returned (-1)
      */
     public static int areEquals( char[] chars, int index, char[] chars2 )
     {
@@ -903,7 +907,8 @@ public final class Strings
      * @param index Current position in the buffer
      * @param chars2 The text we want to check
      * @param caseSensitive If the comparison is case-sensitive
-     * @return <code>true</code> if the buffer contains the text.
+     * @return The position after the found text if it's present in the buffer: it's the current position plus the text length.
+     * If the text is not present, then <code>StringConstants.NOT_EQUAL</code> is returned (-1)
      */
     public static int areEquals( char[] chars, int index, char[] chars2, boolean caseSensitive )
     {
@@ -943,7 +948,8 @@ public final class Strings
      * @param bytes The buffer which contains the data
      * @param index Current position in the buffer
      * @param bytes2 The text we want to check
-     * @return <code>true</code> if the buffer contains the text.
+     * @return The position after the found text if it's present in the buffer: it's the current position plus the text length.
+     * If the text is not present, then <code>StringConstants.NOT_EQUAL</code> is returned (-1)
      */
     public static int areEquals( byte[] bytes, int index, byte[] bytes2 )
     {

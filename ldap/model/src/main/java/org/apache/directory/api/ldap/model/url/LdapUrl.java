@@ -52,7 +52,7 @@ import org.apache.directory.api.util.Unicode;
  * ldapurl    = scheme "://" [host [ ":" port]] ["/"
  *                   dn ["?" [attributes] ["?" [scope]
  *                   ["?" [filter] ["?" extensions]]]]]
- * scheme     = "ldap"
+ * scheme     = "ldap" | "ldaps"                        Note: the RFC 4516 does not say that 'ldaps' is valid...
  * dn         = Dn
  * attributes = attrdesc ["," attrdesc]*
  * attrdesc   = selector ["," selector]*
@@ -106,6 +106,9 @@ public class LdapUrl
 
     /** A null LdapUrl */
     public static final LdapUrl EMPTY_URL = new LdapUrl();
+    
+    /** When an invalid element is parsed */
+    private static final int INVALID = -1; 
 
     /** The scheme */
     private String scheme;
@@ -167,19 +170,22 @@ public class LdapUrl
     /**
      * Create a new LdapUrl from a String after having parsed it.
      *
-     * @param string TheString that contains the LdapUrl
+     * @param stringUrl TheString that contains the LdapUrl
      * @throws LdapURLEncodingException If the String does not comply with RFC 2255
      */
-    public LdapUrl( String string ) throws LdapURLEncodingException
+    public LdapUrl( String stringUrl ) throws LdapURLEncodingException
     {
-        if ( string == null )
+        if ( stringUrl == null )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13041_INVALID_LDAP_URL_EMPTY_STRING ) );
         }
 
-        bytes = Strings.getBytesUtf8( string );
-        this.string = string;
-        parse( string.toCharArray() );
+        // Now check that the LdapURL is valid
+        parse( stringUrl.toCharArray() );
+
+        // ok, it's valid, store it
+        bytes = Strings.getBytesUtf8( stringUrl );
+        string = stringUrl;
     }
 
 
@@ -210,17 +216,20 @@ public class LdapUrl
         // [dn ["?" [attributes] ["?" [scope]
         // ["?" [filter] ["?" extensions]]]]]]
         // scheme = "ldap"
-        // The scheme
+        // The scheme (mandatory)
         int pos = Strings.areEquals( chars, 0, LDAP_SCHEME );
         
         if ( pos == StringConstants.NOT_EQUAL )
         {
+            // Might be LDAPS
             pos = Strings.areEquals( chars, 0, LDAPS_SCHEME );
+            
             if ( pos == StringConstants.NOT_EQUAL )
             {
                 throw new LdapURLEncodingException( I18n.err( I18n.ERR_13030_LDAP_URL_MUST_START_WITH_LDAP ) );
             }
         }
+        
         scheme = new String( chars, 0, pos );
 
         // The hostport, if it exists
@@ -231,7 +240,7 @@ public class LdapUrl
         
         pos = parseHostPort( chars, pos );
         
-        if ( pos == -1 )
+        if ( pos == INVALID )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13031_INVALID_HOST_PORT ) );
         }
@@ -256,7 +265,8 @@ public class LdapUrl
 
         // An optional Dn
         pos = parseDN( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13033_INVALID_DN ) );
         }
@@ -275,7 +285,8 @@ public class LdapUrl
         pos++;
 
         pos = parseAttributes( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13035_INVALID_ATTRIBUTES ) );
         }
@@ -294,7 +305,8 @@ public class LdapUrl
         pos++;
 
         pos = parseScope( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13036_INVALID_SCOPE ) );
         }
@@ -318,7 +330,8 @@ public class LdapUrl
         }
 
         pos = parseFilter( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13037_INVALID_FILTER ) );
         }
@@ -337,7 +350,8 @@ public class LdapUrl
         pos++;
 
         pos = parseExtensions( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_13038_INVALID_EXTENSIONS ) );
         }
@@ -370,6 +384,11 @@ public class LdapUrl
     private int parseHost( char[] chars, int pos )
     {
         int start = pos;
+        
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
 
         // The host will be followed by a '/' or a ':', or by nothing if it's
         // the end.
@@ -395,7 +414,7 @@ public class LdapUrl
                 // try to parse an IPV4 address first
                 int currentPos = parseIPV4( chars, pos );
 
-                if ( currentPos != -1 )
+                if ( currentPos != INVALID )
                 {
                     host = new String( chars, start, currentPos - start );
 
@@ -456,6 +475,11 @@ public class LdapUrl
     {
         int start = pos;
 
+        if ( pos >= chars.length ) 
+        {
+            return INVALID;
+        }
+        
         if ( Chars.isCharASCII( chars, pos, 'v' ) )
         {
             // This is an IPvFuture
@@ -464,7 +488,7 @@ public class LdapUrl
 
             pos = parseIPvFuture( chars, pos );
 
-            if ( pos != -1 )
+            if ( pos != INVALID )
             {
                 // We don't keep the last char, which is a ']'
                 host = new String( chars, start, pos - start - 1 );
@@ -490,7 +514,7 @@ public class LdapUrl
      */
     public boolean isValidInet4Address( String inet4Address )
     {
-        return parseIPV4( inet4Address.toCharArray(), 0 ) != -1;
+        return parseIPV4( inet4Address.toCharArray(), 0 ) != INVALID;
     }
 
 
@@ -643,10 +667,20 @@ public class LdapUrl
     {
         // Search for the closing ']'
         int start = pos;
+        
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
 
         while ( !Chars.isCharASCII( chars, pos, ']' ) && ( pos < chars.length ) )
         {
             pos++;
+        }
+
+        if ( pos >= chars.length )
+        {
+            return INVALID;
         }
 
         if ( Chars.isCharASCII( chars, pos, ']' ) )
@@ -661,11 +695,11 @@ public class LdapUrl
             }
             else
             {
-                return -1;
+                return INVALID;
             }
         }
 
-        return -1;
+        return INVALID;
     }
 
 
@@ -684,8 +718,13 @@ public class LdapUrl
     {
         // We should have at least one hex digit
         boolean hexFound = false;
+        
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
 
-        while ( Chars.isHex( chars, pos ) )
+        while ( Chars.isHex( chars, pos ) && ( pos < chars.length ) )
         {
             hexFound = true;
             pos++;
@@ -693,17 +732,27 @@ public class LdapUrl
 
         if ( !hexFound )
         {
-            return -1;
+            return INVALID;
         }
 
         // a dot is expected
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
+
         if ( !Chars.isCharASCII( chars, pos, '.' ) )
         {
-            return -1;
+            return INVALID;
         }
 
         // Now, we should have at least one char in unreserved / sub-delims / ":"
         boolean valueFound = false;
+
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
 
         while ( !Chars.isCharASCII( chars, pos, ']' ) && ( pos < chars.length ) )
         {
@@ -743,13 +792,13 @@ public class LdapUrl
 
                 default:
                     // Wrong char
-                    return -1;
+                    return INVALID;
             }
         }
 
         if ( !valueFound )
         {
-            return -1;
+            return INVALID;
         }
 
         return pos;
@@ -814,14 +863,14 @@ public class LdapUrl
                     }
                     else
                     {
-                        return -1;
+                        return INVALID;
                     }
                     
                     break;
 
                 default:
                     // Wrong char
-                    return -1;
+                    return INVALID;
             }
         }
 
@@ -852,18 +901,28 @@ public class LdapUrl
 
         for ( int i = 0; i < 3; i++ )
         {
+            if ( ipPos >= chars.length )
+            {
+                return INVALID;
+            }
+
             ipPos = parseDecOctet( chars, ipPos, ipElem, i );
 
-            if ( ipPos == -1 )
+            if ( ipPos == INVALID )
             {
                 // Not an IPV4 address
-                return -1;
+                return INVALID;
+            }
+
+            if ( ipPos >= chars.length )
+            {
+                return INVALID;
             }
 
             if ( chars[ipPos] != '.' )
             {
                 // Not an IPV4 address
-                return -1;
+                return INVALID;
             }
             else
             {
@@ -873,10 +932,10 @@ public class LdapUrl
 
         ipPos = parseDecOctet( chars, ipPos, ipElem, 3 );
 
-        if ( ipPos == -1 )
+        if ( ipPos == INVALID )
         {
             // Not an IPV4 address
-            return -1;
+            return INVALID;
         }
         else
         {
@@ -906,6 +965,11 @@ public class LdapUrl
         int ipElemValue = 0;
         boolean ipElemSeen = false;
         boolean hasHeadingZeroes = false;
+        
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
 
         while ( Chars.isDigit( chars, pos ) && ( pos < chars.length ) )
         {
@@ -916,7 +980,7 @@ public class LdapUrl
                 if ( hasHeadingZeroes )
                 {
                     // Two 0 at the beginning : not allowed
-                    return -1;
+                    return INVALID;
                 }
                 
                 if ( ipElemValue > 0 )
@@ -936,7 +1000,7 @@ public class LdapUrl
 
             if ( ipElemValue > 255 )
             {
-                return -1;
+                return INVALID;
             }
 
             pos++;
@@ -950,7 +1014,7 @@ public class LdapUrl
         }
         else
         {
-            return -1;
+            return INVALID;
         }
     }
 
@@ -970,10 +1034,14 @@ public class LdapUrl
      */
     private int parsePort( char[] chars, int pos )
     {
+        if ( pos >= chars.length )
+        {
+            return INVALID;
+        }
 
         if ( !Chars.isDigit( chars, pos ) )
         {
-            return -1;
+            return INVALID;
         }
 
         port = chars[pos] - '0';
@@ -986,7 +1054,7 @@ public class LdapUrl
 
             if ( port > 65535 )
             {
-                return -1;
+                return INVALID;
             }
 
             pos++;
@@ -1012,9 +1080,10 @@ public class LdapUrl
         int hostPos = pos;
 
         pos = parseHost( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
-            return -1;
+            return INVALID;
         }
 
         // We may have a port.
@@ -1023,7 +1092,7 @@ public class LdapUrl
             if ( pos == hostPos )
             {
                 // We should not have a port if we have no host
-                return -1;
+                return INVALID;
             }
 
             pos++;
@@ -1035,9 +1104,10 @@ public class LdapUrl
 
         // As we have a ':', we must have a valid port (between 0 and 65535).
         pos = parsePort( chars, pos );
-        if ( pos == -1 )
+        
+        if ( pos == INVALID )
         {
-            return -1;
+            return INVALID;
         }
 
         return pos;
@@ -1159,7 +1229,7 @@ public class LdapUrl
         }
         catch ( LdapUriException | LdapInvalidDnException e )
         {
-            return -1;
+            return INVALID;
         }
 
         return end;
@@ -1220,7 +1290,7 @@ public class LdapUrl
                     {
 
                         // An attributes must not be null
-                        return -1;
+                        return INVALID;
                     }
                     else
                     {
@@ -1229,7 +1299,7 @@ public class LdapUrl
 
                         if ( attribute.length() == 0 )
                         {
-                            return -1;
+                            return INVALID;
                         }
 
                         // Check that the attribute is valid
@@ -1239,7 +1309,7 @@ public class LdapUrl
                         }
                         catch ( LdapURLEncodingException luee )
                         {
-                            return -1;
+                            return INVALID;
                         }
 
                         String decodedAttr = decode( attribute );
@@ -1266,7 +1336,7 @@ public class LdapUrl
 
                 // We are not allowed to have a comma at the end of the
                 // attributes
-                return -1;
+                return INVALID;
             }
             else
             {
@@ -1284,7 +1354,7 @@ public class LdapUrl
 
                 if ( attribute.length() == 0 )
                 {
-                    return -1;
+                    return INVALID;
                 }
 
                 String decodedAttr = decode( attribute );
@@ -1300,7 +1370,7 @@ public class LdapUrl
         }
         catch ( LdapUriException ue )
         {
-            return -1;
+            return INVALID;
         }
     }
 
@@ -1335,7 +1405,7 @@ public class LdapUrl
         }
         catch ( LdapUriException | ParseException e )
         {
-            return -1;
+            return INVALID;
         }
 
         return end;
@@ -1419,7 +1489,7 @@ public class LdapUrl
         }
 
         // The scope is not one of "one", "sub" or "base". It's an error
-        return -1;
+        return INVALID;
     }
 
 
@@ -1459,17 +1529,19 @@ public class LdapUrl
                     {
                         // a ',' is not allowed when we have already had one
                         // or if we just started to parse the extensions.
-                        return -1;
+                        return INVALID;
                     }
                     else
                     {
+                        String decoded = decode( new String( chars, start, i - start ) ).trim();
+                        
                         if ( extension == null )
                         {
-                            extension = decode( new String( chars, start, i - start ) ).trim();
+                            extension = decoded;
                         }
                         else
                         {
-                            value = decode( new String( chars, start, i - start ) ).trim();
+                            value = decoded;
                         }
 
                         Extension ext = new Extension( isCritical, extension, value );
@@ -1497,7 +1569,7 @@ public class LdapUrl
                     if ( extension.length() == 0 )
                     {
                         // We must have an extension
-                        return -1;
+                        return INVALID;
                     }
 
                     hasValue = true;
@@ -1514,7 +1586,7 @@ public class LdapUrl
                     if ( !isNewExtension )
                     {
                         // '!' must appears first
-                        return -1;
+                        return INVALID;
                     }
 
                     isCritical = true;
@@ -1542,7 +1614,7 @@ public class LdapUrl
         }
         catch ( LdapUriException ue )
         {
-            return -1;
+            return INVALID;
         }
     }
 
@@ -1769,7 +1841,7 @@ public class LdapUrl
             }
         }
 
-        if ( port != -1 )
+        if ( port != INVALID )
         {
             sb.append( ':' ).append( port );
         }

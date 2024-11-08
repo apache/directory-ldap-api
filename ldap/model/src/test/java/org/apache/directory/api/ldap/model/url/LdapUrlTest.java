@@ -1688,7 +1688,7 @@ public class LdapUrlTest
     @Test
     public void hangingLdapUrl()
     {
-    	assertThrows( LdapURLEncodingException.class, () -> new LdapUrl( "ldap://[1:2:ldap:///o" ) );
+        assertThrows( LdapURLEncodingException.class, () -> new LdapUrl( "ldap://[1:2:ldap:///o" ) );
     }
     
     
@@ -1698,5 +1698,21 @@ public class LdapUrlTest
         LdapUrl ldapUrl = new LdapUrl( "ldap://" );
     
         assertNull( ldapUrl.getHost() );
+    }
+    
+    
+    @Test
+    public void indexOutOfRangeLdapUrl1() throws LdapURLEncodingException
+    {
+        LdapUrl ldapUrl = new LdapUrl( "ldap://1" );
+    
+        assertEquals( "1", ldapUrl.getHost() );
+    }
+    
+    
+    @Test
+    public void indexOutOfRangeLdapUrlNoPort() throws LdapURLEncodingException
+    {
+        assertThrows( LdapURLEncodingException.class, () -> new LdapUrl( "ldap://abc:" ) );
     }
 }
