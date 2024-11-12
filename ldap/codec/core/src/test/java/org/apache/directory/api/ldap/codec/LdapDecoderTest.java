@@ -617,7 +617,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     
     
     @Test
-    public void testIllegalArgumentException() throws DecoderException, EncoderException
+    public void testIllegalArgumentException() throws DecoderException
     {
         byte[] input = new byte[] 
             {
@@ -629,6 +629,38 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
                       0x30, 0x04,                           // Partial attribute list, 4 bytes
                         0x04, 0x02, 0x04, 0x20              // Attribute type, rubish
             };
+        
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
+    }
+    
+    
+    @Test
+    public void testArrayIndexOutOfBoundsException() throws DecoderException
+    {
+        //String data = "MH4CAktLaDwEAmQ9MAIwAAQabnNHR0dHR0dHR0dHR0du+/tHR0dHR0dHR0c=";
+        byte[] input = new byte[] 
+            {
+                0x30, 0x7E,                                                         // Message 126 bytes long
+                  0x02, 0x02, 0x4B, 0x4B,                                           // message ID: 19 275
+                  0x68, 0x3C,                                                       // AddRequest
+                    0x04, 0x02,                                                     // Entry DN
+                      0x64, 0x3D,                                                   // "d="
+                    0x30, 0x02,                                                     // Attributes
+                      0x30, 0x00,                                                   // none
+                    0x04, 0x1A,                                                     // Rubish...
+                      0x6E, 0x73, 0x47, 0x47, 0x47, 0x47, 0x47, 0x47, 
+                      0x47, 0x47, 0x47, 0x47, 0x47, 0x47, 0x6E, (byte)0xFB, 
+                      (byte)0xFB, 0x47, 0x47, 0x47, 0x47, 0x47, 0x47, 0x47, 
+                      0x47, 0x47 
+            };
+        
         
         ByteBuffer stream = ByteBuffer.allocate(input.length);
         stream.put(input);

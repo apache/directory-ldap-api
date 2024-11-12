@@ -420,17 +420,26 @@ public final class DefaultEntry implements Entry
      */
     private String getId( String upId )
     {
-        String id = Strings.trim( Strings.toLowerCaseAscii( upId ) );
-
-        // If empty, throw an error
-        if ( Strings.isEmpty( id ) )
+        try
         {
-            String message = I18n.err( I18n.ERR_13216_AT_ID_NULL );
+            String id = Strings.trim( Strings.toLowerCaseAscii( upId ) );
+    
+            // If empty, throw an error
+            if ( Strings.isEmpty( id ) )
+            {
+                String message = I18n.err( I18n.ERR_13216_AT_ID_NULL );
+                LOG.error( message );
+                throw new IllegalArgumentException( message );
+            }
+    
+            return id;
+        }
+        catch ( ArrayIndexOutOfBoundsException aiobe )
+        {
+            String message = I18n.err( I18n.ERR_13254_INVALID_ATTRIBUTE_ID, upId );
             LOG.error( message );
             throw new IllegalArgumentException( message );
         }
-
-        return id;
     }
 
 

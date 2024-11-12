@@ -626,9 +626,17 @@ public class DefaultAttribute implements Attribute, Cloneable
             throw new IllegalArgumentException( I18n.err( I18n.ERR_13235_NULL_ID_WITH_NULL_AT_NOT_ALLOWED ) );
         }
 
-        String newId = Strings.toLowerCaseAscii( trimmed );
+        try
+        {
+            String newId = Strings.toLowerCaseAscii( trimmed );
+            
 
-        setUpIdInternal( upId, newId, attributeType );
+            setUpIdInternal( upId, newId, attributeType );
+        }
+        catch ( ArrayIndexOutOfBoundsException aioobe )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13254_INVALID_ATTRIBUTE_ID, upId ) );
+        }
     }
 
 
