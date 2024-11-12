@@ -948,7 +948,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             }
             else
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03025_OPERATION_TTRIBUTE_REQUIRED ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03025_OPERATION_ATTRIBUTE_REQUIRED ), xpp, null );
             }
 
             // name
