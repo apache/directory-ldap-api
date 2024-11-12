@@ -19,12 +19,16 @@
  */
 package org.apache.directory.api.ldap.codec.factory;
 
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
 
 /**
@@ -60,7 +64,7 @@ public final class ModifyDnRequestFactory implements Messagefactory
      * @param message the ModifyRequest to encode
      */
     @Override
-    public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message )
+    public void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message ) throws EncoderException
     {
         int start = buffer.getPos();
         ModifyDnRequest modifyDnRequest = ( ModifyDnRequest ) message;
@@ -77,10 +81,24 @@ public final class ModifyDnRequestFactory implements Messagefactory
         BerValue.encodeBoolean( buffer, modifyDnRequest.getDeleteOldRdn() );
 
         // The new RDN
-        BerValue.encodeOctetString( buffer, modifyDnRequest.getNewRdn().getName() );
+        Rdn newRdn = modifyDnRequest.getNewRdn();
+        
+        if ( newRdn == null )
+        {
+            throw new EncoderException( I18n.err( I18n.ERR_03023_NEW_RDN_ATTRIBUTE_REQUESTED ) );
+        }
+        
+        BerValue.encodeOctetString( buffer, newRdn.getName() );
 
         // The entry DN
-        BerValue.encodeOctetString( buffer, modifyDnRequest.getName().getName() );
+        Dn name = modifyDnRequest.getName();
+        
+        if ( name == null )
+        {
+            throw new EncoderException( I18n.err( I18n.ERR_03022_NULL_REQUEST_NAME ) );
+        }
+            
+        BerValue.encodeOctetString( buffer, name.getName() );
 
         // The ModifyDnRequest tag
         BerValue.encodeSequence( buffer, LdapCodecConstants.MODIFY_DN_REQUEST_TAG, start );

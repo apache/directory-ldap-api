@@ -35,11 +35,13 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.directory.api.ldap.model.exception.ResponseCarryingMessageException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.Message;
@@ -537,5 +539,38 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
 
         // Decode a PDU which is going to be bigger than the MAX PDU size: should throw an exception
         assertThrows( DecoderException.class, () -> { Asn1Decoder.decode( stream, container ); } );
+    }
+    
+    
+    @Test
+    public void testNullRdnModifyDnRequest() throws DecoderException, EncoderException
+    {
+        String base64Bytes = "MHoCAwAxSmxKSixKShISbmRyb2lkEkpKPQIsAEpKEhJuZHJvaWQSSko9AiwASiFKLA==";
+        
+        byte[] input = java.util.Base64.getDecoder().decode(base64Bytes);
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        try {
+            Asn1Decoder.decode(stream, container);
+        } catch (DecoderException de) {
+            // we expect DecoderException
+            return;
+        }
+
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        Message message = container.getMessage();
+        if (message == null) {
+            return;
+        }
+
+        assertThrows( EncoderException.class, () -> { LdapEncoder.encodeMessage(buffer, codec, message ); } );
+
+        buffer.clear();
     }
 }

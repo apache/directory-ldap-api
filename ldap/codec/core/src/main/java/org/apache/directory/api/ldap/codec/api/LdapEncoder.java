@@ -152,7 +152,7 @@ public final class LdapEncoder
      * @param codec The LdapApiService instance
      * @param message The message to encode
      */
-    private static void encodeProtocolOp( Asn1Buffer buffer, LdapApiService codec, Message message )
+    private static void encodeProtocolOp( Asn1Buffer buffer, LdapApiService codec, Message message ) throws EncoderException
     {
         switch ( message.getType() )
         {
