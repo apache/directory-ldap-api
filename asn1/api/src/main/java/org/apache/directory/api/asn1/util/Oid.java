@@ -1265,7 +1265,7 @@ public final class Oid
                     else
                     {
                         // We are done with the first arc : convert it
-                        bufPos += convert( oidString, buffer, bufPos, arcNbChars, 0, true );
+                        bufPos += convert( oidString, buffer, startArc, arcNbChars, bufPos, true );
                     }
                     
                     break;

@@ -644,7 +644,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testArrayIndexOutOfBoundsException() throws DecoderException
     {
-        //String data = "MH4CAktLaDwEAmQ9MAIwAAQabnNHR0dHR0dHR0dHR0du+/tHR0dHR0dHR0c=";
         byte[] input = new byte[] 
             {
                 0x30, 0x7E,                                                         // Message 126 bytes long
@@ -662,6 +661,33 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
             };
         
         
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
+    }
+    
+    
+    @Test
+    public void testNumberFormatException() throws DecoderException
+    {
+        byte[] input = new byte[] 
+            {
+                0x30, 0x50,                                                 // Message 80 bytes long
+                  0x02, 0x02, 0x6E, 0x30,                                   // MessageID: 28 208
+                  0x50, 0x02, 0x02, 0x6E,                                   // AbandonRequest, ID 622
+                  (byte)0xA0, 0x11,                                         // Controls, 17 bytes
+                    0x30, 0x0A,                                             // controls, 10 bytes 
+                      0x04, 0x07,                                           // Control type
+                        0x32, 0x2E, 0x33, 0x30, 0x30, 0x32, 0x2E,           // 2.3002.
+                      0x33                                                  // rubish
+            };
+        
+        System.out.println( Strings.dumpBytes( input ) );
         ByteBuffer stream = ByteBuffer.allocate(input.length);
         stream.put(input);
         stream.flip();
