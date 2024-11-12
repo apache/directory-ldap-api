@@ -548,6 +548,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         String base64Bytes = "MHoCAwAxSmxKSixKShISbmRyb2lkEkpKPQIsAEpKEhJuZHJvaWQSSko9AiwASiFKLA==";
         
         byte[] input = java.util.Base64.getDecoder().decode(base64Bytes);
+        System.out.println( Strings.dumpBytes( input ) );
+        Strings.dumpBytes( input );
         ByteBuffer stream = ByteBuffer.allocate(input.length);
         stream.put(input);
         stream.flip();
@@ -565,6 +567,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         Asn1Buffer buffer = new Asn1Buffer();
 
         Message message = container.getMessage();
+        
         if (message == null) {
             return;
         }
@@ -572,5 +575,37 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertThrows( EncoderException.class, () -> { LdapEncoder.encodeMessage(buffer, codec, message ); } );
 
         buffer.clear();
+    }
+    
+    
+    @Test
+    public void testClassCastException() throws DecoderException, EncoderException
+    {
+        byte[] input = new byte[] 
+            {
+                0x30, (byte)0x82, 0x30, (byte)0x75,             // 12 405 bytes long message
+                  0x02, 0x02, 0x26, 0x33,                       // Message ID: 9779
+                  0x63, 0x3D,                                   // SearchRequest, 61 bytes long
+                    0x04, 0x00,                                 // Base Object RootDSE
+                    0x0A, 0x01, 0x02,                           // Scope Base
+                    0x0A, 0x01, 0x02,                           // Deref alias
+                    0x02, 0x05, 0x00, 0x38, (byte)0xF1, 0x00, 0x44,   // SizeLimite
+                    0x02, 0x02, 0x26, 0x3F,                     // TimeLimit
+                    0x01, 0x01, 0x00,                           // TypesOnly
+                    (byte)0xA9, 0x04,                           // From this point, garbage in...
+                      (byte)0x82, 0x02, (byte)0xA1, 0x2E, (byte)0x83, 0x02, (byte)0x87, 0x00, 
+                    (byte)0x84, 0x01, 0x00, (byte)0xA9, 0x04, (byte)0x82, 0x02, (byte)0xA1, 0x0E, 
+                    (byte)0x83, 0x02, (byte)0xA1, 0x2E, (byte)0x83, 0x26, (byte)0x87, 0x00, 
+                    (byte)0x84, 0x01, 0x24, (byte)0xA9, 0x04, (byte)0x82, 0x02, 0x00, (byte)0xFF 
+            };
+        
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
     }
 }

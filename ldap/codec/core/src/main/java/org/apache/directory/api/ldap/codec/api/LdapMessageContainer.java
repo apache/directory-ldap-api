@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.api;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.LdapMessageGrammar;
 import org.apache.directory.api.ldap.codec.LdapStatesEnum;
 import org.apache.directory.api.ldap.codec.search.ConnectorFilter;
@@ -387,7 +388,15 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
         {
             // Ok, we have a parent. The new Filter will be added to
             // this parent, and will become the currentFilter if it's a connector.
-            ( ( ConnectorFilter ) currentFilter ).addFilter( localFilter );
+            if ( currentFilter instanceof ConnectorFilter )
+            {
+                ( ( ConnectorFilter ) currentFilter ).addFilter( localFilter );
+            }
+            else
+            {
+                throw new DecoderException( I18n.err( I18n.ERR_03037_UNEXPECTED_FILTER_TYPE, localFilter ) );
+            }
+            
             localFilter.setParent( currentFilter, currentFilter.getTlvId() );
 
             if ( localFilter instanceof ConnectorFilter )
