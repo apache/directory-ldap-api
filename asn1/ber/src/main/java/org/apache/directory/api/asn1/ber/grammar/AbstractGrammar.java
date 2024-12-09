@@ -22,6 +22,7 @@ package org.apache.directory.api.asn1.ber.grammar;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
@@ -97,8 +98,8 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
     @Override
     public void executeAction( C container ) throws DecoderException
     {
-
         Enum<?> currentState = container.getTransition();
+        
         // We have to deal with the special case of a GRAMMAR_END state
         if ( ( ( States ) currentState ).isEndState() )
         {
@@ -112,7 +113,26 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
         GrammarTransition<C> transition = ( ( AbstractGrammar<C> ) container.getGrammar() ).getTransition(
             currentState,
             tagByte );
+        
+        if ( LOG.isDebugEnabled() )
+        { 
+            LOG.debug( "-------------------------------------" );
+            LOG.debug( transition.toString() );
+            LOG.debug( "C: " ); 
+            LOG.debug( container.getCurrentTLV().toString() );
+            
+            TLV parent = container.getCurrentTLV().getParent();
+            
+            while ( parent != null )
+            {
+                LOG.debug( "P: " ); 
+                LOG.debug( parent.toString() );
+                parent = parent.getParent();
+            }
+        }
 
+        TLV parent = container.getCurrentTLV().getParent();
+        
         if ( transition == null )
         {
             String errorMessage = I18n.err( I18n.ERR_01200_BAD_TRANSITION_FROM_STATE, currentState,
@@ -136,6 +156,15 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
             action.action( container );
         }
 
+        if ( ( parent != null ) && ( parent.getExpectedLength() == 0 ) && transition.hasFollowUp() )
+        {
+            String errorMessage = I18n.err( I18n.ERR_01201_MANDATORY_TRANSITION_EXPECTED, transition );
+
+            LOG.error( errorMessage );
+            
+            throw new DecoderException( errorMessage );
+        }
+        
         container.setTransition( transition.getCurrentState() );
     }
 }

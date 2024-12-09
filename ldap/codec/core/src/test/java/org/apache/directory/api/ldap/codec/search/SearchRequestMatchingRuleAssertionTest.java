@@ -36,6 +36,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
@@ -170,6 +171,8 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         Asn1Buffer buffer = new Asn1Buffer();
 
         LdapEncoder.encodeMessage( buffer, codec, searchRequest );
+        
+        System.out.println( Asn1StringUtils.dumpBytes( buffer.getBytes().array() ) );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
@@ -534,10 +537,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                     0x02, 0x01, 0x00,
                     0x01, 0x01, ( byte ) 0xFF,
                     ( byte ) 0xA9, 0x06,
-                    ( byte ) 0x82, 0x04,
-                    't', 'e', 's', 't',
+                      ( byte ) 0x82, 0x04,
+                        't', 'e', 's', 't',
                     0x30, 0x02,                 // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                    0x04, 0x00
+                      0x04, 0x00
                 };
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
@@ -560,13 +563,13 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Value and nothing else
      */
     @Test
-    public void testDecodeSearchRequestExtensibleMatchMatchValueAlone() throws DecoderException
+    public void testDecodeSearchRequestExtensibleMatchMatchValueAlone() throws DecoderException, EncoderException
     {
         byte[] asn1BER = new byte[]
             {
-                0x30, 0x43,
+                0x30, 0x3F,
                   0x02, 0x01, 0x04,             // messageID
-                  0x63, 0x3E,
+                  0x63, 0x3A,
                     0x04, 0x1F,                 // baseObject LDAPDN,
                       'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',',
                       'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
@@ -575,11 +578,11 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                     0x02, 0x01, 0x00,
                     0x02, 0x01, 0x00,
                     0x01, 0x01, ( byte ) 0xFF,
-                    ( byte ) 0xA9, 0x06,
-                      ( byte ) 0x83, 0x04,
+                    ( byte ) 0xA9, 0x06,        // extensibleMatch [9] MatchingRuleAssertion
+                      ( byte ) 0x83, 0x04,      // matchValue      [3] AssertionValue
                         't', 'e', 's', 't',
-                    0x30, 0x02,                 // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                      0x04, 0x00
+                    0x30, 0x00,                 // attributes      AttributeSelection }
+                                                // Empty list -> all the user's attributes
             };
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
@@ -590,9 +593,37 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
-        assertThrows( DecoderException.class, ( ) ->
-        {
-            Asn1Decoder.decode( stream, ldapMessageContainer );
-        } );
+        Asn1Decoder.decode( stream, ldapMessageContainer );
+
+        SearchRequest searchRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( 4, searchRequest.getMessageId() );
+        assertEquals( "uid=akarasulu,dc=example,dc=com", searchRequest.getBase().toString() );
+        assertEquals( SearchScope.ONELEVEL, searchRequest.getScope() );
+        assertEquals( AliasDerefMode.DEREF_ALWAYS, searchRequest.getDerefAliases() );
+        assertEquals( 0, searchRequest.getSizeLimit() );
+        assertEquals( 0, searchRequest.getTimeLimit() );
+        assertEquals( true, searchRequest.getTypesOnly() );
+
+        // Extended
+        ExprNode filter = searchRequest.getFilter();
+        ExtensibleNode extensibleNode = ( ExtensibleNode ) filter;
+        assertNotNull( extensibleNode );
+
+        assertNull( extensibleNode.getMatchingRuleId() );
+        assertNull( extensibleNode.getAttribute() );
+        assertEquals( "test", extensibleNode.getValue().getString() );
+        assertFalse( extensibleNode.hasDnAttributes() );
+
+        List<String> attributes = searchRequest.getAttributes();
+
+        assertEquals( 0, attributes.size() );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        LdapEncoder.encodeMessage( buffer, codec, searchRequest );
+
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 }

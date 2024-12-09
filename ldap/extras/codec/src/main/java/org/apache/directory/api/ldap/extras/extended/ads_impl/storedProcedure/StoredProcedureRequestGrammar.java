@@ -38,6 +38,19 @@ import org.slf4j.LoggerFactory;
 /**
  * ASN.1 BER Grammar for Stored Procedure Extended Operation
  * 
+ * <pre>
+ * StoredProcedure ::= SEQUENCE {
+ *     language OCTET STRING,
+ *      procedure OCTET STRING,
+ *      parameters SEQUENCE OF Parameter {
+ *          parameter SEQUENCE OF {
+ *              type OCTET STRING,
+ *              value OCTET STRING
+ *          }
+ *      }
+ * }
+ * </pre>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredProcedureRequestContainer>
@@ -69,10 +82,12 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
         //   ...
         // Nothing to do.
         super.transitions[StoredProcedureStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.START_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.START_STATE,
                 StoredProcedureStatesEnum.STORED_PROCEDURE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                null );
+                null,
+                FollowUp.MANDATORY );
 
         //    language OCTETSTRING, (Tag)
         //    ...
@@ -80,7 +95,8 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
         // Creates the storeProcedure and stores the language
         super.transitions[StoredProcedureStatesEnum.STORED_PROCEDURE_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.STORED_PROCEDURE_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.STORED_PROCEDURE_STATE,
                 StoredProcedureStatesEnum.LANGUAGE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureRequestContainer>( "Stores the language" )
@@ -110,13 +126,15 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
                             container.getStoredProcedure().setLanguage( language );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
-        //    procedure OCTETSTRING, (Value)
+        //    procedure OCTET STRING, (Value)
         //    ...
         // Stores the procedure.
         super.transitions[StoredProcedureStatesEnum.LANGUAGE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.LANGUAGE_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.LANGUAGE_STATE,
                 StoredProcedureStatesEnum.PROCEDURE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureRequestContainer>( "Stores the procedure" )
@@ -146,14 +164,16 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
                                 container.getStoredProcedure().getProcedureSpecification() ) );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
         // parameters SEQUENCE OF Parameter { (Value)
         //    ...
         // The list of parameters will be created with the first parameter.
         // We can have an empty list of parameters, so the PDU can be empty
         super.transitions[StoredProcedureStatesEnum.PROCEDURE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.PROCEDURE_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.PROCEDURE_STATE,
                 StoredProcedureStatesEnum.PARAMETERS_STATE,
                 UniversalTag.SEQUENCE.getValue(),
                 new GrammarAction<StoredProcedureRequestContainer>( "Stores the parameters" )
@@ -162,16 +182,19 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
                     {
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         // parameter SEQUENCE OF { (Value)
         //    ...
         // Nothing to do. 
         super.transitions[StoredProcedureStatesEnum.PARAMETERS_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.PARAMETERS_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.PARAMETERS_STATE,
                 StoredProcedureStatesEnum.PARAMETER_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                null );
+                null,
+                FollowUp.OPTIONAL );
 
         // Parameter ::= {
         //    type OCTETSTRING, (Value)
@@ -179,7 +202,8 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
         //
         // We can create a parameter, and store its type
         super.transitions[StoredProcedureStatesEnum.PARAMETER_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.PARAMETER_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.PARAMETER_STATE,
                 StoredProcedureStatesEnum.PARAMETER_TYPE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureRequestContainer>( "Store parameter type" )
@@ -213,7 +237,8 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
 
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
         // Parameter ::= {
         //    ...
@@ -222,7 +247,8 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
         // Store the parameter value
         super.transitions[StoredProcedureStatesEnum.PARAMETER_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.PARAMETER_TYPE_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.PARAMETER_TYPE_STATE,
                 StoredProcedureStatesEnum.PARAMETER_VALUE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureRequestContainer>( "Store parameter value" )
@@ -268,16 +294,19 @@ public final class StoredProcedureRequestGrammar extends AbstractGrammar<StoredP
                         // The only possible END state for the grammar is here
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         // Parameters ::= SEQUENCE OF Parameter
         // 
         // Loop on next parameter
         super.transitions[StoredProcedureStatesEnum.PARAMETER_VALUE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
-            new GrammarTransition<StoredProcedureRequestContainer>( StoredProcedureStatesEnum.PARAMETER_VALUE_STATE,
+            new GrammarTransition<StoredProcedureRequestContainer>( 
+                StoredProcedureStatesEnum.PARAMETER_VALUE_STATE,
                 StoredProcedureStatesEnum.PARAMETER_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                null );
+                null,
+                FollowUp.OPTIONAL );
     }
 
 

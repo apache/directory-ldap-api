@@ -705,11 +705,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                       0x30, 0x0F,
                         0x04, 0x0b,             // type AttributeDescription,
                           'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
-                      0x31, 0x00,
-                        0x30, 0x0F,
-                          0x04, 0x0b,           // type AttributeDescription,
+                        0x31, 0x00,
+                      0x30, 0x0F,
+                        0x04, 0x0b,           // type AttributeDescription,
                           'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 'z', 'z',
-                      0x31, 0x00
+                        0x31, 0x00
             } );
 
         stream.flip();

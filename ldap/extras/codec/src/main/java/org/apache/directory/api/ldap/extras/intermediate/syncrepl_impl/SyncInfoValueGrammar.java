@@ -119,7 +119,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         container.setSyncInfoValue( syncInfoValue );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from initial state to SyncInfoValue refreshDelete choice
@@ -147,7 +148,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from refreshDelete state to cookie
@@ -182,7 +184,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from refreshDelete cookie state to refreshDone
@@ -232,7 +235,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from refreshDelete choice state to refreshDone
@@ -281,7 +285,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from initial state to SyncInfoValue refreshPresent choice
@@ -309,7 +314,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from refreshPresent state to cookie
@@ -344,7 +350,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from refreshPresent cookie state to refreshDone
@@ -394,7 +401,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from refreshPresent choice state to refreshDone
@@ -443,7 +451,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from initial state to SyncInfoValue syncIdSet choice
@@ -467,7 +476,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
 
                         container.setSyncInfoValue( syncInfoValue );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet state to cookie
@@ -499,7 +509,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         container.getSyncInfoValue().setCookie( cookie );
                         container.setSyncInfoValue( syncInfoValue );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet state to refreshDeletes
@@ -542,7 +553,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                             throw new DecoderException( msg, be );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet cookie state to refreshDeletes
@@ -585,7 +597,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                             throw new DecoderException( msg, be );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet state to syncUUIDs
@@ -607,7 +620,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet cookie state to syncUUIDs
@@ -629,7 +643,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet refreshDeletes state to syncUUIDs
@@ -652,7 +667,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet syncUUIDs to syncUUID
@@ -697,7 +713,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from syncIdSet syncUUID to syncUUID
@@ -742,7 +759,8 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

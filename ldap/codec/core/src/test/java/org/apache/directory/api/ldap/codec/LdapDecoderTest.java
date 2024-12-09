@@ -687,7 +687,76 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
                       0x33                                                  // rubish
             };
         
-        System.out.println( Strings.dumpBytes( input ) );
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
+    }
+    
+    
+    @Test
+    public void testNullPointerException() throws DecoderException
+    {
+        byte[] input = new byte[] 
+            {
+                0x30, (byte)0x82, 0x30, 0x47,                       // 12 359 bytes long message
+                  0x02, 0x02, 0x26, 0x2E,                           // message ID: 9774
+                  0x63, 0x3D,                                       // SearchRequest, 61 bytes long
+                    0x04, 0x00,                                     // Base Object RootDSE
+                    0x0A, 0x01, 0x02,                               // Scope Base
+                    0x0A, 0x01, 0x02,                               // Deref alias
+                    0x02, 0x05, 0x00, 0x21, 0x6E, 0x00, 0x51,       // SizeLimit
+                    0x02, 0x02, 0x00, 0x03,                         // TimeLimit
+                    0x01, 0x01, 0x41,                               // TypesOnly
+                    (byte)0xA6, 0x04,                               // Less or equal filter
+                      0x04, 0x02,                                   // AttributeDesc
+                        0x04, 0x04, 
+                    0x04, 0x1F,                                     // AssertionValue, but out of the filter size...
+                        0x00, 0x00, 0x00, 0x04, 0x04, 0x02, 0x04, 0x04, 
+                        0x30, 0x04, 0x04, 0x02, 0x04, 0x04, 0x30, 0x04, 
+                        0x04, 0x02, 0x2E, 0x26, 0x04, 0x03, 0x04, 0x04, 
+                        0x04, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 
+                    0x12, 0x12, 0x12, 0x12, 0x12, 0x04, 0x00,       // From this point, garbage
+                    0x04, 0x00, 0x04, 0x00, 0x00, 0x40, (byte)0x80, 0x06 
+            };
+        
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
+    }
+    
+    
+    @Test
+    public void testNullPointerException2() throws DecoderException
+    {
+        byte[] input = new byte[] 
+            {
+                0x30, (byte)0x82, 0x30, 0x47,                       // 12 359 bytes long message
+                  0x02, 0x02, 0x26, 0x2E,                           // message ID: 9774
+                  0x63, 0x22,                                       // SearchRequest, 61 bytes long
+                    0x04, 0x00,                                     // Base Object RootDSE
+                    0x0A, 0x01, 0x02,                               // Scope Base
+                    0x0A, 0x01, 0x02,                               // Deref alias
+                    0x02, 0x05, 0x00, 0x21, 0x6E, 0x00, 0x51,       // SizeLimite
+                    0x02, 0x02, 0x00, 0x03,                         // TimeLimit
+                    0x01, 0x01, 0x41,                               // TypesOnly
+                    (byte)0xA6, 0x08,                               // Less or equal filter
+                      0x04, 0x02,                                   // AttributeDesc
+                        0x04, 0x04, 
+                      0x04, 0x02,                                   // AssertionValue
+                        0x04, 0x04, 
+                    0x04, 0x00
+            };
+        
         ByteBuffer stream = ByteBuffer.allocate(input.length);
         stream.put(input);
         stream.flip();

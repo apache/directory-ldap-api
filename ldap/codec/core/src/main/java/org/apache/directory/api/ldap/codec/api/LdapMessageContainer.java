@@ -28,7 +28,6 @@ import org.apache.directory.api.ldap.codec.LdapMessageGrammar;
 import org.apache.directory.api.ldap.codec.LdapStatesEnum;
 import org.apache.directory.api.ldap.codec.search.ConnectorFilter;
 import org.apache.directory.api.ldap.codec.search.Filter;
-import org.apache.directory.api.ldap.codec.search.PresentFilter;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -439,23 +438,22 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
             else
             {
                 Filter filterParent = localFilter.getParent();
+                
+                if ( filterParent == null )
+                {
+                    break;
+                }
 
                 // We have a special case with PresentFilter, which has not been
                 // pushed on the stack, so we need to get its parent's parent
-                if ( localFilter instanceof PresentFilter )
-                {
-                    if ( filterParent == null )
-                    {
-                        // We don't have parent, get out
-                        break;
-                    }
-
+                //if ( localFilter instanceof PresentFilter )
+                //{
                     filterParent = filterParent.getParent();
-                }
-                else
-                {
-                    filterParent = filterParent.getParent();
-                }
+                //}
+                //else
+                //{
+                //    filterParent = filterParent.getParent();
+                //}
 
                 if ( filterParent != null )
                 {

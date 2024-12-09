@@ -33,6 +33,14 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
  */
 public interface Grammar<C extends Asn1Container>
 {
+    /** The flag used to tell if a given state must have a follow up in the same PDU or not */
+    enum FollowUp
+    {
+        MANDATORY,
+        
+        OPTIONAL;
+    }
+    
     /**
      * This method, when called, execute an action on the current data stored in
      * the container.

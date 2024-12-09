@@ -90,7 +90,8 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
                             container.setGrammarEndAllowed( true );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from PasswordModify Response Value to genPassword
@@ -129,7 +130,8 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

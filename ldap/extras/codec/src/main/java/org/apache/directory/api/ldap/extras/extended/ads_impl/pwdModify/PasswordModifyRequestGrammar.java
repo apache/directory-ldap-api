@@ -92,7 +92,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                             container.setGrammarEndAllowed( true );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from PasswordModify Request Value to userIdentity
@@ -131,7 +132,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from userIdentity to oldPassword
@@ -171,7 +173,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from userIdentity to newPassword
@@ -212,7 +215,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from PasswordModify Request Value to oldPassword
@@ -252,7 +256,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from PasswordModify Request Value to newPassword
@@ -292,7 +297,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from oldPassword to newPassword
@@ -332,7 +338,8 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

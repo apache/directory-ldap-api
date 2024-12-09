@@ -91,7 +91,8 @@ public final class GracefulShutdownRequestGrammar extends AbstractGrammar<Gracef
                             container.setGrammarEndAllowed( true );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from graceful shutdown to time offline
@@ -134,7 +135,8 @@ public final class GracefulShutdownRequestGrammar extends AbstractGrammar<Gracef
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from time offline to delay
@@ -176,7 +178,8 @@ public final class GracefulShutdownRequestGrammar extends AbstractGrammar<Gracef
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from graceful shutdown to delay
@@ -220,7 +223,8 @@ public final class GracefulShutdownRequestGrammar extends AbstractGrammar<Gracef
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

@@ -451,7 +451,8 @@ public class TLV
 
         sb.append( "TLV[ " );
         sb.append( Asn1StringUtils.dumpByte( tag ) ).append( ", " );
-        sb.append( length ).append( ", " );
+        sb.append( "length:" ).append( length ).append( ", " );
+        sb.append( "expected:" ).append( expectedLength ).append( ", " );
         sb.append( value.toString() );
         sb.append( "]" );
 

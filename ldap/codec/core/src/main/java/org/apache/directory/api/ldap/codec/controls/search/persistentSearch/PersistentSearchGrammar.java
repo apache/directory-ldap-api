@@ -87,7 +87,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
         super.transitions[PersistentSearchStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<PersistentSearchContainer>( PersistentSearchStates.START_STATE,
                 PersistentSearchStates.PSEARCH_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         /** 
          * Transition from Psearch sequence to Change types
@@ -128,7 +128,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
 
         /** 
          * Transition from Change types to Changes only
@@ -166,7 +166,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                             throw new DecoderException( msg, bde );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
 
         /** 
          * Transition from Change types to Changes only
@@ -207,7 +207,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                             throw new DecoderException( msg, bde );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
     }
 
 

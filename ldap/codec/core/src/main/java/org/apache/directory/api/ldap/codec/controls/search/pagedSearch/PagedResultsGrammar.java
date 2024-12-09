@@ -78,7 +78,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
         super.transitions[PagedResultsStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<PagedResultsContainer>( PagedResultsStates.START_STATE,
                 PagedResultsStates.PAGED_SEARCH_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         /** 
          * Transition from PagedSearch sequence to size
@@ -125,7 +125,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
 
         /** 
          * Transition from size to cookie
@@ -157,7 +157,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                }, FollowUp.OPTIONAL );
     }
 
 

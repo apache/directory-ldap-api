@@ -116,17 +116,17 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
         super.transitions[SortRequestStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.START_STATE,
                 SortRequestStates.SEQUENCE_OF_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.SEQUENCE_OF_SEQUENCE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.SEQUENCE_OF_SEQUENCE_STATE,
                 SortRequestStates.SORT_KEY_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.SORT_KEY_SEQUENCE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.SORT_KEY_SEQUENCE_STATE,
                 SortRequestStates.AT_DESC_STATE,
-                UniversalTag.OCTET_STRING.getValue(), addSortKey );
+                UniversalTag.OCTET_STRING.getValue(), addSortKey, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][ORDERING_RULE_TAG] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.AT_DESC_STATE,
@@ -150,27 +150,27 @@ public final class SortRequestGrammar extends AbstractGrammar<SortRequestContain
                         container.setGrammarEndAllowed( true );
                     }
 
-                } );
+                }, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.ORDER_RULE_STATE.ordinal()][REVERSE_ORDER_TAG] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.ORDER_RULE_STATE,
                 SortRequestStates.REVERSE_ORDER_STATE,
-                REVERSE_ORDER_TAG, storeReverseOrder );
+                REVERSE_ORDER_TAG, storeReverseOrder, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][REVERSE_ORDER_TAG] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.AT_DESC_STATE,
                 SortRequestStates.REVERSE_ORDER_STATE,
-                REVERSE_ORDER_TAG, storeReverseOrder );
+                REVERSE_ORDER_TAG, storeReverseOrder, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.REVERSE_ORDER_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.REVERSE_ORDER_STATE,
                 SortRequestStates.SORT_KEY_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.AT_DESC_STATE,
                 SortRequestStates.SORT_KEY_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
     }
 

@@ -92,6 +92,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
         {
             type = Strings.utf8ToString( tlv.getValue().getData() );
             Attribute currentAttribute = new DefaultAttribute( type );
+            
             container.setCurrentAttribute( currentAttribute );
             container.getCurrentModification().setAttribute( currentAttribute );
         }

@@ -94,7 +94,7 @@ public final class SubentriesGrammar extends AbstractGrammar<SubentriesContainer
                             throw new DecoderException( bde.getMessage() );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
     }
 
 

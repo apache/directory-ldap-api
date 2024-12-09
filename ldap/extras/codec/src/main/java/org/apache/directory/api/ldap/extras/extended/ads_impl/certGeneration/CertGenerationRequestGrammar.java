@@ -83,8 +83,11 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
          */
         super.transitions[CertGenerationRequestStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<CertGenerationRequestContainer>(
-                CertGenerationRequestStatesEnum.START_STATE, CertGenerationRequestStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                CertGenerationRequestStatesEnum.START_STATE, 
+                CertGenerationRequestStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(),
+                null,
+                FollowUp.MANDATORY );
 
         /**
          * Transition from certificate generation request to targetDN
@@ -131,7 +134,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
                             throw new DecoderException( msg );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
         /**
          * Transition from targetDN state to issuerDN
@@ -144,7 +148,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
          * Set the issuerDN value into the CertGenerationObject instance.
          */
         super.transitions[CertGenerationRequestStatesEnum.TARGETDN_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition<CertGenerationRequestContainer>( CertGenerationRequestStatesEnum.TARGETDN_STATE,
+            new GrammarTransition<CertGenerationRequestContainer>( 
+                CertGenerationRequestStatesEnum.TARGETDN_STATE,
                 CertGenerationRequestStatesEnum.ISSUER_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationRequestContainer>( "Set Cert Generation issuer Dn value" )
                 {
@@ -171,7 +176,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
                             container.getCertGenerationRequest().setIssuerDN( issuerDN );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
         /**
          * Transition from issuerDN state to subjectDN
@@ -184,7 +190,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
          * Set the subjectDN value into the CertGenerationObject instance.
          */
         super.transitions[CertGenerationRequestStatesEnum.ISSUER_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition<CertGenerationRequestContainer>( CertGenerationRequestStatesEnum.ISSUER_STATE,
+            new GrammarTransition<CertGenerationRequestContainer>( 
+                CertGenerationRequestStatesEnum.ISSUER_STATE,
                 CertGenerationRequestStatesEnum.SUBJECT_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationRequestContainer>( "Set Cert Generation subject Dn value" )
                 {
@@ -217,7 +224,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
                             throw new DecoderException( msg );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
         /**
          * Transition from subjectDN state to keyAlgo
@@ -229,7 +237,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
          * Set the key algorithm value into the CertGenerationObject instance.
          */
         super.transitions[CertGenerationRequestStatesEnum.SUBJECT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition<CertGenerationRequestContainer>( CertGenerationRequestStatesEnum.SUBJECT_STATE,
+            new GrammarTransition<CertGenerationRequestContainer>( 
+                CertGenerationRequestStatesEnum.SUBJECT_STATE,
                 CertGenerationRequestStatesEnum.KEY_ALGORITHM_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationRequestContainer>( "Set Cert Generation key algorithm value" )
@@ -252,7 +261,8 @@ public class CertGenerationRequestGrammar extends AbstractGrammar<CertGeneration
 
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
     }
 

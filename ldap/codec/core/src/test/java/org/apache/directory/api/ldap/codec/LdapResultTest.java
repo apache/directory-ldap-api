@@ -317,6 +317,38 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
 
     /**
+     * Test the decoding of a AddResponse with a valid LdapResult with referral
+     */
+    @Test
+    public void testDecodeAddResponseEmptyResultCodeOKEmptyReferrals() throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x1A );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x18,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x69, 0x13,               // CHOICE { ..., addResponse AddResponse, ...
+                    0x0A, 0x01, 0x0A,       // resultCode success (Referral)
+                    0x04, 0x00,             // Empty matched Dn
+                    0x04, 0x00,             // Empty errorMessage
+                    ( byte ) 0xA3, 0x00     // Empty referrals
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<AddResponse> container = new LdapMessageContainer<>( codec );
+
+        // Decode the AddResponse PDU
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
+    }
+
+
+    /**
      * Test the decoding of a AddResponse with a valid LdapResult with referrals
      */
     @Test

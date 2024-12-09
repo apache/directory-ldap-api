@@ -90,7 +90,8 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
                 public void action( AdDirSyncRequestContainer container ) throws DecoderException
                 {
                 }
-            } );
+            },
+            FollowUp.MANDATORY );
 
 
         /**
@@ -129,7 +130,8 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
 
         /**
@@ -169,7 +171,8 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.MANDATORY );
 
 
         /**
@@ -201,7 +204,8 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
 
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

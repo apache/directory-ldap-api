@@ -91,7 +91,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
                             throw new DecoderException( msg );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from controlSequence state to control type
@@ -107,7 +108,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
                 ControlsStates.CONTROL_SEQUENCE_STATE,
                 ControlsStates.CONTROL_TYPE_STATE,
                 OCTET_STRING, 
-                new AddControl() );
+                new AddControl(),
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from control type to control criticality
@@ -124,7 +126,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
                 ControlsStates.CONTROL_TYPE_STATE,
                 ControlsStates.CONTROL_CRITICALITY_STATE,
                 BOOLEAN, 
-                new StoreControlCriticality() );
+                new StoreControlCriticality(),
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from control type to control value
@@ -141,7 +144,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
                 ControlsStates.CONTROL_TYPE_STATE,
                 ControlsStates.CONTROL_VALUE_STATE,
                 OCTET_STRING, 
-                new StoreControlValue() );
+                new StoreControlValue(),
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from control type to control sequence
@@ -155,7 +159,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
             new GrammarTransition<ControlsContainer>(
                 ControlsStates.CONTROL_TYPE_STATE,
                 ControlsStates.CONTROL_SEQUENCE_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
         
         /**
          * Transition from control criticality to control value
@@ -172,7 +177,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
                 ControlsStates.CONTROL_CRITICALITY_STATE,
                 ControlsStates.CONTROL_VALUE_STATE,
                 OCTET_STRING, 
-                new StoreControlValue() );
+                new StoreControlValue(),
+                FollowUp.OPTIONAL );
         
         /**
          * Transition from control criticality to control sequence
@@ -187,7 +193,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
             new GrammarTransition<ControlsContainer>(
                 ControlsStates.CONTROL_CRITICALITY_STATE,
                 ControlsStates.CONTROL_SEQUENCE_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from control value to control sequence
@@ -200,7 +207,8 @@ public class ControlsGrammar extends AbstractGrammar<ControlsContainer>
             new GrammarTransition<ControlsContainer>(
                 ControlsStates.CONTROL_VALUE_STATE,
                 ControlsStates.CONTROL_SEQUENCE_STATE,
-                SEQUENCE ); 
+                SEQUENCE,
+                FollowUp.OPTIONAL ); 
     }
 
 

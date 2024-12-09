@@ -77,10 +77,12 @@ public final class CancelRequestGrammar extends AbstractGrammar<CancelRequestCon
          * Creates the Cancel object
          */
         super.transitions[CancelStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
-            new GrammarTransition<CancelRequestContainer>( CancelStatesEnum.START_STATE,
+            new GrammarTransition<CancelRequestContainer>( 
+                CancelStatesEnum.START_STATE,
                 CancelStatesEnum.CANCEL_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                null );
+                null,
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from cancel SEQ to cancelId
@@ -92,7 +94,8 @@ public final class CancelRequestGrammar extends AbstractGrammar<CancelRequestCon
          * Set the cancelId value into the Cancel object.    
          */
         super.transitions[CancelStatesEnum.CANCEL_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
-            new GrammarTransition<CancelRequestContainer>( CancelStatesEnum.CANCEL_SEQUENCE_STATE,
+            new GrammarTransition<CancelRequestContainer>( 
+                CancelStatesEnum.CANCEL_SEQUENCE_STATE,
                 CancelStatesEnum.CANCEL_ID_STATE,
                 UniversalTag.INTEGER.getValue(),
                 new GrammarAction<CancelRequestContainer>( "Stores CancelId" )
@@ -121,7 +124,8 @@ public final class CancelRequestGrammar extends AbstractGrammar<CancelRequestCon
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

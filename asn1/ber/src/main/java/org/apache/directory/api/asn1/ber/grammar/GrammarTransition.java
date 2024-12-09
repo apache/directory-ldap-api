@@ -21,6 +21,7 @@ package org.apache.directory.api.asn1.ber.grammar;
 
 
 import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.ber.grammar.Grammar.FollowUp;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.asn1.util.Asn1StringUtils;
 
@@ -46,6 +47,9 @@ public class GrammarTransition<C extends Asn1Container>
 
     /** The current tag */
     private int currentTag;
+    
+    /** Tells if the current TLV has a follow up or not for a given PDU */
+    private FollowUp followUp;
 
 
     /**
@@ -56,12 +60,13 @@ public class GrammarTransition<C extends Asn1Container>
      * @param currentTag the current TLV's tag
      * @param action The action to execute. It could be null.
      */
-    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, Action<C> action )
+    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, Action<C> action, FollowUp followUp )
     {
         this.previousState = previousState;
         this.currentState = currentState;
         this.action = action;
         this.currentTag = currentTag;
+        this.followUp = followUp;
     }
 
 
@@ -72,11 +77,12 @@ public class GrammarTransition<C extends Asn1Container>
      * @param currentState The current state
      * @param currentTag the current TLV's tag
      */
-    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag )
+    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, FollowUp followUp )
     {
         this.previousState = previousState;
         this.currentState = currentState;
         this.currentTag = currentTag;
+        this.followUp = followUp;
     }
 
 
@@ -87,13 +93,15 @@ public class GrammarTransition<C extends Asn1Container>
      * @param currentState The current state
      * @param currentTag the current TLV's tag
      * @param action The action to execute. It could be null.
+     * @param followUp if the current TLV has a follow up in the current PDU
      */
-    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, UniversalTag currentTag, Action<C> action )
+    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, UniversalTag currentTag, Action<C> action, FollowUp followUp )
     {
         this.previousState = previousState;
         this.currentState = currentState;
         this.action = action;
         this.currentTag = currentTag.getValue();
+        this.followUp = followUp;
     }
 
 
@@ -103,12 +111,14 @@ public class GrammarTransition<C extends Asn1Container>
      * @param previousState the previous state
      * @param currentState The current state
      * @param currentTag the current TLV's tag
+     * @param followUp if the current TLV has a follow up in the current PDU
      */
-    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, UniversalTag currentTag )
+    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, UniversalTag currentTag, FollowUp followUp )
     {
         this.previousState = previousState;
         this.currentState = currentState;
         this.currentTag = currentTag.getValue();
+        this.followUp = followUp;
     }
 
 
@@ -151,6 +161,24 @@ public class GrammarTransition<C extends Asn1Container>
 
 
     /**
+     * @return the followUp flag
+     */
+    public boolean hasFollowUp()
+    {
+        return followUp == FollowUp.MANDATORY;
+    }
+
+
+    /**
+     * @param followUp the followUp flag to set
+     */
+    public void setFollowUp( FollowUp followUp )
+    {
+        this.followUp = followUp;
+    }
+
+
+    /**
      * @return A representation of the transition as a string.
      */
     @Override
@@ -170,6 +198,11 @@ public class GrammarTransition<C extends Asn1Container>
         else
         {
             sb.append( action );
+        }
+        
+        if ( FollowUp.MANDATORY == followUp )
+        {
+            sb.append( ", mandatory follow up" );
         }
 
         return sb.toString();

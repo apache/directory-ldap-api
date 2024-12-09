@@ -104,7 +104,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                             container.setGrammarEndAllowed( true );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from Sequence to messageId
@@ -148,7 +149,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                             throw new DecoderException( ide.getMessage(), ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         
         /**
@@ -164,7 +166,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
             new GrammarTransition<EndTransactionResponseContainer>(
                 EndTransactionResponseStates.END_TRANSACTION_SEQUENCE_STATE,
                 EndTransactionResponseStates.UPDATE_CONTROLS_SEQ_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         
         /**
@@ -189,7 +192,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         
                         container.setCurrentControls( currentUpdateControls );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         
         /**
@@ -232,7 +236,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                             throw new DecoderException( ide.getMessage(), ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
         
         
         /**
@@ -284,7 +289,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         
         /**
@@ -310,7 +316,8 @@ public class EndTransactionResponseGrammar extends AbstractGrammar<EndTransactio
                         
                         container.setCurrentControls( currentUpdateControls );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

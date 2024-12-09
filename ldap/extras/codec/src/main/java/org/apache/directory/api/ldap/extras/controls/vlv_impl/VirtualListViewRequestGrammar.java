@@ -53,14 +53,16 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.START_STATE,
                 VirtualListViewRequestStates.VLV_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                null );
+                null,
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<VirtualListViewRequestContainer>(
                 VirtualListViewRequestStates.VLV_SEQUENCE_STATE,
                 VirtualListViewRequestStates.VLV_BEFORE_COUNT_STATE,
                 UniversalTag.INTEGER.getValue(),
-                new StoreBeforeCount() );
+                new StoreBeforeCount(),
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_BEFORE_COUNT_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
@@ -68,7 +70,8 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.VLV_BEFORE_COUNT_STATE,
                 VirtualListViewRequestStates.VLV_AFTER_COUNT_STATE,
                 UniversalTag.INTEGER.getValue(),
-                new StoreAfterCount() );
+                new StoreAfterCount(),
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_AFTER_COUNT_STATE.ordinal()][VirtualListViewerTags.BY_OFFSET_TAG
             .getValue()] =
@@ -76,7 +79,8 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.VLV_AFTER_COUNT_STATE,
                 VirtualListViewRequestStates.VLV_TARGET_BY_OFFSET_STATE,
                 ( byte ) VirtualListViewerTags.BY_OFFSET_TAG.getValue(),
-                null );
+                null,
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_AFTER_COUNT_STATE.ordinal()][VirtualListViewerTags.ASSERTION_VALUE_TAG
             .getValue()] =
@@ -84,7 +88,8 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.VLV_AFTER_COUNT_STATE,
                 VirtualListViewRequestStates.VLV_ASSERTION_VALUE_STATE,
                 ( byte ) VirtualListViewerTags.ASSERTION_VALUE_TAG.getValue(),
-                new StoreAssertionValue() );
+                new StoreAssertionValue(),
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_TARGET_BY_OFFSET_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
@@ -92,14 +97,16 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.VLV_TARGET_BY_OFFSET_STATE,
                 VirtualListViewRequestStates.VLV_OFFSET_STATE,
                 UniversalTag.INTEGER.getValue(),
-                new StoreOffset() );
+                new StoreOffset(),
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_OFFSET_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<VirtualListViewRequestContainer>(
                 VirtualListViewRequestStates.VLV_OFFSET_STATE,
                 VirtualListViewRequestStates.VLV_CONTENT_COUNT_STATE,
                 UniversalTag.INTEGER.getValue(),
-                new StoreContentCount() );
+                new StoreContentCount(),
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_CONTENT_COUNT_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
@@ -107,7 +114,8 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.VLV_CONTENT_COUNT_STATE,
                 VirtualListViewRequestStates.VLV_CONTEXT_ID_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
-                new StoreContextId() );
+                new StoreContextId(),
+                FollowUp.OPTIONAL );
 
         super.transitions[VirtualListViewRequestStates.VLV_ASSERTION_VALUE_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
@@ -115,7 +123,8 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
                 VirtualListViewRequestStates.VLV_ASSERTION_VALUE_STATE,
                 VirtualListViewRequestStates.VLV_CONTEXT_ID_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
-                new StoreContextId() );
+                new StoreContextId(),
+                FollowUp.OPTIONAL );
     }
 
 

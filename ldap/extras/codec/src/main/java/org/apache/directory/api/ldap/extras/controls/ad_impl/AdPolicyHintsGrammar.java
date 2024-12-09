@@ -56,7 +56,8 @@ public final class AdPolicyHintsGrammar extends AbstractGrammar<AdPolicyHintsCon
             .getValue()] = new GrammarTransition<AdPolicyHintsContainer>(
                 AdPolicyHintsStates.AD_POLICY_HINTS_SEQUENCE_STATE,
                 AdPolicyHintsStates.AD_POLICY_HINTS_FLAGS_STATE, UniversalTag.INTEGER.getValue(),
-                new StoreFlags() );
+                new StoreFlags(),
+                FollowUp.OPTIONAL );
     }
 
 

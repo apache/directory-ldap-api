@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
@@ -161,7 +160,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * controls
      */
     @Test
-    public void testDecodeBindRequestSimpleWithControls() throws DecoderException, EncoderException
+    public void testDecodeBindRequestSimpleNoControls() throws DecoderException, EncoderException
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
@@ -512,6 +511,36 @@ public class BindRequestTest extends AbstractCodecServiceTest
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
 
+
+    /**
+     * Test the decoding of a BindRequest with Sasl authentication, no name, no credentials
+     */
+    @Test
+    public void testDecodeBindRequestSaslNoNameNoCredsNoControls() throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x23 );
+        stream.put( new byte[]
+            {
+                0x30, 0x0C,                 // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,         // messageID MessageID
+                  0x60, 0x07,               // CHOICE { ..., bindRequest BindRequest, ...
+                                            // BindRequest ::= APPLICATION[0] SEQUENCE {
+                    0x02, 0x01, 0x03,       // version INTEGER (1..127),
+                    0x04, 0x00,             // name LDAPDN,
+                    ( byte ) 0xA3, 0x00,    // authentication AuthenticationChoice
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
+
+        // Decode the BindRequest PDU
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, container );
+        } );
+    }
 
     /**
      * Test the decoding of a BindRequest with an empty body

@@ -1755,6 +1755,7 @@ public final class SchemaConstants
     //-------------------------------------------------------------------------
     // RFC 2307
     public static final String NIS_NETGROUP_TRIPLE_SYNTAX = "1.3.6.1.1.1.0.0";
+    
     public static final String BOOT_PARAMETER_SYNTAX = "1.3.6.1.1.1.0.1";
     
     public static final String NAME_OR_NUMERIC_ID_SYNTAX = "1.3.6.1.4.1.18060.0.4.0.0.0";
@@ -1765,7 +1766,6 @@ public final class SchemaConstants
 
     public static final String ATTRIBUTE_TYPE_USAGE_SYNTAX = "1.3.6.1.4.1.18060.0.4.0.0.3";
 
-    // RFC 4517, par. 3.3.23
     public static final String NUMBER_SYNTAX = "1.3.6.1.4.1.18060.0.4.0.0.4";
 
     public static final String OID_LEN_SYNTAX = "1.3.6.1.4.1.18060.0.4.0.0.5";

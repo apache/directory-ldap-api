@@ -100,41 +100,43 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
          * Stores the sync state type value
          */
         super.transitions[SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED
-            .getValue()] = new GrammarTransition<SyncStateValueContainer>(
-            SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE,
-            SyncStateValueStatesEnum.SYNC_TYPE_STATE, UniversalTag.ENUMERATED.getValue(),
-            new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl state type" )
-            {
-                public void action( SyncStateValueContainer container ) throws DecoderException
+            .getValue()] = 
+            new GrammarTransition<SyncStateValueContainer>(
+                SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE,
+                SyncStateValueStatesEnum.SYNC_TYPE_STATE, UniversalTag.ENUMERATED.getValue(),
+                new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl state type" )
                 {
-                    BerValue value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncStateValueContainer container ) throws DecoderException
                     {
-                        // Check that the value is into the allowed interval
-                        int syncStateType = IntegerDecoder.parse( value, SyncStateTypeEnum.PRESENT.getValue(),
-                            SyncStateTypeEnum.MODDN.getValue() );
-
-                        SyncStateTypeEnum syncStateTypeEnum = SyncStateTypeEnum.getSyncStateType( syncStateType );
-
-                        if ( LOG.isDebugEnabled() )
+                        BerValue value = container.getCurrentTLV().getValue();
+    
+                        try
                         {
-                            LOG.debug( I18n.msg( I18n.MSG_08105_SYNC_STATE_TYPE, syncStateTypeEnum ) );
+                            // Check that the value is into the allowed interval
+                            int syncStateType = IntegerDecoder.parse( value, SyncStateTypeEnum.PRESENT.getValue(),
+                                SyncStateTypeEnum.MODDN.getValue() );
+    
+                            SyncStateTypeEnum syncStateTypeEnum = SyncStateTypeEnum.getSyncStateType( syncStateType );
+    
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( I18n.msg( I18n.MSG_08105_SYNC_STATE_TYPE, syncStateTypeEnum ) );
+                            }
+    
+                            container.getSyncStateValue().setSyncStateType( syncStateTypeEnum );
+    
+                            // move on to the entryUUID transition
+                            container.setGrammarEndAllowed( false );
                         }
-
-                        container.getSyncStateValue().setSyncStateType( syncStateTypeEnum );
-
-                        // move on to the entryUUID transition
-                        container.setGrammarEndAllowed( false );
+                        catch ( IntegerDecoderException ide )
+                        {
+                            String msg = I18n.err( I18n.ERR_08102_SYNC_STATE_VALUE_MODE_DECODING_FAILED );
+                            LOG.error( msg, ide );
+                            throw new DecoderException( msg, ide );
+                        }
                     }
-                    catch ( IntegerDecoderException ide )
-                    {
-                        String msg = I18n.err( I18n.ERR_08102_SYNC_STATE_VALUE_MODE_DECODING_FAILED );
-                        LOG.error( msg, ide );
-                        throw new DecoderException( msg, ide );
-                    }
-                }
-            } );
+                },
+                FollowUp.MANDATORY );
 
         /** 
          * Transition from sync state tpe to entryUUID
@@ -145,28 +147,30 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
          *     
          * Stores the entryUUID
          */
-        super.transitions[SyncStateValueStatesEnum.SYNC_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition<SyncStateValueContainer>(
-            SyncStateValueStatesEnum.SYNC_TYPE_STATE, SyncStateValueStatesEnum.SYNC_UUID_STATE,
-            UniversalTag.OCTET_STRING.getValue(),
-            new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl entryUUID" )
-            {
-                public void action( SyncStateValueContainer container )
+        super.transitions[SyncStateValueStatesEnum.SYNC_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
+            new GrammarTransition<SyncStateValueContainer>(
+                SyncStateValueStatesEnum.SYNC_TYPE_STATE, SyncStateValueStatesEnum.SYNC_UUID_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
+                new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl entryUUID" )
                 {
-                    BerValue value = container.getCurrentTLV().getValue();
-
-                    byte[] entryUUID = value.getData();
-
-                    if ( LOG.isDebugEnabled() )
+                    public void action( SyncStateValueContainer container )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_08106_ENTRY_UUID, Strings.dumpBytes( entryUUID ) ) );
+                        BerValue value = container.getCurrentTLV().getValue();
+    
+                        byte[] entryUUID = value.getData();
+    
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_08106_ENTRY_UUID, Strings.dumpBytes( entryUUID ) ) );
+                        }
+    
+                        container.getSyncStateValue().setEntryUUID( entryUUID );
+    
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
                     }
-
-                    container.getSyncStateValue().setEntryUUID( entryUUID );
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from entryUUID to cookie
@@ -177,28 +181,30 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
          *     
          * Stores the reloadHint flag
          */
-        super.transitions[SyncStateValueStatesEnum.SYNC_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition<SyncStateValueContainer>(
-            SyncStateValueStatesEnum.SYNC_UUID_STATE, SyncStateValueStatesEnum.COOKIE_STATE,
-            UniversalTag.OCTET_STRING.getValue(),
-            new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl cookie value" )
-            {
-                public void action( SyncStateValueContainer container )
+        super.transitions[SyncStateValueStatesEnum.SYNC_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
+            new GrammarTransition<SyncStateValueContainer>(
+                SyncStateValueStatesEnum.SYNC_UUID_STATE, SyncStateValueStatesEnum.COOKIE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
+                new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl cookie value" )
                 {
-                    BerValue value = container.getCurrentTLV().getValue();
-
-                    byte[] cookie = value.getData();
-
-                    if ( LOG.isDebugEnabled() )
+                    public void action( SyncStateValueContainer container )
                     {
-                        LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
+                        BerValue value = container.getCurrentTLV().getValue();
+    
+                        byte[] cookie = value.getData();
+    
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( I18n.msg( I18n.MSG_08000_COOKIE, Strings.dumpBytes( cookie ) ) );
+                        }
+    
+                        container.getSyncStateValue().setCookie( cookie );
+    
+                        // terminal state
+                        container.setGrammarEndAllowed( true );
                     }
-
-                    container.getSyncStateValue().setCookie( cookie );
-
-                    // terminal state
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

@@ -4090,6 +4090,66 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
+     * (&(|(abcdef=*)(ghijkl=*))(!(e>=f)))
+     */
+    @Test
+    public void testDecodeSearchRequestAnd_OrPrPr_NotGEqNoSelector() throws DecoderException, EncoderException, LdapException
+    {
+
+        ByteBuffer stream = ByteBuffer.allocate( 0x3A );
+        stream.put( new byte[]
+            {
+                0x30, 0x37,                             // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,                     // messageID MessageID
+                  0x63, 0x32,                           // CHOICE { ...,
+                                                        // searchRequest SearchRequest, ...
+                                                        // SearchRequest ::= APPLICATION[3] SEQUENCE {
+                    0x04, 0x03,                         // baseObject LDAPDN,
+                      'a', '=', 'b',
+                    0x0A, 0x01, 0x01,                   // scope ENUMERATED {
+                                                        //      baseObject (0),
+                                                        //      singleLevel (1),
+                                                        //      wholeSubtree (2) },
+                    0x0A, 0x01, 0x03,                   // derefAliases ENUMERATED {
+                                                        //      neverDerefAliases (0),
+                                                        //      derefInSearching (1),
+                                                        //      derefFindingBaseObj (2),
+                                                        //      derefAlways (3) },
+                    0x02, 0x01, 0x00,                   // sizeLimit INTEGER (0 .. maxInt), (0)
+                    0x02, 0x01, 0x00,                   // timeLimit INTEGER (0 .. maxInt), (0)
+                    0x01, 0x01, ( byte ) 0xFF,          // typesOnly BOOLEAN, (TRUE)
+                                                        // filter Filter,
+                    ( byte ) 0xA0, 0x1C,                // Filter ::= CHOICE { and             [0] SET OF Filter,
+                      ( byte ) 0xA1, 0x10,              // Filter ::= CHOICE { or             [0] SET OF Filter,
+                        ( byte ) 0x87, 0x06,            // present [7] AttributeDescription,
+                         'a', 'b', 'c', 'd', 'e', 'f',  // AttributeDescription ::= LDAPString
+                        ( byte ) 0x87, 0x06,            // present [7] AttributeDescription,
+                          'g', 'h', 'i', 'j', 'k', 'l', // AttributeDescription ::= LDAPString
+                      ( byte ) 0xA2, 0x08,              // Filter ::= CHOICE { not             Filter,
+                        ( byte ) 0xA5, 0x06,            //      greaterOrEqual [3] Assertion,
+                                                        // Assertion ::= SEQUENCE {
+                          0x04, 0x01,
+                            'e',                        //      attributeDesc AttributeDescription (LDAPString),
+                          0x04, 0x01,
+                            'f',                        //      assertionValue AssertionValue (OCTET STRING) }
+        } );
+
+        stream.flip();
+
+        // Allocate a BindRequest Container
+        LdapMessageContainer<SearchRequest> ldapMessageContainer =
+            new LdapMessageContainer<>( codec );
+
+        // There is a missing selector...
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
+    }
+
+
+    /**
+     * Test the decoding of a SearchRequest
      * for rootDSE
      */
     @Test

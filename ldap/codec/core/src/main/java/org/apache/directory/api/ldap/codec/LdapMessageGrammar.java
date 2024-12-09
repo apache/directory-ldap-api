@@ -158,7 +158,6 @@ public final class LdapMessageGrammar extends
         { "unchecked", "rawtypes" })
     private LdapMessageGrammar()
     {
-
         setName( LdapMessageGrammar.class.getName() );
 
         // Create the transitions table
@@ -180,7 +179,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.START_STATE,
                 LdapStatesEnum.LDAP_MESSAGE_STATE,
                 SEQUENCE,
-                new InitLdapMessage() );
+                new InitLdapMessage(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from LdapMessage to Message ID
@@ -200,7 +200,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.LDAP_MESSAGE_STATE,
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 INTEGER,
-                new StoreMessageId() );
+                new StoreMessageId(),
+                FollowUp.MANDATORY );
 
         // ********************************************************************************************
         // We have a ProtocolOp :
@@ -224,6 +225,7 @@ public final class LdapMessageGrammar extends
         // If the Tag is 0x73, then it's a SearchResultReference.
         // If the Tag is 0x77, then it's an ExtendedRequest.
         // If the Tag is 0x78, then it's an ExtendedResponse.
+        // If the Tag is 0x79, then it's an IntermediateResponse.
         //
         // We create the associated object in this transition, and store it into the container.
         // ********************************************************************************************
@@ -238,7 +240,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.UNBIND_REQUEST_STATE,
                 LdapCodecConstants.UNBIND_REQUEST_TAG,
-                new InitUnbindRequest() );
+                new InitUnbindRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // transition from UnBindRequest Message to Controls.
@@ -252,7 +255,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.UNBIND_REQUEST_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message ID to DelRequest Message.
@@ -266,7 +270,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.DEL_REQUEST_STATE,
                 LdapCodecConstants.DEL_REQUEST_TAG,
-                new InitDelRequest() );
+                new InitDelRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // transition from DelRequest Message to Controls.
@@ -280,7 +285,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.DEL_REQUEST_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message ID to AbandonRequest Message.
@@ -294,7 +300,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.ABANDON_REQUEST_STATE,
                 LdapCodecConstants.ABANDON_REQUEST_TAG,
-                new InitAbandonRequest() );
+                new InitAbandonRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // transition from AbandonRequest Message to Controls.
@@ -308,7 +315,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ABANDON_REQUEST_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message ID to BindRequest Message.
@@ -322,7 +330,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.BIND_REQUEST_STATE,
                 LdapCodecConstants.BIND_REQUEST_TAG,
-                new InitBindRequest() );
+                new InitBindRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from BindRequest to version
@@ -337,7 +346,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.BIND_REQUEST_STATE,
                 LdapStatesEnum.VERSION_STATE,
                 INTEGER,
-                new StoreVersion() );
+                new StoreVersion(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from version to name
@@ -353,7 +363,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VERSION_STATE,
                 LdapStatesEnum.NAME_STATE,
                 OCTET_STRING,
-                new StoreName() );
+                new StoreName(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from name to Simple Authentication
@@ -372,7 +383,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NAME_STATE,
                 LdapStatesEnum.SIMPLE_STATE,
                 LdapCodecConstants.BIND_REQUEST_SIMPLE_TAG,
-                new StoreSimpleAuth() );
+                new StoreSimpleAuth(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // transition from Simple Authentication to Controls.
@@ -386,7 +398,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SIMPLE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from name to SASL Authentication
@@ -406,7 +419,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NAME_STATE,
                 LdapStatesEnum.SASL_STATE,
                 LdapCodecConstants.BIND_REQUEST_SASL_TAG,
-                new InitSaslBind() );
+                new InitSaslBind(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from SASL Authentication to Mechanism
@@ -421,7 +435,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SASL_STATE,
                 LdapStatesEnum.MECHANISM_STATE,
                 OCTET_STRING,
-                new StoreSaslMechanism() );
+                new StoreSaslMechanism(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Mechanism to Credentials
@@ -436,7 +451,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MECHANISM_STATE,
                 LdapStatesEnum.CREDENTIALS_STATE,
                 OCTET_STRING,
-                new StoreSaslCredentials() );
+                new StoreSaslCredentials(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // transition from from Mechanism to Controls.
@@ -450,7 +466,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MECHANISM_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // transition from credentials to Controls.
@@ -464,7 +481,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CREDENTIALS_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from MessageId to BindResponse message
@@ -477,7 +495,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.BIND_RESPONSE_STATE,
                 LdapCodecConstants.BIND_RESPONSE_TAG,
-                new InitBindResponse() );
+                new InitBindResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from BindResponse message to Result Code BR
@@ -496,7 +515,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.BIND_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_BR_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Result Code BR to Matched Dn BR
@@ -512,125 +532,134 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.RESULT_CODE_BR_STATE,
                 LdapStatesEnum.MATCHED_DN_BR_STATE,
                 OCTET_STRING,
-                new StoreMatchedDN() );
+                new StoreMatchedDN(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Matched Dn BR to Error Message BR
+        // Transition from Matched Dn BR to diagnosticMessage BR
         // --------------------------------------------------------------------------------------------
         // LDAPResult ::= SEQUENCE {
         //     ...
-        //     errorMessage LDAPString,
+        //     diagnosticMessage LDAPString,
         //     ...
         //
-        // Stores the error message
+        // Stores the diagnosticMessage
         super.transitions[LdapStatesEnum.MATCHED_DN_BR_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.MATCHED_DN_BR_STATE,
-                LdapStatesEnum.ERROR_MESSAGE_BR_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE,
                 OCTET_STRING,
-                new StoreErrorMessage() );
+                new StoreErrorMessage(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message BR to Server SASL credentials
+        // Transition from DiagnosticMessage BR to Server SASL credentials
         // --------------------------------------------------------------------------------------------
         // BindResponse ::= APPLICATION 1] SEQUENCE {
         //     ...
         //     serverSaslCreds [7] OCTET STRING OPTIONAL }
         //
         // Stores the sasl credentials
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_BR_STATE.ordinal()][LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE.ordinal()][LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_BR_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE,
                 LdapStatesEnum.SERVER_SASL_CREDENTIALS_STATE,
                 LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG,
-                new StoreServerSASLCreds() );
+                new StoreServerSASLCreds(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message BR to Referrals BR
+        // Transition from DiagnosticMessage BR to Referral BR
         // --------------------------------------------------------------------------------------------
         // LDAPResult ::= SEQUENCE {
         //     ...
-        //     referral   [3] Referral OPTIONNAL }
+        //     referral   [3] Referral OPTIONAL }
         //
         // Initialiaze the referrals list
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_BR_STATE.ordinal()][LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE.ordinal()][LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_BR_STATE,
-                LdapStatesEnum.REFERRALS_BR_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE,
+                LdapStatesEnum.REFERRAL_BR_STATE,
                 LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG,
-                new InitReferrals() );
+                new InitReferrals(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referrals BR to Referral BR
+        // Transition from Referral BR to URI BR
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
         //
         // Add a first Referral
-        super.transitions[LdapStatesEnum.REFERRALS_BR_STATE.ordinal()][OCTET_STRING.getValue()] =
-            new GrammarTransition(
-                LdapStatesEnum.REFERRALS_BR_STATE,
-                LdapStatesEnum.REFERRAL_BR_STATE,
-                OCTET_STRING,
-                new AddReferral() );
-
-        // --------------------------------------------------------------------------------------------
-        // Transition from Referral BR to Referral BR
-        // --------------------------------------------------------------------------------------------
-        // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
-        // URI ::= LDAPString
-        //
-        // Adda new Referral
         super.transitions[LdapStatesEnum.REFERRAL_BR_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.REFERRAL_BR_STATE,
-                LdapStatesEnum.REFERRAL_BR_STATE,
+                LdapStatesEnum.URI_BR_STATE,
                 OCTET_STRING,
-                new AddReferral() );
+                new AddReferral(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral BR to Server SASL Credentials
+        // Transition from URI BR to URI BR
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
         //
         // Adda new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_BR_STATE.ordinal()][LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG] =
+        super.transitions[LdapStatesEnum.URI_BR_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_BR_STATE,
-                LdapStatesEnum.SERVER_SASL_CREDENTIALS_STATE,
-                LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG,
-                new StoreServerSASLCreds() );
+                LdapStatesEnum.URI_BR_STATE,
+                LdapStatesEnum.URI_BR_STATE,
+                OCTET_STRING,
+                new AddReferral(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral BR to Controls
+        // Transition from URI BR to Server SASL Credentials
+        // --------------------------------------------------------------------------------------------
+        // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
+        // URI ::= LDAPString
+        //
+        // Adda new Referral
+        super.transitions[LdapStatesEnum.URI_BR_STATE.ordinal()][LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG] =
+            new GrammarTransition(
+                LdapStatesEnum.URI_BR_STATE,
+                LdapStatesEnum.SERVER_SASL_CREDENTIALS_STATE,
+                LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG,
+                new StoreServerSASLCreds(),
+                FollowUp.OPTIONAL );
+
+        // --------------------------------------------------------------------------------------------
+        // Transition from URI BR to Controls
         // --------------------------------------------------------------------------------------------
         //         bindResponse   BindResponse,
         //         ... },
         //     controls       [0] Controls OPTIONAL }
         //
         // Adda new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_BR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.URI_BR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_BR_STATE,
+                LdapStatesEnum.URI_BR_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message BR to controls
+        // Transition from diagnosticMessage BR to controls
         // --------------------------------------------------------------------------------------------
         //         bindResponse   BindResponse,
         //         ... },
         //     controls       [0] Controls OPTIONAL }
         //
         //
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_BR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_BR_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_BR_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Server SASL credentials to Controls
@@ -644,7 +673,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SERVER_SASL_CREDENTIALS_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Result Code to Matched Dn
@@ -660,96 +690,103 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.RESULT_CODE_STATE,
                 LdapStatesEnum.MATCHED_DN_STATE,
                 OCTET_STRING,
-                new StoreMatchedDN() );
+                new StoreMatchedDN(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Matched Dn to Error Message
+        // Transition from Matched Dn to Diagnostic Message
         // --------------------------------------------------------------------------------------------
         // LDAPResult ::= SEQUENCE {
         //     ...
-        //     errorMessage LDAPString,
+        //     diagnosticMessage LDAPString,
         //     ...
         //
         // Stores the error message
         super.transitions[LdapStatesEnum.MATCHED_DN_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.MATCHED_DN_STATE,
-                LdapStatesEnum.ERROR_MESSAGE_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_STATE,
                 OCTET_STRING,
-                new StoreErrorMessage() );
+                new StoreErrorMessage(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message to Referrals
+        // Transition from diagnosticMessage to Referral
         // --------------------------------------------------------------------------------------------
         // LDAPResult ::= SEQUENCE {
         //     ...
         //     referral   [3] Referral OPTIONNAL }
         //
         // Initialize the referrals list
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_STATE.ordinal()][LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_STATE.ordinal()][LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_STATE,
-                LdapStatesEnum.REFERRALS_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_STATE,
+                LdapStatesEnum.REFERRAL_STATE,
                 LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG,
-                new InitReferrals() );
+                new InitReferrals(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referrals to Referral
+        // Transition from diagnosticMessage to Controls
+        // --------------------------------------------------------------------------------------------
+        // LdapMessage ::= SEQUENCE {
+        //     protocolOp      CHOICE {
+        //         ...},
+        //     controls       [0] Controls OPTIONAL }
+        //
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+            new GrammarTransition(
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_STATE,
+                LdapStatesEnum.CONTROLS_STATE,
+                LdapCodecConstants.CONTROLS_TAG,
+                new InitControls(),
+                FollowUp.OPTIONAL );
+
+        // --------------------------------------------------------------------------------------------
+        // Transition from Referral to URI
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
         //
         // Add a first Referral
-        super.transitions[LdapStatesEnum.REFERRALS_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.REFERRAL_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRALS_STATE,
                 LdapStatesEnum.REFERRAL_STATE,
+                LdapStatesEnum.URI_STATE,
                 OCTET_STRING,
-                new AddReferral() );
-
+                new AddReferral(),
+                FollowUp.OPTIONAL );
+        
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral to Referral
+        // Transition from URI to URI
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
         //
         // Adda new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.URI_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_STATE,
-                LdapStatesEnum.REFERRAL_STATE,
+                LdapStatesEnum.URI_STATE,
+                LdapStatesEnum.URI_STATE,
                 OCTET_STRING,
-                new AddReferral() );
-
+                new AddReferral(),
+                FollowUp.OPTIONAL );
+        
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral to Controls
+        // Transition from URI to Controls
         // --------------------------------------------------------------------------------------------
         //         xxxResponse   xxxResponse,
         //         ... },
         //     controls       [0] Controls OPTIONAL }
         //
         // Adda new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.URI_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_STATE,
+                LdapStatesEnum.URI_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
-
-        // --------------------------------------------------------------------------------------------
-        // Transition from Error Message to controls
-        // --------------------------------------------------------------------------------------------
-        //         xxxResponse   xxxResponse,
-        //         ... },
-        //     controls       [0] Controls OPTIONAL }
-        //
-        //
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
-            new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_STATE,
-                LdapStatesEnum.CONTROLS_STATE,
-                LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from MessageId to SearchResultEntry Message.
@@ -763,7 +800,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.SEARCH_RESULT_ENTRY_STATE,
                 LdapCodecConstants.SEARCH_RESULT_ENTRY_TAG,
-                new InitSearchResultEntry() );
+                new InitSearchResultEntry(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from SearchResultEntry Message to ObjectName
@@ -778,7 +816,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SEARCH_RESULT_ENTRY_STATE,
                 LdapStatesEnum.OBJECT_NAME_STATE,
                 OCTET_STRING,
-                new StoreSearchResultEntryObjectName() );
+                new StoreSearchResultEntryObjectName(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ObjectName to AttributesSR
@@ -796,7 +835,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OBJECT_NAME_STATE,
                 LdapStatesEnum.ATTRIBUTES_SR_STATE,
                 SEQUENCE,
-                new AllowGrammarEnd() );
+                new AllowGrammarEnd(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AttributesSR to PartialAttributesList
@@ -805,8 +845,7 @@ public final class LdapMessageGrammar extends
         // ...
         // attributes PartialAttributeList }
         //
-        // PartialAttributeList ::= SEQUENCE OF *SEQUENCE* {
-        // ...
+        // PartialAttributeList ::= SEQUENCE OF partialAttribute PartialAttribute
         //
         // nothing to do
         super.transitions[LdapStatesEnum.ATTRIBUTES_SR_STATE.ordinal()][SEQUENCE.getValue()] =
@@ -814,22 +853,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ATTRIBUTES_SR_STATE,
                 LdapStatesEnum.PARTIAL_ATTRIBUTES_LIST_STATE,
                 SEQUENCE,
-                null );
-
-        // --------------------------------------------------------------------------------------------
-        // Transition from AttributesSR to Controls
-        // --------------------------------------------------------------------------------------------
-        //     searchResultEntry SearchResultEntry,
-        //     ... },
-        // controls   [0] Controls OPTIONAL }
-        //
-        // Initialize the controls
-        super.transitions[LdapStatesEnum.ATTRIBUTES_SR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
-            new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTES_SR_STATE,
-                LdapStatesEnum.CONTROLS_STATE,
-                LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                null,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from PartialAttributesList to typeSR
@@ -838,8 +863,10 @@ public final class LdapMessageGrammar extends
         // ...
         // attributes PartialAttributeList }
         //
-        // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-        //     type  AttributeDescription,
+        // PartialAttributeList ::= SEQUENCE OF partialAttribute PartialAttribute
+        //
+        // PartialAttribute ::= SEQUENCE {
+        //     type       OCTET STRING,
         //     ...
         //
         // Store the attribute's name.
@@ -848,7 +875,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PARTIAL_ATTRIBUTES_LIST_STATE,
                 LdapStatesEnum.TYPE_SR_STATE,
                 OCTET_STRING,
-                new AddAttributeType() );
+                new AddAttributeType(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from typeSR to ValsSR
@@ -857,9 +885,11 @@ public final class LdapMessageGrammar extends
         // ...
         // attributes PartialAttributeList }
         //
-        // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
+        // PartialAttributeList ::= SEQUENCE OF partialAttribute PartialAttribute
+        //
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
+        //     vals       *SET OF* value OCTET STRING }
         //
         // We may have no value. Just allows the grammar to end
         super.transitions[LdapStatesEnum.TYPE_SR_STATE.ordinal()][SET.getValue()] =
@@ -867,38 +897,43 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPE_SR_STATE,
                 LdapStatesEnum.VALS_SR_STATE,
                 SET,
-                new AllowGrammarEnd() );
+                new AllowGrammarEnd(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ValsSR to AttributeValueSR
         // --------------------------------------------------------------------------------------------
-        // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
-        //
-        // AttributeValue ::= OCTET STRING
+        //     vals       SET OF *value OCTET STRING* }
         //
         // Store the attribute value
         super.transitions[LdapStatesEnum.VALS_SR_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.VALS_SR_STATE,
-                LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE,
+                LdapStatesEnum.VALUE_SR_STATE,
                 OCTET_STRING,
-                new StoreSearchResultAttributeValue() );
+                new StoreSearchResultAttributeValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ValsSR to PartialAttributesList
         // --------------------------------------------------------------------------------------------
-        // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
+        // attributes PartialAttributeList }
+        //
+        // PartialAttributeList ::= SEQUENCE OF partialAttribute PartialAttribute
+        //
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
+        //     vals       SET OF *value OCTET STRING* }
         //
         // Loop when we don't have any attribute value. Nothing to do
         super.transitions[LdapStatesEnum.VALS_SR_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.VALS_SR_STATE,
                 LdapStatesEnum.PARTIAL_ATTRIBUTES_LIST_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ValsSR to Controls
@@ -913,24 +948,24 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALS_SR_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AttributeValueSR to AttributeValueSR
         // --------------------------------------------------------------------------------------------
         // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
-        //
-        // AttributeValue ::= OCTET STRING
+        //     vals       SET OF *value OCTET STRING* }
         //
         // Store the attribute value
-        super.transitions[LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.VALUE_SR_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE,
-                LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE,
+                LdapStatesEnum.VALUE_SR_STATE,
+                LdapStatesEnum.VALUE_SR_STATE,
                 OCTET_STRING,
-                new StoreSearchResultAttributeValue() );
+                new StoreSearchResultAttributeValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AttributeValueSR to PartialAttributesList
@@ -940,11 +975,12 @@ public final class LdapMessageGrammar extends
         //     vals SET OF AttributeValue }
         //
         // Loop when we don't have any attribute value. Nothing to do
-        super.transitions[LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE.ordinal()][SEQUENCE.getValue()] =
+        super.transitions[LdapStatesEnum.VALUE_SR_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE,
+                LdapStatesEnum.VALUE_SR_STATE,
                 LdapStatesEnum.PARTIAL_ATTRIBUTES_LIST_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AttributeValueSR to Controls
@@ -954,12 +990,13 @@ public final class LdapMessageGrammar extends
         // controls   [0] Controls OPTIONAL }
         //
         // Initialize the controls
-        super.transitions[LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.VALUE_SR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_VALUE_SR_STATE,
+                LdapStatesEnum.VALUE_SR_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // SearchResultDone Message.
@@ -972,7 +1009,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.SEARCH_RESULT_DONE_STATE,
                 LdapCodecConstants.SEARCH_RESULT_DONE_TAG,
-                new InitSearchResultDone() );
+                new InitSearchResultDone(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // SearchResultDone Message.
@@ -990,7 +1028,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SEARCH_RESULT_DONE_STATE,
                 LdapStatesEnum.RESULT_CODE_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message ID to ModifyRequest Message
@@ -1004,7 +1043,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.MODIFY_REQUEST_STATE,
                 LdapCodecConstants.MODIFY_REQUEST_TAG,
-                new InitModifyRequest() );
+                new InitModifyRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ModifyRequest Message to Object
@@ -1019,107 +1059,117 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MODIFY_REQUEST_STATE,
                 LdapStatesEnum.OBJECT_STATE,
                 OCTET_STRING,
-                new StoreModifyRequestObjectName() );
+                new StoreModifyRequestObjectName(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Object to modifications
+        // Transition from Object to changes
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification *SEQUENCE OF* SEQUENCE {
+        //     changes *SEQUENCE OF* change SEQUENCE {
         //     ...
         //
         // Initialize the modifications list
         super.transitions[LdapStatesEnum.OBJECT_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.OBJECT_STATE,
-                LdapStatesEnum.MODIFICATIONS_STATE,
-                SEQUENCE );
+                LdapStatesEnum.CHANGES_STATE,
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from modifications to modification sequence
+        // Transition from changes to change
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF *SEQUENCE* {
+        //     changes SEQUENCE OF *change* SEQUENCE {
         //     ...
         //
         // Nothing to do
-        super.transitions[LdapStatesEnum.MODIFICATIONS_STATE.ordinal()][SEQUENCE.getValue()] =
+        super.transitions[LdapStatesEnum.CHANGES_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.MODIFICATIONS_STATE,
-                LdapStatesEnum.MODIFICATIONS_SEQ_STATE,
-                SEQUENCE );
+                LdapStatesEnum.CHANGES_STATE,
+                LdapStatesEnum.CHANGE_STATE,
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from modification sequence to operation
+        // Transition from change to operation
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF SEQUENCE {
+        //     changes SEQUENCE OF change SEQUENCE {
         //         operation  ENUMERATED {
         //             ...
         //
         // Store operation type
-        super.transitions[LdapStatesEnum.MODIFICATIONS_SEQ_STATE.ordinal()][ENUMERATED.getValue()] =
+        super.transitions[LdapStatesEnum.CHANGE_STATE.ordinal()][ENUMERATED.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.MODIFICATIONS_SEQ_STATE,
+                LdapStatesEnum.CHANGE_STATE,
                 LdapStatesEnum.OPERATION_STATE,
                 ENUMERATED,
-                new StoreOperationType() );
+                new StoreOperationType(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from operation to modification
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF SEQUENCE {
+        //     changes SEQUENCE OF change SEQUENCE {
+        //         operation  ENUMERATED {
         //             ...
-        //         modification   AttributeTypeAndValues }
-        //
-        // AttributeTypeAndValues ::= SEQUENCE {
+        //         modification    PartialAttribute } }
+        // 
+        // PartialAttribute ::= SEQUENCE {
         //     ...
+        //
         //
         // Nothing to do
         super.transitions[LdapStatesEnum.OPERATION_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.OPERATION_STATE,
                 LdapStatesEnum.MODIFICATION_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from modification to TypeMod
+        // Transition from modification to type
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF SEQUENCE {
+        //     changes SEQUENCE OF change SEQUENCE {
+        //         operation  ENUMERATED {
         //             ...
-        //         modification   AttributeTypeAndValues }
+        //         modification    PartialAttribute } }
         //
-        // AttributeTypeAndValues ::= SEQUENCE {
-        //     type AttributeDescription,
+        // PartialAttribute ::= SEQUENCE {
+        //     type       AttributeDescription,
         //     ...
-        //
+        
         // Stores the type
         super.transitions[LdapStatesEnum.MODIFICATION_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.MODIFICATION_STATE,
                 LdapStatesEnum.TYPE_MOD_STATE,
                 OCTET_STRING,
-                new AddModifyRequestAttribute() );
+                new AddModifyRequestAttribute(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypeMod to vals
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF SEQUENCE {
+        //     changes SEQUENCE OF change SEQUENCE {
+        //         operation  ENUMERATED {
         //             ...
-        //         modification   AttributeTypeAndValues }
+        //         modification    PartialAttribute } }
         //
-        // AttributeTypeAndValues ::= SEQUENCE {
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
+        //     vals       SET OF value AttributeValue }
         //
         // Initialize the list of values
         super.transitions[LdapStatesEnum.TYPE_MOD_STATE.ordinal()][SET.getValue()] =
@@ -1127,22 +1177,22 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPE_MOD_STATE,
                 LdapStatesEnum.VALS_STATE,
                 SET,
-                new InitAttributeVals() );
+                new InitAttributeVals(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from vals to Attribute Value
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF SEQUENCE {
+        //     changes SEQUENCE OF change SEQUENCE {
         //             ...
-        //         modification   AttributeTypeAndValues }
+        //         modification    PartialAttribute } }
         //
-        // AttributeTypeAndValues ::= SEQUENCE {
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
+        //     vals       SET OF value AttributeValue }
         //
-        // AttributeValue ::= OCTET STRING
         //
         // Stores a value
         super.transitions[LdapStatesEnum.VALS_STATE.ordinal()][OCTET_STRING.getValue()] =
@@ -1150,29 +1200,29 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALS_STATE,
                 LdapStatesEnum.ATTRIBUTE_VALUE_STATE,
                 OCTET_STRING,
-                new StoreModifyRequestAttributeValue() );
+                new StoreModifyRequestAttributeValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from vals to ModificationsSeq
+        // Transition from vals to change
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF *SEQUENCE* {
+        //     changes SEQUENCE OF change SEQUENCE {
         //             ...
-        //         modification   AttributeTypeAndValues }
+        //         modification    PartialAttribute } }
         //
-        // AttributeTypeAndValues ::= SEQUENCE {
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
-        //
-        // AttributeValue ::= OCTET STRING
+        //     vals       SET OF value AttributeValue }
         //
         // Nothing to do
         super.transitions[LdapStatesEnum.VALS_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.VALS_STATE,
-                LdapStatesEnum.MODIFICATIONS_SEQ_STATE,
-                SEQUENCE );
+                LdapStatesEnum.CHANGE_STATE,
+                SEQUENCE,
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from vals to Controls
@@ -1187,20 +1237,22 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALS_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Attribute Value to Attribute Value
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF SEQUENCE {
+        //     changes SEQUENCE OF change SEQUENCE {
+        //         operation  ENUMERATED {
         //             ...
-        //         modification   AttributeTypeAndValues }
+        //         modification    PartialAttribute } }
         //
-        // AttributeTypeAndValues ::= SEQUENCE {
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
+        //     vals       SET OF value AttributeValue }
         //
         // AttributeValue ::= OCTET STRING
         //
@@ -1210,29 +1262,32 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ATTRIBUTE_VALUE_STATE,
                 LdapStatesEnum.ATTRIBUTE_VALUE_STATE,
                 OCTET_STRING,
-                new StoreModifyRequestAttributeValue() );
+                new StoreModifyRequestAttributeValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Attribute Value to ModificationsSeq
+        // Transition from Attribute Value to change
         // --------------------------------------------------------------------------------------------
         // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
         //     ...
-        //     modification SEQUENCE OF *SEQUENCE* {
+        //     changes SEQUENCE OF change SEQUENCE {
+        //         operation  ENUMERATED {
         //             ...
-        //         modification   AttributeTypeAndValues }
+        //         modification    PartialAttribute } }
         //
-        // AttributeTypeAndValues ::= SEQUENCE {
+        // PartialAttribute ::= SEQUENCE {
         //     ...
-        //     vals SET OF AttributeValue }
+        //     vals       SET OF value AttributeValue }
+        //
         //
         // AttributeValue ::= OCTET STRING
-        //
         // Nothing to do
         super.transitions[LdapStatesEnum.ATTRIBUTE_VALUE_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.ATTRIBUTE_VALUE_STATE,
-                LdapStatesEnum.MODIFICATIONS_SEQ_STATE,
-                SEQUENCE );
+                LdapStatesEnum.CHANGE_STATE,
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Attribute Value to Controls
@@ -1247,7 +1302,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ATTRIBUTE_VALUE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // ModifyResponse Message.
@@ -1260,7 +1316,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.MODIFY_RESPONSE_STATE,
                 LdapCodecConstants.MODIFY_RESPONSE_TAG,
-                new InitModifyResponse() );
+                new InitModifyResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // ModifyResponse Message.
@@ -1278,7 +1335,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MODIFY_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // AddRequest Message.
@@ -1292,7 +1350,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.ADD_REQUEST_STATE,
                 LdapCodecConstants.ADD_REQUEST_TAG,
-                new InitAddRequest() );
+                new InitAddRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Add Request to Entry
@@ -1307,7 +1366,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ADD_REQUEST_STATE,
                 LdapStatesEnum.ENTRY_STATE,
                 OCTET_STRING,
-                new StoreAddRequestEntryName() );
+                new StoreAddRequestEntryName(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Entry to Attributes
@@ -1323,7 +1383,8 @@ public final class LdapMessageGrammar extends
             new GrammarTransition(
                 LdapStatesEnum.ENTRY_STATE,
                 LdapStatesEnum.ATTRIBUTES_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Attributes to Attribute
@@ -1335,7 +1396,8 @@ public final class LdapMessageGrammar extends
             new GrammarTransition(
                 LdapStatesEnum.ATTRIBUTES_STATE,
                 LdapStatesEnum.ATTRIBUTE_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Attribute to type
@@ -1352,7 +1414,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ATTRIBUTE_STATE,
                 LdapStatesEnum.TYPE_STATE,
                 OCTET_STRING,
-                new AddAddRequestAttributeType() );
+                new AddAddRequestAttributeType(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from type to vals
@@ -1366,7 +1429,8 @@ public final class LdapMessageGrammar extends
             new GrammarTransition(
                 LdapStatesEnum.TYPE_STATE,
                 LdapStatesEnum.VALUES_STATE,
-                SET );
+                SET,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from vals to Value
@@ -1383,7 +1447,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALUES_STATE,
                 LdapStatesEnum.VALUE_STATE,
                 OCTET_STRING,
-                new AddAttributeValue() );
+                new AddAttributeValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Value to Value
@@ -1400,7 +1465,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALUE_STATE,
                 LdapStatesEnum.VALUE_STATE,
                 OCTET_STRING,
-                new AddAttributeValue() );
+                new AddAttributeValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Value to Attribute
@@ -1412,7 +1478,8 @@ public final class LdapMessageGrammar extends
             new GrammarTransition(
                 LdapStatesEnum.VALUE_STATE,
                 LdapStatesEnum.ATTRIBUTE_STATE,
-                SEQUENCE );
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Value to Controls
@@ -1425,7 +1492,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALUE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // AddResponse Message.
@@ -1438,7 +1506,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.ADD_RESPONSE_STATE,
                 LdapCodecConstants.ADD_RESPONSE_TAG,
-                new InitAddResponse() );
+                new InitAddResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // AddResponse Message.
@@ -1456,7 +1525,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ADD_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // DelResponse Message.
@@ -1469,7 +1539,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.DEL_RESPONSE_STATE,
                 LdapCodecConstants.DEL_RESPONSE_TAG,
-                new InitDelResponse() );
+                new InitDelResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // DelResponse Message.
@@ -1487,7 +1558,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.DEL_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from MessageID to ModifydDNRequest Message.
@@ -1501,7 +1573,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.MODIFY_DN_REQUEST_STATE,
                 LdapCodecConstants.MODIFY_DN_REQUEST_TAG,
-                new InitModifyDnRequest() );
+                new InitModifyDnRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ModifydDNRequest Message to EntryModDN
@@ -1516,7 +1589,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MODIFY_DN_REQUEST_STATE,
                 LdapStatesEnum.ENTRY_MOD_DN_STATE,
                 OCTET_STRING,
-                new StoreModifyDnRequestEntryName() );
+                new StoreModifyDnRequestEntryName(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from EntryModDN to NewRDN
@@ -1534,7 +1608,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ENTRY_MOD_DN_STATE,
                 LdapStatesEnum.NEW_RDN_STATE,
                 OCTET_STRING,
-                new StoreModifyDnRequestNewRdn() );
+                new StoreModifyDnRequestNewRdn(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NewRDN to DeleteOldRDN
@@ -1550,7 +1625,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NEW_RDN_STATE,
                 LdapStatesEnum.DELETE_OLD_RDN_STATE,
                 BOOLEAN,
-                new StoreModifyDnRequestDeleteOldRdn() );
+                new StoreModifyDnRequestDeleteOldRdn(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from DeleteOldRDN to NewSuperior
@@ -1565,7 +1641,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.DELETE_OLD_RDN_STATE,
                 LdapStatesEnum.NEW_SUPERIOR_STATE,
                 LdapCodecConstants.MODIFY_DN_REQUEST_NEW_SUPERIOR_TAG,
-                new StoreModifyDnRequestNewSuperior() );
+                new StoreModifyDnRequestNewSuperior(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from DeleteOldRDN to Controls
@@ -1580,7 +1657,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.DELETE_OLD_RDN_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from DeleteOldRDN to Controls
@@ -1595,7 +1673,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NEW_SUPERIOR_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from MessageID to ModifyDNResponse Message.
@@ -1609,7 +1688,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.MODIFY_DN_RESPONSE_STATE,
                 LdapCodecConstants.MODIFY_DN_RESPONSE_TAG,
-                new InitModifyDnResponse() );
+                new InitModifyDnResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ModifyDNResponse Message to Result Code
@@ -1629,7 +1709,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MODIFY_DN_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message ID to CompareResquest
@@ -1645,7 +1726,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.COMPARE_REQUEST_STATE,
                 LdapCodecConstants.COMPARE_REQUEST_TAG,
-                new InitCompareRequest() );
+                new InitCompareRequest(), 
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from CompareResquest to entryComp
@@ -1660,10 +1742,11 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.COMPARE_REQUEST_STATE,
                 LdapStatesEnum.ENTRY_COMP_STATE,
                 OCTET_STRING,
-                new StoreCompareRequestEntryName() );
+                new StoreCompareRequestEntryName(), 
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from entryComp to ava
+        // Transition from entryComp to ava COMP
         // --------------------------------------------------------------------------------------------
         // CompareRequest ::= [APPLICATION 14] SEQUENCE {
         //     ...
@@ -1675,11 +1758,12 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.ENTRY_COMP_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.ENTRY_COMP_STATE,
-                LdapStatesEnum.AVA_STATE,
-                SEQUENCE );
+                LdapStatesEnum.AVA_COMP_STATE,
+                SEQUENCE,
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from ava to AttributeDesc
+        // Transition from ava COMP to AttributeDesc COMP
         // --------------------------------------------------------------------------------------------
         // AttributeValueAssertion ::= SEQUENCE {
         //     attributeDesc AttributeDescription,
@@ -1688,12 +1772,13 @@ public final class LdapMessageGrammar extends
         // AttributeDescription LDAPString
         //
         // Stores the attribute description
-        super.transitions[LdapStatesEnum.AVA_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.AVA_COMP_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.AVA_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESC_STATE,
+                LdapStatesEnum.AVA_COMP_STATE,
+                LdapStatesEnum.ATTRIBUTE_DESC_COMP_STATE,
                 OCTET_STRING,
-                new StoreCompareRequestAttributeDesc() );
+                new StoreCompareRequestAttributeDesc(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AttributeDesc to Assertion Value
@@ -1705,12 +1790,13 @@ public final class LdapMessageGrammar extends
         // AssertionValue OCTET STRING
         //
         // Stores the attribute value
-        super.transitions[LdapStatesEnum.ATTRIBUTE_DESC_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.ATTRIBUTE_DESC_COMP_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_DESC_STATE,
-                LdapStatesEnum.ASSERTION_VALUE_STATE,
+                LdapStatesEnum.ATTRIBUTE_DESC_COMP_STATE,
+                LdapStatesEnum.ASSERTION_VALUE_COMP_STATE,
                 OCTET_STRING,
-                new StoreCompareRequestAssertionValue() );
+                new StoreCompareRequestAssertionValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value to Controls
@@ -1722,12 +1808,13 @@ public final class LdapMessageGrammar extends
         // AssertionValue OCTET STRING
         //
         // Stores the attribute value
-        super.transitions[LdapStatesEnum.ASSERTION_VALUE_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.ASSERTION_VALUE_COMP_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ASSERTION_VALUE_STATE,
+                LdapStatesEnum.ASSERTION_VALUE_COMP_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // CompareResponse Message.
@@ -1740,7 +1827,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.COMPARE_RESPONSE_STATE,
                 LdapCodecConstants.COMPARE_RESPONSE_TAG,
-                new InitCompareResponse() );
+                new InitCompareResponse(), 
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // CompareResponse Message.
@@ -1758,13 +1846,14 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.COMPARE_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from MessageID to SearchResultReference Message.
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... SearchResultReference ...
-        // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
+        // SearchResultReference ::= [APPLICATION 19] SEQUENCE SIZE (1..MAX) OF uri OCTET STRING
         //
         // Initialization of SearchResultReference object
         super.transitions[LdapStatesEnum.MESSAGE_ID_STATE.ordinal()][LdapCodecConstants.SEARCH_RESULT_REFERENCE_TAG] =
@@ -1772,13 +1861,14 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.SEARCH_RESULT_REFERENCE_STATE,
                 LdapCodecConstants.SEARCH_RESULT_REFERENCE_TAG,
-                new InitSearchResultReference() );
+                new InitSearchResultReference(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from SearchResultReference Message to Reference
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... SearchResultReference ...
-        // SearchResultReference ::= [APPLICATION 19] SEQUENCE OF LDAPURL
+        // SearchResultReference ::= [APPLICATION 19] SEQUENCE SIZE (1..MAX) OF uri OCTET STRING
         //
         // Initialization of SearchResultReference object
         super.transitions[LdapStatesEnum.SEARCH_RESULT_REFERENCE_STATE.ordinal()][OCTET_STRING.getValue()] =
@@ -1786,7 +1876,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SEARCH_RESULT_REFERENCE_STATE,
                 LdapStatesEnum.REFERENCE_STATE,
                 OCTET_STRING,
-                new StoreReference() );
+                new StoreReference(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Reference to Reference
@@ -1800,7 +1891,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.REFERENCE_STATE,
                 LdapStatesEnum.REFERENCE_STATE,
                 OCTET_STRING,
-                new StoreReference() );
+                new StoreReference(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Reference to Controls
@@ -1815,7 +1907,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.REFERENCE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message Id to ExtendedRequest Message
@@ -1829,7 +1922,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.EXTENDED_REQUEST_STATE,
                 LdapCodecConstants.EXTENDED_REQUEST_TAG,
-                new InitExtendedRequest() );
+                new InitExtendedRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ExtendedRequest Message to RequestName
@@ -1844,7 +1938,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.EXTENDED_REQUEST_STATE,
                 LdapStatesEnum.REQUEST_NAME_STATE,
                 LdapCodecConstants.EXTENDED_REQUEST_NAME_TAG,
-                new StoreExtendedRequestName() );
+                new StoreExtendedRequestName(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from RequestName to RequestValue
@@ -1859,7 +1954,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.REQUEST_NAME_STATE,
                 LdapStatesEnum.REQUEST_VALUE_STATE,
                 LdapCodecConstants.EXTENDED_REQUEST_VALUE_TAG,
-                new StoreExtendedRequestValue() );
+                new StoreExtendedRequestValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from RequestName to Controls
@@ -1874,7 +1970,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.REQUEST_NAME_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from RequestValue to Controls
@@ -1889,7 +1986,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.REQUEST_VALUE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from MessageId to ExtendedResponse Message.
@@ -1903,7 +2001,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.EXTENDED_RESPONSE_STATE,
                 LdapCodecConstants.EXTENDED_RESPONSE_TAG,
-                new InitExtendedResponse() );
+                new InitExtendedResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ExtendedResponse Message to Result Code ER
@@ -1919,7 +2018,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.EXTENDED_RESPONSE_STATE,
                 LdapStatesEnum.RESULT_CODE_ER_STATE,
                 ENUMERATED,
-                new StoreResultCode() );
+                new StoreResultCode(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Result Code ER to Matched Dn ER
@@ -1935,10 +2035,11 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.RESULT_CODE_ER_STATE,
                 LdapStatesEnum.MATCHED_DN_ER_STATE,
                 OCTET_STRING,
-                new StoreMatchedDN() );
+                new StoreMatchedDN(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Matched Dn ER to Error Message ER
+        // Transition from Matched Dn ER to diagnosticMessage ER
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... ExtendedResponse ...
         // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
@@ -1949,12 +2050,13 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.MATCHED_DN_ER_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.MATCHED_DN_ER_STATE,
-                LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE,
                 OCTET_STRING,
-                new StoreErrorMessage() );
+                new StoreErrorMessage(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message ER to Referrals ER
+        // Transition from diagnosticMessage ER to Referrals ER
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... ExtendedResponse ...
         // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
@@ -1962,29 +2064,31 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         //
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
-                LdapStatesEnum.REFERRALS_ER_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE,
+                LdapStatesEnum.REFERRAL_ER_STATE,
                 LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG,
-                new InitReferrals() );
+                new InitReferrals(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referrals ER to Referral ER
+        // Transition from Referrals ER to URI ER
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
         //
         // Add a first Referral
-        super.transitions[LdapStatesEnum.REFERRALS_ER_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRALS_ER_STATE,
                 LdapStatesEnum.REFERRAL_ER_STATE,
+                LdapStatesEnum.URI_ER_STATE,
                 OCTET_STRING,
-                new AddReferral() );
+                new AddReferral(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral ER to Referral ER
+        // Transition from URI ER to URI ER
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
@@ -1992,13 +2096,14 @@ public final class LdapMessageGrammar extends
         // Adda new Referral
         super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_ER_STATE,
-                LdapStatesEnum.REFERRAL_ER_STATE,
+                LdapStatesEnum.URI_ER_STATE,
+                LdapStatesEnum.URI_ER_STATE,
                 OCTET_STRING,
-                new AddReferral() );
+                new AddReferral(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral ER to ResponseName
+        // Transition from URI ER to ResponseName
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
@@ -2006,24 +2111,26 @@ public final class LdapMessageGrammar extends
         // Adda new Referral
         super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_ER_STATE,
+                LdapStatesEnum.URI_ER_STATE,
                 LdapStatesEnum.RESPONSE_NAME_STATE,
                 LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG,
-                new StoreExtendedResponseName() );
+                new StoreExtendedResponseName(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Referral ER to Response
+        // Transition from URI ER to ResponseValue
         // --------------------------------------------------------------------------------------------
         // Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI (RFC 4511)
         // URI ::= LDAPString
         //
         // Add a new Referral
-        super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
+        super.transitions[LdapStatesEnum.URI_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_ER_STATE,
-                LdapStatesEnum.RESPONSE_STATE,
+                LdapStatesEnum.URI_ER_STATE,
+                LdapStatesEnum.RESPONSE_VALUE_STATE,
                 LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
-                new StoreExtendedResponseValue() );
+                new StoreExtendedResponseValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Referral ER to Controls
@@ -2035,13 +2142,14 @@ public final class LdapMessageGrammar extends
         // Adda new Referral
         super.transitions[LdapStatesEnum.REFERRAL_ER_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.REFERRAL_ER_STATE,
+                LdapStatesEnum.URI_ER_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message ER to Controls
+        // Transition from diagnosticMessage ER to Controls
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... ExtendedResponse ...
         // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
@@ -2049,15 +2157,16 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         //
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message ER to ResponseName
+        // Transition from diagnosticMessage ER to ResponseName
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... ExtendedResponse ...
         // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
@@ -2066,29 +2175,31 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Stores the response name
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE,
                 LdapStatesEnum.RESPONSE_NAME_STATE,
                 LdapCodecConstants.EXTENDED_RESPONSE_NAME_TAG,
-                new StoreExtendedResponseName() );
+                new StoreExtendedResponseName(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Response Name to Response
+        // Transition from Response Name to ResponseValue
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... ExtendedResponse ...
         // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
         //     ...
         //     responseName   [10] LDAPOID OPTIONAL,
-        //     response       [11] OCTET STRING OPTIONAL}
+        //     responseValue  [11] OCTET STRING OPTIONAL}
         //
         // Stores the response
         super.transitions[LdapStatesEnum.RESPONSE_NAME_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.RESPONSE_NAME_STATE,
-                LdapStatesEnum.RESPONSE_STATE,
+                LdapStatesEnum.RESPONSE_VALUE_STATE,
                 LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
-                new StoreExtendedResponseValue() );
+                new StoreExtendedResponseValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ResponseName to Controls
@@ -2103,39 +2214,42 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.RESPONSE_NAME_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Error Message ER to Response
+        // Transition from diagnosticMessage ER to ResponseValue
         // --------------------------------------------------------------------------------------------
         // LdapMessage ::= ... ExtendedResponse ...
         // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
         //     COMPONENTS OF LDAPResult,
         //     ...
-        //     response       [11] OCTET STRING OPTIONAL}
+        //     responseValue  [11] OCTET STRING OPTIONAL}
         //
         // Stores the response
-        super.transitions[LdapStatesEnum.ERROR_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
+        super.transitions[LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE.ordinal()][LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
-                LdapStatesEnum.RESPONSE_STATE,
+                LdapStatesEnum.DIAGNOSTIC_MESSAGE_ER_STATE,
+                LdapStatesEnum.RESPONSE_VALUE_STATE,
                 LdapCodecConstants.EXTENDED_RESPONSE_VALUE_TAG,
-                new StoreExtendedResponseValue() );
+                new StoreExtendedResponseValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Response to Controls
+        // Transition from ResponseValue to Controls
         // --------------------------------------------------------------------------------------------
         //         extendedRequest   EtendedRequest,
         //         ... },
         //     controls       [0] Controls OPTIONAL }
         //
         // Init the controls
-        super.transitions[LdapStatesEnum.RESPONSE_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.RESPONSE_VALUE_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.RESPONSE_STATE,
+                LdapStatesEnum.RESPONSE_VALUE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Message Id to IntermediateResponse Message
@@ -2149,7 +2263,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_STATE,
                 LdapCodecConstants.INTERMEDIATE_RESPONSE_TAG,
-                new InitIntermediateResponse() );
+                new InitIntermediateResponse(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from IntermediateResponse Message to ResponseName
@@ -2164,7 +2279,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_STATE,
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_NAME_STATE,
                 LdapCodecConstants.INTERMEDIATE_RESPONSE_NAME_TAG,
-                new StoreIntermediateResponseName() );
+                new StoreIntermediateResponseName(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from IntermediateResponse Message to ResponseValue (ResponseName is null)
@@ -2180,7 +2296,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_STATE,
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_VALUE_STATE,
                 LdapCodecConstants.INTERMEDIATE_RESPONSE_VALUE_TAG,
-                new StoreIntermediateResponseValue() );
+                new StoreIntermediateResponseValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ResponseName to ResponseValue
@@ -2195,7 +2312,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_NAME_STATE,
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_VALUE_STATE,
                 LdapCodecConstants.INTERMEDIATE_RESPONSE_VALUE_TAG,
-                new StoreIntermediateResponseValue() );
+                new StoreIntermediateResponseValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ResponseName to Controls
@@ -2210,7 +2328,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_NAME_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from ResponseValue to Controls
@@ -2225,7 +2344,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INTERMEDIATE_RESPONSE_VALUE_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Controls to Control
@@ -2240,7 +2360,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapStatesEnum.CONTROL_STATE,
                 SEQUENCE,
-                new CheckLengthNotNull() );
+                new CheckLengthNotNull(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Control to ControlType
@@ -2254,7 +2375,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_STATE,
                 LdapStatesEnum.CONTROL_TYPE_STATE,
                 OCTET_STRING,
-                new StoreControlName() );
+                new StoreControlName(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from ControlType to Control Criticality
@@ -2270,7 +2392,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_TYPE_STATE,
                 LdapStatesEnum.CRITICALITY_STATE,
                 OCTET_STRING,
-                new StoreControlCriticality() );
+                new StoreControlCriticality(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Control Criticality to Control Value
@@ -2285,7 +2408,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CRITICALITY_STATE,
                 LdapStatesEnum.CONTROL_VALUE_STATE,
                 OCTET_STRING,
-                new StoreControlValue() );
+                new StoreControlValue(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Control Type to Control Value
@@ -2300,7 +2424,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_TYPE_STATE,
                 LdapStatesEnum.CONTROL_VALUE_STATE,
                 OCTET_STRING,
-                new StoreControlValue() );
+                new StoreControlValue(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Control Type to Control
@@ -2315,7 +2440,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_TYPE_STATE,
                 LdapStatesEnum.CONTROL_STATE,
                 SEQUENCE,
-                new CheckLengthNotNull() );
+                new CheckLengthNotNull(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Control Criticality to Control
@@ -2330,7 +2456,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CRITICALITY_STATE,
                 LdapStatesEnum.CONTROL_STATE,
                 SEQUENCE,
-                new CheckLengthNotNull() );
+                new CheckLengthNotNull(),
+                FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Control Value to Control
@@ -2345,7 +2472,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_VALUE_STATE,
                 LdapStatesEnum.CONTROL_STATE,
                 SEQUENCE,
-                new CheckLengthNotNull() );
+                new CheckLengthNotNull(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from message ID to SearchRequest Message
@@ -2359,7 +2487,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.MESSAGE_ID_STATE,
                 LdapStatesEnum.SEARCH_REQUEST_STATE,
                 LdapCodecConstants.SEARCH_REQUEST_TAG,
-                new InitSearchRequest() );
+                new InitSearchRequest(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from SearchRequest Message to BaseObject
@@ -2374,7 +2503,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SEARCH_REQUEST_STATE,
                 LdapStatesEnum.BASE_OBJECT_STATE,
                 OCTET_STRING,
-                new StoreSearchRequestBaseObject() );
+                new StoreSearchRequestBaseObject(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from BaseObject to Scope
@@ -2393,7 +2523,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.BASE_OBJECT_STATE,
                 LdapStatesEnum.SCOPE_STATE,
                 ENUMERATED,
-                new StoreSearchRequestScope() );
+                new StoreSearchRequestScope(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Scope to DerefAlias
@@ -2413,7 +2544,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SCOPE_STATE,
                 LdapStatesEnum.DEREF_ALIAS_STATE,
                 ENUMERATED,
-                new StoreSearchRequestDerefAlias() );
+                new StoreSearchRequestDerefAlias(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from DerefAlias to SizeLimit
@@ -2429,7 +2561,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.DEREF_ALIAS_STATE,
                 LdapStatesEnum.SIZE_LIMIT_STATE,
                 INTEGER,
-                new StoreSearchRequestSizeLimit() );
+                new StoreSearchRequestSizeLimit(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from SizeLimit to TimeLimit
@@ -2445,7 +2578,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SIZE_LIMIT_STATE,
                 LdapStatesEnum.TIME_LIMIT_STATE,
                 INTEGER,
-                new StoreSearchRequestTimeLimit() );
+                new StoreSearchRequestTimeLimit(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TimeLimit to TypesOnly
@@ -2461,7 +2595,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TIME_LIMIT_STATE,
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 BOOLEAN,
-                new StoreSearchRequestTypesOnly() );
+                new StoreSearchRequestTypesOnly(),
+                FollowUp.MANDATORY );
 
         //============================================================================================
         // Search Request And Filter
@@ -2545,7 +2680,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to OR filter
@@ -2566,7 +2702,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to NOT filter
@@ -2587,7 +2724,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to Equality Match filter
@@ -2608,7 +2746,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to Substrings filter
@@ -2627,9 +2766,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.TYPES_ONLY_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.TYPES_ONLY_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to GreaterOrEqual filter
@@ -2650,7 +2790,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to LessOrEqual filter
@@ -2671,7 +2812,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to Present filter
@@ -2692,7 +2834,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to Approx Match filter
@@ -2713,7 +2856,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from TypesOnly to Extensible Match filter
@@ -2734,7 +2878,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPES_ONLY_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to AND filter
@@ -2754,7 +2899,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to OR filter
@@ -2775,7 +2921,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to NOT filter
@@ -2796,7 +2943,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to Equality Match filter
@@ -2817,7 +2965,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to Substrings filter
@@ -2836,9 +2985,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.AND_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.AND_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to GreaterOrEqual filter
@@ -2859,7 +3009,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to LessOrEqual filter
@@ -2880,7 +3031,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to Present filter
@@ -2901,7 +3053,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to Approx Match filter
@@ -2922,7 +3075,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from AND to Extensible Match filter
@@ -2943,7 +3097,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.AND_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to AND filter
@@ -2963,7 +3118,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to OR filter
@@ -2984,7 +3140,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to NOT filter
@@ -3005,7 +3162,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to Equality Match filter
@@ -3026,7 +3184,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to Substrings filter
@@ -3045,9 +3204,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.OR_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.OR_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to GreaterOrEqual filter
@@ -3068,7 +3228,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to LessOrEqual filter
@@ -3089,7 +3250,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to Present filter
@@ -3110,7 +3272,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to Approx Match filter
@@ -3131,7 +3294,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from OR to Extensible Match filter
@@ -3152,7 +3316,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.OR_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to AND filter
@@ -3172,7 +3337,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to OR filter
@@ -3193,7 +3359,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to NOT filter
@@ -3214,7 +3381,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to Equality Match filter
@@ -3235,7 +3403,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to Substrings filter
@@ -3254,9 +3423,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.NOT_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.NOT_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to GreaterOrEqual filter
@@ -3277,7 +3447,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to LessOrEqual filter
@@ -3298,7 +3469,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to Present filter
@@ -3319,7 +3491,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to Approx Match filter
@@ -3340,7 +3513,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from NOT to Extensible Match filter
@@ -3361,10 +3535,11 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.NOT_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Equality match to Attribute Desc Filter
+        // Transition from Equality match filter to Attribute Value Assertion's AttributeDesc
         // --------------------------------------------------------------------------------------------
         // Filter ::= CHOICE {
         //     ...
@@ -3372,7 +3547,7 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // AttributeValueAssertion ::= SEQUENCE {
-        //     attributeDesc   AttributeDescription,
+        //    attributeDesc   AttributeDescription,
         //     ...
         //
         // Init Attribute Desc filter
@@ -3381,7 +3556,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapStatesEnum.ATTRIBUTE_DESC_FILTER_STATE,
                 OCTET_STRING,
-                new InitAttributeDescFilter() );
+                new InitAttributeDescFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Attribute Desc Filter to Assertion Value Filter
@@ -3401,7 +3577,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ATTRIBUTE_DESC_FILTER_STATE,
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 OCTET_STRING,
-                new InitAssertionValueFilter() );
+                new InitAssertionValueFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to AND filter
@@ -3421,7 +3598,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to OR filter
@@ -3442,7 +3620,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to NOT filter
@@ -3463,7 +3642,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to Equality Match filter
@@ -3484,7 +3664,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to Substrings filter
@@ -3503,9 +3684,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to GreaterOrEqual filter
@@ -3526,7 +3708,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to LessOrEqual filter
@@ -3547,7 +3730,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to Present filter
@@ -3568,7 +3752,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to Approx Match filter
@@ -3589,7 +3774,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to Extensible Match filter
@@ -3610,7 +3796,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Assertion Value Filter to Attribute Description List
@@ -3618,37 +3805,18 @@ public final class LdapMessageGrammar extends
         // SearchRequest ::= [APPLICATION 3] SEQUENCE {
         //     ...
         //     filter      Filter,
-        //     attributes  AttributeDescriptionList }
+        //     attributes  AttributeSelection }
         //
-        // AttributeDescriptionList ::= SEQUENCE OF
-        //     AttributeDescription
+        // AttributeSelection ::= SEQUENCE OF selector LDAPSTRING
         //
         // Init attribute description list
         super.transitions[LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.ASSERTION_VALUE_FILTER_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
-
-        // --------------------------------------------------------------------------------------------
-        // Transition from Attribute Description List to AttributeDescription
-        // --------------------------------------------------------------------------------------------
-        // SearchRequest ::= [APPLICATION 3] SEQUENCE {
-        //     ...
-        //     filter      Filter,
-        //     attributes  AttributeDescriptionList }
-        //
-        // AttributeDescriptionList ::= SEQUENCE OF
-        //     AttributeDescription
-        //
-        // Store attribute description
-        super.transitions[LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE.ordinal()][OCTET_STRING.getValue()] =
-            new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_STATE,
-                OCTET_STRING,
-                new StoreSearchRequestAttributeDesc() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Attribute Description List to Controls
@@ -3658,45 +3826,60 @@ public final class LdapMessageGrammar extends
         //     controls       [0] Controls OPTIONAL }
         //
         // Empty attribute description list, with controls
-        super.transitions[LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.ATTRIBUTE_SELECTION_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from Attribute Description to AttributeDescription
+        // Transition from Attribute Selection to selector
         // --------------------------------------------------------------------------------------------
         // SearchRequest ::= [APPLICATION 3] SEQUENCE {
         //     ...
         //     filter      Filter,
-        //     attributes  AttributeDescriptionList }
+        //     attributes  AttributeSelection }
         //
-        // AttributeDescriptionList ::= SEQUENCE OF
-        //     AttributeDescription
+        // AttributeSelection ::= SEQUENCE OF selector LDAPSTRING
         //
         // Store attribute description
-        super.transitions[LdapStatesEnum.ATTRIBUTE_DESCRIPTION_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.ATTRIBUTE_SELECTION_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
+                LdapStatesEnum.SELECTOR_STATE,
                 OCTET_STRING,
-                new StoreSearchRequestAttributeDesc() );
+                new StoreSearchRequestAttributeDesc(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // transition from Attribute Description to Controls.
+        // Transition from selector to selector
+        // --------------------------------------------------------------------------------------------
+        // AttributeSelection ::= SEQUENCE OF selector LDAPSTRING
+        //
+        // Store attribute description
+        super.transitions[LdapStatesEnum.SELECTOR_STATE.ordinal()][OCTET_STRING.getValue()] =
+            new GrammarTransition(
+                LdapStatesEnum.SELECTOR_STATE,
+                LdapStatesEnum.SELECTOR_STATE,
+                OCTET_STRING,
+                new StoreSearchRequestAttributeDesc(),
+                FollowUp.OPTIONAL );
+
+        // --------------------------------------------------------------------------------------------
+        // Transition from selector to controls
         // --------------------------------------------------------------------------------------------
         //         searchRequest   SearchRequest,
         //         ... },
         //     controls       [0] Controls OPTIONAL }
-        //
-        super.transitions[LdapStatesEnum.ATTRIBUTE_DESCRIPTION_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
+        super.transitions[LdapStatesEnum.SELECTOR_STATE.ordinal()][LdapCodecConstants.CONTROLS_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_STATE,
+                LdapStatesEnum.SELECTOR_STATE,
                 LdapStatesEnum.CONTROLS_STATE,
                 LdapCodecConstants.CONTROLS_TAG,
-                new InitControls() );
+                new InitControls(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Greater Or Equal to Attribute Desc Filter
@@ -3716,7 +3899,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapStatesEnum.ATTRIBUTE_DESC_FILTER_STATE,
                 OCTET_STRING,
-                new InitAttributeDescFilter() );
+                new InitAttributeDescFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Less Or Equal to Attribute Desc Filter
@@ -3727,7 +3911,7 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // AttributeValueAssertion ::= SEQUENCE {
-        //     attributeDesc   AttributeDescription,
+        //    attributeDesc   AttributeDescription,
         //     ...
         //
         // Init Attribute Desc filter
@@ -3736,7 +3920,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapStatesEnum.ATTRIBUTE_DESC_FILTER_STATE,
                 OCTET_STRING,
-                new InitAttributeDescFilter() );
+                new InitAttributeDescFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Substrings to typeSubstring
@@ -3751,12 +3936,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init substring type
-        super.transitions[LdapStatesEnum.SUBSTRING_FILTER_STATE.ordinal()][OCTET_STRING.getValue()] =
+        super.transitions[LdapStatesEnum.SUBSTRINGS_FILTER_STATE.ordinal()][OCTET_STRING.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapStatesEnum.TYPE_SUBSTRING_STATE,
                 OCTET_STRING,
-                new StoreSubstringFilterType() );
+                new StoreSubstringFilterType(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from typeSubstring to substrings
@@ -3777,7 +3963,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.TYPE_SUBSTRING_STATE,
                 LdapStatesEnum.SUBSTRINGS_STATE,
                 SEQUENCE,
-                new CheckNotNullLength<LdapMessageContainer<SearchRequest>>() );
+                new CheckNotNullLength<LdapMessageContainer<SearchRequest>>(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from substrings to Initial
@@ -3794,7 +3981,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SUBSTRINGS_STATE,
                 LdapStatesEnum.INITIAL_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_INITIAL_TAG,
-                new StoreInitial() );
+                new StoreInitial(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from substrings to any
@@ -3812,7 +4000,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SUBSTRINGS_STATE,
                 LdapStatesEnum.ANY_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_ANY_TAG,
-                new StoreAny() );
+                new StoreAny(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from substrings to final
@@ -3829,7 +4018,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.SUBSTRINGS_STATE,
                 LdapStatesEnum.FINAL_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_FINAL_TAG,
-                new StoreFinal() );
+                new StoreFinal(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to any
@@ -3847,7 +4037,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.ANY_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_ANY_TAG,
-                new StoreAny() );
+                new StoreAny(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to final
@@ -3864,26 +4055,27 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.FINAL_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_FINAL_TAG,
-                new StoreFinal() );
+                new StoreFinal(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from initial to Attribute Description List
+        // Transition from initial to Attribute Selection
         // --------------------------------------------------------------------------------------------
         // SearchRequest ::= [APPLICATION 3] SEQUENCE {
         //     ...
         //     filter      Filter,
-        //     attributes  AttributeDescriptionList }
+        //     attributes      AttributeSelection }
         //
-        // AttributeDescriptionList ::= SEQUENCE OF
-        //     AttributeDescription
+        // AttributeSelection ::= SEQUENCE OF selector OCTET STRING
         //
         // Init attribute description list
         super.transitions[LdapStatesEnum.INITIAL_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.INITIAL_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to AND filter
@@ -3903,7 +4095,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to OR filter
@@ -3924,7 +4117,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to NOT filter
@@ -3945,7 +4139,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to Equality Match filter
@@ -3966,7 +4161,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to Substrings filter
@@ -3985,9 +4181,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.INITIAL_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.INITIAL_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to GreaterOrEqual filter
@@ -4008,7 +4205,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to LessOrEqual filter
@@ -4029,7 +4227,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to Present filter
@@ -4050,7 +4249,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to Approx Match filter
@@ -4071,7 +4271,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from initial to Extensible Match filter
@@ -4092,7 +4293,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.INITIAL_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to final
@@ -4109,7 +4311,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.FINAL_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_FINAL_TAG,
-                new StoreFinal() );
+                new StoreFinal(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to any
@@ -4127,7 +4330,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.ANY_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_ANY_TAG,
-                new StoreAny() );
+                new StoreAny(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to Attribute Description List
@@ -4144,9 +4348,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.ANY_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.ANY_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to AND filter
@@ -4166,7 +4371,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to OR filter
@@ -4187,7 +4393,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to NOT filter
@@ -4208,7 +4415,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to Equality Match filter
@@ -4229,7 +4437,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to Substrings filter
@@ -4248,9 +4457,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.ANY_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.ANY_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to GreaterOrEqual filter
@@ -4271,7 +4481,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to LessOrEqual filter
@@ -4292,7 +4503,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to Present filter
@@ -4313,7 +4525,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to Approx Match filter
@@ -4334,7 +4547,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from any to Extensible Match filter
@@ -4355,7 +4569,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.ANY_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to Attribute Description List
@@ -4372,9 +4587,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.FINAL_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.FINAL_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to AND filter
@@ -4394,7 +4610,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to OR filter
@@ -4415,7 +4632,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to NOT filter
@@ -4436,7 +4654,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to Equality Match filter
@@ -4457,7 +4676,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to Substrings filter
@@ -4476,9 +4696,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.FINAL_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.FINAL_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to GreaterOrEqual filter
@@ -4499,7 +4720,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to LessOrEqual filter
@@ -4520,7 +4742,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to Present filter
@@ -4541,7 +4764,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to Approx Match filter
@@ -4562,7 +4786,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from final to Extensible Match filter
@@ -4583,7 +4808,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.FINAL_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to AND filter
@@ -4603,7 +4829,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to OR filter
@@ -4624,7 +4851,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to NOT filter
@@ -4645,7 +4873,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to Equality Match filter
@@ -4666,7 +4895,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to Substrings filter
@@ -4685,9 +4915,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.PRESENT_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.PRESENT_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to GreaterOrEqual filter
@@ -4708,7 +4939,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to LessOrEqual filter
@@ -4729,7 +4961,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to Present filter
@@ -4750,7 +4983,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to Approx Match filter
@@ -4771,7 +5005,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to Extensible Match filter
@@ -4792,7 +5027,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.PRESENT_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Present Filter to Attribute Description List
@@ -4809,9 +5045,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.PRESENT_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
                 LdapStatesEnum.PRESENT_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Approx Match to Attribute Desc Filter
@@ -4831,7 +5068,8 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapStatesEnum.ATTRIBUTE_DESC_FILTER_STATE,
                 OCTET_STRING,
-                new InitAttributeDescFilter() );
+                new InitAttributeDescFilter(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Extensible Match to MatchingRule
@@ -4846,9 +5084,11 @@ public final class LdapMessageGrammar extends
         //
         // Store the matching rule ID
         super.transitions[LdapStatesEnum.EXTENSIBLE_MATCH_STATE.ordinal()][LdapCodecConstants.MATCHING_RULE_ID_TAG] = new GrammarTransition(
-            LdapStatesEnum.EXTENSIBLE_MATCH_STATE, LdapStatesEnum.MATCHING_RULE_STATE,
+            LdapStatesEnum.EXTENSIBLE_MATCH_STATE, 
+            LdapStatesEnum.MRA_MATCHING_RULE_STATE,
             LdapCodecConstants.MATCHING_RULE_ID_TAG, 
-            new StoreMatchingRuleId() );
+            new StoreMatchingRuleId(),
+            FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Extensible Match to type matching rule
@@ -4866,9 +5106,10 @@ public final class LdapMessageGrammar extends
         super.transitions[LdapStatesEnum.EXTENSIBLE_MATCH_STATE.ordinal()][LdapCodecConstants.MATCHING_RULE_TYPE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
-                LdapStatesEnum.TYPE_MATCHING_RULE_STATE,
+                LdapStatesEnum.MRA_TYPE_STATE,
                 LdapCodecConstants.MATCHING_RULE_TYPE_TAG,
-                new StoreMatchingRuleType() );
+                new StoreMatchingRuleType(),
+                FollowUp.MANDATORY );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Extensible Match to match value
@@ -4883,17 +5124,37 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Store the match value
-        /*
         super.transitions[LdapStatesEnum.EXTENSIBLE_MATCH_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
             new GrammarTransition(
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapCodecConstants.MATCH_VALUE_TAG,
-                new StoreMatchValue() );
-                */
+                new StoreMatchValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from matching rule to type matching rule
+        // Transition from matching rule ID to matching rule Type
+        // --------------------------------------------------------------------------------------------
+        // Filter ::= CHOICE {
+        //     ...
+        //     extensibleMatch  [9] MatchingRuleAssertion }
+        //
+        // MatchingRuleAssertion ::= SEQUENCE {
+        //     matchingRule    [1] MatchingRuleId OPTIONAL,
+        //     type            [2] AttributeDescription OPTIONAL,
+        //     ...
+        //
+        // Store the matching rule ID
+        super.transitions[LdapStatesEnum.MRA_MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCHING_RULE_TYPE_TAG] =
+            new GrammarTransition(
+                LdapStatesEnum.MRA_MATCHING_RULE_STATE,
+                LdapStatesEnum.MRA_TYPE_STATE,
+                LdapCodecConstants.MATCHING_RULE_TYPE_TAG,
+                new StoreMatchingRuleType(),
+                FollowUp.MANDATORY );
+
+        // --------------------------------------------------------------------------------------------
+        // Transition from matching rule type to matching rule value
         // --------------------------------------------------------------------------------------------
         // Filter ::= CHOICE {
         //     ...
@@ -4901,17 +5162,19 @@ public final class LdapMessageGrammar extends
         //
         // MatchingRuleAssertion ::= SEQUENCE {
         //     ...
-        //     type [2] AttributeDescription OPTIONAL,
+        //     type            [2] AttributeDescription OPTIONAL,
+        //     matchValue      [3] AssertionValue,
         //     ...
         //
         // Store the matching rule ID
-        super.transitions[LdapStatesEnum.MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCHING_RULE_TYPE_TAG] =
+        super.transitions[LdapStatesEnum.MRA_TYPE_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCHING_RULE_STATE,
-                LdapStatesEnum.TYPE_MATCHING_RULE_STATE,
-                LdapCodecConstants.MATCHING_RULE_TYPE_TAG,
-                new StoreMatchingRuleType() );
-
+                LdapStatesEnum.MRA_TYPE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
+                LdapCodecConstants.MATCH_VALUE_TAG,
+                new StoreMatchValue(),
+                FollowUp.MANDATORY );
+        
         // --------------------------------------------------------------------------------------------
         // Transition from matching rule to match value
         // --------------------------------------------------------------------------------------------
@@ -4925,32 +5188,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Store the matching value
-        super.transitions[LdapStatesEnum.MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCHING_RULE_STATE,
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCHING_RULE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapCodecConstants.MATCH_VALUE_TAG,
-                new StoreMatchValue() );
-
-        // --------------------------------------------------------------------------------------------
-        // Transition from matching type to match value
-        // --------------------------------------------------------------------------------------------
-        // Filter ::= CHOICE {
-        //     ...
-        //     extensibleMatch  [9] MatchingRuleAssertion }
-        //
-        // MatchingRuleAssertion ::= SEQUENCE {
-        //     ...
-        //     matchValue [3] AssertionValue,
-        //     ...
-        //
-        // Store the matching value
-        super.transitions[LdapStatesEnum.TYPE_MATCHING_RULE_STATE.ordinal()][LdapCodecConstants.MATCH_VALUE_TAG] =
-            new GrammarTransition(
-                LdapStatesEnum.TYPE_MATCHING_RULE_STATE,
-                LdapStatesEnum.MATCH_VALUE_STATE,
-                LdapCodecConstants.MATCH_VALUE_TAG,
-                new StoreMatchValue() );
+                new StoreMatchValue(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to dnAttributes
@@ -4964,12 +5208,13 @@ public final class LdapMessageGrammar extends
         //     dnAttributes [4] BOOLEAN DEFAULT FALSE }
         //
         // Store the dnAttributes flag
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.DN_ATTRIBUTES_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.DN_ATTRIBUTES_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapCodecConstants.DN_ATTRIBUTES_FILTER_TAG,
-                new StoreMatchingRuleDnAttributes() );
+                new StoreMatchingRuleDnAttributes(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to AND filter
@@ -4984,12 +5229,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init AND filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.AND_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.AND_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to OR filter
@@ -5005,12 +5251,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init OR filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.OR_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.OR_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to NOT filter
@@ -5026,12 +5273,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init NOT filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.NOT_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.NOT_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to Equality Match filter
@@ -5047,12 +5295,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init NOT filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to Substrings filter
@@ -5068,12 +5317,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Substrings filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to GreaterOrEqual filter
@@ -5089,12 +5339,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Greater Or Equal filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to LessOrEqual filter
@@ -5110,12 +5361,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Less Or Equal filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to Present filter
@@ -5131,12 +5383,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init present filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.PRESENT_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.PRESENT_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to Approx Match filter
@@ -5152,12 +5405,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Approx Match filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.APPROX_MATCH_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.APPROX_MATCH_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from match value to Extensible Match filter
@@ -5173,31 +5427,32 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Assertion Value Filter filter
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
-        // Transition from match value to Attribute Description List
+        // Transition from match value to Attribute Selection
         // --------------------------------------------------------------------------------------------
         // SearchRequest ::= [APPLICATION 3] SEQUENCE {
         //     ...
         //     filter      Filter,
-        //     attributes  AttributeDescriptionList }
+        //     attributes  AttributeSelection }
         //
-        // AttributeDescriptionList ::= SEQUENCE OF
-        //     AttributeDescription
+        // AttributeDescriptionList ::= SEQUENCE OF selector LDAPSTRING
         //
         // Init attribute description list
-        super.transitions[LdapStatesEnum.MATCH_VALUE_STATE.ordinal()][SEQUENCE.getValue()] =
+        super.transitions[LdapStatesEnum.MRA_MATCH_VALUE_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.MATCH_VALUE_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.MRA_MATCH_VALUE_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to AND filter
@@ -5212,12 +5467,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init AND filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.AND_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.AND_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.AND_STATE,
                 LdapCodecConstants.AND_FILTER_TAG,
-                new InitAndFilter() );
+                new InitAndFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to OR filter
@@ -5233,12 +5489,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init OR filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.OR_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.OR_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.OR_STATE,
                 LdapCodecConstants.OR_FILTER_TAG,
-                new InitOrFilter() );
+                new InitOrFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to NOT filter
@@ -5254,12 +5511,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init NOT filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.NOT_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.NOT_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.NOT_STATE,
                 LdapCodecConstants.NOT_FILTER_TAG,
-                new InitNotFilter() );
+                new InitNotFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to Equality Match filter
@@ -5275,12 +5533,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init NOT filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.EQUALITY_MATCH_STATE,
                 LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG,
-                new InitEqualityMatchFilter() );
+                new InitEqualityMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to Substrings filter
@@ -5296,12 +5555,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Substrings filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.SUBSTRINGS_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
-                LdapStatesEnum.SUBSTRING_FILTER_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.SUBSTRINGS_FILTER_STATE,
                 LdapCodecConstants.SUBSTRINGS_FILTER_TAG,
-                new InitSubstringsFilter() );
+                new InitSubstringsFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to GreaterOrEqual filter
@@ -5317,12 +5577,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Greater Or Equal filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.GREATER_OR_EQUAL_STATE,
                 LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG,
-                new InitGreaterOrEqualFilter() );
+                new InitGreaterOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to LessOrEqual filter
@@ -5338,12 +5599,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Less Or Equal filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.LESS_OR_EQUAL_STATE,
                 LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG,
-                new InitLessOrEqualFilter() );
+                new InitLessOrEqualFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to Present filter
@@ -5359,12 +5621,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init present filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.PRESENT_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.PRESENT_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.PRESENT_STATE,
                 LdapCodecConstants.PRESENT_FILTER_TAG,
-                new InitPresentFilter() );
+                new InitPresentFilter(),
+                FollowUp.OPTIONAL  );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to Approx Match filter
@@ -5380,12 +5643,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Approx Match filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.APPROX_MATCH_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.APPROX_MATCH_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.APPROX_MATCH_STATE,
                 LdapCodecConstants.APPROX_MATCH_FILTER_TAG,
-                new InitApproxMatchFilter() );
+                new InitApproxMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to Extensible Match filter
@@ -5401,12 +5665,13 @@ public final class LdapMessageGrammar extends
         //     ...
         //
         // Init Assertion Value Filter filter
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
                 LdapStatesEnum.EXTENSIBLE_MATCH_STATE,
                 LdapCodecConstants.EXTENSIBLE_MATCH_FILTER_TAG,
-                new InitExtensibleMatchFilter() );
+                new InitExtensibleMatchFilter(),
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from dnAttributes to Attribute Description List
@@ -5420,12 +5685,13 @@ public final class LdapMessageGrammar extends
         //     AttributeDescription
         //
         // Init attribute description list
-        super.transitions[LdapStatesEnum.DN_ATTRIBUTES_STATE.ordinal()][SEQUENCE.getValue()] =
+        super.transitions[LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE.ordinal()][SEQUENCE.getValue()] =
             new GrammarTransition(
-                LdapStatesEnum.DN_ATTRIBUTES_STATE,
-                LdapStatesEnum.ATTRIBUTE_DESCRIPTION_LIST_STATE,
+                LdapStatesEnum.MRA_DN_ATTRIBUTES_STATE,
+                LdapStatesEnum.ATTRIBUTE_SELECTION_STATE,
                 SEQUENCE,
-                new InitSearchRequestAttributeDescList() );
+                new InitSearchRequestAttributeDescList(),
+                FollowUp.OPTIONAL );
     }
 
 

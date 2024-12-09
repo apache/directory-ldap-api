@@ -820,14 +820,14 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
                 0x30, 0x32,             // LdapMessage
                   0x02, 0x01, 0x31,     // messageID MessageID
                   0x66, 0x2D,           // ModifyRequest
-                    0x04, 0x20,             // entry LDAPDN,
+                    0x04, 0x20,             // object OCTET STRING,
                       'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
                       ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
                       'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
-                    0x30, 0x09,
-                      0x30, 0x07,
-                        0x0A, 0x01, 0x00,
-                        0x30, 0x02,
+                    0x30, 0x09,             // changes *SEQUENCE OF* change SEQUENCE {
+                      0x30, 0x07,           // changes SEQUENCE OF change *SEQUENCE* {
+                        0x0A, 0x01, 0x00,   // operation       ENUMERATED { add     (0),
+                        0x30, 0x02,         // modification    PartialAttribute } }
                           0x04, 0x00
             } );
 
@@ -846,6 +846,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
             }
             catch ( DecoderException de )
             {
+                de.printStackTrace();
                 assertTrue( de instanceof ResponseCarryingException );
                 Message response = ( ( ResponseCarryingException ) de ).getResponse();
                 assertTrue( response instanceof ModifyResponseImpl );
@@ -1102,30 +1103,32 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
 
     /**
-     * Test the decoding of a ModifyRequest with an add operation, and a
-     * modification with a type and an empty vals
+     * Test the decoding of a ModifyRequest with an increment operation, and a
+     * modification with a type and one value
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationIncrement()
         throws DecoderException, EncoderException
     {
-        ByteBuffer stream = ByteBuffer.allocate( 0x3D );
+        ByteBuffer stream = ByteBuffer.allocate( 0x42 );
 
         stream.put( new byte[]
             {
-                0x30, 0x3B,             // LdapMessage
+                0x30, 0x40,             // LdapMessage
                   0x02, 0x01, 0x31,     // messageID MessageID
-                  0x66, 0x36,           // ModifyRequest
+                  0x66, 0x3B,           // ModifyRequest
                     0x04, 0x20,         // entry LDAPDN,
                       'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
                       ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
                       'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
-                    0x30, 0x012,
-                      0x30, 0x10,
+                    0x30, 0x017,
+                      0x30, 0x15,
                         0x0A, 0x01, 0x03,
-                        0x30, 0x0B,
+                        0x30, 0x10,
                            0x04, 0x09,
-                            'u', 'i', 'd', 'n', 'u', 'm', 'b', 'e', 'r',
+                             'u', 'i', 'd', 'n', 'u', 'm', 'b', 'e', 'r',
+                           0x31, 0x03,
+                             0x04, 0x01, 0x31
             } );
 
         stream.flip();
@@ -1152,14 +1155,143 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "uidnumber", Strings.toLowerCaseAscii( attributeValue.getUpId() ) );
-        assertEquals( 0, attributeValue.size() );
+        assertEquals( 1, attributeValue.size() );
 
+        assertEquals( "1", attributeValue.get().getString() );
+        
         // Check encode reverse
         Asn1Buffer buffer = new Asn1Buffer();
 
         LdapEncoder.encodeMessage( buffer, codec, modifyRequest );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
+    }
+
+
+    /**
+     * Test the decoding of a ModifyRequest with an increment operation, and a
+     * modification with a itype and no value
+     */
+    @Test
+    public void testDecodeModifyRequestAddOperationModificationIncrementNoValue()
+        throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x3D );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x3B,             // LdapMessage
+                  0x02, 0x01, 0x31,     // messageID MessageID
+                  0x66, 0x36,           // ModifyRequest
+                    0x04, 0x20,         // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                    0x30, 0x012,
+                      0x30, 0x10,
+                        0x0A, 0x01, 0x03,
+                        0x30, 0x0B,
+                           0x04, 0x09,
+                             'u', 'i', 'd', 'n', 'u', 'm', 'b', 'e', 'r',
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Decode a ModifyRequest PDU
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
+    }
+
+
+    /**
+     * Test the decoding of a ModifyRequest with an increment operation applied on an attribute which 
+     * does not have an INTEGER or a NUMERIC STRING syntax.
+     * 
+     * CANT BE TESTED WITHOUT A SCHEMA...
+     *
+    @Test
+    public void testDecodeModifyRequestAddOperationModificationIncrementNotIntegerAttribute()
+        throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x42 );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x40,             // LdapMessage
+                  0x02, 0x01, 0x31,     // messageID MessageID
+                  0x66, 0x3B,           // ModifyRequest
+                    0x04, 0x20,         // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                    0x30, 0x017,
+                      0x30, 0x15,
+                        0x0A, 0x01, 0x03,
+                        0x30, 0x10,
+                           0x04, 0x09,
+                             'g', 'i', 'v', 'e', 'n', 'N', 'a', 'm', 'e',        // Not a valid attribute
+                           0x31, 0x03,
+                             0x04, 0x01, 0x01
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Decode a ModifyRequest PDU
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
+    }
+
+    
+    /**
+     * Test the decoding of a ModifyRequest with an increment operation, and a
+     * modification with a type and two values
+     */
+    @Test
+    public void testDecodeModifyRequestAddOperationModificationIncrementTwoValues()
+        throws DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x45 );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x43,             // LdapMessage
+                  0x02, 0x01, 0x31,     // messageID MessageID
+                  0x66, 0x3E,           // ModifyRequest
+                    0x04, 0x20,         // entry LDAPDN,
+                      'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y',
+                      ',', 'o', 'u', '=', 'u', 's', 'e', 'r', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                    0x30, 0x01A,
+                      0x30, 0x18,
+                        0x0A, 0x01, 0x03,
+                        0x30, 0x13,
+                          0x04, 0x09,
+                            'u', 'i', 'd', 'n', 'u', 'm', 'b', 'e', 'r',
+                          0x31, 0x06,
+                            0x04, 0x01, 0x31,
+                            0x04, 0x01, 0x32
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Decode a ModifyRequest PDU
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
     }
 
 

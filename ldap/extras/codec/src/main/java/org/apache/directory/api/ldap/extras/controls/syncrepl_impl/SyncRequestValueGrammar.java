@@ -85,10 +85,12 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
          * Initialize the syncRequestValue object
          */
         super.transitions[SyncRequestValueStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
-            new GrammarTransition<SyncRequestValueContainer>( SyncRequestValueStatesEnum.START_STATE,
+            new GrammarTransition<SyncRequestValueContainer>( 
+                SyncRequestValueStatesEnum.START_STATE,
                 SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                null );
+                null,
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from SyncRequestValue sequence to Change types
@@ -141,7 +143,8 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                             throw new DecoderException( msg, ide );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from mode to cookie
@@ -153,8 +156,10 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
          * Stores the cookie
          */
         super.transitions[SyncRequestValueStatesEnum.MODE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition<SyncRequestValueContainer>( SyncRequestValueStatesEnum.MODE_STATE,
-                SyncRequestValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
+            new GrammarTransition<SyncRequestValueContainer>( 
+                SyncRequestValueStatesEnum.MODE_STATE,
+                SyncRequestValueStatesEnum.COOKIE_STATE, 
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl cookie" )
                 {
                     public void action( SyncRequestValueContainer container )
@@ -173,7 +178,8 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                         // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from mode to reloadHint
@@ -185,8 +191,10 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
          * Stores the reloadHint flag
          */
         super.transitions[SyncRequestValueStatesEnum.MODE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
-            new GrammarTransition<SyncRequestValueContainer>( SyncRequestValueStatesEnum.MODE_STATE,
-                SyncRequestValueStatesEnum.RELOAD_HINT_STATE, UniversalTag.BOOLEAN.getValue(),
+            new GrammarTransition<SyncRequestValueContainer>( 
+                SyncRequestValueStatesEnum.MODE_STATE,
+                SyncRequestValueStatesEnum.RELOAD_HINT_STATE, 
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl reloadHint flag" )
                 {
                     public void action( SyncRequestValueContainer container ) throws DecoderException
@@ -214,7 +222,8 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                             throw new DecoderException( msg, bde );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /** 
          * Transition from cookie to reloadHint
@@ -226,8 +235,10 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
          * Stores the reloadHint flag
          */
         super.transitions[SyncRequestValueStatesEnum.COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
-            new GrammarTransition<SyncRequestValueContainer>( SyncRequestValueStatesEnum.COOKIE_STATE,
-                SyncRequestValueStatesEnum.RELOAD_HINT_STATE, UniversalTag.BOOLEAN.getValue(),
+            new GrammarTransition<SyncRequestValueContainer>( 
+                SyncRequestValueStatesEnum.COOKIE_STATE,
+                SyncRequestValueStatesEnum.RELOAD_HINT_STATE, 
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl reloadHint flag" )
                 {
                     public void action( SyncRequestValueContainer container ) throws DecoderException
@@ -255,7 +266,8 @@ public final class SyncRequestValueGrammar extends AbstractGrammar<SyncRequestVa
                             throw new DecoderException( msg, bde );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

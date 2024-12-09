@@ -60,12 +60,12 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
         super.transitions[SortResponseStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<SortResponseContainer>( SortResponseStates.START_STATE,
                 SortResponseStates.SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         super.transitions[SortResponseStates.SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED.getValue()] =
             new GrammarTransition<SortResponseContainer>( SortResponseStates.SEQUENCE_STATE,
                 SortResponseStates.RESULT_CODE_STATE,
-                UniversalTag.ENUMERATED.getValue(), new StoreSortResponseResultCode<SortResponseContainer>() );
+                UniversalTag.ENUMERATED.getValue(), new StoreSortResponseResultCode<SortResponseContainer>(), FollowUp.OPTIONAL );
 
         super.transitions[SortResponseStates.RESULT_CODE_STATE.ordinal()][ATTRIBUTE_TYPE_TAG] =
             new GrammarTransition<SortResponseContainer>( SortResponseStates.RESULT_CODE_STATE,
@@ -88,7 +88,7 @@ public final class SortResponseGrammar extends AbstractGrammar<SortResponseConta
                         container.getControl().setAttributeName( atType );
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                }, FollowUp.OPTIONAL );
 
     }
 

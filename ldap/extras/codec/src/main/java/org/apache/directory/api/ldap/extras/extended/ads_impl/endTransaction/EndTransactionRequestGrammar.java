@@ -86,7 +86,8 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
                 EndTransactionRequestStates.START_STATE,
                 EndTransactionRequestStates.SEQUENCE_STATE,
                 SEQUENCE, 
-                null );
+                null,
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from Sequence to commit flag
@@ -121,7 +122,8 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
                             throw new DecoderException( bde.getMessage(), bde );
                         }
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from Sequence to identifier
@@ -159,7 +161,8 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
 
         /**
          * Transition from commit flag to identifier
@@ -198,7 +201,8 @@ public class EndTransactionRequestGrammar extends AbstractGrammar<EndTransaction
                         // We may have nothing left
                         container.setGrammarEndAllowed( true );
                     }
-                } );
+                },
+                FollowUp.OPTIONAL );
     }
 
 

@@ -76,7 +76,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         super.transitions[EntryChangeStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.START_STATE,
                 EntryChangeStates.EC_SEQUENCE_STATE,
-                UniversalTag.SEQUENCE.getValue(), null );
+                UniversalTag.SEQUENCE.getValue(), null, FollowUp.OPTIONAL );
 
         // ============================================================================================
         // transition from Entry Change sequence to Change Type
@@ -136,7 +136,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                             throw new DecoderException( iae.getLocalizedMessage(), iae );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Change Type to Previous Dn
@@ -189,7 +189,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                             container.setGrammarEndAllowed( true );
                         }
                     }
-                } );
+                }, FollowUp.OPTIONAL );
 
         // Change Number action
         GrammarAction<EntryChangeContainer> setChangeNumberAction = new GrammarAction<EntryChangeContainer>(
@@ -235,7 +235,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.PREVIOUS_DN_STATE,
                 EntryChangeStates.CHANGE_NUMBER_STATE,
                 UniversalTag.INTEGER.getValue(),
-                setChangeNumberAction );
+                setChangeNumberAction, FollowUp.OPTIONAL );
 
         // ============================================================================================
         // Transition from Previous Dn to Change Number
@@ -250,7 +250,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.CHANGE_TYPE_STATE,
                 EntryChangeStates.CHANGE_NUMBER_STATE,
                 UniversalTag.INTEGER.getValue(),
-                setChangeNumberAction );
+                setChangeNumberAction, FollowUp.OPTIONAL );
     }
 
 
