@@ -81,6 +81,7 @@
     <org.apache.felix.version>7.0.5</org.apache.felix.version>
 
     <!-- pax-exam 4.13.5 has an issue, don't use it now... -->
+    <!-- pax-exam 4/14/0 does not support java 8 and requires java 11 -->
     <pax-exam.version>4.13.4</pax-exam.version>
 
     <pax-url.version>2.6.14</pax-url.version>
