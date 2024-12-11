@@ -100,7 +100,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * initial filter : (objectclass=t*)
      */
     @Test
-    public void testDecodeSearchRequestSubstringInitialAny() throws DecoderException, EncoderException, LdapException
+    public void testDecodeSearchRequestSubstringInitial() throws DecoderException, EncoderException, LdapException
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x64 );
@@ -132,8 +132,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x03,
-                        ( byte ) 0x80, 0x01,
-                          't',
+                        ( byte ) 0x80, 0x01, 't',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
                         'a', 't', 't', 'r', '0',        // AttributeDescription ::= LDAPString
@@ -327,7 +326,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x03,
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,        // any
                           't',
                     0x30, 0x15,                     // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -419,9 +418,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x06,
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
-                        ( byte ) 0x82, 0x01,
+                        ( byte ) 0x82, 0x01,            // final
                           't',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -514,11 +513,11 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x09,
-                        ( byte ) 0x80, 0x01,
+                        ( byte ) 0x80, 0x01,            // initial
                           't',
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
-                        ( byte ) 0x82, 0x01,
+                        ( byte ) 0x82, 0x01,            // final
                           't',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -578,7 +577,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * initial filter : (objectclass=t*t*)
      */
     @Test
-    public void testDecodeSearchRequestSubstringInitialAnyAnyFinal()
+    public void testDecodeSearchRequestSubstringInitialAny()
         throws DecoderException, EncoderException, LdapException
     {
 
@@ -611,9 +610,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x06,
-                        ( byte ) 0x80, 0x01,
+                        ( byte ) 0x80, 0x01,            // initial
                           't',
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -704,11 +703,11 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x09,
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
-                        ( byte ) 0x82, 0x01,
+                        ( byte ) 0x82, 0x01,            // final
                           't',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -895,11 +894,11 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x09,
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,            // any
                           't',
-                        ( byte ) 0x81, 0x01,
+                          ( byte ) 0x81, 0x01,          // any
                           't',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -993,7 +992,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x0B,
                         'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
                       0x30, 0x06,
-                        ( byte ) 0x82, 0x04,
+                        ( byte ) 0x82, 0x04,            // final
                           'A', 'm', 'o', 's',
                     0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x05,
@@ -1323,7 +1322,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x04,
                         't', 'e', 's', 't',
                       0x30, 0x02,
-                        ( byte ) 0x81, 0x00,
+                        ( byte ) 0x81, 0x00,            // any (empty)
                     0x30, 0x02,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x00
             };
@@ -1425,9 +1424,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x04,
                         't', 'e', 's', 't',
                       0x30, 0x06,
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,        // any
                           'a',
-                        ( byte ) 0x80, 0x01,
+                        ( byte ) 0x80, 0x01,        // initial (wrong)
                           'b',
                     0x30, 0x02,                     // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x00
@@ -1479,9 +1478,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x04,
                         't', 'e', 's', 't',
                       0x30, 0x06,
-                        ( byte ) 0x82, 0x01,
+                        ( byte ) 0x82, 0x01,        // final
                           'a',
-                        ( byte ) 0x80, 0x01,
+                        ( byte ) 0x80, 0x01,        // inital (wrong)
                           'b',
                     0x30, 0x02,                     // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x00
@@ -1533,9 +1532,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x04,
                         't', 'e', 's', 't',
                       0x30, 0x06,
-                        ( byte ) 0x82, 0x01,
+                        ( byte ) 0x82, 0x01,        // final
                           'a',
-                        ( byte ) 0x81, 0x01,
+                        ( byte ) 0x81, 0x01,        // any
                           'b',
                     0x30, 0x02,                     // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x00
@@ -1586,9 +1585,9 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
                       0x04, 0x04,
                         't', 'e', 's', 't',
                       0x30, 0x06,
-                        ( byte ) 0x80, 0x01,
+                        ( byte ) 0x80, 0x01,        // initial
                           'a',
-                        ( byte ) 0x80, 0x01,
+                        ( byte ) 0x80, 0x01,        // initial (wrong)
                           'b',
                     0x30, 0x02,                     // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
                       0x04, 0x00
@@ -1655,6 +1654,64 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
         LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
 
         // Decode a SearchRequest message
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
+    }
+
+
+    /**
+     * Test the decoding of a SearchRequest with a substring filter. Test the
+     * initial filter : (objectclass=t*)
+     */
+    @Test
+    public void testDecodeSearchRequestSubstringNoSubstrings() throws DecoderException, EncoderException, LdapException
+    {
+
+        ByteBuffer stream = ByteBuffer.allocate( 0x64 );
+        stream.put( new byte[]
+            {
+                0x30, 0x60,                             // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,                     // messageID
+                  0x63, 0x5A,                           //      CHOICE { ..., searchRequest SearchRequest, ...
+                                                        // SearchRequest ::= APPLICATION[3] SEQUENCE {
+                    0x04, 0x1F,                         // baseObject LDAPDN,
+                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',',
+                      'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                    0x0A, 0x01, 0x01,                   // scope ENUMERATED {
+                                                        // baseObject (0),
+                                                        // singleLevel (1),
+                                                        // wholeSubtree (2) },
+                    0x0A, 0x01, 0x03,                   // derefAliases ENUMERATED {
+                                                        // neverDerefAliases (0),
+                                                        // derefInSearching (1),
+                                                        // derefFindingBaseObj (2),
+                                                        // derefAlways (3) },
+                    0x02, 0x02, 0x03, ( byte ) 0xE8,    // sizeLimit INTEGER (0 .. maxInt), (1000)
+                    0x02, 0x02, 0x03, ( byte ) 0xE8,    // timeLimit INTEGER (0 .. maxInt), (1000)
+                    0x01, 0x01, ( byte ) 0xFF,          // typesOnly BOOLEAN, (TRUE) filter Filter,
+                    ( byte ) 0xA4, 0x0D,                // Filter ::= CHOICE {
+                                                        // substrings [4] SubstringFilter
+                                                        // }
+                                                        // SubstringFilter ::= SEQUENCE {
+                      0x04, 0x0B,
+                        'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
+                    0x30, 0x15,                         // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                      0x04, 0x05,
+                        'a', 't', 't', 'r', '0',        // AttributeDescription ::= LDAPString
+                      0x04, 0x05,
+                        'a', 't', 't', 'r', '1',        // AttributeDescription ::= LDAPString
+                      0x04, 0x05,
+                        'a', 't', 't', 'r', '2'         // AttributeDescription ::= LDAPString
+        } );
+
+        stream.flip();
+
+        // Allocate a BindRequest Container
+        LdapMessageContainer<SearchRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Must fail
         assertThrows( DecoderException.class, ( ) ->
         {
             Asn1Decoder.decode( stream, ldapMessageContainer );
