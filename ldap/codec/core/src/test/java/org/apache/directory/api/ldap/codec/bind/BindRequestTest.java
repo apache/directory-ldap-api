@@ -825,6 +825,55 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
 
     /**
+     * Test the decoding of a BindRequest with an empty sasl
+     */
+    @Test
+    public void testDecodeBindRequestEmptySaslWithControls() throws DecoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x2F );
+        stream.put( new byte[]
+            {
+                0x30, 0x2D,             // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,     // messageID MessageID
+                  0x60, 0x07,           // CHOICE { ..., bindRequest BindRequest, ...
+                    0x02, 0x01, 0x03,   // version INTEGER (1..127),
+                    0x04, 0x00,
+                    ( byte ) 0xA3, 0x00,
+                  ( byte ) 0xA0, 0x1B,  // A control
+                  0x30, 0x19,
+                    0x04, 0x17,
+                      '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.',
+                      '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<BindRequest> container = new LdapMessageContainer<>( codec );
+
+        // Decode a BindRequest message
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            try
+            {
+                Asn1Decoder.decode( stream, container );
+            }
+            catch ( DecoderException de )
+            {
+                assertTrue( de instanceof ResponseCarryingException );
+                Message response = ( ( ResponseCarryingException ) de ).getResponse();
+                assertTrue( response instanceof BindResponseImpl );
+                assertEquals( ResultCodeEnum.INVALID_CREDENTIALS, ( ( BindResponseImpl ) response ).getLdapResult()
+                    .getResultCode() );
+    
+                throw de;
+            }
+        } );
+    }
+
+
+    /**
      * Test the decoding of a BindRequest with an empty mechanism
      */
     @Test
