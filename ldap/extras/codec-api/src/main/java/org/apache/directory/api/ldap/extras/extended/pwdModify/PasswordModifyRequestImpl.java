@@ -168,7 +168,7 @@ public class PasswordModifyRequestImpl extends OpaqueExtendedRequest implements 
 
         if ( oldPassword != null )
         {
-            sb.append( Strings.utf8ToString( oldPassword ) );
+            sb.append( "Omitted for security reason" );
         }
         else
         {
@@ -179,7 +179,7 @@ public class PasswordModifyRequestImpl extends OpaqueExtendedRequest implements 
 
         if ( newPassword != null )
         {
-            sb.append( Strings.utf8ToString( newPassword ) );
+            sb.append( "Omitted for security reason" );
         }
         else
         {
