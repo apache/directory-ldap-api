@@ -1170,7 +1170,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyRequest with an increment operation, and a
-     * modification with a itype and no value
+     * modification with a type and no value
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationIncrementNoValue()
