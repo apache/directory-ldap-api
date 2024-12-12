@@ -98,10 +98,10 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
         }
 
         // We can have an END transition if the operation was INCREMENT
-        if ( container.getCurrentModification().getOperation() == ModificationOperation.INCREMENT_ATTRIBUTE )
-        {
-            container.setGrammarEndAllowed( true );
-        }
+        //if ( container.getCurrentModification().getOperation() == ModificationOperation.INCREMENT_ATTRIBUTE )
+        //{
+        //    container.setGrammarEndAllowed( true );
+        //}
 
         if ( LOG.isDebugEnabled() )
         {
