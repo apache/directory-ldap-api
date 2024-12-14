@@ -157,6 +157,32 @@ public class LdapMessageTest extends AbstractCodecServiceTest
 
 
     /**
+     * Test the decoding of message with nothing but the messqage ID which value is -1
+     */
+    @Test
+    public void testDecodeMessageIdOnly() throws DecoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x05 );
+        stream.put( new byte[]
+            {
+                0x30, 0x03,                         // LDAPMessage ::=SEQUENCE {
+                  0x02, 0x01, 0x01,                 // messageID MessageID = 1
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        Asn1Container ldapMessageContainer = new LdapMessageContainer<Message>( codec );
+
+        // Decode a BindRequest PDU
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            Asn1Decoder.decode( stream, ldapMessageContainer );
+        } );
+    }
+
+    
+    /**
      * Test the decoding of a message with a wrong protocol operation
      */
     @Test
@@ -279,11 +305,11 @@ public class LdapMessageTest extends AbstractCodecServiceTest
     @Test
     public void testNegativeLength() throws LdapURLEncodingException
     {
-    	String base64Bytes = String.join("", "CoT/gwr/Jg==");
-    	
-    	byte[] input = java.util.Base64.getDecoder().decode(base64Bytes);
-    	
-    	ByteBuffer stream = ByteBuffer.allocate(input.length);
+        String base64Bytes = String.join("", "CoT/gwr/Jg==");
+
+        byte[] input = java.util.Base64.getDecoder().decode(base64Bytes);
+
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
         stream.put(input);
         stream.flip();
 
