@@ -736,6 +736,51 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     
     
     @Test
+    public void testNullPointerException3() throws DecoderException
+    {
+        byte[] input = new byte[] 
+            {
+                0x30, (byte)0x82, 0x30, 0x47,                       // 12 359 bytes long message
+                  0x02, 0x02, 0x26, 0x2E,                           // message ID: 9774
+                  0x63, 0x05,                                       // SearchRequest, 61 bytes long
+                    0x04, 0x00,                                     // Base Object RootDSE
+                    0x0A, 0x01, 0x02,                               // Scope Base
+                  0x0A, 0x01, 0x02                                  // Deref alias
+            };
+        
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
+    }
+    
+    
+    @Test
+    public void testBadPDU() throws DecoderException
+    {
+        byte[] input = new byte[] 
+            {
+                0x30, (byte)0x01, 0x06,                       // 4 bytes long message
+                  0x02, 0x02, 0x26, 0x2E,                     // message ID: 9774
+                0x42, 0x00,                                   // UnbindRequest
+            };
+        
+        ByteBuffer stream = ByteBuffer.allocate(input.length);
+        stream.put(input);
+        stream.flip();
+
+        LdapApiService codec = new DefaultLdapCodecService();
+        LdapMessageContainer<Message> container = new LdapMessageContainer<>(codec);
+
+        assertThrows( DecoderException.class, () -> { Asn1Decoder.decode(stream, container); } );
+    }
+    
+    
+    @Test
     public void testNullPointerException2() throws DecoderException
     {
         byte[] input = new byte[] 
