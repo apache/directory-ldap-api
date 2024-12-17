@@ -355,11 +355,7 @@
         <configuration>
           <show>private</show>
           <nohelp>true</nohelp>
-          <doclint>none</doclint>
-          <!-- additionalOptions>
-            <additionalOptions>-Xmaxwarns 1000</additionalOptions>
-            <additionalOptions>-Xmaxerrs 1000</additionalOptions>
-          </additionalOptions -->
+          <!--doclint>none</doclint-->
         </configuration>
       </plugin>
 
@@ -731,7 +727,7 @@
           <minmemory>512m</minmemory>
           <maxmemory>1g</maxmemory>
           <linksource>true</linksource>
-          <doclint>none</doclint>
+          <!--doclint>none</doclint-->
           <tags>
             <tag>
               <name>todo</name>
