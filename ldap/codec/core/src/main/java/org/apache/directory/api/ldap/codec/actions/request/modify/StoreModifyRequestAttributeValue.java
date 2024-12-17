@@ -68,8 +68,8 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
         byte[] value = Strings.EMPTY_BYTES;
         Attribute currentAttribute = container.getCurrentAttribute();
         
-        if ( ( container.getCurrentModification().getOperation() == ModificationOperation.INCREMENT_ATTRIBUTE ) &&
-             ( currentAttribute.size() > 0 ) )
+        if ( ( container.getCurrentModification().getOperation() == ModificationOperation.INCREMENT_ATTRIBUTE ) 
+             && ( currentAttribute.size() > 0 ) )
         {
             String msg = I18n.err( I18n.ERR_05160_MORE_THAN_ONE_VALUE_INCREMENT_MOD_OP, currentAttribute.getUpId() );
             LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg ) );
