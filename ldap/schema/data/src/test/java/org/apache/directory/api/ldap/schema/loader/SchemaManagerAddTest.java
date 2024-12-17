@@ -206,6 +206,8 @@ public class SchemaManagerAddTest
     //-------------------------------------------------------------------------
     /**
      * Try to inject an AttributeType without any superior nor Syntax : it's invalid
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupNoSyntaxNoSuperior() throws Exception
@@ -236,6 +238,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType which is Collective, and userApplication AT
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupCollectiveUser() throws Exception
@@ -263,6 +267,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType which is a subtype of a Collective AT
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeSupCollectiveUser() throws Exception
@@ -308,6 +314,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType which is Collective, but an operational AT
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupCollectiveOperational() throws Exception
@@ -341,6 +349,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a single valued AttributeType which is Collective
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeCollectiveOperationalSigleValue() throws Exception
@@ -375,6 +385,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType which is a NO-USER-MODIFICATION and userApplication
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupNoUserModificationUserAplication() throws Exception
@@ -408,6 +420,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType which is a NO-USER-MODIFICATION and is operational
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupNoUserModificationOpAttr() throws Exception
@@ -435,6 +449,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with an invalid EQUALITY MR
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupInvalidEqualityMR() throws Exception
@@ -467,6 +483,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType without EQUALITY MR
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoEqualityMR() throws Exception
@@ -493,6 +511,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with an invalid ORDERING MR
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupInvalidOrderingMR() throws Exception
@@ -525,6 +545,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with an invalid SUBSTR MR
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupInvalidSubstringMR() throws Exception
@@ -557,6 +579,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with valid MRs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeNoSupValidMR() throws Exception
@@ -583,6 +607,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType which already exist
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeAlreadyExist() throws Exception
@@ -618,6 +644,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with an already attributed name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeNameAlreadyExist() throws Exception
@@ -652,6 +680,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with an ObjectClass name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeNameOfAnObjectClass() throws Exception
@@ -692,6 +722,8 @@ public class SchemaManagerAddTest
     /**
      * Try to inject an AttributeType with a superior and no Syntax : it should
      * take its superior' syntax and MR
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeSupNoSyntaxNoSuperior() throws Exception
@@ -721,6 +753,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with a superior and different USAGE
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeSupDifferentUsage() throws Exception
@@ -753,6 +787,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with itself as a superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeSupWithOwnSup() throws Exception
@@ -785,6 +821,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject an AttributeType with a bad superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddAttributeTypeSupBadSup() throws Exception
@@ -884,6 +922,8 @@ public class SchemaManagerAddTest
 
     /**
      * Test that we can't add two comparators with the same class code.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddComparatorWithWrongFQCN() throws Exception
@@ -935,6 +975,8 @@ public class SchemaManagerAddTest
     //-------------------------------------------------------------------------
     /**
      * Try to inject a new MatchingRule
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddValidMatchingRule() throws Exception
@@ -964,6 +1006,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a new MatchingRule without a syntax
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddMatchingRuleNoSyntax() throws Exception
@@ -992,6 +1036,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a new MatchingRule with an existing OID
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddMatchingRuleExistingOID() throws Exception
@@ -1025,6 +1071,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a new MatchingRule with an existing name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddMatchingRuleExistingName() throws Exception
@@ -1053,6 +1101,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a new MatchingRule with an existing AT name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddMatchingRuleExistingATName() throws Exception
@@ -1086,6 +1136,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a new MatchingRule with a not existing Syntax
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddMatchingRuleNotExistingSyntax() throws Exception
@@ -1115,6 +1167,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a new MatchingRule with an existing AT name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddMatchingRuleNotExistingSchema() throws Exception
@@ -1224,6 +1278,8 @@ public class SchemaManagerAddTest
 
     /**
      * Test that we can't add two Normalizers with the same class code.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddNormalizerWithWrongFQCN() throws Exception
@@ -1269,6 +1325,8 @@ public class SchemaManagerAddTest
     //-------------------------------------------------------------------------
     /**
      * Addition of a valid OC
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorValid() throws Exception
@@ -1294,6 +1352,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with an existing OID
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorWithExistingOid() throws Exception
@@ -1322,6 +1382,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with an existing OC name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorWithExistingOCName() throws Exception
@@ -1349,6 +1411,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with an AT name
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorWithATName() throws Exception
@@ -1377,6 +1441,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with not existing AT in MAY
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorNonExistingAtInMay() throws Exception
@@ -1404,6 +1470,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with not existing AT in MUST
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorNonExistingAtInMust() throws Exception
@@ -1431,6 +1499,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with an AT present more than once in MAY
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorATMoreThanOnceInMay() throws Exception
@@ -1456,6 +1526,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with an AT present more than once in MUST
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorATMoreThanOnceInMust() throws Exception
@@ -1481,6 +1553,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with an AT present in MUST and MAY.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorATInMustAndMay() throws Exception
@@ -1508,6 +1582,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with a collective AT present in MUST or MAY.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassNoSuperiorCollectiveATInMustOrMay() throws Exception
@@ -1554,6 +1630,8 @@ public class SchemaManagerAddTest
     //-------------------------------------------------------------------------
     /**
      * Addition of a valid OC with some superiors
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsValid() throws Exception
@@ -1596,6 +1674,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with itself in the SUP list
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsWithCycle() throws Exception
@@ -1622,6 +1702,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with the same OC more than once in SUP
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsOcMoreThanOnceInSup() throws Exception
@@ -1648,6 +1730,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an OC with a non existing OC in SUP
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsNonExistingOCInSup() throws Exception
@@ -1674,6 +1758,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an ABSTRACT OC with some AUXILIARY superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsAbstractWithAuxiliaryInSup() throws Exception
@@ -1700,6 +1786,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an ABSTRACT OC with some STRUCTURAL superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsAbstractWithStructuralInSup() throws Exception
@@ -1726,6 +1814,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an AUXILIARY OC with some STRUCTURAL superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsAuxiliaryWithStructuralInSup() throws Exception
@@ -1752,6 +1842,8 @@ public class SchemaManagerAddTest
 
     /**
      * Addition of an STRUCTURAL OC with some AUXILIARY superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsStructuralWithAuxiliaryInSup() throws Exception
@@ -1779,6 +1871,8 @@ public class SchemaManagerAddTest
     /**
      * Addition of an OC with some AT present in MUST and in MAY in one of its
      * superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsATInMustPresentInSuperiorsMay() throws Exception
@@ -1822,6 +1916,8 @@ public class SchemaManagerAddTest
     /**
      * Addition of an OC with some AT present in MAY and in MUST in one of its
      * superior : not allowed
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddObjectClassSuperiorsATInMayPresentInSuperiorsMust() throws Exception
@@ -1855,6 +1951,8 @@ public class SchemaManagerAddTest
     /**
      * Try to inject a new valid Syntax, with no SC : the associated SC
      * will be the default OctetString SC
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddValidSyntax() throws Exception
@@ -1884,6 +1982,8 @@ public class SchemaManagerAddTest
 
     /**
      * Try to inject a Syntax with an existing OID
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddSyntaxExistingOid() throws Exception
@@ -1976,6 +2076,8 @@ public class SchemaManagerAddTest
 
     /**
      * Test that we can't add two SyntaxCheckers with the same class code.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddSyntaxCheckerWithWrongFQCN() throws Exception

@@ -64,6 +64,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmssZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecZulu() throws ParseException
@@ -77,6 +78,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss+04.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecPlusHour() throws ParseException
@@ -90,6 +92,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecMinusHourMin() throws ParseException
@@ -103,6 +106,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss.SSSZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecDotFractionZulu() throws ParseException
@@ -116,6 +120,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss.SSS+0100.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecDotFractionPlusHour() throws ParseException
@@ -129,6 +134,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss.SSS-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecDotFractionMinusHourMin() throws ParseException
@@ -142,6 +148,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss,SSSZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecCommaFractionZulu() throws ParseException
@@ -155,6 +162,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss,SSS+0100.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecCommaFractionPlusHour() throws ParseException
@@ -168,6 +176,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmss,SSS-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinSecCommaFractionMinusHourMin() throws ParseException
@@ -181,6 +190,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmmZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinZulu() throws ParseException
@@ -194,6 +204,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm+HH.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinPlusHour() throws ParseException
@@ -207,6 +218,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm-HHmm.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinMinusHourMin() throws ParseException
@@ -220,6 +232,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm.SSSZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinDotFractionZulu() throws ParseException
@@ -233,6 +246,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm.SSS+0100.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinDotFractionPlusHour() throws ParseException
@@ -246,6 +260,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm.SSS-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinDotFractionMinusHourMin() throws ParseException
@@ -259,6 +274,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm,SSSZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinCommaFractionZulu() throws ParseException
@@ -272,6 +288,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm,SSS+0100.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinCommaFractionPlusHour() throws ParseException
@@ -285,6 +302,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHmm,SSS-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinCommaFractionMinusHourMin() throws ParseException
@@ -298,6 +316,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHHZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourZulu() throws ParseException
@@ -311,6 +330,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH+HH.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourPlusHour() throws ParseException
@@ -324,6 +344,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH-HHmm.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourMinusHourMin() throws ParseException
@@ -337,6 +358,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH.SSSZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourDotFractionZulu() throws ParseException
@@ -350,6 +372,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH.SSS+0100.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourDotFractionPlusHour() throws ParseException
@@ -363,6 +386,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH.SSS-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourDotFractionMinusHourMin() throws ParseException
@@ -376,6 +400,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH,SSSZ.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourCommaFractionZulu() throws ParseException
@@ -389,6 +414,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH,SSS+0100.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourCommaFractionPlusHour() throws ParseException
@@ -402,6 +428,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests yyyyMMddHH,SSS-1030.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testYearMonthDayHourCommaFractionMinusHourMin() throws ParseException
@@ -415,6 +442,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests fraction of a second.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFractionOfSecond() throws ParseException
@@ -429,6 +457,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests fraction of a minute.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFractionOfMinute1() throws ParseException
@@ -444,6 +473,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests fraction of a minute.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFractionOfMinute2() throws ParseException
@@ -459,6 +489,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests fraction of an hour.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFractionOfHour1() throws ParseException
@@ -475,6 +506,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests fraction of an hour.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFractionOfHour2() throws ParseException
@@ -491,6 +523,7 @@ public class GeneralizedTimeTest
 
     /**
      * Test formatting
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFormatting() throws ParseException
@@ -518,6 +551,7 @@ public class GeneralizedTimeTest
 
     /**
      * Test adjustment of time while formatting. 
+     * @throws ParseException If the test fails
      */
     @Test
     public void testAdjustWhileFormatting() throws ParseException
@@ -534,6 +568,7 @@ public class GeneralizedTimeTest
 
     /**
      * Testcases from GeneralizedTimeSyntaxCheckerTest#testCorrectCase().
+     * @throws ParseException If the test fails
      */
     @Test
     public void testGeneralizedTimeSyntaxCheckerTestCorrectCase() throws ParseException
@@ -676,6 +711,7 @@ public class GeneralizedTimeTest
     /**
      * Tests leap second.
      * The GeneralizedTime class does not support leap seconds!
+     * @throws ParseException If the test fails
      */
     @Test
     public void testLeapSecond() throws ParseException
@@ -695,6 +731,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests Feb 29 in a leap year.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFebruary29inLeapYear() throws ParseException
@@ -708,6 +745,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests Feb 29 in a non-leap year.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testFebruary29inNonLeapYear() throws ParseException
@@ -727,6 +765,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests null.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testNull() throws ParseException
@@ -758,6 +797,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests empty string.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testEmpty() throws ParseException
@@ -777,6 +817,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests invalid cases.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testInvalid() throws ParseException
@@ -1049,6 +1090,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests constructor with calendar object.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testCalendar() throws ParseException
@@ -1071,6 +1113,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests a complete round trip.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testRoundTrip() throws ParseException
@@ -1105,6 +1148,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests the compareTo() method.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testCompareTo() throws ParseException
@@ -1134,6 +1178,7 @@ public class GeneralizedTimeTest
 
     /**
      * Tests the equals() method.
+     * @throws ParseException If the test fails
      */
     @Test
     public void testEquals() throws ParseException
@@ -1155,7 +1200,8 @@ public class GeneralizedTimeTest
 
     /**
      * Tests DIRSHARED-29 (GeneralizedTime.toString() generates wrong output 
-     * when TimeZone has hours < 10 and minutes > 10).
+     * when TimeZone has hours &lt; 10 and minutes &gt; 10).
+     * @throws ParseException If the test fails
      */
     public void testDIRSHARED29() throws ParseException
     {
@@ -1171,6 +1217,7 @@ public class GeneralizedTimeTest
      * component.
      * 
      * @see <a href="https://issues.apache.org/jira/browse/DIRSHARED-131">DIRSHARED-131</a>
+     * @throws ParseException If the test fails
      */
     @Test
     public void testMillisecondsPreservation() throws ParseException
@@ -1214,6 +1261,10 @@ public class GeneralizedTimeTest
 
     static DateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSS z", Locale.ROOT );
 
+    /**
+     * 
+     * @throws ParseException If the test fails
+     */
     @Test
     public void fractionCloseToOne() throws ParseException
     {

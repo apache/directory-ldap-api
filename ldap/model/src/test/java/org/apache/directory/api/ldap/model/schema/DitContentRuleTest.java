@@ -43,6 +43,8 @@ public class DitContentRuleTest
 
     /**
      * Initialize attribute type instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initDitContentRules() throws Exception

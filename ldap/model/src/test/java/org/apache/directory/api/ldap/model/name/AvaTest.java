@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -60,6 +59,8 @@ public class AvaTest
 
     /**
      * Test a null type for an AttributeTypeAndValue
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeAndValueNullType() throws LdapException
@@ -79,6 +80,8 @@ public class AvaTest
 
     /**
      * Test an invalid type for an AttributeTypeAndValue
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeAndValueInvalidType() throws LdapException
@@ -97,6 +100,8 @@ public class AvaTest
 
     /**
      * Test a valid type for an AttributeTypeAndValue
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeAndValueValidType() throws LdapException
@@ -141,6 +146,8 @@ public class AvaTest
 
     /**
      * test a simple AttributeTypeAndValue : a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapRDNSimple() throws LdapException
@@ -153,6 +160,8 @@ public class AvaTest
 
     /**
      * Compares two equals atavs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsAttributeEquals() throws LdapException
@@ -166,6 +175,8 @@ public class AvaTest
 
     /**
      * Compares two equals atavs but with a type in different case
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsAttributeIdSameCase() throws LdapException
@@ -180,6 +191,8 @@ public class AvaTest
     /**
      * Compare two atavs : the first one is superior because its type is
      * superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsAtav1TypeSuperior() throws LdapException
@@ -195,6 +208,8 @@ public class AvaTest
     /**
      * Compare two atavs : the second one is superior because its type is
      * superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsAtav2TypeSuperior() throws LdapException
@@ -209,6 +224,8 @@ public class AvaTest
     /**
      * Compare two atavs : the first one is superior because its type is
      * superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsAtav1ValueSuperior() throws LdapException
@@ -223,6 +240,8 @@ public class AvaTest
     /**
      * Compare two atavs : the second one is superior because its type is
      * superior
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsAtav2ValueSuperior() throws LdapException

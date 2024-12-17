@@ -103,6 +103,8 @@ public class AddRequestImplTest
 
     /**
      * Tests for equality using exact copies.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsExactCopy() throws LdapException
@@ -123,6 +125,8 @@ public class AddRequestImplTest
 
     /**
      * Test for inequality when only the IDs are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffId() throws LdapException
@@ -143,6 +147,8 @@ public class AddRequestImplTest
 
     /**
      * Test for inequality when only the Dn names are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffName() throws LdapException

@@ -37,6 +37,8 @@ public class PrimitivesTest
 {
     /**
      * Test the Integer Primitive
+     * 
+     * @throws IntegerDecoderException If the test failed
      */
     @Test
     public void testIntegerPrimitive() throws IntegerDecoderException

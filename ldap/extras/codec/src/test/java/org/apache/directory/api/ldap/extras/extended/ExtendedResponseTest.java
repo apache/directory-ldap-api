@@ -69,6 +69,9 @@ public class ExtendedResponseTest
     
     /**
      * Test the decoding of a full ExtendedResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedResponseSuccess() throws DecoderException, EncoderException
@@ -131,6 +134,9 @@ public class ExtendedResponseTest
 
     /**
      * Test the decoding of a full ExtendedResponse with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedResponseSuccessWithControls() throws DecoderException, EncoderException
@@ -213,6 +219,9 @@ public class ExtendedResponseTest
 
     /**
      * Test the decoding of a ExtendedRequest with no name
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestNoName() throws DecoderException, EncoderException
@@ -263,6 +272,9 @@ public class ExtendedResponseTest
 
     /**
      * Test the decoding of a ExtendedRequest with no name and a control
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestNoNameWithControls() throws DecoderException, EncoderException
@@ -338,7 +350,7 @@ public class ExtendedResponseTest
      * Test the decoding of an empty ExtendedResponse
      */
     @Test
-    public void testDecodeExtendedResponseEmpty() throws DecoderException
+    public void testDecodeExtendedResponseEmpty()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -367,7 +379,7 @@ public class ExtendedResponseTest
      * Test the decoding of an ExtendedResponse with an empty ResponseName
      */
     @Test
-    public void testDecodeExtendedResponseEmptyResponseName() throws DecoderException
+    public void testDecodeExtendedResponseEmptyResponseName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
 
@@ -406,7 +418,7 @@ public class ExtendedResponseTest
      * Test the decoding of an ExtendedResponse with a bad responseName
      */
     @Test
-    public void testDecodeExtendedResponseBadOIDResponseName() throws DecoderException
+    public void testDecodeExtendedResponseBadOIDResponseName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x12 );
 
@@ -444,6 +456,9 @@ public class ExtendedResponseTest
 
     /**
      * Test the decoding of an ExtendedResponse with no response
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedResponseNoResponse() throws DecoderException, EncoderException
@@ -497,6 +512,9 @@ public class ExtendedResponseTest
 
     /**
      * Test the decoding of an ExtendedResponse with no response with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedResponseNoResponseWithControls() throws DecoderException, EncoderException
@@ -573,6 +591,9 @@ public class ExtendedResponseTest
 
     /**
      * Test the decoding of an ExtendedResponse with an empty response
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedResponseEmptyResponse() throws DecoderException, EncoderException
@@ -646,6 +667,9 @@ public class ExtendedResponseTest
     /**
      * Test the decoding of an ExtendedResponse with an empty response with
      * controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedResponseEmptyResponseWithControls() throws DecoderException, EncoderException

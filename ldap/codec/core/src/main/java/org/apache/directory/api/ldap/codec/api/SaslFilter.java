@@ -112,7 +112,7 @@ public class SaslFilter extends IoFilterAdapter
      * will be used to provide message integrity and, optionally, message
      * confidentiality.
      *
-     * @param saslClient The initialized SASL server.
+     * @param saslServer The initialized SASL server.
      */
     public SaslFilter( SaslServer saslServer )
     {

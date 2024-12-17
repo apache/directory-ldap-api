@@ -140,8 +140,6 @@ public class ComparatorDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -152,8 +150,6 @@ public class ComparatorDescriptionSchemaParserTest
 
     /**
      * Test required elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testRequiredElements()
@@ -164,6 +160,8 @@ public class ComparatorDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -174,6 +172,8 @@ public class ComparatorDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException
@@ -199,5 +199,4 @@ public class ComparatorDescriptionSchemaParserTest
             parser.setQuirksMode( false );
         }
     }
-
 }

@@ -31,7 +31,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
@@ -62,6 +61,10 @@ public class AvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringAtavSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -111,6 +114,10 @@ public class AvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullAtavSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -223,6 +230,10 @@ public class AvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringAtavStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -272,6 +283,10 @@ public class AvaSerializationTest
 
     /**
      * Test static serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullAtavStaticSerialization() throws LdapException, IOException, ClassNotFoundException

@@ -61,6 +61,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a SearchResultEntry
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchResultEntrySuccess() throws DecoderException, EncoderException, LdapException
@@ -128,6 +132,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultEntry
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchResultEntry2AttrsSuccess() throws DecoderException, EncoderException, LdapException
@@ -218,6 +226,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchResultEntry with more bytes to be decoded at
      * the end
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchResultEntrySuccessWithFollowingMessage() throws DecoderException, EncoderException, LdapException
@@ -314,7 +326,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of an empty SearchResultEntry
      */
     @Test
-    public void testDecodeSearchResultEntryEmpty() throws DecoderException
+    public void testDecodeSearchResultEntryEmpty()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -344,7 +356,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of an SearchResultEntry with an empty object name
      */
     @Test
-    public void testDecodeSearchResultEntryEmptyObjectName() throws DecoderException
+    public void testDecodeSearchResultEntryEmptyObjectName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
@@ -377,7 +389,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of an SearchResultEntry with an object name alone
      */
     @Test
-    public void testDecodeSearchResultEntryObjectNameAlone() throws DecoderException
+    public void testDecodeSearchResultEntryObjectNameAlone()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x24 );
 
@@ -409,6 +421,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of an SearchResultEntry with an empty attributes
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchResultEntryEmptyAttributes() throws DecoderException, EncoderException, LdapException
@@ -461,7 +477,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of an SearchResultEntry with an empty attributes list
      */
     @Test
-    public void testDecodeSearchResultEntryEmptyAttributeList() throws DecoderException
+    public void testDecodeSearchResultEntryEmptyAttributeList()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x28 );
 
@@ -500,7 +516,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * with controls
      */
     @Test
-    public void testDecodeSearchResultEntryEmptyAttributeListWithControls() throws DecoderException
+    public void testDecodeSearchResultEntryEmptyAttributeListWithControls()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x45 );
 
@@ -543,7 +559,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultEntry with an empty type
      */
     @Test
-    public void testDecodeSearchResultEntryEmptyType() throws DecoderException
+    public void testDecodeSearchResultEntryEmptyType()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2A );
 
@@ -582,7 +598,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultEntry with a type alone
      */
     @Test
-    public void testDecodeSearchResultEntryTypeAlone() throws DecoderException
+    public void testDecodeSearchResultEntryTypeAlone()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
 
@@ -620,6 +636,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultEntry with an empty vals
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchResultEntryEmptyVals() throws DecoderException, EncoderException, LdapException
@@ -682,6 +702,9 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultEntry with two empty vals
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultEntryEmptyVals2() throws DecoderException, EncoderException
@@ -749,6 +772,9 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultEntry with an empty vals with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultEntryEmptyValsWithControls() throws DecoderException, EncoderException
@@ -830,6 +856,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultEntry with an empty attribute value
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchResultEntryEmptyAttributeValue()
@@ -896,6 +926,9 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchResultEntry with an empty attribute value
      * with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultEntryEmptyAttributeValueWithControls() throws DecoderException, EncoderException
@@ -979,6 +1012,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
     /**
      * Test that encoding and decoding of a search result entry with 10k attributes and 10k values
      * succeeds without StackOverflowError (DIRAPI-368, DIRSERVER-2340).
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEncodeDecodeLarge() throws DecoderException, EncoderException, LdapException

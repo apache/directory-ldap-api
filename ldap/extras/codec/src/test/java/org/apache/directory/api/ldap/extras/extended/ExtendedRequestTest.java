@@ -69,6 +69,9 @@ public class ExtendedRequestTest
     
     /**
      * Test the decoding of a full ExtendedRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestSuccess() throws DecoderException, EncoderException
@@ -120,6 +123,9 @@ public class ExtendedRequestTest
 
     /**
      * Test the decoding of a full ExtendedRequest with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestWithControls() throws DecoderException, EncoderException
@@ -186,6 +192,9 @@ public class ExtendedRequestTest
     /**
      * Test the decoding of a full ExtendedRequest with no value and with
      * controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestNoValueWithControls() throws DecoderException, EncoderException
@@ -250,7 +259,7 @@ public class ExtendedRequestTest
      * Test the decoding of an empty ExtendedRequest
      */
     @Test
-    public void testDecodeExtendedRequestEmpty() throws DecoderException
+    public void testDecodeExtendedRequestEmpty()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -279,7 +288,7 @@ public class ExtendedRequestTest
      * Test the decoding of an empty OID
      */
     @Test
-    public void testDecodeEmptyOID() throws DecoderException
+    public void testDecodeEmptyOID()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
@@ -309,7 +318,7 @@ public class ExtendedRequestTest
      * Test the decoding of a bad name
      */
     @Test
-    public void testDecodeExtendedBadRequestName() throws DecoderException
+    public void testDecodeExtendedBadRequestName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x1F );
 
@@ -340,6 +349,9 @@ public class ExtendedRequestTest
 
     /**
      * Test the decoding of a name only ExtendedRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestName() throws DecoderException, EncoderException
@@ -386,6 +398,9 @@ public class ExtendedRequestTest
 
     /**
      * Test the decoding of an empty value ExtendedRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeExtendedRequestEmptyNoValue() throws DecoderException, EncoderException

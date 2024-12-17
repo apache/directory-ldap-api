@@ -96,7 +96,8 @@ public class OpaqueExtendedResponseTest
 
     /**
      * Tests for equality using different stub implementations.
-     * @throws LdapInvalidDnException 
+     * 
+     * @throws LdapInvalidDnException If the test failed 
      */
     @Test
     public void testEqualsDiffImpl() throws LdapInvalidDnException

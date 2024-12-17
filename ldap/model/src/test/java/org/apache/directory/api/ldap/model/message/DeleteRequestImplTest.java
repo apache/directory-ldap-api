@@ -58,6 +58,8 @@ public class DeleteRequestImplTest
 
     /**
      * Tests for equality using exact copies.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsExactCopy() throws LdapException
@@ -88,6 +90,8 @@ public class DeleteRequestImplTest
 
     /**
      * Tests for equal hashCode using exact copies.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCodeExactCopy() throws LdapException
@@ -106,6 +110,8 @@ public class DeleteRequestImplTest
 
     /**
      * Test for inequality when only the IDs are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffId() throws LdapException
@@ -124,6 +130,8 @@ public class DeleteRequestImplTest
 
     /**
      * Test for inequality when only the Dn names are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffName() throws LdapException

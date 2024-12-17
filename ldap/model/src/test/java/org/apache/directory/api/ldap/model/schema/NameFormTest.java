@@ -44,6 +44,8 @@ public class NameFormTest
 
     /**
      * Initialize attribute type instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initNameForms() throws Exception

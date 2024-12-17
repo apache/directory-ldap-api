@@ -61,6 +61,8 @@ public class BindRequestImplTest
 
     /**
      * Tests for equality using exact copies.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsExactCopy() throws LdapException
@@ -85,6 +87,8 @@ public class BindRequestImplTest
 
     /**
      * Test for inequality when only the IDs are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffId() throws LdapException
@@ -109,6 +113,8 @@ public class BindRequestImplTest
 
     /**
      * Test for inequality when only the credentials are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffCreds() throws LdapException
@@ -133,6 +139,8 @@ public class BindRequestImplTest
 
     /**
      * Test for inequality when only the Dn names are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffName() throws LdapException
@@ -157,6 +165,8 @@ public class BindRequestImplTest
 
     /**
      * Test for inequality when only the auth mechanisms are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffSimple() throws LdapException
@@ -181,6 +191,8 @@ public class BindRequestImplTest
 
     /**
      * Test for inequality when only the bind LDAP versions are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffVersion() throws LdapException

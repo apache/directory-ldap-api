@@ -80,6 +80,10 @@ public class EntryUtils
 
     /**
      * A local Syntax class used for the tests
+     * 
+     * @param oid The Syntax OID
+     * @param humanReadable <code>true</code> if the syntax is H/R
+     * @return The associated Syntax
      */
     public static LdapSyntax syntaxFactory( String oid, boolean humanReadable )
     {

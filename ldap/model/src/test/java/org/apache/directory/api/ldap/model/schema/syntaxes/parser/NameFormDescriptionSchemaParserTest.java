@@ -66,7 +66,7 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericOid() throws ParseException
@@ -78,7 +78,7 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNamesRelaxed() throws ParseException
@@ -90,7 +90,7 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNamesStrict() throws ParseException
@@ -102,7 +102,7 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -114,7 +114,7 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testObsolete() throws ParseException
@@ -126,10 +126,10 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test OC and its value.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testOc() throws ParseException, LdapException
+    public void testOc() throws ParseException
     {
         String value = null;
         NameForm nf = null;
@@ -259,10 +259,10 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test MUST and its values.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testMust() throws ParseException, LdapException
+    public void testMust() throws ParseException
     {
         String value = null;
         NameForm nf = null;
@@ -338,10 +338,10 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test MAY and its values.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testMay() throws ParseException, LdapException
+    public void testMay() throws ParseException
     {
         String value = null;
         NameForm nf = null;
@@ -398,7 +398,7 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -411,10 +411,10 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test full object class description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testFull() throws ParseException, LdapException
+    public void testFull() throws ParseException
     {
         String value = null;
         NameForm nf = null;
@@ -452,8 +452,6 @@ public class NameFormDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -470,10 +468,10 @@ public class NameFormDescriptionSchemaParserTest
     /**
      * Test required elements.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testRequiredElements() throws ParseException, LdapException
+    public void testRequiredElements() throws ParseException
     {
         String value = null;
         NameForm nf = null;
@@ -515,7 +513,7 @@ public class NameFormDescriptionSchemaParserTest
     //     * 
     //     * Problem: What if MUST is a numeric oid and MAY is a name?
     //     * 
-    //     * @throws ParseException
+    //     * @throws ParseException If the test failed
     //     */
     //    @Test
     //    public void testDisjoint() throws ParseException
@@ -554,6 +552,8 @@ public class NameFormDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -571,6 +571,9 @@ public class NameFormDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException, LdapException

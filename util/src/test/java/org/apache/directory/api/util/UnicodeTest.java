@@ -92,7 +92,7 @@ public class UnicodeTest
      * 
      * Test write/read of a null string
      *
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testNullString() throws Exception
@@ -112,7 +112,7 @@ public class UnicodeTest
      * 
      * Test write/read of an empty string
      *
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testEmptyString() throws Exception
@@ -130,9 +130,9 @@ public class UnicodeTest
 
     /**
      * 
-     * Test write/read of a large string (> 64Kb)
+     * Test write/read of a large string (&gt; 64Kb)
      *
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testLargeString() throws Exception

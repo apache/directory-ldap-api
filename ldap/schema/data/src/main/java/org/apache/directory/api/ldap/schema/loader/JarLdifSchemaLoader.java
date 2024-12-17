@@ -92,7 +92,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      * sure the supplied base directory exists and contains a schema.ldif file
      * and if not complains about it.
      *
-     * @prarm allowDuplicateResources If set to true, loading duplicate resources is allowed.
+     * @param allowDuplicateResources If set to true, loading duplicate resources is allowed.
      * E.g. loading schema definitions that are loaded several times on the classpath.
      * In case of several files with the same name, it returns any of them.
      * This is useful in cases when the same artefacts are loaded several times, e.g. in some testing scenarios
@@ -114,6 +114,8 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
      * In case of several files with the same name, it returns any of them.
      * This is useful in cases when the same artefacts are loaded several times, e.g. in some testing scenarios
      * or weird classloading situations.
+     * 
+     * @return <code>true</code>if loading duplicate resources is allowed.
      */
     public boolean isAllowDuplicateResources()
     {

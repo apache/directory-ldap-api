@@ -41,6 +41,8 @@ public class AttributeTypeTest
 
     /**
      * Initialize attribute type instances
+     * 
+     * @throws Exception If the tesetupst failed
      */
     @BeforeEach
     public void initAttributeTypes() throws Exception

@@ -40,8 +40,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
-import org.apache.directory.api.ldap.model.ldif.LdifAttributesReader;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.AfterEach;
@@ -83,7 +81,9 @@ public class LdifAttributesReaderTest
 
 
     /**
-     * Create a file to be used by ":<" values
+     * Create a file to be used by ":&lt;" values
+     * 
+     * @throws Exception If the setup failed 
      */
     @BeforeEach
     public void setUp() throws Exception
@@ -189,7 +189,8 @@ public class LdifAttributesReaderTest
     /**
      * Spaces at the end of values should not be included into values.
      * 
-     * @throws NamingException
+     * @throws LdapLdifException If the test failed
+     * @throws IOException If the test failed
      */
     @Test
     public void testLdifParserEndSpaces() throws LdapLdifException, IOException

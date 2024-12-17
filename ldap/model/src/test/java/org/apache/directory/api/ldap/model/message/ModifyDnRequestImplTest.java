@@ -168,6 +168,8 @@ public class ModifyDnRequestImplTest
 
     /**
      * Test for inequality when only the Dn names are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffName() throws LdapException
@@ -184,6 +186,8 @@ public class ModifyDnRequestImplTest
 
     /**
      * Test for inequality when only the newSuperior DNs are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffNewSuperior() throws LdapException
@@ -216,6 +220,8 @@ public class ModifyDnRequestImplTest
 
     /**
      * Test for inequality when only the new Rdn properties are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffNewRdn() throws LdapException

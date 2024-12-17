@@ -26,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.api.ldap.aci.protectedItem.RestrictedByElem;
-import org.apache.directory.api.ldap.aci.protectedItem.RestrictedByItem;
 import org.apache.directory.api.ldap.model.filter.UndefinedNode;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,6 +54,8 @@ public class RestrictedByItemTest
 
     /**
      * Initialize maxValueCountItem instances
+     * 
+     * @throws Exception if the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception

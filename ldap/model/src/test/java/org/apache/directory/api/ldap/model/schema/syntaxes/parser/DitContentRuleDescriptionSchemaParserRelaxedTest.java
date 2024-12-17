@@ -66,7 +66,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericOid() throws ParseException
@@ -78,7 +78,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNames() throws ParseException
@@ -90,7 +90,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -102,7 +102,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testObsolete() throws ParseException
@@ -114,7 +114,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Test AUX and its values.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testAux() throws ParseException
@@ -243,7 +243,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
      * Test MUST and its values.
      * Very similar to AUX, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMust() throws ParseException
@@ -289,7 +289,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
      * Test MAY and its values.
      * Very similar to AUX, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMay() throws ParseException
@@ -323,7 +323,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
      * Test NOT and its values.
      * Very similar to AUX, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNot() throws ParseException
@@ -356,7 +356,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -369,7 +369,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
     /**
      * Test full object class description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testFull() throws ParseException
@@ -420,8 +420,6 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -436,6 +434,8 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -453,6 +453,8 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException

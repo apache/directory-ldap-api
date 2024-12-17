@@ -57,6 +57,9 @@ public class GracefulDisconnectResponseTest
     
     /**
      * Test the decoding of a GracefulDisconnect
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulDisconnectSuccess() throws DecoderException, EncoderException
@@ -107,6 +110,9 @@ public class GracefulDisconnectResponseTest
 
     /**
      * Test the decoding of a GracefulDisconnect with a timeOffline only
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulDisconnectTimeOffline() throws DecoderException, EncoderException
@@ -136,6 +142,9 @@ public class GracefulDisconnectResponseTest
 
     /**
      * Test the decoding of a GracefulDisconnect with a delay only
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulDisconnectDelay() throws DecoderException, EncoderException
@@ -166,6 +175,9 @@ public class GracefulDisconnectResponseTest
 
     /**
      * Test the decoding of a GracefulDisconnect with a timeOffline and a delay
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulDisconnectTimeOfflineDelay() throws DecoderException, EncoderException
@@ -196,6 +208,9 @@ public class GracefulDisconnectResponseTest
 
     /**
      * Test the decoding of a GracefulDisconnect with replicatedContexts only
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulDisconnectReplicatedContextsOnly() throws DecoderException, EncoderException
@@ -245,6 +260,9 @@ public class GracefulDisconnectResponseTest
 
     /**
      * Test the decoding of a empty GracefulDisconnect
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulDisconnectEmpty() throws DecoderException, EncoderException
@@ -277,7 +295,7 @@ public class GracefulDisconnectResponseTest
      * Test the decoding of a GracefulDisconnect with a timeOffline off limit
      */
     @Test
-    public void testDecodeGracefulDisconnectTimeOfflineOffLimit() throws DecoderException
+    public void testDecodeGracefulDisconnectTimeOfflineOffLimit()
     {
         byte[] bb = new byte[]
             { 
@@ -299,7 +317,7 @@ public class GracefulDisconnectResponseTest
      * Test the decoding of a GracefulDisconnect with a delay off limit
      */
     @Test
-    public void testDecodeGracefulDisconnectDelayOffLimit() throws DecoderException
+    public void testDecodeGracefulDisconnectDelayOffLimit()
     {
         byte[] bb = new byte[]
             { 
@@ -322,7 +340,7 @@ public class GracefulDisconnectResponseTest
      * Test the decoding of a GracefulDisconnect with an empty TimeOffline
      */
     @Test
-    public void testDecodeGracefulDisconnectTimeOfflineEmpty() throws DecoderException
+    public void testDecodeGracefulDisconnectTimeOfflineEmpty()
     {
         byte[] bb = new byte[]
             { 
@@ -344,7 +362,7 @@ public class GracefulDisconnectResponseTest
      * Test the decoding of a GracefulDisconnect with an empty delay
      */
     @Test
-    public void testDecodeGracefulDisconnectDelayEmpty() throws DecoderException
+    public void testDecodeGracefulDisconnectDelayEmpty()
     {
         byte[] bb = new byte[]
             { 
@@ -367,7 +385,7 @@ public class GracefulDisconnectResponseTest
      * contexts
      */
     @Test
-    public void testDecodeGracefulDisconnectReplicatedContextsEmpty() throws DecoderException
+    public void testDecodeGracefulDisconnectReplicatedContextsEmpty()
     {
         byte[] bb = new byte[]
             { 
@@ -390,7 +408,7 @@ public class GracefulDisconnectResponseTest
      * context
      */
     @Test
-    public void testDecodeGracefulDisconnectReplicatedContextsInvalid() throws DecoderException
+    public void testDecodeGracefulDisconnectReplicatedContextsInvalid()
     {
         byte[] bb = new byte[]
             { 

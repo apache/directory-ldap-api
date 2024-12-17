@@ -28,7 +28,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -88,6 +87,8 @@ public class SearchResultEntryImplTest
 
     /**
      * Tests for equality when an exact copy is compared.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsExactCopy() throws LdapException
@@ -118,6 +119,8 @@ public class SearchResultEntryImplTest
 
     /**
      * Tests for equal hashCode when an exact copy is compared.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCodeExactCopy() throws LdapException
@@ -136,6 +139,8 @@ public class SearchResultEntryImplTest
 
     /**
      * Tests for inequality when the objectName dn is not the same.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffObjectName() throws LdapException

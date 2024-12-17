@@ -121,6 +121,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Initialization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void init() throws Exception
@@ -141,6 +143,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with a valid empty specification.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testEmptySpec() throws Exception
@@ -160,6 +164,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with a valid specification with base set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithBase() throws Exception
@@ -174,6 +180,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with an invalid specification with missing white spaces
      * and base set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testInvalidSpecWithBaseAndMissingWS() throws Exception
@@ -193,6 +201,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with a valid specification with some specific exclusions
      * set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithSpecificExclusions() throws Exception
@@ -222,6 +232,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with a valid specification with an empty specific
      * exclusions set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithEmptySpecificExclusions() throws Exception
@@ -235,6 +247,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with a valid specification with minimum and maximum set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithMinimumAndMaximum() throws Exception
@@ -258,6 +272,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with a valid specification with base and minimum and
      * maximum set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testWithBaseAndMinimumAndMaximum() throws Exception
@@ -273,6 +289,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with a valid specification with base and specific
      * exclusions and minimum and maximum set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithBaseAndSpecificExclusionsAndMinimumAndMaximum() throws Exception
@@ -292,6 +310,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with a valid specification with refinement set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithRefinement() throws Exception
@@ -338,6 +358,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with a valid specification with base and empty
      * refinement set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithBaseAndEmptyRefinement() throws Exception
@@ -350,6 +372,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with a valid specification with all components set.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecWithAllInOne() throws Exception
@@ -362,6 +386,8 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with a valid specification with unordinary component
      * order.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSpecOrderOfComponentsDoesNotMatter() throws Exception
@@ -373,6 +399,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with an invalid specification with silly things in.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testInvalidSillyThing() throws Exception
@@ -391,6 +419,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Test reusability, especially if the state is resetted.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testReusabiltiy() throws Exception
@@ -412,6 +442,8 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testMultiThreaded() throws Exception

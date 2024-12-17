@@ -58,6 +58,9 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a SearchResultReference
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultReferenceSuccess() throws DecoderException, EncoderException
@@ -153,6 +156,9 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultReference with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultReferenceSuccessWithControls() throws DecoderException, EncoderException
@@ -281,7 +287,7 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultReference with no reference
      */
     @Test
-    public void testDecodeSearchResultReferenceNoReference() throws DecoderException
+    public void testDecodeSearchResultReferenceNoReference()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -310,6 +316,9 @@ public class SearchResultReferenceTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultReference with one reference
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultReferenceOneReference() throws DecoderException, EncoderException

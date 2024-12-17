@@ -60,6 +60,8 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
     /**
      * Creates a new instance of LdapProtocolEncoder.
+     * 
+     * @param ldapApiService The LDAP API Service instance
      */
     public LdapProtocolDecoder( LdapApiService ldapApiService )
     {

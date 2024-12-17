@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
@@ -56,6 +57,8 @@ public class PasswordModifyRequestTest
     
     /**
      * Test the decoding of a PasswordModifyRequest with nothing in it
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestEmpty() throws DecoderException
@@ -84,6 +87,8 @@ public class PasswordModifyRequestTest
 
     /**
      * Test the decoding of a PasswordModifyRequest with an empty user identity
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityNull() throws DecoderException
@@ -114,6 +119,8 @@ public class PasswordModifyRequestTest
 
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValue() throws DecoderException
@@ -146,6 +153,8 @@ public class PasswordModifyRequestTest
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity and
      * an empty newPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValueNewPasswordEmpty() throws DecoderException
@@ -180,6 +189,8 @@ public class PasswordModifyRequestTest
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity and
      * a newPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValueNewPassword() throws DecoderException
@@ -214,6 +225,8 @@ public class PasswordModifyRequestTest
 
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordEmpty() throws DecoderException
@@ -247,6 +260,8 @@ public class PasswordModifyRequestTest
 
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValue() throws DecoderException
@@ -282,6 +297,8 @@ public class PasswordModifyRequestTest
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity, and oldPassword and
      * and empty newPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordNull() throws DecoderException
@@ -319,6 +336,8 @@ public class PasswordModifyRequestTest
     /**
      * Test the decoding of a PasswordModifyRequest with a user identity, and oldPassword and
      * and a newPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordValue() throws DecoderException
@@ -356,6 +375,8 @@ public class PasswordModifyRequestTest
 
     /**
      * Test the decoding of a PasswordModifyRequest with an empty user identity
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestOldPasswordNull() throws DecoderException
@@ -386,6 +407,8 @@ public class PasswordModifyRequestTest
 
     /**
      * Test the decoding of a PasswordModifyRequest with an oldPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestOldPasswordValue() throws DecoderException
@@ -418,6 +441,8 @@ public class PasswordModifyRequestTest
     /**
      * Test the decoding of a PasswordModifyRequest with an oldPassword and an
      * empty  newPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordEmpty() throws DecoderException
@@ -452,6 +477,8 @@ public class PasswordModifyRequestTest
     /**
      * Test the decoding of a PasswordModifyRequest with an oldPassword and an
      * newPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordValue() throws DecoderException

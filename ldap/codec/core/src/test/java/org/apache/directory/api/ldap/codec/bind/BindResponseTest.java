@@ -53,6 +53,9 @@ public class BindResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a BindResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindResponseSuccess() throws DecoderException, EncoderException
@@ -102,6 +105,9 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindResponse with a control
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindResponseWithControlSuccess() throws DecoderException, EncoderException
@@ -177,6 +183,9 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindResponse with an empty credentials
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindResponseServerSASLEmptyCredentials() throws DecoderException, EncoderException
@@ -223,12 +232,15 @@ public class BindResponseTest extends AbstractCodecServiceTest
         LdapEncoder.encodeMessage( buffer, codec, bindResponse );
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
-}
+    }
 
 
     /**
      * Test the decoding of a BindResponse with an empty credentials with
      * controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindResponseServerSASLEmptyCredentialsWithControls() throws DecoderException, EncoderException
@@ -298,6 +310,9 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindResponse with a credentials
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindResponseServerSASL() throws DecoderException, EncoderException
@@ -353,7 +368,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a BindResponse with no LdapResult
      */
     @Test
-    public void testDecodeAddResponseEmptyResult() throws DecoderException
+    public void testDecodeAddResponseEmptyResult()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 

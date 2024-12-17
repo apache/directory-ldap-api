@@ -145,6 +145,8 @@ public class FastOpenLdapSchemaParserTest
 
     /**
      * Test that we can handle a DESC which contains only spaces
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testAttributeTypeParseWithSpaceDesc() throws Exception

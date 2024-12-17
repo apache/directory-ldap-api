@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.aci.protectedItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.apache.directory.api.ldap.aci.protectedItem.MaxImmSubItem;
 import org.apache.directory.api.ldap.model.filter.UndefinedNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,6 +45,8 @@ public class MaxImmSubItemTest
 
     /**
      * Initialize maxImmSubItem instances
+     * 
+     * @throws Exception if the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception

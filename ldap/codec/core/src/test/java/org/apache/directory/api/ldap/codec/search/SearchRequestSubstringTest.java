@@ -98,6 +98,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=t*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringInitial() throws DecoderException, EncoderException, LdapException
@@ -187,6 +191,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=t*) With controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringInitialAnyWithControls()
@@ -292,6 +300,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * any filter : (objectclass=*t*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringAny() throws DecoderException, EncoderException, LdapException
@@ -384,6 +396,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=*t*t)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringAnyFinal() throws DecoderException, EncoderException, LdapException
@@ -478,6 +494,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=t*t*t)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringInitialAnyFinal()
@@ -575,6 +595,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=t*t*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringInitialAny()
@@ -669,6 +693,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=*t*t*t)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringAnyAnyFinal() throws DecoderException, EncoderException, LdapException
@@ -767,6 +795,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=t*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringInitialAnyAny() throws DecoderException, EncoderException, LdapException
@@ -860,6 +892,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=*t*t*t*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringAnyAnyAny() throws DecoderException, EncoderException, LdapException
@@ -958,6 +994,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=*Amos)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringFinal() throws DecoderException, EncoderException, LdapException
@@ -1051,7 +1091,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty Substring filter
      */
     @Test
-    public void testDecodeSearchRequestEmptySubstringFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptySubstringFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1098,7 +1138,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Substring
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterEmptyType() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterEmptyType()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1146,7 +1186,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Substring
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterNoSubstrings() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterNoSubstrings()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1195,7 +1235,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Substring
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterEmptySubstrings() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterEmptySubstrings()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1245,7 +1285,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Substring Initial
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterEmptyInitial() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterEmptyInitial()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1296,7 +1336,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Substring Any
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterEmptyAny() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterEmptyAny()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1347,7 +1387,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Substring Initial
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterEmptyFinal() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterEmptyFinal()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1398,7 +1438,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * initial
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterAnyInitial() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterAnyInitial()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1452,7 +1492,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * initial
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterFinalInitial() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterFinalInitial()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1506,7 +1546,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * any
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterFinalAny() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterFinalAny()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1559,7 +1599,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter Two initials
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterTwoInitials() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterTwoInitials()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1612,7 +1652,7 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a Substring filter Two finals
      */
     @Test
-    public void testDecodeSearchRequestSubstringFilterTwoFinals() throws DecoderException
+    public void testDecodeSearchRequestSubstringFilterTwoFinals()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1664,6 +1704,10 @@ public class SearchRequestSubstringTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a substring filter. Test the
      * initial filter : (objectclass=t*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestSubstringNoSubstrings() throws DecoderException, EncoderException, LdapException

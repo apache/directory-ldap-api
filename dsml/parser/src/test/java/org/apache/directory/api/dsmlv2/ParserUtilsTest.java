@@ -53,6 +53,8 @@ public class ParserUtilsTest extends AbstractTest
      * Test for DIRAPI-238: DSML pretty print does not work, prints error.
      * 
      * Indirect test of ParserUtils.styleDocument() via BatchRequestDsml.toDsml().
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testStyleDocumentWithBatchRequest() throws Exception
@@ -74,6 +76,8 @@ public class ParserUtilsTest extends AbstractTest
      * Test for DIRAPI-238: DSML pretty print does not work, prints error.
      * 
      * Indirect test of ParserUtils.styleDocument() via BatchResponseDsml.toDsml() 
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testStyleDocumentWithBatchResponse() throws Exception

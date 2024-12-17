@@ -36,6 +36,8 @@ public final class UndefinedNode extends AbstractExprNode
 
     /**
      * Creates a new instance of UndefinedNode.
+     * 
+     * @param attribute The leaf's attribute
      */
     public UndefinedNode( String attribute )
     {

@@ -184,6 +184,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Initialize the schemaManager
+     * 
+     * @throws Exception If the test failed
      */
     @BeforeEach
     public void setup() throws Exception
@@ -200,6 +202,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method isValid( SyntaxChecker )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIsValidSyntaxChecker() throws LdapException
@@ -342,6 +346,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the contains() method
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testContains() throws Exception
@@ -362,6 +368,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method getBytes()
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetBytes() throws LdapInvalidAttributeValueException
@@ -417,6 +425,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method getString()
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetString() throws LdapInvalidAttributeValueException
@@ -470,6 +480,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method hashCode()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCode() throws LdapException
@@ -577,6 +589,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method isValid()
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testIsValid() throws Exception
@@ -608,6 +622,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method add( Value... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddValueArray() throws LdapException
@@ -694,6 +710,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method add( String... )
+     * 
+     * @throws LdapInvalidAttributeValueException  the test failed
      */
     @Test
     public void testAddStringArray() throws LdapInvalidAttributeValueException
@@ -771,6 +789,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method add( byte[]... )
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testAddByteArray() throws LdapInvalidAttributeValueException
@@ -826,6 +846,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method clear()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClear() throws LdapException
@@ -845,7 +867,9 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test method contains( Value... ) throws LdapException
+     * Test method contains( Value... ) 
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsValueArray() throws LdapException
@@ -897,6 +921,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method contains( String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsStringArray() throws LdapException
@@ -927,6 +953,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method contains( byte[]... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsByteArray() throws LdapException
@@ -957,6 +985,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method testEquals()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEquals() throws LdapException
@@ -1034,6 +1064,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method get()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGet() throws LdapException
@@ -1075,6 +1107,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method getAll()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIterator2() throws LdapException
@@ -1107,6 +1141,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method size()
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSize() throws Exception
@@ -1139,6 +1175,9 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method put( byte[]... )
+     * 
+     * @throws Exception If the test failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testPutByteArray() throws LdapException, Exception
@@ -1201,6 +1240,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method put( String... )
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testPutStringArray() throws LdapInvalidAttributeValueException
@@ -1273,6 +1314,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method put( Value... )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testPutValueArray() throws Exception
@@ -1331,6 +1374,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method remove( Value... )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testRemoveValueArray() throws Exception
@@ -1398,6 +1443,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method remove( byte... )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testRemoveByteArray() throws Exception
@@ -1429,6 +1476,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method remove( String... )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testRemoveStringArray() throws Exception
@@ -1468,6 +1517,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method iterator()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIterator() throws LdapException
@@ -1493,6 +1544,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method toString
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testToString() throws LdapException
@@ -1515,6 +1568,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method instanceOf()
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testInstanceOf() throws Exception
@@ -1529,6 +1584,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method setUpId( String, AttributeType )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSetUpIdStringAttributeType() throws Exception
@@ -1585,6 +1642,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method setUpId( String ) inherited from ClientAttribute
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSetUpIdString() throws Exception
@@ -1674,6 +1733,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method setAttributeType( AttributeType )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSetAttributeType() throws Exception
@@ -1700,6 +1761,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method getAttributeType()
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testGetAttributeType() throws Exception
@@ -1759,6 +1822,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test constructor DefaultEntryAttribute( AttributeType, Value... )
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeValueArray() throws Exception
@@ -1787,6 +1852,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test constructor DefaultEntryAttribute( String, AttributeType, Value... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDefaultServerAttributeStringAttributeTypeValueArray() throws LdapException
@@ -1837,6 +1904,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test constructor DefaultEntryAttribute( AttributeType, String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeStringArray() throws LdapException
@@ -1865,6 +1934,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test constructor DefaultEntryAttribute( String, AttributeType, String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDefaultServerAttributeStringAttributeTypeStringArray() throws LdapException
@@ -1904,6 +1975,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method DefaultEntryAttribute( AttributeType, byte[]... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeByteArray() throws LdapException
@@ -1932,6 +2005,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method DefaultEntryAttribute( String, AttributeType, byte[]... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDefaultServerAttributeStringAttributeTypeByteArray() throws LdapException
@@ -1960,6 +2035,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test method testClone()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClone() throws LdapException
@@ -1986,6 +2063,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the copy constructor of a EntryAttribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCopyConstructorServerAttribute() throws LdapException
@@ -2009,6 +2088,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the copy constructor of a ClientAttribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCopyConstructorClientAttribute() throws LdapException
@@ -2029,6 +2110,8 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the conversion method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testToClientAttribute() throws LdapException
@@ -2049,6 +2132,10 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the serialization of a complete server attribute
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeCompleteAttribute() throws LdapException, IOException, ClassNotFoundException
@@ -2069,6 +2156,10 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the serialization of a server attribute with no value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeAttributeWithNoValue() throws LdapException, IOException, ClassNotFoundException
@@ -2087,6 +2178,10 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the serialization of a server attribute with a null value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeAttributeNullValue() throws LdapException, IOException, ClassNotFoundException
@@ -2108,6 +2203,10 @@ public class SchemaAwareAttributeTest
 
     /**
      * Test the serialization of a server attribute with a binary value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeAttributeBinaryValue() throws LdapException, IOException, ClassNotFoundException

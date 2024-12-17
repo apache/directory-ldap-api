@@ -62,7 +62,6 @@ public class FilterParserTest
 
     /**
      * Tests to avoid deadlocks for invalid filters.
-     * 
      */
     @Test
     public void testInvalidFilters()
@@ -411,6 +410,8 @@ public class FilterParserTest
 
     /**
      * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testEqualsFilterForDnWithLeadingHash() throws ParseException
@@ -424,6 +425,8 @@ public class FilterParserTest
 
     /**
      * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testEqualsFilterForDnWithLeadingHashHex() throws ParseException
@@ -437,6 +440,8 @@ public class FilterParserTest
 
     /**
      * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensibleFilterForDnWithLeadingHash() throws ParseException
@@ -452,6 +457,8 @@ public class FilterParserTest
 
     /**
      * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensibleFilterForDnWithLeadingHashHex() throws ParseException
@@ -757,6 +764,8 @@ public class FilterParserTest
      * Enrique just found this bug with the filter parser when parsing substring
      * expressions like *any*. Here's the JIRA issue: <a
      * href="https://issues.apache.org/jira/browse/DIRSERVER-235">DIRSERVER-235</a>.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSubstringStarAnyStar() throws ParseException
@@ -888,6 +897,8 @@ public class FilterParserTest
 
     /**
      * test a filter with a # in value
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testEqualsFilterWithPoundInValue() throws ParseException
@@ -904,7 +915,6 @@ public class FilterParserTest
     /**
      * Test that special and non allowed chars into an assertionValue are not
      * accepted. ((cf DIRSERVER-1196)
-     *
      */
     @Test
     public void testSpecialCharsInMemberOf()
@@ -923,7 +933,7 @@ public class FilterParserTest
 
 
     /**
-     * Test that filters like (&(a=b)(|(c=d)(e=f))) are correctly parsed
+     * Test that filters like (&amp;(a=b)(|(c=d)(e=f))) are correctly parsed
      */
     @Test
     public void testAndEqOr_EqEq()

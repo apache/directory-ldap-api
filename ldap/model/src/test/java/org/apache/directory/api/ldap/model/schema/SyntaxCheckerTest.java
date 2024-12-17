@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.schema;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.AccessPointSyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.CountrySyntaxChecker;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +47,8 @@ public class SyntaxCheckerTest
 
     /**
      * Initialize name instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception

@@ -70,7 +70,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * message being decoded. If the message is not fully decoded, the ucrrent state
      * is stored into this container
      * @param decodedMessages The list of decoded messages
-     * @throws Exception If the decoding failed
+     * @throws DecoderException If the decoding failed
      */
     private void decode( ByteBuffer buffer, LdapMessageContainer<Message> messageContainer,
         List<Message> decodedMessages ) throws DecoderException
@@ -117,6 +117,9 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a full PDU
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeFull() throws DecoderException, EncoderException
@@ -168,6 +171,9 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of two messages in a PDU
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecode2Messages() throws DecoderException, EncoderException
@@ -237,6 +243,9 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a partial PDU
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodePartial() throws DecoderException, EncoderException
@@ -276,6 +285,9 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a splitted PDU
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSplittedPDU() throws DecoderException, EncoderException
@@ -366,7 +378,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * of 0x32 when the PDU is 0x33 bytes long.
      */
     @Test
-    public void testDecodeBadLengthTooSmall() throws DecoderException
+    public void testDecodeBadLengthTooSmall()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
@@ -407,7 +419,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * has a length of 0x02 when the PDU is 0x01 bytes long.
      */
     @Test
-    public void testDecodeBadPrimitiveLengthTooBig() throws DecoderException
+    public void testDecodeBadPrimitiveLengthTooBig()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
@@ -445,7 +457,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test the decoding of a PDU with a bad tag.
      */
     @Test
-    public void testDecodeBadTagTransition() throws DecoderException
+    public void testDecodeBadTagTransition()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
@@ -483,6 +495,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      *
      * The length is 3 bytes long, but the PDU has been split
      * just after the first byte
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeSplittedLength() throws DecoderException
@@ -526,7 +540,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * Test that a big PDU is not accepted when the MaxPDU size is set
      */
     @Test
-    public void testDecodeOOM() throws DecoderException
+    public void testDecodeOOM()
     {
         byte[] input = java.util.Base64.getDecoder().decode( "QIR+fnR+yvD/" );
         ByteBuffer stream = ByteBuffer.allocate(input.length);

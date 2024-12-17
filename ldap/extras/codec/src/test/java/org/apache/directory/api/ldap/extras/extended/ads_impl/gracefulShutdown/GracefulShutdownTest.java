@@ -55,6 +55,9 @@ public class GracefulShutdownTest
     
     /**
      * Test the decoding of a GracefulShutdown
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownSuccess() throws DecoderException, EncoderException
@@ -86,6 +89,9 @@ public class GracefulShutdownTest
 
     /**
      * Test the decoding of a GracefulShutdown with a timeOffline only
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownTimeOffline() throws DecoderException, EncoderException
@@ -115,6 +121,9 @@ public class GracefulShutdownTest
 
     /**
      * Test the decoding of a GracefulShutdown with a delay only
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownDelay() throws DecoderException, EncoderException
@@ -144,6 +153,9 @@ public class GracefulShutdownTest
 
     /**
      * Test the decoding of a empty GracefulShutdown
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownEmpty() throws DecoderException, EncoderException
@@ -172,6 +184,9 @@ public class GracefulShutdownTest
 
     /**
      * Test the decoding of a GracefulShutdown with a delay above 128
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownDelayHigh() throws DecoderException, EncoderException
@@ -201,6 +216,9 @@ public class GracefulShutdownTest
 
     /**
      * Test the decoding of a GracefulShutdown with a delay equals 32767
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownDelay32767() throws DecoderException, EncoderException
@@ -230,6 +248,9 @@ public class GracefulShutdownTest
 
     /**
      * Test the decoding of a GracefulShutdown with a delay above 32768
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeGracefulShutdownDelay32768() throws DecoderException, EncoderException
@@ -264,7 +285,7 @@ public class GracefulShutdownTest
      * Test the decoding of a GracefulShutdown with a timeOffline off limit
      */
     @Test
-    public void testDecodeGracefulShutdownTimeOfflineOffLimit() throws DecoderException
+    public void testDecodeGracefulShutdownTimeOfflineOffLimit()
     {
         byte[] bb = new byte[]
             { 
@@ -286,7 +307,7 @@ public class GracefulShutdownTest
      * Test the decoding of a GracefulShutdown with a delay off limit
      */
     @Test
-    public void testDecodeGracefulShutdownDelayOffLimit() throws DecoderException
+    public void testDecodeGracefulShutdownDelayOffLimit()
     {
         byte[] bb = new byte[]
             { 
@@ -309,7 +330,7 @@ public class GracefulShutdownTest
      * Test the decoding of a GracefulShutdown with an empty TimeOffline
      */
     @Test
-    public void testDecodeGracefulShutdownTimeOfflineEmpty() throws DecoderException
+    public void testDecodeGracefulShutdownTimeOfflineEmpty()
     {
         byte[] bb = new byte[]
             { 
@@ -331,7 +352,7 @@ public class GracefulShutdownTest
      * Test the decoding of a GracefulShutdown with an empty delay
      */
     @Test
-    public void testDecodeGracefulShutdownDelayEmpty() throws DecoderException
+    public void testDecodeGracefulShutdownDelayEmpty()
     {
         byte[] bb = new byte[]
             { 

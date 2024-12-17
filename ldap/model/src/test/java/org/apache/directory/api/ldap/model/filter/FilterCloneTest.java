@@ -476,6 +476,8 @@ public class FilterCloneTest
      * Enrique just found this bug with the filter parser when parsing substring
      * expressions like *any*. Here's the JIRA issue: <a
      * href="https://issues.apache.org/jira/browse/DIRSERVER-235">DIRSERVER-235</a>.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSubstringStarAnyStar() throws ParseException
@@ -508,6 +510,8 @@ public class FilterCloneTest
 
     /**
      * test a filter with a # in value
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testEqualsFilterWithPoundInValue() throws ParseException

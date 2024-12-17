@@ -53,6 +53,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a full IntermediateResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseSuccess() throws EncoderException, DecoderException
@@ -100,6 +103,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a full IntermediateResponse with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseWithControls() throws EncoderException, DecoderException
@@ -170,6 +176,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a full IntermediateResponse with no value and with
      * controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseNoValueWithControls() throws EncoderException, DecoderException
@@ -240,7 +249,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
      * Test the decoding of an empty IntermediateResponse
      */
     @Test
-    public void testDecodeIntermediateResponseEmpty() throws DecoderException
+    public void testDecodeIntermediateResponseEmpty()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -270,7 +279,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
      * Test the decoding of an empty OID
      */
     @Test
-    public void testDecodeEmptyOID() throws DecoderException
+    public void testDecodeEmptyOID()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
@@ -301,7 +310,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a bad name
      */
     @Test
-    public void testDecodeExtendedBadRequestName() throws DecoderException
+    public void testDecodeExtendedBadRequestName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x16 );
 
@@ -332,6 +341,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a name only IntermediateResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseName() throws EncoderException, DecoderException
@@ -387,6 +399,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of an empty value IntermediateResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseEmptyValue() throws EncoderException, DecoderException
@@ -445,6 +460,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of an IntermediateResponse without name
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseNoName() throws EncoderException, DecoderException
@@ -489,6 +507,9 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of an IntermediateResponse with no value
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeIntermediateResponseNoValue() throws EncoderException, DecoderException

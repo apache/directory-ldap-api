@@ -65,7 +65,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Test ruleid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericRuleId() throws ParseException
@@ -154,7 +154,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNames() throws ParseException
@@ -166,7 +166,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -178,7 +178,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testObsolete() throws ParseException
@@ -190,7 +190,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Tests FORM
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testForm() throws ParseException
@@ -296,7 +296,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Tests SUP
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSup() throws ParseException
@@ -358,7 +358,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -371,7 +371,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Test full object class description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testFull() throws ParseException
@@ -408,8 +408,6 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -425,7 +423,7 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
     /**
      * Test required elements.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testRequiredElements() throws ParseException
@@ -453,6 +451,8 @@ public class DitStructureRuleDescriptionSchemaParserStrictTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException

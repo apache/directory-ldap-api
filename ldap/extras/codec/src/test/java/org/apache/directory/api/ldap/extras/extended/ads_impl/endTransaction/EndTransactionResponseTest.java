@@ -77,7 +77,7 @@ public class EndTransactionResponseTest
      * Test the decoding of a EndTransactionResponse with nothing in it
      */
     @Test
-    public void testDecodeEndTransactionResponseEmpty() throws DecoderException
+    public void testDecodeEndTransactionResponseEmpty()
     {
         byte[] bb = new byte[]
             { 
@@ -96,6 +96,9 @@ public class EndTransactionResponseTest
 
     /**
      * Test the decoding of a EndTransactionResponse with a messageId and no updateControls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testEndTransactionResponseMessageId() throws DecoderException, EncoderException
@@ -124,6 +127,9 @@ public class EndTransactionResponseTest
 
     /**
      * Test the decoding of a EndTransactionResponse with updateControls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testEndTransactionResponseUpdateControls() throws DecoderException, EncoderException

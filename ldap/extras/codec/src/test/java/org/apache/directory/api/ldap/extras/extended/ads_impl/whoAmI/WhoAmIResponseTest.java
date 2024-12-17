@@ -60,6 +60,9 @@ public class WhoAmIResponseTest
     
     /**
      * Test the normal WhoAmI response message
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeWhoAmINull() throws DecoderException, EncoderException
@@ -88,6 +91,9 @@ public class WhoAmIResponseTest
 
     /**
      * Test a WhoAmI message with a DN authzId
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeWhoAmINoWhoAmIAuthzIdDN() throws DecoderException, EncoderException
@@ -120,6 +126,9 @@ public class WhoAmIResponseTest
 
     /**
      * Test a WhoAmI message with a UserId authzId
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeWhoAmINoWhoAmIAuthzIdUserId() throws DecoderException, EncoderException

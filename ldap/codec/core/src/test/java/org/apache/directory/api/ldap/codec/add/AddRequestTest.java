@@ -69,7 +69,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a AddRequest
-     * @throws EncoderException
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddRequestSuccess() throws DecoderException, EncoderException
@@ -186,7 +188,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a null body
      */
     @Test
-    public void testDecodeAddRequestNullBody() throws DecoderException
+    public void testDecodeAddRequestNullBody()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -215,7 +217,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a null entry
      */
     @Test
-    public void testDecodeAddRequestNullEntry() throws DecoderException
+    public void testDecodeAddRequestNullEntry()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x39 );
 
@@ -276,7 +278,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest
      */
     @Test
-    public void testDecodeAddRequestbadDN() throws DecoderException
+    public void testDecodeAddRequestbadDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x59 );
 
@@ -340,7 +342,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a null attributeList
      */
     @Test
-    public void testDecodeAddRequestNullAttributes() throws DecoderException
+    public void testDecodeAddRequestNullAttributes()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
@@ -375,7 +377,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a empty attributeList
      */
     @Test
-    public void testDecodeAddRequestNullAttributeList() throws DecoderException
+    public void testDecodeAddRequestNullAttributeList()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
@@ -411,7 +413,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a empty attributeList
      */
     @Test
-    public void testDecodeAddRequestNullType() throws DecoderException
+    public void testDecodeAddRequestNullType()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2F );
 
@@ -461,7 +463,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a empty attributeList
      */
     @Test
-    public void testDecodeAddRequestNoVals() throws DecoderException
+    public void testDecodeAddRequestNoVals()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x30 );
 
@@ -499,7 +501,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AddRequest with a empty attributeList
      */
     @Test
-    public void testDecodeAddRequestNullVals() throws DecoderException
+    public void testDecodeAddRequestNullVals()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x32 );
 
@@ -536,6 +538,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddRequest with a empty attributeList
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddRequestEmptyAttributeValue() throws DecoderException, EncoderException
@@ -604,6 +609,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AddRequest with a empty attributeList and a
      * control
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddRequestEmptyAttributeValueWithControl() throws  DecoderException, EncoderException
@@ -702,6 +710,10 @@ public class AddRequestTest extends AbstractCodecServiceTest
     /**
      * Test that encoding and decoding of an add request with 10k attributes and 10k values
      * succeeds without StackOverflowError (DIRAPI-368, DIRSERVER-2340).
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEncodeDecodeLarge() throws DecoderException, EncoderException, LdapException

@@ -118,8 +118,6 @@ public class NormalizerDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -130,8 +128,6 @@ public class NormalizerDescriptionSchemaParserTest
 
     /**
      * Test required elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testRequiredElements()
@@ -142,6 +138,8 @@ public class NormalizerDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -152,6 +150,8 @@ public class NormalizerDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException

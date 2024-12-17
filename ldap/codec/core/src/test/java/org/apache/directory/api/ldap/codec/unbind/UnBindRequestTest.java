@@ -51,6 +51,9 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a UnBindRequest with no controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeUnBindRequestNoControls() throws DecoderException, EncoderException
@@ -86,6 +89,9 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a UnBindRequest with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeUnBindRequestWithControls() throws DecoderException, EncoderException
@@ -137,7 +143,7 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a UnBindRequest with a not null body
      */
     @Test
-    public void testDecodeUnBindRequestNotNull() throws DecoderException
+    public void testDecodeUnBindRequestNotNull()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
         stream.put( new byte[]

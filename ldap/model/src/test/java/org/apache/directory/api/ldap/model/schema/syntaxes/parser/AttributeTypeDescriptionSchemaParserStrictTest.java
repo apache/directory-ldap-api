@@ -68,7 +68,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericOid() throws ParseException
@@ -80,7 +80,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNames() throws ParseException
@@ -92,7 +92,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -104,7 +104,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testObsolete() throws ParseException
@@ -116,7 +116,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Test SUP and its value, in strict mode.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSup() throws ParseException
@@ -282,7 +282,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
      * Tests EQUALITY and its values.
      * Very similar to SUP, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testEquality() throws ParseException
@@ -351,7 +351,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
      * Tests ORDERING and its values.
      * Very similar to SUP, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testOrdering() throws ParseException
@@ -420,7 +420,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
      * Tests SUBSTRING and its values.
      * Very similar to SUP, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSubstring() throws ParseException
@@ -488,7 +488,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests SYNTAX
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSyntax() throws ParseException
@@ -650,7 +650,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests SINGLE-VALUE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSingleValue() throws ParseException
@@ -691,7 +691,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests COLLECTIVE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testCollective() throws ParseException
@@ -732,7 +732,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests NO-USER-MODIFICATION
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNoUserModification() throws ParseException
@@ -773,7 +773,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests usage 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testUsage() throws ParseException
@@ -836,7 +836,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -848,7 +848,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Test full attribute type description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testFull() throws ParseException
@@ -893,8 +893,6 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -915,7 +913,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Test required elements.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testRequiredElements() throws ParseException
@@ -958,7 +956,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
      * Test collective constraint:
      * COLLECTIVE requires USAGE userApplications
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testCollectiveConstraint() throws ParseException
@@ -1018,7 +1016,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
      * Test no-user-modification constraint:
      * NO-USER-MODIFICATION requires an operational USAGE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNoUserModificatonConstraint() throws ParseException
@@ -1070,7 +1068,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Ensure that element order is ignored
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testIgnoreElementOrder() throws ParseException
@@ -1127,6 +1125,8 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
 
     /**
      * Tests the parse of a simple AttributeType
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testAddAttributeType() throws ParseException
@@ -1145,6 +1145,8 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
 
     /**
      * Tests the parse of a simple AttributeType with the schema extension.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testAttributeTypeWithSchemaExtension() throws ParseException
@@ -1164,6 +1166,8 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -1181,7 +1185,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests without EQUALITY
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNoqualityMR() throws ParseException
@@ -1205,7 +1209,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
     /**
      * Tests with spaces in DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testATWithSpacesInDesc() throws ParseException

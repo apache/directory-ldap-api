@@ -54,6 +54,9 @@ public class LdapControlTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a Request with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeRequestWithControls() throws DecoderException, EncoderException
@@ -175,6 +178,9 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a Request with an empty list of controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeRequestWithEmptyControls() throws DecoderException, EncoderException
@@ -234,7 +240,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
      * Test the decoding of a Request with null OID controls
      */
     @Test
-    public void testDecodeRequestWithControlsNullOID() throws DecoderException
+    public void testDecodeRequestWithControlsNullOID()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x19 );
         stream.put( new byte[]
@@ -268,7 +274,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
      * Test the decoding of a Request with bad OID controls
      */
     @Test
-    public void testDecodeRequestWithControlsBadOID() throws DecoderException
+    public void testDecodeRequestWithControlsBadOID()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x20 );
         stream.put( new byte[]
@@ -304,7 +310,7 @@ public class LdapControlTest extends AbstractCodecServiceTest
      * Test the decoding of a Request with bad criticality
      */
     @Test
-    public void testDecodeRequestWithControlsBadCriticality() throws DecoderException
+    public void testDecodeRequestWithControlsBadCriticality()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x25 );
         stream.put( new byte[]

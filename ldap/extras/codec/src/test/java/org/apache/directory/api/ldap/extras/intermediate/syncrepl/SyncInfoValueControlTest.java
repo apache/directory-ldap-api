@@ -33,8 +33,6 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
-import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SyncInfoValue;
-import org.apache.directory.api.ldap.extras.intermediate.syncrepl.SynchronizationInfoEnum;
 import org.apache.directory.api.ldap.extras.intermediate.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.BeforeAll;
@@ -64,6 +62,9 @@ public class SyncInfoValueControlTest
     //--------------------------------------------------------------------------------
     /**
      * Test the decoding of a SyncInfoValue control, newCookie choice
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncInfoValueControlNewCookie() throws DecoderException, EncoderException
@@ -95,6 +96,9 @@ public class SyncInfoValueControlTest
 
     /**
      * Test the decoding of a SyncInfoValue control, empty newCookie choice
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncInfoValueControlEmptyNewCookie() throws DecoderException, EncoderException
@@ -130,6 +134,9 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshDelete choice,
      * refreshDone = true
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncInfoValueControlRefreshDelete() throws DecoderException, EncoderException
@@ -173,6 +180,9 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshDelete choice,
      * refreshDone = false
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncInfoValueControlRefreshDeleteRefreshDoneFalse() throws DecoderException, EncoderException
@@ -209,6 +219,9 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshDelete choice,
      * no refreshDone
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncInfoValueControlRefreshDeleteNoRefreshDone() throws DecoderException, EncoderException
@@ -244,9 +257,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshDelete choice,
      * no cookie
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshDeleteNoCookie() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshDeleteNoCookie() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
@@ -278,9 +294,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshDelete choice,
      * no cookie, no refreshDone
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshDeleteNoCookieNoRefreshDone() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshDeleteNoCookieNoRefreshDone() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -313,9 +332,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshPresent choice,
      * refreshDone = true
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshPresent() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshPresent() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
@@ -356,9 +378,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshPresent choice,
      * refreshDone = false
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshPresentRefreshDoneFalse() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshPresentRefreshDoneFalse() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
@@ -392,9 +417,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshPresent choice,
      * no refreshDone
-     */
+          * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+*/
     @Test
-    public void testDecodeSyncInfoValueControlRefreshPresentNoRefreshDone() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshPresentNoRefreshDone() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
@@ -427,9 +455,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshPresent choice,
      * no cookie
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshPresentNoCookie() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshPresentNoCookie() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
@@ -461,9 +492,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, refreshPresent choice,
      * no cookie, no refreshDone
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlRefreshPresentNoCookieNoRefreshDone() throws Exception
+    public void testDecodeSyncInfoValueControlRefreshPresentNoCookieNoRefreshDone() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -497,7 +531,7 @@ public class SyncInfoValueControlTest
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, empty
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetEmpty() throws DecoderException
+    public void testDecodeSyncInfoValueControlSyncIdSetEmpty()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -523,7 +557,7 @@ public class SyncInfoValueControlTest
      * but no UUID set
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoSet() throws DecoderException
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoSet()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
@@ -551,7 +585,7 @@ public class SyncInfoValueControlTest
      * a refreshDeletes flag, but no UUID set
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesNoSet() throws DecoderException
+    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesNoSet()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
@@ -578,7 +612,7 @@ public class SyncInfoValueControlTest
      * a refreshDeletes flag, but no UUID set
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesNoSet() throws DecoderException
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesNoSet()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
@@ -605,9 +639,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, no cookie
      * no refreshDeletes flag, an empty UUID set
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieNoRefreshDeletesEmptySet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieNoRefreshDeletesEmptySet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x04 );
         bb.put( new byte[]
@@ -640,9 +677,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, no cookie
      * no refreshDeletes flag, a UUID set with some values
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieNoRefreshDeletesUUIDsSet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieNoRefreshDeletesUUIDsSet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x3A );
         bb.put( new byte[]
@@ -694,9 +734,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, A cookie
      * no refreshDeletes flag, an empty UUID set
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoRefreshDeletesEmptySet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoRefreshDeletesEmptySet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x09 );
         bb.put( new byte[]
@@ -731,9 +774,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, a cookie
      * no refreshDeletes flag, a UUID set with some values
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoRefreshDeletesUUIDsSet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieNoRefreshDeletesUUIDsSet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x3F );
         bb.put( new byte[]
@@ -787,9 +833,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, no cookie
      * a refreshDeletes flag, an empty UUID set
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesEmptySet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesEmptySet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
@@ -830,9 +879,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, a cookie
      * no refreshDeletes flag, a UUID set with some values
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesUUIDsSet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetNoCookieRefreshDeletesUUIDsSet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x3D );
         bb.put( new byte[]
@@ -901,9 +953,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, a cookie
      * a refreshDeletes flag, an empty UUID set
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesEmptySet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesEmptySet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
@@ -948,9 +1003,12 @@ public class SyncInfoValueControlTest
     /**
      * Test the decoding of a SyncInfoValue control, syncIdSet choice, a cookie
      * a refreshDeletes flag, a UUID set with some values
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesUUIDsSet() throws Exception
+    public void testDecodeSyncInfoValueControlSyncIdSetCookieRefreshDeletesUUIDsSet() throws DecoderException, EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x42 );
         bb.put( new byte[]
@@ -1024,7 +1082,7 @@ public class SyncInfoValueControlTest
      * invalid UUID
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetTooSmallUUID() throws DecoderException
+    public void testDecodeSyncInfoValueControlSyncIdSetTooSmallUUID()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x1D );
         bb.put( new byte[]
@@ -1057,7 +1115,7 @@ public class SyncInfoValueControlTest
      * invalid UUID
      */
     @Test
-    public void testDecodeSyncInfoValueControlSyncIdSetTooLongUUID() throws DecoderException
+    public void testDecodeSyncInfoValueControlSyncIdSetTooLongUUID()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x20 );
         bb.put( new byte[]

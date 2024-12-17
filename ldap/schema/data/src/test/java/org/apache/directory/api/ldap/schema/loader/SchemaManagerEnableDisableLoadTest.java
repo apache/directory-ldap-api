@@ -125,6 +125,8 @@ public class SchemaManagerEnableDisableLoadTest
     //-------------------------------------------------------------------------
     /**
      * Test the loadEnabled() method
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadAllEnabled() throws Exception
@@ -171,6 +173,8 @@ public class SchemaManagerEnableDisableLoadTest
     //-------------------------------------------------------------------------
     /**
      * Enable a schema which is already enabled
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testEnableAlreadyEnabled() throws Exception
@@ -185,6 +189,8 @@ public class SchemaManagerEnableDisableLoadTest
 
     /**
      * Enable a disabled schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testEnableDisabled() throws Exception
@@ -217,6 +223,8 @@ public class SchemaManagerEnableDisableLoadTest
 
     /**
      * Disable an enabled schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDisableEnabled() throws Exception
@@ -277,6 +285,8 @@ public class SchemaManagerEnableDisableLoadTest
      * Enable a disabled schema, which depends on a disabled schema itself.
      * Samba is disabled, and depends on nis which is also disabled. Enabling samba
      * should enabled nis.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testEnableDisabledDependingOnDisabled() throws Exception

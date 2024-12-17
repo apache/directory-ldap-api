@@ -24,11 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.message.LdapResult;
-import org.apache.directory.api.ldap.model.message.LdapResultImpl;
-import org.apache.directory.api.ldap.model.message.Referral;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -157,6 +152,8 @@ public class LdapResultImplTest
 
     /**
      * Tests two non default carbon copies for equality.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsCarbonCopy() throws LdapException
@@ -226,6 +223,8 @@ public class LdapResultImplTest
 
     /**
      * Tests two non default carbon copies for equal hashCode.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCodeCarbonCopy() throws LdapException
@@ -256,6 +255,8 @@ public class LdapResultImplTest
 
     /**
      * Tests for inequality when the error message is different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualsDiffErrorMessage() throws LdapException
@@ -287,6 +288,8 @@ public class LdapResultImplTest
 
     /**
      * Tests for inequality when the matchedDn properties are not the same.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualsDiffMatchedDn() throws LdapException
@@ -318,6 +321,8 @@ public class LdapResultImplTest
 
     /**
      * Tests for inequality when the resultCode properties are not the same.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualsDiffResultCode() throws LdapException
@@ -349,6 +354,8 @@ public class LdapResultImplTest
 
     /**
      * Tests for inequality when the referrals are not the same.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualsDiffReferrals() throws LdapException

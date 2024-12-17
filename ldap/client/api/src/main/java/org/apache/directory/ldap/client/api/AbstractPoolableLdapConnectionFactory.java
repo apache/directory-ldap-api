@@ -113,7 +113,7 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     /**
      * Constructor that takes a LdapConnection factory for poolable connections
      * 
-     * @param connectionFactory
+     * @param connectionFactory The Ldap connection factory to use
      */
     public AbstractPoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
     {

@@ -46,7 +46,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 {
     /**
      * Test encoding of a PSearchControl.
-     * @throws Exception on error
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testEncodePSearchControl() throws Exception
@@ -82,6 +83,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PSearchControl with combined changes types
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessChangeTypesAddModDN() throws Exception
@@ -119,6 +122,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a PSearchControl with a changes types which
      * value is 0
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessChangeTypes0() throws Exception
@@ -147,6 +152,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a PSearchControl with a changes types which
      * value is above 15
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessChangeTypes22() throws Exception
@@ -174,6 +181,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PSearchControl with a null sequence
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessNullSequence() throws Exception
@@ -198,6 +207,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PSearchControl without changeTypes
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessWithoutChangeTypes() throws Exception
@@ -224,6 +235,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PSearchControl without changeOnly
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessWithoutChangesOnly() throws Exception
@@ -250,6 +263,8 @@ public class PSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PSearchControl without returnECs
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessWithoutReturnECs() throws Exception

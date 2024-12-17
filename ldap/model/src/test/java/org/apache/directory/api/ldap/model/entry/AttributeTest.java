@@ -154,7 +154,7 @@ public class AttributeTest
 
 
     /**
-     * @throws java.lang.Exception
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void setUpBeforeClass() throws Exception
@@ -245,6 +245,9 @@ public class AttributeTest
 
     /**
      * Test method getBytes()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetBytes() throws InvalidAttributeValueException, LdapException
@@ -277,6 +280,9 @@ public class AttributeTest
 
     /**
      * Test method getString()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetString() throws InvalidAttributeValueException, LdapException
@@ -431,6 +437,8 @@ public class AttributeTest
 
     /**
      * Test method iterator()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIterator() throws LdapException
@@ -456,6 +464,9 @@ public class AttributeTest
 
     /**
      * Test method add(Value...)
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testAddValueArray() throws InvalidAttributeValueException, LdapException
@@ -526,6 +537,9 @@ public class AttributeTest
 
     /**
      * Test method add( String... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testAddStringArray() throws InvalidAttributeValueException, LdapException
@@ -617,6 +631,9 @@ public class AttributeTest
 
     /**
      * Test method add( byte[]... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testAddByteArray() throws InvalidAttributeValueException, LdapException
@@ -677,6 +694,9 @@ public class AttributeTest
 
     /**
      * Test method clear()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testClear() throws InvalidAttributeValueException, LdapException
@@ -704,6 +724,9 @@ public class AttributeTest
 
     /**
      * Test method contains( Value... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testContainsValueArray() throws InvalidAttributeValueException, LdapException
@@ -757,6 +780,9 @@ public class AttributeTest
 
     /**
      * Test method contains( String... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testContainsStringArray() throws InvalidAttributeValueException, LdapException
@@ -807,6 +833,9 @@ public class AttributeTest
 
     /**
      * Test method contains( byte... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testContainsByteArray() throws InvalidAttributeValueException, LdapException
@@ -857,6 +886,9 @@ public class AttributeTest
 
     /**
      * Test method get()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testGet() throws InvalidAttributeValueException, LdapException
@@ -898,6 +930,8 @@ public class AttributeTest
 
     /**
      * Test method getAll()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIterator2() throws LdapException
@@ -930,6 +964,9 @@ public class AttributeTest
 
     /**
      * Test method size()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testSize() throws InvalidAttributeValueException, LdapException
@@ -953,6 +990,9 @@ public class AttributeTest
 
     /**
      * Test method remove( Value... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testRemoveValueArray() throws InvalidAttributeValueException, LdapException
@@ -1022,6 +1062,9 @@ public class AttributeTest
 
     /**
      * Test method remove( byte... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testRemoveByteArray() throws InvalidAttributeValueException, LdapException
@@ -1061,6 +1104,9 @@ public class AttributeTest
 
     /**
      * Test method remove( String... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testRemoveStringArray() throws InvalidAttributeValueException, LdapException
@@ -1100,6 +1146,9 @@ public class AttributeTest
 
     /**
      * Test method put( String... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testPutStringArray() throws InvalidAttributeValueException, LdapException
@@ -1157,6 +1206,9 @@ public class AttributeTest
 
     /**
      * Test method put( byte[]... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testPutByteArray() throws InvalidAttributeValueException, LdapException
@@ -1218,6 +1270,9 @@ public class AttributeTest
 
     /**
      * Test method put( Value... )
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testPutValueArray() throws InvalidAttributeValueException, LdapException
@@ -1276,6 +1331,9 @@ public class AttributeTest
 
     /**
      * Test method toString()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testToString() throws InvalidAttributeValueException, LdapException
@@ -1302,6 +1360,9 @@ public class AttributeTest
 
     /**
      * Test method hashCode()
+     * 
+     * @throws LdapException If the test failed
+     * @throws InvalidAttributeValueException If the test failed
      */
     @Test
     public void testHashCode() throws InvalidAttributeValueException, LdapException
@@ -1359,6 +1420,8 @@ public class AttributeTest
 
     /**
      * Test method testEquals()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEquals() throws LdapException
@@ -1419,6 +1482,8 @@ public class AttributeTest
 
     /**
      * Test method testClone()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClone() throws LdapException
@@ -1445,6 +1510,10 @@ public class AttributeTest
 
     /**
      * Test the serialization of a complete client attribute
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeCompleteAttribute() throws LdapException, IOException, ClassNotFoundException
@@ -1465,6 +1534,10 @@ public class AttributeTest
 
     /**
      * Test the serialization of a client attribute with no value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeAttributeWithNoValue() throws LdapException, IOException, ClassNotFoundException
@@ -1483,6 +1556,10 @@ public class AttributeTest
 
     /**
      * Test the serialization of a client attribute with a null value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeAttributeNullValue() throws LdapException, IOException, ClassNotFoundException
@@ -1504,6 +1581,10 @@ public class AttributeTest
 
     /**
      * Test the serialization of a client attribute with a binary value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeAttributeBinaryValue() throws LdapException, IOException, ClassNotFoundException
@@ -1525,6 +1606,8 @@ public class AttributeTest
 
     /**
      * test that we properly throw an exception, and not a NPE, when no AttributeType is provided.
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testNullAT() throws LdapInvalidAttributeValueException

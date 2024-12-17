@@ -49,6 +49,8 @@ public class SchemaAwareEntrySerializationTest
 
     /**
      * Initialize OIDs maps for normalization
+     * 
+     * @throws LdapException If the setup failed
      */
     @BeforeAll
     public static void setup() throws Exception

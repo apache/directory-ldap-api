@@ -97,6 +97,8 @@ public class ModifyRequestImplTest
 
     /**
      * Tests the same object reference for equality.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsSameObj() throws LdapException
@@ -108,6 +110,8 @@ public class ModifyRequestImplTest
 
     /**
      * Tests for equality using exact copies.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsExactCopy() throws LdapException
@@ -120,6 +124,8 @@ public class ModifyRequestImplTest
 
     /**
      * Tests the same object reference for equal hashCode.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCodeSameObj() throws LdapException
@@ -131,6 +137,8 @@ public class ModifyRequestImplTest
 
     /**
      * Tests for equal hashCode using exact copies.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCodeExactCopy() throws LdapException
@@ -179,6 +187,8 @@ public class ModifyRequestImplTest
 
     /**
      * Test for inequality when only the mods ops are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffModOps() throws LdapException
@@ -206,6 +216,8 @@ public class ModifyRequestImplTest
 
     /**
      * Test for inequality when only the number of mods are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffModCount() throws LdapException
@@ -227,6 +239,8 @@ public class ModifyRequestImplTest
 
     /**
      * Test for inequality when only the mods attribute Id's are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffModIds() throws LdapException
@@ -254,6 +268,8 @@ public class ModifyRequestImplTest
 
     /**
      * Test for inequality when only the mods attribute values are different.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualDiffModValues() throws LdapException
@@ -282,6 +298,8 @@ public class ModifyRequestImplTest
 
     /**
      * Tests for equality even when another BindRequest implementation is used.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsDiffImpl() throws LdapException

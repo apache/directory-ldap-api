@@ -75,7 +75,7 @@ public class SchemaAwareRdnTest
     /**
      * test an empty Rdn
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnEmpty() throws LdapException
@@ -87,7 +87,7 @@ public class SchemaAwareRdnTest
     /**
      * test a simple Rdn : cn = b
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimple() throws LdapException
@@ -99,7 +99,7 @@ public class SchemaAwareRdnTest
     /**
      * test a composite Rdn : cn = b, sn = e
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnComposite() throws LdapException
@@ -112,7 +112,7 @@ public class SchemaAwareRdnTest
      * test a composite Rdn with or without spaces: cn=b, cn =b, cn= b, cn = b, cn =
      * b
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeWithSpace() throws LdapException
@@ -139,7 +139,7 @@ public class SchemaAwareRdnTest
     /**
      * test a simple Rdn with differents separators : cn = b + sn = d
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimpleMultivaluedAttribute() throws LdapException
@@ -153,7 +153,7 @@ public class SchemaAwareRdnTest
      * test a composite Rdn with differents separators : cn=b+sn=d, gn=f + l=h +
      * c=j
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeMultivaluedAttribute() throws LdapException
@@ -172,7 +172,7 @@ public class SchemaAwareRdnTest
     /**
      * test a simple Rdn with an oid prefix (uppercase) : OID.2.5.4.3 = azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidUpper() throws LdapException
@@ -184,7 +184,7 @@ public class SchemaAwareRdnTest
     /**
      * test a simple Rdn with an oid prefix (lowercase) : oid.12.34.56 = azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidLower() throws LdapException
@@ -197,7 +197,7 @@ public class SchemaAwareRdnTest
      * test a simple Rdn with an oid attribut wiithout oid prefix : 2.5.4.3 =
      * azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidWithoutPrefix() throws LdapException
@@ -210,7 +210,7 @@ public class SchemaAwareRdnTest
      * test a composite Rdn with an oid attribut wiithout oid prefix : 2.5.4.3 =
      * azerty; 2.5.4.4 = test
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeOidWithoutPrefix() throws LdapException
@@ -221,9 +221,9 @@ public class SchemaAwareRdnTest
 
 
     /**
-     * test a simple Rdn with pair char attribute value : l = \,\=\+\<\>\#\;\\\"\C3\A9"
+     * test a simple Rdn with pair char attribute value : l = \,\=\+\&lt;\&gt;\#\;\\\"\C3\A9"
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnPairCharAttributeValue() throws LdapException
@@ -261,6 +261,8 @@ public class SchemaAwareRdnTest
 
     /**
      * test a simple Rdn with hexString attribute value : userCertificate = #0010A0AAFF
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnHexStringAttributeValue() throws LdapException
@@ -271,6 +273,8 @@ public class SchemaAwareRdnTest
 
     /**
      * test exception from illegal hexString attribute value : cn=#zz.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testBadRdnHexStringAttributeValue() throws LdapException
@@ -290,7 +294,7 @@ public class SchemaAwareRdnTest
     /**
      * test a simple Rdn with quoted attribute value : cn = "quoted \"value"
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnQuotedAttributeValue() throws LdapException
@@ -302,7 +306,7 @@ public class SchemaAwareRdnTest
     /**
      * Test the clone method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCloningOneNameComponent() throws LdapException
@@ -320,7 +324,7 @@ public class SchemaAwareRdnTest
     /**
      * Test the creation of a new Rdn
      * 
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCreation() throws LdapException
@@ -334,7 +338,7 @@ public class SchemaAwareRdnTest
     /**
      * Test the clone method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCloningTwoNameComponent() throws LdapException
@@ -355,7 +359,7 @@ public class SchemaAwareRdnTest
     /**
      * Test the equals method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNull() throws LdapException
@@ -369,7 +373,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a composite NC to a single NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NC() throws LdapException
@@ -383,7 +387,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a single NC to a composite NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCS() throws LdapException
@@ -398,7 +402,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a composite NCS to a composite NCS in the same order.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NCSOrdered() throws LdapException
@@ -413,7 +417,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a composite NCS to a composite NCS in a different order.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NCSUnordered() throws LdapException
@@ -428,7 +432,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a composite NCS to a different composite NCS.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NCSNotEquals() throws LdapException
@@ -445,7 +449,7 @@ public class SchemaAwareRdnTest
      * Test for DIRSHARED-2.
      * The first ATAV is equal, the second or following ATAV differs.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareSecondAtav() throws LdapException
@@ -475,7 +479,7 @@ public class SchemaAwareRdnTest
      * The compare operation should return a correct value (1 or -1)
      * depending on the ATAVs, not on their position.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareIndependentFromOrder() throws LdapException
@@ -500,7 +504,7 @@ public class SchemaAwareRdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for single-valued RDNs.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNC2NC() throws LdapException
@@ -517,7 +521,7 @@ public class SchemaAwareRdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for multi-valued RDNs with different values.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNCS2NCSDifferentValues() throws LdapException
@@ -533,7 +537,7 @@ public class SchemaAwareRdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for multi-valued RDNs with different types.
      * 
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNCS2NCSDifferentTypes() throws LdapException
@@ -549,7 +553,7 @@ public class SchemaAwareRdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for multi-valued RDNs with different order.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNCS2NCSUnordered() throws LdapException
@@ -564,7 +568,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares with a null Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNullRdn() throws LdapException
@@ -578,7 +582,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a simple NC to a simple NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NC() throws LdapException
@@ -593,7 +597,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a simple NC to a simple NC in UperCase.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCUperCase() throws LdapException
@@ -608,7 +612,7 @@ public class SchemaAwareRdnTest
     /**
      * Compares a simple NC to a different simple NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCNotEquals() throws LdapException
@@ -624,7 +628,7 @@ public class SchemaAwareRdnTest
      * 
      * Test the getValue method.
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetValue() throws LdapException
@@ -639,7 +643,7 @@ public class SchemaAwareRdnTest
      * 
      * Test the getType method.
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetType() throws LdapException
@@ -653,7 +657,7 @@ public class SchemaAwareRdnTest
     /**
      * Test the getSize method.
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetSize() throws LdapException
@@ -680,7 +684,7 @@ public class SchemaAwareRdnTest
     /**
      * Test the equals method
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEquals() throws LdapException
@@ -937,9 +941,11 @@ public class SchemaAwareRdnTest
      * pair = ESC ( ESC / special / hexpair )
      * special = escaped / SPACE / SHARP / EQUALS
      * 
-     * --> replace <ESC><special> with <special>
+     * --&gt; replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;
      * 
      * '\#' will be replaced by '#'
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEscapedHashInValue2() throws LdapException
@@ -1016,6 +1022,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of an empty Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testEmptyRDNSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1061,6 +1071,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1086,6 +1100,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdn2Serialization() throws LdapException, IOException, ClassNotFoundException
@@ -1111,6 +1129,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of a simple Rdn with no value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnNoValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1136,6 +1158,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of a simple Rdn with one value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnOneValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1161,6 +1187,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of a simple Rdn with three values
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnThreeValuesSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1186,6 +1216,10 @@ public class SchemaAwareRdnTest
 
     /**
      * Test serialization of a simple Rdn with three unordered values
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnThreeValuesUnorderedSerialization() throws LdapException, IOException,
@@ -1212,6 +1246,8 @@ public class SchemaAwareRdnTest
 
     /**
      * test an Rdn with empty value
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnWithEmptyValue() throws LdapException
@@ -1225,6 +1261,8 @@ public class SchemaAwareRdnTest
 
     /**
      * test an Rdn with escaped comma
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnWithEscapedComa() throws LdapException
@@ -1247,7 +1285,7 @@ public class SchemaAwareRdnTest
      * Tests the equals and equals results of cloned multi-valued RDNs.
      * Test for DIRSHARED-9.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testComparingOfClonedMultiValuedRDNs() throws LdapException
@@ -1265,7 +1303,7 @@ public class SchemaAwareRdnTest
      * Tests the equals and equals results of copy constructed multi-valued RDNs.
      * Test for DIRSHARED-9.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testComparingOfCopyConstructedMultiValuedRDNs() throws LdapException
@@ -1281,6 +1319,8 @@ public class SchemaAwareRdnTest
 
     /**
      * test the UpName method on a Rdn with more than one atav
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetUpNameMultipleAtav() throws LdapException

@@ -29,8 +29,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -48,6 +46,8 @@ public class DnParserTest
 {
     /**
      * test an empty Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNEmpty() throws LdapException
@@ -60,6 +60,8 @@ public class DnParserTest
 
     /**
      * test a simple Dn : a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNSimple() throws LdapException
@@ -72,6 +74,8 @@ public class DnParserTest
 
     /**
      * test a composite Dn : a = b, d = e
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNComposite() throws LdapException
@@ -85,6 +89,8 @@ public class DnParserTest
 
     /**
      * test a composite Dn with or without spaces: a=b, a =b, a= b, a = b, a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeWithSpace() throws LdapException
@@ -98,6 +104,8 @@ public class DnParserTest
     /**
      * test a composite Dn with differents separators : a=b;c=d,e=f It should
      * return a=b,c=d,e=f (the ';' is replaced by a ',')
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeSepators() throws LdapException
@@ -110,6 +118,8 @@ public class DnParserTest
 
     /**
      * Test an attributeType with '_' (some vendors allow that)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeWithUnderscore() throws LdapException
@@ -122,6 +132,8 @@ public class DnParserTest
 
     /**
      * Test DN with '_' in value, because of special handling in Antlr grammar.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeValueWithUnderscore() throws LdapException
@@ -134,6 +146,8 @@ public class DnParserTest
 
     /**
      * test a simple Dn with multiple NameComponents : a = b + c = d
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNSimpleMultivaluedAttribute() throws LdapException
@@ -147,6 +161,8 @@ public class DnParserTest
     /**
      * test a composite Dn with multiple NC and separators : a=b+c=d, e=f + g=h +
      * i=j
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeMultivaluedAttribute() throws LdapException
@@ -159,6 +175,8 @@ public class DnParserTest
 
     /**
      * test a simple Dn with an oid prefix (uppercase) : OID.12.34.56 = azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNOidUpper() throws LdapException
@@ -171,6 +189,8 @@ public class DnParserTest
 
     /**
      * test a simple Dn with an oid prefix (lowercase) : oid.12.34.56 = azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNOidLower() throws LdapException
@@ -184,6 +204,8 @@ public class DnParserTest
     /**
      * test a simple Dn with an oid attribut without oid prefix : 12.34.56 =
      * azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNOidWithoutPrefix() throws LdapException
@@ -197,6 +219,8 @@ public class DnParserTest
     /**
      * test a composite Dn with an oid attribut wiithout oid prefix : 12.34.56 =
      * azerty; 7.8 = test
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeOidWithoutPrefix() throws LdapException
@@ -208,7 +232,9 @@ public class DnParserTest
 
 
     /**
-     * test a simple Dn with pair char attribute value : a = \,\=\+\<\>\#\;\\\"\C3\A9"
+     * test a simple Dn with pair char attribute value : a = \,\=\+\&lt;\&gt;\#\;\\\"\C3\A9"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNPairCharAttributeValue() throws LdapException
@@ -225,6 +251,8 @@ public class DnParserTest
 
     /**
      * test a simple Dn with hexString attribute value : a = #0010A0AAFF
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNHexStringAttributeValue() throws LdapException
@@ -237,6 +265,8 @@ public class DnParserTest
 
     /**
      * test exception from illegal hexString attribute value : a=#zz.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testBadLdapDNHexStringAttributeValue() throws LdapException
@@ -255,6 +285,8 @@ public class DnParserTest
 
     /**
      * test a simple Dn with quoted attribute value : a = "quoted \"value"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNQuotedAttributeValue() throws LdapException
@@ -271,6 +303,8 @@ public class DnParserTest
 
     /**
      * Tests a corner case of the parser because the sequence "\DC" is also a valid hex pair
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNBackslashInAttributeValue() throws LdapException
@@ -326,8 +360,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringEmpty() throws LdapException
@@ -342,8 +375,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringNull() throws LdapException
@@ -357,8 +389,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC1779_1() throws LdapException
@@ -376,8 +407,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_1() throws LdapException
@@ -391,8 +421,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_2() throws LdapException
@@ -408,8 +437,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_3() throws LdapException
@@ -425,8 +453,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_4() throws LdapException
@@ -439,8 +466,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_5() throws LdapException
@@ -455,8 +481,7 @@ public class DnParserTest
     /**
      * Class under test for Name parse(String)
      *
-     * @throws LdapException
-     *             if anything goes wrong
+     * @throws LdapException if anything goes wrong
      */
     @Test
     public final void testParseStringRFC2253_6() throws LdapException
@@ -469,9 +494,6 @@ public class DnParserTest
 
     /**
      * Class under test for Name parse(String)
-     *
-     * @throws LdapException
-     *             if anything goes wrong
      */
     @Test
     public final void testParseInvalidString()
@@ -494,8 +516,7 @@ public class DnParserTest
      * bug encountered in DIRSERVER-297 <a
      * href="https://issues.apache.org/jira/browse/DIRSERVER-297"> here</a>.
      *
-     * @throws LdapException
-     *             if anything goes wrong on parse()
+     * @throws LdapException if anything goes wrong on parse()
      */
     @Test
     public final void testPreserveSpaceAfterEscape() throws LdapException
@@ -588,9 +609,6 @@ public class DnParserTest
     /**
      * Test to check that even with a non escaped char, the Dn is parsed ok
      * or at least an error is generated.
-     *
-     * @throws LdapException
-     *             if anything goes wrong on parse()
      */
     @Test
     public final void testNonEscapedChars()
@@ -612,6 +630,8 @@ public class DnParserTest
 
     /**
      * Test the Dn.get( int ) method
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testGetRdnN() throws Exception

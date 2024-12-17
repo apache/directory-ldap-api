@@ -59,6 +59,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringAtavSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -84,6 +88,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringAtavSerializationBytes() throws LdapException, IOException, ClassNotFoundException
@@ -146,6 +154,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullAtavSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -169,6 +181,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullAtavSerializationBytes() throws LdapException, IOException, ClassNotFoundException
@@ -268,6 +284,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringAtavStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -293,6 +313,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringAtavStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
@@ -355,6 +379,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test static serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullAtavStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -378,6 +406,10 @@ public class SchemaAwareAvaSerializationTest
 
     /**
      * Test static serialization of a simple ATAV
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullAtavStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException

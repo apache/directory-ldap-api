@@ -58,6 +58,9 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a AbandonRequest with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAbandonRequestWithControls() throws DecoderException, EncoderException
@@ -179,6 +182,9 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AbandonRequest with no controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAbandonRequestNoControlsHighMessageId() throws DecoderException, EncoderException
@@ -224,7 +230,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AbandonRequest with a null messageId
      */
     @Test
-    public void testDecodeAbandonRequestNoMessageId() throws DecoderException
+    public void testDecodeAbandonRequestNoMessageId()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
@@ -252,7 +258,7 @@ public class AbandonRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a AbandonRequest with a bad Message Id
      */
     @Test
-    public void testDecodeAbandonRequestBadMessageId() throws DecoderException
+    public void testDecodeAbandonRequestBadMessageId()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0B );
         stream.put( new byte[]

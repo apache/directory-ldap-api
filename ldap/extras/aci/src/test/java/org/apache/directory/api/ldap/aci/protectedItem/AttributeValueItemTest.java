@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.api.ldap.aci.protectedItem.AttributeValueItem;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.filter.UndefinedNode;
@@ -56,6 +55,8 @@ public class AttributeValueItemTest
 
     /**
      * Initialize maxValueCountItem instances
+     * 
+     * @throws Exception if the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception

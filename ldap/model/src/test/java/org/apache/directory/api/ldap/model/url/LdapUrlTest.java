@@ -63,6 +63,8 @@ public class LdapUrlTest
 
     /**
      * test an empty LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnEmpty() throws LdapURLEncodingException
@@ -73,6 +75,8 @@ public class LdapUrlTest
 
     /**
      * test a simple LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSimple() throws LdapURLEncodingException
@@ -84,6 +88,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl host 1
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnWithMinus() throws LdapURLEncodingException
@@ -94,6 +100,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad port
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadPort() throws LdapURLEncodingException
@@ -107,6 +115,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad port 2
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadPort2() throws LdapURLEncodingException
@@ -120,6 +130,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad port 3
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadPort3() throws LdapURLEncodingException
@@ -133,6 +145,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad port 4
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadPort4() throws LdapURLEncodingException
@@ -146,6 +160,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no host
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost1() throws LdapURLEncodingException
@@ -156,6 +172,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad host 2
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost2() throws LdapURLEncodingException
@@ -166,6 +184,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad host 3
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost3() throws LdapURLEncodingException
@@ -176,6 +196,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad host 4
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost4() throws LdapURLEncodingException
@@ -186,6 +208,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad host 5
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost5() throws LdapURLEncodingException
@@ -196,6 +220,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad host 6
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost6() throws LdapURLEncodingException
@@ -207,6 +233,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad host 7
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHost7() throws LdapURLEncodingException
@@ -217,6 +245,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl IP host
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnIPV4Host() throws LdapURLEncodingException
@@ -227,6 +257,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl IP host and port
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnIPV4HostPort() throws LdapURLEncodingException
@@ -238,6 +270,8 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad IP host 1 : we should not get an error, but the host will not be considered 
      * as an IPV4 address
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHostIP1() throws LdapURLEncodingException
@@ -249,6 +283,8 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad IP host 1 : we should not get an error, but the host will not be considered 
      * as an IPV4 address
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHostIP2() throws LdapURLEncodingException
@@ -260,6 +296,8 @@ public class LdapUrlTest
     /**
      * test a LdapUrl with a bad IP host 1 : we should not get an error, but the host will not be considered 
      * as an IPV4 address
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHostIP3() throws LdapURLEncodingException
@@ -270,6 +308,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a bad IP host 4
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnBadHostIP4() throws LdapURLEncodingException
@@ -283,6 +323,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a valid host hich is not an IP
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnNotAnIP() throws LdapURLEncodingException
@@ -293,6 +335,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl IPv6 host
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnIPv6Host() throws LdapURLEncodingException
@@ -308,7 +352,8 @@ public class LdapUrlTest
 
     /**
      * test a bad LdapUrl IPv6 host
-     * @throws LdapURLEncodingException 
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnIPv6BadHost() throws LdapURLEncodingException
@@ -322,7 +367,8 @@ public class LdapUrlTest
 
     /**
      * test a bad LdapUrl IPv6 host
-     * @throws LdapURLEncodingException 
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnIPv6BadHost2() throws LdapURLEncodingException
@@ -336,6 +382,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with valid simpleDN
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSimpleDN() throws LdapURLEncodingException
@@ -347,6 +395,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with valid simpleDN 2
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSimpleDN2() throws LdapURLEncodingException
@@ -358,6 +408,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a valid encoded Dn
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSimpleDNEncoded() throws LdapURLEncodingException
@@ -369,6 +421,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with an invalid Dn
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnInvalidDN() throws LdapURLEncodingException
@@ -382,6 +436,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with an invalid Dn 2
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnInvalidDN2() throws LdapURLEncodingException
@@ -395,6 +451,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with valid unique attributes
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnUniqueAttribute() throws LdapURLEncodingException
@@ -406,6 +464,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with valid attributes
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnAttributes() throws LdapURLEncodingException
@@ -417,6 +477,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with valid duplicated attributes
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnDuplicatedAttributes() throws LdapURLEncodingException
@@ -428,6 +490,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with invalid attributes
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapInvalideAttributes() throws LdapURLEncodingException
@@ -441,6 +505,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with attributes but no Dn
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapNoDNAttributes() throws LdapURLEncodingException
@@ -452,6 +518,8 @@ public class LdapUrlTest
 
     /**
      * test 1 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_1() throws LdapURLEncodingException
@@ -463,6 +531,8 @@ public class LdapUrlTest
 
     /**
      * test 2 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_2() throws LdapURLEncodingException
@@ -474,6 +544,8 @@ public class LdapUrlTest
 
     /**
      * test 3 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_3() throws LdapURLEncodingException
@@ -485,6 +557,8 @@ public class LdapUrlTest
 
     /**
      * test 4 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_4() throws LdapURLEncodingException
@@ -496,6 +570,8 @@ public class LdapUrlTest
 
     /**
      * test 5 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_5() throws LdapURLEncodingException
@@ -507,6 +583,8 @@ public class LdapUrlTest
 
     /**
      * test 6 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_6() throws LdapURLEncodingException
@@ -518,6 +596,8 @@ public class LdapUrlTest
 
     /**
      * test 7 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_7() throws LdapURLEncodingException
@@ -529,6 +609,8 @@ public class LdapUrlTest
 
     /**
      * test 8 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_8() throws LdapURLEncodingException
@@ -540,6 +622,8 @@ public class LdapUrlTest
 
     /**
      * test 9 from RFC 2255 LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapRFC2255_9() throws LdapURLEncodingException
@@ -551,6 +635,8 @@ public class LdapUrlTest
 
     /**
      * test an empty ldaps:// LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnEmptyLdaps() throws LdapURLEncodingException
@@ -561,6 +647,8 @@ public class LdapUrlTest
 
     /**
      * test an simple ldaps:// LdapUrl
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSimpleLdaps() throws LdapURLEncodingException
@@ -572,6 +660,8 @@ public class LdapUrlTest
 
     /**
      * test the setScheme() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSetScheme() throws LdapURLEncodingException
@@ -595,6 +685,8 @@ public class LdapUrlTest
 
     /**
      * test the setHost() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSetHost() throws LdapURLEncodingException
@@ -614,6 +706,8 @@ public class LdapUrlTest
 
     /**
      * test the setPort() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testDnSetPort() throws LdapURLEncodingException
@@ -637,6 +731,9 @@ public class LdapUrlTest
 
     /**
      * test the setDn() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
+     * @throws LdapInvalidDnException If the test failed
      */
     @Test
     public void testDnSetDn() throws LdapURLEncodingException, LdapInvalidDnException
@@ -657,6 +754,9 @@ public class LdapUrlTest
 
     /**
      * test the setAttributes() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
+     * @throws LdapInvalidDnException If the test failed
      */
     @Test
     public void testDnSetAttributes() throws LdapURLEncodingException, LdapInvalidDnException
@@ -689,6 +789,9 @@ public class LdapUrlTest
 
     /**
      * test the setScope() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
+     * @throws LdapInvalidDnException If the test failed
      */
     @Test
     public void testDnSetScope() throws LdapURLEncodingException, LdapInvalidDnException
@@ -714,6 +817,9 @@ public class LdapUrlTest
 
     /**
      * test the setFilter() method
+     * 
+     * @throws LdapURLEncodingException If the test failed
+     * @throws LdapInvalidDnException If the test failed
      */
     @Test
     public void testDnSetFilter() throws LdapURLEncodingException, LdapInvalidDnException
@@ -739,7 +845,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl without a scheme
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoScheme() throws LdapURLEncodingException
@@ -758,7 +865,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl without a host but with a Dn
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoHostDN() throws LdapURLEncodingException
@@ -779,7 +887,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a host, no port, and a Dn
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLHostNoPortDN() throws LdapURLEncodingException
@@ -792,7 +901,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no host, a port, and a Dn
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoHostPortDN() throws LdapURLEncodingException
@@ -806,7 +916,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDN() throws LdapURLEncodingException
@@ -819,7 +930,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn and no attributes
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrs() throws LdapURLEncodingException
@@ -832,7 +944,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes and no scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsNoScope() throws LdapURLEncodingException
@@ -845,7 +958,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, no scope and no filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsNoScopeNoFilter() throws LdapURLEncodingException
@@ -858,7 +972,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn and attributes
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDN() throws LdapURLEncodingException
@@ -871,7 +986,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn and attributes
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrs() throws LdapURLEncodingException
@@ -884,7 +1000,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn and attributes
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrs() throws LdapURLEncodingException
@@ -897,7 +1014,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes an scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScope() throws LdapURLEncodingException
@@ -910,7 +1028,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes an scope base
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeBase() throws LdapURLEncodingException
@@ -923,7 +1042,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes an default scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsDefaultScope() throws LdapURLEncodingException
@@ -936,7 +1056,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes an scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScope() throws LdapURLEncodingException
@@ -949,7 +1070,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes an scope base
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeBase() throws LdapURLEncodingException
@@ -962,7 +1084,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes an default scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsDefaultScope() throws LdapURLEncodingException
@@ -975,7 +1098,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes an scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScope() throws LdapURLEncodingException
@@ -988,7 +1112,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes an scope base
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeBase() throws LdapURLEncodingException
@@ -1001,7 +1126,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes an default scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsDefaultScope() throws LdapURLEncodingException
@@ -1014,7 +1140,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes an scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScope() throws LdapURLEncodingException
@@ -1027,7 +1154,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes an scope base
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeBase() throws LdapURLEncodingException
@@ -1040,7 +1168,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes an default scope
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsDefaultScope() throws LdapURLEncodingException
@@ -1053,7 +1182,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, no scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsNoScopeFilter() throws LdapURLEncodingException
@@ -1066,7 +1196,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, no scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsNoScopeFilter() throws LdapURLEncodingException
@@ -1079,7 +1210,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, no scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsNoScopeFilter() throws LdapURLEncodingException
@@ -1092,7 +1224,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, a scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeFilter() throws LdapURLEncodingException
@@ -1105,7 +1238,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, a base scope, and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeBaseFilter() throws LdapURLEncodingException
@@ -1118,7 +1252,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, a scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeFilter() throws LdapURLEncodingException
@@ -1131,7 +1266,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, a base scope, and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeBaseFilter() throws LdapURLEncodingException
@@ -1144,7 +1280,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, a scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeFilter() throws LdapURLEncodingException
@@ -1157,7 +1294,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, a base scope, and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeBaseFilter() throws LdapURLEncodingException
@@ -1170,7 +1308,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, no scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsNoScopeFilter() throws LdapURLEncodingException
@@ -1183,7 +1322,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, a scope and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeFilter() throws LdapURLEncodingException
@@ -1196,7 +1336,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, a base scope, and filter
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeBaseFilter() throws LdapURLEncodingException
@@ -1209,7 +1350,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, no scope, no filter and no extension
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsNoScopeNoFilterNoExtension() throws LdapURLEncodingException
@@ -1222,7 +1364,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, no scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsNoScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1235,7 +1378,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, no scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsNoScopeFilterExtension() throws LdapURLEncodingException
@@ -1248,7 +1392,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, a scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1261,7 +1406,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, a base scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeBaseNoFilterExtension() throws LdapURLEncodingException
@@ -1274,7 +1420,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, a scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeFilterExtension() throws LdapURLEncodingException
@@ -1287,7 +1434,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, no attributes, a base scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNNoAttrsScopeBaseFilterExtension() throws LdapURLEncodingException
@@ -1300,7 +1448,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, no scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsNoScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1313,7 +1462,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, no scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsNoScopeFilterExtension() throws LdapURLEncodingException
@@ -1326,7 +1476,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, a scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1339,7 +1490,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, a base scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeBaseNoFilterExtension() throws LdapURLEncodingException
@@ -1352,7 +1504,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, a scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeFilterExtension() throws LdapURLEncodingException
@@ -1365,7 +1518,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with no Dn, some attributes, a base scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLNoDNAttrsScopeBaseFilterExtension() throws LdapURLEncodingException
@@ -1378,7 +1532,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, no scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsNoScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1391,7 +1546,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, no scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsNoScopeFilterExtension() throws LdapURLEncodingException
@@ -1404,7 +1560,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, a scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1417,7 +1574,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, a base scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeBaseNoFilterExtension() throws LdapURLEncodingException
@@ -1430,7 +1588,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, a scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeFilterExtension() throws LdapURLEncodingException
@@ -1443,7 +1602,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, no attributes, a base scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNNoAttrsScopeBaseFilterExtension() throws LdapURLEncodingException
@@ -1456,7 +1616,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, no scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsNoScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1469,7 +1630,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, no scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsNoScopeFilterExtension() throws LdapURLEncodingException
@@ -1482,7 +1644,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, a scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeNoFilterExtension() throws LdapURLEncodingException
@@ -1495,7 +1658,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, a base scope, no filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeBaseNoFilterExtension() throws LdapURLEncodingException
@@ -1508,7 +1672,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, a scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeFilterExtension() throws LdapURLEncodingException
@@ -1521,7 +1686,8 @@ public class LdapUrlTest
 
     /**
      * test a LdapUrl with a Dn, some attributes, a base scope, a filter and some extensions
-     *
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLDNAttrsScopeBaseFilterExtension() throws LdapURLEncodingException
@@ -1534,6 +1700,8 @@ public class LdapUrlTest
 
     /**
      * Test a LdapUrl with an extension after an empty extension.
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLExtensionAfterEmptyExtension() throws LdapURLEncodingException
@@ -1546,6 +1714,8 @@ public class LdapUrlTest
 
     /**
      * Test the extension order of an LdapUrl.
+     * 
+     * @throws LdapURLEncodingException If the test failed
      */
     @Test
     public void testLdapURLExtensionOrder() throws LdapURLEncodingException
@@ -1584,6 +1754,8 @@ public class LdapUrlTest
 
     /**
      * Test UTF-8 values in extension values.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdapURLExtensionWithUtf8Values() throws Exception
@@ -1612,6 +1784,8 @@ public class LdapUrlTest
 
     /**
      * Test comma in extension value.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdapURLExtensionWithCommaValue() throws Exception
@@ -1634,11 +1808,12 @@ public class LdapUrlTest
      *
      *   reserved    = gen-delims / sub-delims
      *   gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
-     *   sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
+     *   sub-delims  = "!" / "$" / "&amp;" / "'" / "(" / ")"
      *                 / "*" / "+" / "," / ";" / "="
      *
      * RFC 4516 specifies that '?' and a ',' must be percent encoded.
-     *
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdapURLExtensionWithRFC3986ReservedCharsAndRFC4616Exception() throws Exception
@@ -1660,6 +1835,8 @@ public class LdapUrlTest
      * Test with RFC 3986 unreserved characters in extension value.
      *
      *   unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdapURLExtensionWithRFC3986UnreservedChars() throws Exception

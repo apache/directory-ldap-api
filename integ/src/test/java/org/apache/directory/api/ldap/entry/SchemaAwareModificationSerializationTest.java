@@ -58,6 +58,8 @@ public class SchemaAwareModificationSerializationTest
 
     /**
      * Initialize OIDs maps for normalization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void setup() throws Exception

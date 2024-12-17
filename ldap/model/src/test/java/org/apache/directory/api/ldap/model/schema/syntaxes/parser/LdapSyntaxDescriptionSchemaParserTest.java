@@ -63,7 +63,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericOid() throws ParseException
@@ -75,7 +75,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -87,7 +87,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -99,7 +99,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     /**
      * Test full sytax description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testFull() throws ParseException
@@ -127,8 +127,6 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -161,6 +159,8 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
     /**
      * Tests the parse of a simple AttributeType with the schema extension.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testSyntaxWithExtensions() throws ParseException
@@ -176,6 +176,8 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -192,6 +194,8 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException

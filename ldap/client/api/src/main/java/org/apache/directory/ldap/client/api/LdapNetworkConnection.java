@@ -2440,6 +2440,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * We do not want to use the default search timeout in this case, as that is likely to be in order of seconds.
      * That is too long for quick connection check.
      * searchRequest.timeLimit is not going to work either, as it has very rough granularity (seconds).
+     * 
+     * @param searchRequest The SearchRequst to process
+     * @param localSearchTimeout The local timeout in seconds
+     * @return A SearchCursor instance
+     * @throws LdapException If the search has failed
      */
     public SearchCursor search( SearchRequest searchRequest, long localSearchTimeout ) throws LdapException
     {

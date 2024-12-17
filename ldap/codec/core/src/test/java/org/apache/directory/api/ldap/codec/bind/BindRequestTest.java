@@ -158,6 +158,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with Simple authentication and
      * controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestSimpleNoControls() throws DecoderException, EncoderException
@@ -210,7 +213,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * controls
      */
     @Test
-    public void testDecodeBindRequestBadDN() throws DecoderException
+    public void testDecodeBindRequestBadDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
@@ -250,8 +253,6 @@ public class BindRequestTest extends AbstractCodecServiceTest
             assertTrue( response instanceof BindResponseImpl );
             assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( BindResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
-
-            throw de;
         }
     }
 
@@ -261,7 +262,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * and no controls
      */
     @Test
-    public void testDecodeBindRequestSimpleNoName() throws DecoderException
+    public void testDecodeBindRequestSimpleNoName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x15 );
         stream.put( new byte[]
@@ -293,6 +294,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with Simple authentication, empty name
      * (an anonymous bind) and no controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestSimpleEmptyName() throws DecoderException, EncoderException
@@ -341,6 +345,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with Sasl authentication, no
      * credentials and no controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestSaslNoCredsNoControls() throws DecoderException, EncoderException
@@ -395,6 +402,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with Sasl authentication, a
      * credentials and no controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestSaslCredsNoControls() throws DecoderException, EncoderException
@@ -456,6 +466,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with Sasl authentication, no name, a
      * credentials and no controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestSaslNoNameCredsNoControls() throws DecoderException, EncoderException
@@ -514,6 +527,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindRequest with Sasl authentication, no name, no credentials
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestSaslNoNameNoCredsNoControls() throws DecoderException, EncoderException
@@ -546,7 +562,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with an empty body
      */
     @Test
-    public void testDecodeBindRequestEmptyBody() throws DecoderException
+    public void testDecodeBindRequestEmptyBody()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
         stream.put( new byte[]
@@ -573,7 +589,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with an empty version
      */
     @Test
-    public void testDecodeBindRequestEmptyVersion() throws DecoderException
+    public void testDecodeBindRequestEmptyVersion()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
         stream.put( new byte[]
@@ -601,7 +617,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with a bad version (0)
      */
     @Test
-    public void testDecodeBindRequestBadVersion0() throws DecoderException
+    public void testDecodeBindRequestBadVersion0()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
@@ -629,7 +645,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with a bad version (4)
      */
     @Test
-    public void testDecodeBindRequestBadVersion4() throws DecoderException
+    public void testDecodeBindRequestBadVersion4()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
@@ -657,7 +673,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with a bad version (128)
      */
     @Test
-    public void testDecodeBindRequestBadVersion128() throws DecoderException
+    public void testDecodeBindRequestBadVersion128()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
         stream.put( new byte[]
@@ -685,7 +701,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with no name
      */
     @Test
-    public void testDecodeBindRequestNoName() throws DecoderException
+    public void testDecodeBindRequestNoName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
         stream.put( new byte[]
@@ -713,7 +729,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with an empty name
      */
     @Test
-    public void testDecodeBindRequestEmptyName() throws DecoderException
+    public void testDecodeBindRequestEmptyName()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
         stream.put( new byte[]
@@ -740,6 +756,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindRequest with an empty simple
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestEmptySimple() throws DecoderException, EncoderException
@@ -785,7 +804,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with an empty sasl
      */
     @Test
-    public void testDecodeBindRequestEmptySasl() throws DecoderException
+    public void testDecodeBindRequestEmptySasl()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
         stream.put( new byte[]
@@ -828,7 +847,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with an empty sasl
      */
     @Test
-    public void testDecodeBindRequestEmptySaslWithControls() throws DecoderException
+    public void testDecodeBindRequestEmptySaslWithControls()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2F );
         stream.put( new byte[]
@@ -875,6 +894,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindRequest with an empty mechanism
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestEmptyMechanism() throws DecoderException, EncoderException
@@ -960,6 +982,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindRequest with an empty credentials
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestEmptyCredentials() throws EncoderException, DecoderException
@@ -1018,6 +1043,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with an empty credentials with
      * controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestEmptyCredentialsWithControls() throws DecoderException, EncoderException
@@ -1092,6 +1120,9 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a BindRequest with an empty mechanisms with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeBindRequestEmptyMechanismWithControls() throws EncoderException, DecoderException

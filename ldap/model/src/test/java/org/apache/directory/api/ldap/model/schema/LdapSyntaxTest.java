@@ -41,6 +41,8 @@ public class LdapSyntaxTest
 
     /**
      * Initialize ldap syntax use instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initMatchingRuleUses() throws Exception

@@ -56,6 +56,9 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a full ModifyDNRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccess() throws DecoderException, EncoderException
@@ -108,7 +111,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a bad Dn ModifyDNRequest
      */
     @Test
-    public void testDecodeModifyDNRequestBadDN() throws DecoderException
+    public void testDecodeModifyDNRequestBadDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
@@ -159,7 +162,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a bad Rdn ModifyDNRequest
      */
     @Test
-    public void testDecodeModifyDNRequestBadRDN() throws DecoderException
+    public void testDecodeModifyDNRequestBadRDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
@@ -210,7 +213,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a bad Rdn ModifyDNRequest
      */
     @Test
-    public void testDecodeModifyDNRequestBadNewSuperior() throws DecoderException
+    public void testDecodeModifyDNRequestBadNewSuperior()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x48 );
 
@@ -259,6 +262,9 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a full ModifyDNRequest with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyDNRequestSuccessWithControls() throws DecoderException, EncoderException
@@ -323,6 +329,9 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyDNRequest without a superior
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyDNRequestWithoutSuperior() throws DecoderException, EncoderException
@@ -371,6 +380,9 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyDNRequest without a superior with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyDNRequestWithoutSuperiorWithControls() throws DecoderException, EncoderException
@@ -440,7 +452,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyDNRequest with an empty body
      */
     @Test
-    public void testDecodeModifyDNRequestEmptyBody() throws DecoderException
+    public void testDecodeModifyDNRequestEmptyBody()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -469,7 +481,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyDNRequest with an empty entry
      */
     @Test
-    public void testDecodeModifyDNRequestEmptyEntry() throws DecoderException
+    public void testDecodeModifyDNRequestEmptyEntry()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
@@ -499,7 +511,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyDNRequest with an empty newRdn
      */
     @Test
-    public void testDecodeModifyDNRequestEmptyNewRdn() throws DecoderException
+    public void testDecodeModifyDNRequestEmptyNewRdn()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
@@ -533,7 +545,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyDNRequest with an empty deleteOldRdn
      */
     @Test
-    public void testDecodeModifyDNRequestEmptyDeleteOldRdnn() throws DecoderException
+    public void testDecodeModifyDNRequestEmptyDeleteOldRdnn()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x3C );
 

@@ -52,8 +52,6 @@ public class PasswordExpiredResponseTest
     }
 
     
-
-    
     @Test
     public void testDecodeRespWithValueZero() throws DecoderException, EncoderException
     {

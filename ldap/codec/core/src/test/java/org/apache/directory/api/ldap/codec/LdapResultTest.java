@@ -59,7 +59,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
      * Test the decoding of a AddResponse with no LdapResult
      */
     @Test
-    public void testDecodeAddResponseEmptyResultCode() throws DecoderException
+    public void testDecodeAddResponseEmptyResultCode()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
 
@@ -88,7 +88,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
      * Test the decoding of a AddResponse with no LdapResult
      */
     @Test
-    public void testDecodeAddResponseEmptyResultCodeAbove90() throws DecoderException
+    public void testDecodeAddResponseEmptyResultCodeAbove90()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
 
@@ -115,6 +115,8 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddResponse with all the different result codes
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeAddResponseEmptyResultCodesOK() throws DecoderException
@@ -154,7 +156,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
      * Test the decoding of a AddResponse with no matched Dn
      */
     @Test
-    public void testDecodeAddResponseEmptyResultCodeNoMatchedDN() throws DecoderException
+    public void testDecodeAddResponseEmptyResultCodeNoMatchedDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0A );
 
@@ -183,7 +185,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
      * Test the decoding of a AddResponse with no error message
      */
     @Test
-    public void testDecodeAddResponseEmptyResultCodeNoErrorMsg() throws DecoderException
+    public void testDecodeAddResponseEmptyResultCodeNoErrorMsg()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0C );
 
@@ -211,6 +213,9 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddResponse with a valid LdapResult
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseEmptyResultCodeOK() throws DecoderException, EncoderException
@@ -257,6 +262,9 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddResponse with a valid LdapResult with referral
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseEmptyResultCodeOKReferral() throws DecoderException, EncoderException
@@ -318,6 +326,9 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddResponse with a valid LdapResult with referral
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseEmptyResultCodeOKEmptyReferrals() throws DecoderException, EncoderException
@@ -350,6 +361,9 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddResponse with a valid LdapResult with referrals
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseEmptyResultCodeOKReferrals() throws DecoderException, EncoderException
@@ -420,6 +434,9 @@ public class LdapResultTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a AddResponse with a valid LdapResult with referrals
      * and an empty referral
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseEmptyResultCodeEmptyReferral() throws DecoderException, EncoderException
@@ -496,7 +513,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
      * transition after the referral sequence
      */
     @Test
-    public void testDecodeAddResponseEmptyResultCodeEmptyReferrals() throws DecoderException
+    public void testDecodeAddResponseEmptyResultCodeEmptyReferrals()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x10 );
 

@@ -209,8 +209,6 @@ public final class FileUtils
      * </ul>
      *
      * @param file  file or directory to delete, must not be {@code null}
-     * @throws NullPointerException if the directory is {@code null}
-     * @throws FileNotFoundException if the file was not found
      * @throws IOException in case deletion is unsuccessful
      */
     public static void forceDelete( File file ) throws IOException

@@ -54,6 +54,9 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a SearchResultDone
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultDoneSuccess() throws DecoderException, EncoderException
@@ -102,6 +105,9 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultDone with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultDoneSuccessWithControls() throws DecoderException, EncoderException
@@ -177,7 +183,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchResultDone with no LdapResult
      */
     @Test
-    public void testDecodeSearchResultDoneEmptyResult() throws DecoderException
+    public void testDecodeSearchResultDoneEmptyResult()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
@@ -204,6 +210,9 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchResultDone with a result code of length 2 bytes
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchResultDoneEsyncRefresh() throws DecoderException, EncoderException

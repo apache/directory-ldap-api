@@ -68,7 +68,7 @@ public class RdnTest
     /**
      * test an empty Rdn
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnEmpty() throws LdapException
@@ -80,7 +80,7 @@ public class RdnTest
     /**
      * test a simple Rdn : a = b
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimple() throws LdapException
@@ -92,7 +92,7 @@ public class RdnTest
     /**
      * test a composite Rdn : a = b, d = e
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnComposite() throws LdapException
@@ -105,7 +105,7 @@ public class RdnTest
      * test a composite Rdn with or without spaces: a=b, a =b, a= b, a = b, a =
      * b
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeWithSpace() throws LdapException
@@ -132,7 +132,7 @@ public class RdnTest
     /**
      * test a simple Rdn with differents separators : a = b + c = d
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimpleMultivaluedAttribute() throws LdapException
@@ -146,7 +146,7 @@ public class RdnTest
      * test a composite Rdn with differents separators : a=b+c=d, e=f + g=h +
      * i=j
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeMultivaluedAttribute() throws LdapException
@@ -165,7 +165,7 @@ public class RdnTest
     /**
      * test a simple Rdn with an oid prefix (uppercase) : OID.12.34.56 = azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidUpper() throws LdapException
@@ -177,7 +177,7 @@ public class RdnTest
     /**
      * test a simple Rdn with an oid prefix (lowercase) : oid.12.34.56 = azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidLower() throws LdapException
@@ -190,7 +190,7 @@ public class RdnTest
      * test a simple Rdn with an oid attribut wiithout oid prefix : 12.34.56 =
      * azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidWithoutPrefix() throws LdapException
@@ -203,7 +203,7 @@ public class RdnTest
      * test a composite Rdn with an oid attribut wiithout oid prefix : 12.34.56 =
      * azerty; 7.8 = test
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeOidWithoutPrefix() throws LdapException
@@ -214,9 +214,9 @@ public class RdnTest
 
 
     /**
-     * test a simple Rdn with pair char attribute value : a = \,\=\+\<\>\#\;\\\"\C3\A9"
+     * test a simple Rdn with pair char attribute value : a = \,\=\+\&lt;\&gt;\#\;\\\"\C3\A9"
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnPairCharAttributeValue() throws LdapException
@@ -231,6 +231,8 @@ public class RdnTest
 
     /**
      * test a simple Rdn with hexString attribute value : a = #0010A0AAFF
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnHexStringAttributeValue() throws LdapException
@@ -241,6 +243,8 @@ public class RdnTest
 
     /**
      * test exception from illegal hexString attribute value : a=#zz.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testBadRdnHexStringAttributeValue() throws LdapException
@@ -260,7 +264,7 @@ public class RdnTest
     /**
      * test a simple Rdn with quoted attribute value : a = "quoted \"value"
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnQuotedAttributeValue() throws LdapException
@@ -274,7 +278,7 @@ public class RdnTest
     /**
      * Test the clone method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCloningOneNameComponent() throws LdapException
@@ -292,7 +296,7 @@ public class RdnTest
     /**
      * Test the creation of a new Rdn
      * 
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCreation() throws LdapException
@@ -306,7 +310,7 @@ public class RdnTest
     /**
      * Test the clone method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCloningTwoNameComponent() throws LdapException
@@ -327,7 +331,7 @@ public class RdnTest
     /**
      * Test the equals method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNull() throws LdapException
@@ -341,7 +345,7 @@ public class RdnTest
     /**
      * Compares a composite NC to a single NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NC() throws LdapException
@@ -355,7 +359,7 @@ public class RdnTest
     /**
      * Compares a single NC to a composite NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCS() throws LdapException
@@ -370,7 +374,7 @@ public class RdnTest
     /**
      * Compares a composite NCS to a composite NCS in the same order.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NCSOrdered() throws LdapException
@@ -385,7 +389,7 @@ public class RdnTest
     /**
      * Compares a composite NCS to a composite NCS in a different order.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NCSUnordered() throws LdapException
@@ -400,7 +404,7 @@ public class RdnTest
     /**
      * Compares a composite NCS to a different composite NCS.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNCS2NCSNotEquals() throws LdapException
@@ -417,7 +421,7 @@ public class RdnTest
      * Test for DIRSHARED-2.
      * The first ATAV is equal, the second or following ATAV differs.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareSecondAtav() throws LdapException
@@ -447,7 +451,7 @@ public class RdnTest
      * The compare operation should return a correct value (1 or -1)
      * depending on the ATAVs, not on their position.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareIndependentFromOrder() throws LdapException
@@ -472,7 +476,7 @@ public class RdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for single-valued RDNs.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNC2NC() throws LdapException
@@ -489,7 +493,7 @@ public class RdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for multi-valued RDNs with different values.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNCS2NCSDifferentValues() throws LdapException
@@ -505,7 +509,7 @@ public class RdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for multi-valued RDNs with different types.
      * 
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNCS2NCSDifferentTypes() throws LdapException
@@ -521,7 +525,7 @@ public class RdnTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for multi-valued RDNs with different order.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNCS2NCSUnordered() throws LdapException
@@ -536,7 +540,7 @@ public class RdnTest
     /**
      * Compares with a null Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNullRdn() throws LdapException
@@ -550,7 +554,7 @@ public class RdnTest
     /**
      * Compares a simple NC to a simple NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NC() throws LdapException
@@ -565,7 +569,7 @@ public class RdnTest
     /**
      * Compares a simple NC to a simple NC in UperCase.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCUperCase() throws LdapException
@@ -580,7 +584,7 @@ public class RdnTest
     /**
      * Compares a simple NC to a different simple NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCNotEquals() throws LdapException
@@ -596,7 +600,7 @@ public class RdnTest
      * 
      * Test the getValue method.
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetValue() throws LdapException
@@ -611,7 +615,7 @@ public class RdnTest
      * 
      * Test the getType method.
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetType() throws LdapException
@@ -624,8 +628,8 @@ public class RdnTest
 
     /**
      * Test the getSize method.
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetSize() throws LdapException
@@ -638,7 +642,6 @@ public class RdnTest
 
     /**
      * Test the getSize method.
-     *
      */
     @Test
     public void testGetSize0()
@@ -651,8 +654,8 @@ public class RdnTest
 
     /**
      * Test the equals method
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEquals() throws LdapException
@@ -932,6 +935,10 @@ public class RdnTest
 
     /**
      * Test serialization of an empty Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testEmptyRDNSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -977,6 +984,10 @@ public class RdnTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1001,6 +1012,10 @@ public class RdnTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdn2Serialization() throws LdapException, IOException, ClassNotFoundException
@@ -1025,6 +1040,10 @@ public class RdnTest
 
     /**
      * Test serialization of a simple Rdn with no value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnNoValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1049,6 +1068,10 @@ public class RdnTest
 
     /**
      * Test serialization of a simple Rdn with one value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnOneValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1073,6 +1096,10 @@ public class RdnTest
 
     /**
      * Test serialization of a simple Rdn with three values
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnThreeValuesSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -1097,6 +1124,10 @@ public class RdnTest
 
     /**
      * Test serialization of a simple Rdn with three unordered values
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnThreeValuesUnorderedSerialization() throws LdapException, IOException,
@@ -1122,6 +1153,8 @@ public class RdnTest
 
     /**
      * test an Rdn with empty value
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnWithEmptyValue() throws LdapException
@@ -1135,6 +1168,8 @@ public class RdnTest
 
     /**
      * test an Rdn with escaped comma
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnWithEscapedComa() throws LdapException
@@ -1158,7 +1193,7 @@ public class RdnTest
      * Tests the equals and equals results of cloned multi-valued RDNs.
      * Test for DIRSHARED-9.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testComparingOfClonedMultiValuedRDNs() throws LdapException
@@ -1176,7 +1211,7 @@ public class RdnTest
      * Tests the equals and equals results of copy constructed multi-valued RDNs.
      * Test for DIRSHARED-9.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testComparingOfCopyConstructedMultiValuedRDNs() throws LdapException
@@ -1192,6 +1227,8 @@ public class RdnTest
 
     /**
      * test the UpName method on a Rdn with more than one atav
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetUpNameMultipleAtav() throws LdapException
@@ -1204,6 +1241,8 @@ public class RdnTest
 
     /**
      * test the iterator over a RDN
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIterator() throws LdapException
@@ -1224,6 +1263,8 @@ public class RdnTest
 
     /**
      * test that a RDN with two AVAs throws an exception
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testWrongRdn() throws LdapException
@@ -1237,6 +1278,8 @@ public class RdnTest
 
     /**
      * test that a RDN can have an attributeType twice
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnAtUsedTwice() throws LdapException
@@ -1261,6 +1304,8 @@ public class RdnTest
 
     /**
      * test that a RDN can have an attributeType twice
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAvaConstructorRdnAtUsedTwice() throws LdapException

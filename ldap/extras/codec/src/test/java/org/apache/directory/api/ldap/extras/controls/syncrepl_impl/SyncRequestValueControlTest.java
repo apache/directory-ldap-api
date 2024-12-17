@@ -92,6 +92,9 @@ public class SyncRequestValueControlTest
     
     /**
      * Test the decoding of a SyncRequestValue control with a refreshOnly mode
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlRefreshOnlySuccess() throws DecoderException, EncoderException
@@ -138,6 +141,9 @@ public class SyncRequestValueControlTest
 
     /**
      * Test the decoding of a SyncRequestValue control with a refreshAndPersist mode
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlRefreshAndPersistSuccess() throws DecoderException, EncoderException
@@ -183,6 +189,9 @@ public class SyncRequestValueControlTest
 
     /**
      * Test the decoding of a SyncRequestValue control with no cookie
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlNoCookie() throws DecoderException, EncoderException
@@ -225,6 +234,9 @@ public class SyncRequestValueControlTest
     /**
      * Test the decoding of a SyncRequestValue control with no cookie, a true
      * reloadHint
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlNoCookieReloadHintTrue() throws DecoderException, EncoderException
@@ -257,6 +269,9 @@ public class SyncRequestValueControlTest
     /**
      * Test the decoding of a SyncRequestValue control with no cookie, no
      * reloadHint
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlNoCookieNoReloadHint() throws DecoderException, EncoderException
@@ -287,6 +302,9 @@ public class SyncRequestValueControlTest
 
     /**
      * Test the decoding of a SyncRequestValue control with no reloadHint
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlNoReloadHintSuccess() throws DecoderException, EncoderException
@@ -319,6 +337,9 @@ public class SyncRequestValueControlTest
 
     /**
      * Test the decoding of a SyncRequestValue control with an empty cookie
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncRequestValueControlEmptyCookie() throws DecoderException, EncoderException
@@ -362,7 +383,7 @@ public class SyncRequestValueControlTest
      * Test the decoding of a SyncRequestValue control with an empty sequence
      */
     @Test
-    public void testDecodeSyncRequestValueControlEmptySequence() throws DecoderException
+    public void testDecodeSyncRequestValueControlEmptySequence()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -386,7 +407,7 @@ public class SyncRequestValueControlTest
      * Test the decoding of a SyncRequestValue control with no mode
      */
     @Test
-    public void testDecodeSyncRequestValueControlNoMode() throws DecoderException
+    public void testDecodeSyncRequestValueControlNoMode()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]

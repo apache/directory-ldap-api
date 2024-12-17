@@ -632,6 +632,10 @@ public class BinaryValueTest
 
     /**
      * Test the serialization of a CBV with a value and a normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeStandard() throws LdapException, IOException, ClassNotFoundException
@@ -649,6 +653,10 @@ public class BinaryValueTest
 
     /**
      * Test the serialization of a CBV with a value and no normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeNotNormalized() throws LdapException, IOException, ClassNotFoundException
@@ -665,6 +673,10 @@ public class BinaryValueTest
 
     /**
      * Test the serialization of a CBV with a value and an empty normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEmptyNormalized() throws LdapException, IOException, ClassNotFoundException
@@ -682,6 +694,10 @@ public class BinaryValueTest
 
     /**
      * Test the serialization of a CBV with a null value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeNullValue() throws LdapException, IOException, ClassNotFoundException
@@ -699,6 +715,10 @@ public class BinaryValueTest
 
     /**
      * Test the serialization of a CBV with an empty value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEmptyValue() throws LdapException, IOException, ClassNotFoundException
@@ -716,6 +736,10 @@ public class BinaryValueTest
 
     /**
      * Test the serialization of a CBV with an empty value not normalized
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEmptyValueNotNormalized() throws LdapException, IOException, ClassNotFoundException

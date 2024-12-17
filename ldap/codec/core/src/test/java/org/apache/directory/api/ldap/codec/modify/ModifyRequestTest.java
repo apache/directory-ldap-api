@@ -53,6 +53,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -67,6 +68,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a ModifyRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
      */
     @Test
     public void testDecodeModifyRequest2AttrsSuccess()
@@ -159,7 +164,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest
      */
     @Test
-    public void testDecodeModifyRequestBadDN() throws DecoderException
+    public void testDecodeModifyRequestBadDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x54 );
 
@@ -230,6 +235,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyRequest, with different operations
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
      */
     @Test
     public void testDecodeModifyRequestManyOperations()
@@ -315,6 +324,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyRequest, with different operations, take 2
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
      */
     @Test
     public void testDecodeModifyRequestManyOperations2()
@@ -415,6 +428,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
      */
     @Test
     public void testDecodeModifyRequest2Attrs3valsSuccess()
@@ -511,7 +528,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an empty body
      */
     @Test
-    public void testDecodeModifyRequestEmptyBody() throws DecoderException
+    public void testDecodeModifyRequestEmptyBody()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -539,7 +556,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an empty object
      */
     @Test
-    public void testDecodeModifyRequestEmptyObject() throws DecoderException
+    public void testDecodeModifyRequestEmptyObject()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x09 );
 
@@ -568,7 +585,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an object and nothing else
      */
     @Test
-    public void testDecodeModifyRequestObjectAlone() throws DecoderException
+    public void testDecodeModifyRequestObjectAlone()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x29 );
 
@@ -600,7 +617,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an empty modification
      */
     @Test
-    public void testDecodeModifyRequestEmptyModification() throws DecoderException
+    public void testDecodeModifyRequestEmptyModification()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
@@ -633,7 +650,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an empty operation
      */
     @Test
-    public void testDecodeModifyRequestEmptyOperation() throws DecoderException
+    public void testDecodeModifyRequestEmptyOperation()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
@@ -667,7 +684,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an wrong empty operation
      */
     @Test
-    public void testDecodeModifyRequestWrongOperationEmpty() throws DecoderException
+    public void testDecodeModifyRequestWrongOperationEmpty()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2F );
 
@@ -702,7 +719,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyRequest with an wrong operation
      */
     @Test
-    public void testDecodeModifyRequestWrongOperation() throws DecoderException
+    public void testDecodeModifyRequestWrongOperation()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x30 );
 
@@ -738,7 +755,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * more
      */
     @Test
-    public void testDecodeModifyRequestAddOperationEnd() throws DecoderException
+    public void testDecodeModifyRequestAddOperationEnd()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x30 );
 
@@ -774,7 +791,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * modification
      */
     @Test
-    public void testDecodeModifyRequestAddOperationEmptyModification() throws DecoderException
+    public void testDecodeModifyRequestAddOperationEmptyModification()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x32 );
 
@@ -811,7 +828,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * modification with an empty type
      */
     @Test
-    public void testDecodeModifyRequestAddOperationModificationEmptyType() throws DecoderException
+    public void testDecodeModifyRequestAddOperationModificationEmptyType()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x34 );
 
@@ -864,7 +881,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * modification with a type and no vals
      */
     @Test
-    public void testDecodeModifyRequestAddOperationModificationTypeNoVals() throws DecoderException
+    public void testDecodeModifyRequestAddOperationModificationTypeNoVals()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
 
@@ -901,6 +918,9 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an add operation, and a
      * modification with a type and an empty vals
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationTypeEmptyVals()
@@ -962,6 +982,9 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an add operation, and a
      * modification with a type and an empty vals wuth controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationTypeEmptyValsWithControls()
@@ -1037,6 +1060,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an add operation, and a
      * modification with a type and two vals
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationType2Vals()
@@ -1105,6 +1132,9 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an increment operation, and a
      * modification with a type and one value
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationIncrement()
@@ -1171,6 +1201,9 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an increment operation, and a
      * modification with a type and no value
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationIncrementNoValue()
@@ -1213,8 +1246,12 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
      * does not have an INTEGER or a NUMERIC STRING syntax.
      * 
      * CANT BE TESTED WITHOUT A SCHEMA...
-     *
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     */
     @Test
+    @Disabled
     public void testDecodeModifyRequestAddOperationModificationIncrementNotIntegerAttribute()
         throws DecoderException, EncoderException
     {
@@ -1255,6 +1292,9 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an increment operation, and a
      * modification with a type and two values
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationIncrementTwoValues()
@@ -1298,6 +1338,9 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ModifyRequest with an add operation, and a
      * modification with a type and an empty vals
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyRequestAddOperationModificationIncrementWithValue()
@@ -1364,6 +1407,10 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
     /**
      * Test that encoding and decoding of a modify request with 10k attributes and 10k values
      * succeeds without StackOverflowError (DIRAPI-368, DIRSERVER-2340).
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
      */
     @Test
     public void testEncodeDecodeLarge() throws DecoderException, EncoderException, LdapException

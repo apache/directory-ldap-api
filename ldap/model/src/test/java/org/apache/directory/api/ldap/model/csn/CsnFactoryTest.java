@@ -21,8 +21,6 @@
 package org.apache.directory.api.ldap.model.csn;
 
 
-import org.apache.directory.api.ldap.model.csn.Csn;
-import org.apache.directory.api.ldap.model.csn.CsnFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;

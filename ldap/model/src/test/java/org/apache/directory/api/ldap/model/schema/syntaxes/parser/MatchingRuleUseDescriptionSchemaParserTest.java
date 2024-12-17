@@ -330,8 +330,6 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -347,7 +345,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
     /**
      * Test required elements.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testRequiredElements() throws ParseException
@@ -399,6 +397,8 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -415,6 +415,8 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException
@@ -443,5 +445,4 @@ public class MatchingRuleUseDescriptionSchemaParserTest
             parser.setQuirksMode( false );
         }
     }
-
 }

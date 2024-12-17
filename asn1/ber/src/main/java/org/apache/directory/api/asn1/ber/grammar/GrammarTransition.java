@@ -59,6 +59,7 @@ public class GrammarTransition<C extends Asn1Container>
      * @param currentState The current state
      * @param currentTag the current TLV's tag
      * @param action The action to execute. It could be null.
+     * @param followUp if the current TLV has a follow up in the current PDU
      */
     public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, Action<C> action, FollowUp followUp )
     {
@@ -76,6 +77,7 @@ public class GrammarTransition<C extends Asn1Container>
      * @param previousState the previous state
      * @param currentState The current state
      * @param currentTag the current TLV's tag
+     * @param followUp if the current TLV has a follow up in the current PDU
      */
     public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, FollowUp followUp )
     {

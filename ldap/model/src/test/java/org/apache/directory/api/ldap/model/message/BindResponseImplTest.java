@@ -24,11 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.message.BindResponseImpl;
-import org.apache.directory.api.ldap.model.message.LdapResultImpl;
-import org.apache.directory.api.ldap.model.message.Referral;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
@@ -126,6 +121,8 @@ public class BindResponseImplTest
 
     /**
      * Tests for equality of two fully loaded identical BindResponse PDUs.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsWithTheWorks() throws LdapException
@@ -163,6 +160,8 @@ public class BindResponseImplTest
 
     /**
      * Tests for equal hashCode of two fully loaded identical BindResponse PDUs.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCodeWithTheWorks() throws LdapException

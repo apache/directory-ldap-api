@@ -53,6 +53,9 @@ public class DelResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a DelResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeDelResponseSuccess() throws DecoderException, EncoderException
@@ -107,7 +110,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a DelResponse with no LdapResult
      */
     @Test
-    public void testDecodeDelResponseEmptyResult() throws DecoderException
+    public void testDecodeDelResponseEmptyResult()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -133,6 +136,9 @@ public class DelResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a DelResponse with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeDelResponseSuccessWithControls() throws DecoderException, EncoderException

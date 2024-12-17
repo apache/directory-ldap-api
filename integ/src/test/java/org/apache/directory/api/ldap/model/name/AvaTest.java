@@ -67,6 +67,8 @@ public class AvaTest
 
     /**
      * Test a null type for an AttributeTypeAndValue
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeAndValueNullType() throws LdapException
@@ -86,6 +88,8 @@ public class AvaTest
 
     /**
      * Test an invalid type for an AttributeTypeAndValue
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeAndValueInvalidType() throws LdapException
@@ -104,6 +108,8 @@ public class AvaTest
 
     /**
      * Test a valid type for an AttributeTypeAndValue
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeAndValueValidType() throws LdapException
@@ -150,6 +156,8 @@ public class AvaTest
 
     /**
      * test a simple AttributeTypeAndValue : a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAvaSimple() throws LdapException
@@ -164,6 +172,8 @@ public class AvaTest
 
     /**
      * test a simple AttributeTypeAndValue : a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAvaSimpleNorm() throws LdapException
@@ -178,6 +188,8 @@ public class AvaTest
 
     /**
      * Compares two equals atavs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsSameAva() throws LdapException
@@ -191,6 +203,8 @@ public class AvaTest
 
     /**
      * Compares two equals atavs but with a type in different case
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsUpperCaseAT() throws LdapException
@@ -204,6 +218,8 @@ public class AvaTest
 
     /**
      * Compares two equals atavs but with a type in different case
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsSameValues() throws LdapException
@@ -218,6 +234,8 @@ public class AvaTest
     /**
      * Test the returned values for Ava. \u00E4 is the unicode char for "ä", encoded
      * \C3\A4 in UTF8
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAvaValuesNoSchema() throws LdapException
@@ -273,6 +291,8 @@ public class AvaTest
     /**
      * Test the returned values for a schema aware Ava.
      * \u00E4 is the unicode char for "ä", encoded \C3\A4 in UTF8
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAvaValuesSchemaAware() throws LdapException

@@ -27,8 +27,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.api.ldap.model.schema.registries.DefaultAttributeTypeRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;

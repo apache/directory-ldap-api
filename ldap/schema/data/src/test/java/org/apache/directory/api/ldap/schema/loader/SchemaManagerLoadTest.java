@@ -214,6 +214,8 @@ public class SchemaManagerLoadTest
     //-------------------------------------------------------------------------
     /**
      * test loading the "system" schema amone
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadSystem() throws Exception
@@ -240,6 +242,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "core" schema, which depends on "system"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadCore() throws Exception
@@ -271,6 +275,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "apache" schema, which depends on "system" and "core"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadApache() throws Exception
@@ -301,6 +307,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "apacheMeta" schema, which depends on "system"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadApacheMeta() throws Exception
@@ -329,6 +337,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "java" schema, which depends on "system" and "core"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadJava() throws Exception
@@ -361,6 +371,8 @@ public class SchemaManagerLoadTest
      * test loading the "other" schema, which depends on "system", "core",
      * "apache" and "apacheMeta". As we don't have any cross dependencies
      * with any of this other schemas, we can only load core and system
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadOther() throws Exception
@@ -391,6 +403,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "cosine" schema, which depends on "system" and "core"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadCosine() throws Exception
@@ -422,6 +436,8 @@ public class SchemaManagerLoadTest
     /**
      * test loading the "InetOrgPerson" schema, which depends on "system", "core"
      * and "cosine"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadInetOrgPerson() throws Exception
@@ -454,6 +470,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "Collective" schema, which depends on "system" and "core"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadCollective() throws Exception
@@ -484,6 +502,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "Krb5Kdc" schema, which depends on "system" and "core"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadKrb5Kdc() throws Exception
@@ -515,6 +535,8 @@ public class SchemaManagerLoadTest
     /**
      * test loading the "nis" schema, which depends on "system", "core" and "cosine",
      * but is disabled
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadNis() throws Exception
@@ -551,6 +573,8 @@ public class SchemaManagerLoadTest
 
     /**
      * Test loading a wrong schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadWrongSchema() throws Exception
@@ -587,6 +611,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "InetOrgPerson" and "core" schema, which depends on "system" and "cosine"
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadCoreAndInetOrgPerson() throws Exception
@@ -617,6 +643,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "InetOrgPerson", "core" and a bad schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadCoreInetOrgPersonAndBad() throws Exception
@@ -656,6 +684,8 @@ public class SchemaManagerLoadTest
 
     /**
      * test loading the "InetOrgPerson", "core" and a disabled schema
+     * 
+     * @throws Exception If the test failed
      */
     @Disabled("ignoring for the moment to let the other tests run on CI")
     @Test
@@ -695,6 +725,8 @@ public class SchemaManagerLoadTest
     /**
      * test loading the "InetOrgPerson", "core" and an empty schema. The empty schema
      * should be present in the registries, as it's a vaid schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadSchemasWithDepsCoreInetOrgPersonAndBad() throws Exception
@@ -731,6 +763,8 @@ public class SchemaManagerLoadTest
 
     /**
      * Test that we can load a new schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void loadNewSchema() throws Exception
@@ -759,6 +793,8 @@ public class SchemaManagerLoadTest
 
     /**
      * Test that we can't load a new schema with bad dependencies
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void loadNewSchemaBadDependencies() throws Exception

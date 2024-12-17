@@ -34,6 +34,8 @@ public class DefaultSchemaManagerTest
     /**
      * Verifies that all syntax checkers are properly initialized 
      * when loading the default schema.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSyntaxCheckersDoNotThrowException() throws Exception

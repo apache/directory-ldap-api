@@ -87,6 +87,8 @@ public class QuirkySchemaTest
      * Try to load a very minimal (and correct) schema. It has just 'person' objectclass and all
      * the necessary attributes, matching rules and syntaxes. Load it in strict mode.
      * This test is here mostly to make sure that the test itself works.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadMinimalSchema() throws Exception
@@ -120,6 +122,8 @@ public class QuirkySchemaTest
      * standards. Therefore load the schema in relaxed mode. We should be able to work
      * with this schema anyway. E.g. the loader and schema manager should not die on
      * null pointer or similar trivial error.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadQuirkySchema() throws Exception

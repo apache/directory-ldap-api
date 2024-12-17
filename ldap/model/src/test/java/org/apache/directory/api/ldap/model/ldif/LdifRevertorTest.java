@@ -33,10 +33,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.entry.*;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.ldif.ChangeType;
-import org.apache.directory.api.ldap.model.ldif.LdifEntry;
-import org.apache.directory.api.ldap.model.ldif.LdifReader;
-import org.apache.directory.api.ldap.model.ldif.LdifRevertor;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
@@ -72,7 +68,7 @@ public class LdifRevertorTest
     /**
      * Test a AddRequest reverse
      *
-     * @throws LdapInvalidDnException
+     * @throws LdapInvalidDnException If the test failed
      */
     @Test
     public void testReverseAdd() throws LdapInvalidDnException
@@ -89,7 +85,8 @@ public class LdifRevertorTest
 
     /**
      * Test a DelRequest reverse
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseDel() throws LdapException
@@ -115,6 +112,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify adding a existing value from an existing attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyDelExistingOuValue() throws LdapException
@@ -157,6 +156,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify deleting an existing attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyDeleteOU() throws LdapException
@@ -199,6 +200,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify deleting all values of an existing attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyDelExistingOuWithAllValues() throws LdapException
@@ -241,6 +244,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify replacing existing values with new values
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyReplaceExistingOuValues() throws LdapException
@@ -283,6 +288,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify replace by injecting a new attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyReplaceNewAttribute() throws LdapException
@@ -324,6 +331,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify replace by removing an attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyReplaceExistingOuWithNothing() throws LdapException
@@ -432,6 +441,8 @@ public class LdifRevertorTest
      *  ou: BigCompany inc.
      *  -
      * 
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testReverseMultipleModifications() throws Exception
@@ -523,6 +534,8 @@ public class LdifRevertorTest
     /**
      * Test a reversed Modify adding a new attribute value
      * in an exiting attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyAddNewOuValue() throws LdapException
@@ -562,6 +575,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed Modify adding a new attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyAddNewOu() throws LdapException
@@ -599,8 +614,8 @@ public class LdifRevertorTest
 
     /**
      * Test a AddRequest reverse where the Dn is to be base64 encoded
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseAddBase64DN() throws LdapException
@@ -616,8 +631,8 @@ public class LdifRevertorTest
 
     /**
      * Test a reversed move ModifyDN
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyDNMove() throws LdapException
@@ -653,8 +668,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test11ReverseRenameSimpleSimpleNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -698,8 +713,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=small
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test12ReverseRenameSimpleSimpleNotOverlappingKeepOldRdnExistInEntry() throws LdapException
@@ -743,8 +758,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test21ReverseRenameSimpleSimpleNotOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
@@ -788,8 +803,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=small
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test22ReverseRenameSimpleSimpleNotOverlappingDeleteOldRdnExistInEntry() throws LdapException
@@ -835,8 +850,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test3ReverseRenameCompositeSimpleNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -883,8 +898,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=big
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test3ReverseRenameCompositeSimpleNotOverlappingKeepOldRdnExistsInEntry() throws LdapException
@@ -931,8 +946,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test4ReverseRenameCompositeSimpleNotOverlappingDeleteOldRdnDontExistsInEntry() throws LdapException
@@ -979,8 +994,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=big
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test4ReverseRenameCompositeSimpleNotOverlappingDeleteOldRdnExistInEntry() throws LdapException
@@ -1026,8 +1041,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test5ReverseRenameCompositeSimpleOverlappingKeepOldRdn() throws LdapException
@@ -1072,8 +1087,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test5ReverseRenameCompositeSimpleOverlappingDeleteOldRdn() throws LdapException
@@ -1119,8 +1134,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+sn=plumber
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test61ReverseRenameSimpleCompositeNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -1166,8 +1181,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+sn=small
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test62ReverseRenameSimpleCompositeNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -1226,8 +1241,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+sn=plumber
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test71ReverseRenameSimpleCompositeNotOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
@@ -1273,8 +1288,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+sn=small
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test72ReverseRenameSimpleCompositeNotOverlappingDeleteOldRdnExistInEntry() throws LdapException
@@ -1333,8 +1348,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : sn=small+cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test81ReverseRenameSimpleCompositeOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -1380,8 +1395,8 @@ public class LdifRevertorTest
      * seeAlso: big
      * 
      * new Rdn : sn=small+cn=test+seeAlso=big
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test82ReverseRenameSimpleCompositeOverlappingKeepOldRdnExistInEntry() throws LdapException
@@ -1440,8 +1455,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : sn=small+cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test91ReverseRenameSimpleCompositeOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
@@ -1487,8 +1502,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=small+cn=test+cn=big
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test92ReverseRenameSimpleCompositeOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
@@ -1548,8 +1563,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+cn=plumber
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test101ReverseRenameCompositeCompositeNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -1597,8 +1612,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : sn=joe+cn=big
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test102ReverseRenameCompositeCompositeNotOverlappingKeepOldRdnExistInEntry() throws LdapException
@@ -1659,8 +1674,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+sn=plumber
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test111ReverseRenameCompositeCompositeNotOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
@@ -1708,8 +1723,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+sn=big
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test112ReverseRenameCompositeCompositeNotOverlappingDeleteOldRdnExistInEntry() throws LdapException
@@ -1770,8 +1785,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : cn=joe+cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test121ReverseRenameCompositeCompositeOverlappingKeepOldRdnDontExistInEntry() throws LdapException
@@ -1819,8 +1834,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : sn=big+cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test122ReverseRenameCompositeCompositeOverlappingKeepOldRdnExistInEntry() throws LdapException
@@ -1868,8 +1883,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : sn=joe+cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test131ReverseRenameCompositeCompositeOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
@@ -1917,8 +1932,8 @@ public class LdifRevertorTest
      * sn: This is a test
      * 
      * new Rdn : sn=big+cn=test
-     *
-     * @throws LdapException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void test132ReverseRenameCompositeCompositeOverlappingDeleteOldRdnExistInEntry() throws LdapException

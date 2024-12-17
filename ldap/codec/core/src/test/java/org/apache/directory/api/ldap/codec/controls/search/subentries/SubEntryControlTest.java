@@ -45,6 +45,9 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a SubEntryControl with a true visibility
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSubEntryVisibilityTrue() throws DecoderException, EncoderException
@@ -71,6 +74,9 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SubEntryControl with a false visibility
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSubEntryVisibilityFalse() throws DecoderException, EncoderException
@@ -101,7 +107,7 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
      * Test the decoding of a SubEntryControl with an empty visibility
      */
     @Test
-    public void testDecodeSubEntryEmptyVisibility() throws DecoderException
+    public void testDecodeSubEntryEmptyVisibility()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
 
@@ -127,7 +133,7 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
      * Test the decoding of a bad SubEntryControl
      */
     @Test
-    public void testDecodeSubEntryBad() throws DecoderException
+    public void testDecodeSubEntryBad()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x03 );
 

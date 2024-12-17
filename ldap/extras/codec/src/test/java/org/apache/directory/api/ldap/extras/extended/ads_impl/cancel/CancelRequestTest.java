@@ -56,6 +56,9 @@ public class CancelRequestTest
     
     /**
      * Test the normal Cancel message
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeCancel() throws DecoderException, EncoderException
@@ -83,7 +86,7 @@ public class CancelRequestTest
      * Test a Cancel message with no cancelId
      */
     @Test
-    public void testDecodeCancelNoCancelId() throws DecoderException
+    public void testDecodeCancelNoCancelId()
     {
         byte[] stream = new byte[]
             {
@@ -104,7 +107,7 @@ public class CancelRequestTest
      * Test a Cancel message with an empty cancelId
      */
     @Test
-    public void testDecodeCancelEmptyCancelId() throws DecoderException
+    public void testDecodeCancelEmptyCancelId()
     {
         byte[] stream = new byte[]
             {
@@ -126,7 +129,7 @@ public class CancelRequestTest
      * Test a Cancel message with a bad cancelId
      */
     @Test
-    public void testDecodeCancelBadCancelId() throws DecoderException
+    public void testDecodeCancelBadCancelId()
     {
         byte[] stream = new byte[]
             {
@@ -149,7 +152,7 @@ public class CancelRequestTest
      * Test a Cancel message with more than one cancelId
      */
     @Test
-    public void testDecodeCancelMoreThanOneCancelId() throws DecoderException
+    public void testDecodeCancelMoreThanOneCancelId()
     {
         byte[] stream = new byte[]
             {

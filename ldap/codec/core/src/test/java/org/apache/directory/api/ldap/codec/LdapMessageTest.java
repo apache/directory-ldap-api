@@ -36,7 +36,6 @@ import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * Test the decoding of null length messageId
      */
     @Test
-    public void testDecodeMessageLengthNull() throws DecoderException
+    public void testDecodeMessageLengthNull()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x02 );
         stream.put( new byte[]
@@ -81,7 +80,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * Test the decoding of null length messageId
      */
     @Test
-    public void testDecodeMessageIdLengthNull() throws DecoderException
+    public void testDecodeMessageIdLengthNull()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x04 );
         stream.put( new byte[]
@@ -107,7 +106,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * Test the decoding of null length messageId
      */
     @Test
-    public void testDecodeMessageIdMinusOne() throws DecoderException
+    public void testDecodeMessageIdMinusOne()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x05 );
         stream.put( new byte[]
@@ -133,7 +132,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * Test the decoding of messageId which value is -1
      */
     @Test
-    public void testDecodeMessageIdMaxInt() throws DecoderException
+    public void testDecodeMessageIdMaxInt()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x08 );
         stream.put( new byte[]
@@ -160,7 +159,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * Test the decoding of message with nothing but the messqage ID which value is -1
      */
     @Test
-    public void testDecodeMessageIdOnly() throws DecoderException
+    public void testDecodeMessageIdOnly()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x05 );
         stream.put( new byte[]
@@ -266,6 +265,9 @@ public class LdapMessageTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a LdapMessage with a large MessageId
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeUnBindRequestNoControls() throws DecoderException, EncoderException
@@ -303,7 +305,7 @@ public class LdapMessageTest extends AbstractCodecServiceTest
      * test a negative length
      */
     @Test
-    public void testNegativeLength() throws LdapURLEncodingException
+    public void testNegativeLength()
     {
         String base64Bytes = String.join("", "CoT/gwr/Jg==");
 

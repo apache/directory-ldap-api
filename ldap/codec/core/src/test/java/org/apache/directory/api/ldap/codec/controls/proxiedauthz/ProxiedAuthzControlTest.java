@@ -45,6 +45,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a ProxiedAuthzControl with a DN user
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeProxiedAuthzControlDnSuccess() throws DecoderException
@@ -75,6 +77,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ProxiedAuthzControl with a normal user
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeProxiedAuthzControlUSuccess() throws DecoderException
@@ -105,6 +109,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ProxiedAuthzControl with a anonymous user
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeProxiedAuthzControlAnonymousSuccess() throws DecoderException
@@ -136,7 +142,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test the decoding of a ProxiedAuthzControl with a wrong DN user
      */
     @Test
-    public void testDecodeProxiedAuthzControlWrongDn() throws DecoderException
+    public void testDecodeProxiedAuthzControlWrongDn()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x10 );
         bb.put( new byte[]
@@ -161,7 +167,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
      * Test the decoding of a ProxiedAuthzControl with a wrong user
      */
     @Test
-    public void testDecodeProxiedAuthzControlWrongAuthzId() throws DecoderException
+    public void testDecodeProxiedAuthzControlWrongAuthzId()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
@@ -184,6 +190,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a ProxiedAuthzControl.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testEncodeProxiedDnAuthzControl() throws DecoderException
@@ -213,6 +221,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a ProxiedAuthzControl.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testEncodeProxiedUserAuthzControl() throws DecoderException
@@ -242,6 +252,8 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a ProxiedAuthzControl.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testEncodeProxiedAnonymousAuthzControl() throws DecoderException

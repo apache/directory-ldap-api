@@ -38,6 +38,8 @@ public interface Messagefactory
      * @param codec The LdapApiService instance
      * @param buffer The buffer where to put the PDU
      * @param message The message to encode
+     * 
+     * @throws EncoderException if the encoding failed
      */
     void encodeReverse( LdapApiService codec, Asn1Buffer buffer, Message message ) throws EncoderException;
 }

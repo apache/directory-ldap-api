@@ -259,8 +259,6 @@ public class MatchingRuleDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -276,10 +274,10 @@ public class MatchingRuleDescriptionSchemaParserTest
     /**
      * Test required elements.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testRequiredElements() throws ParseException, NamingException
+    public void testRequiredElements() throws ParseException
     {
         String value = null;
         MatchingRule matchingRule = null;
@@ -309,7 +307,7 @@ public class MatchingRuleDescriptionSchemaParserTest
     ////////////////////////////////////////////////////////////////
 
     @Test
-    public void testRfc1() throws ParseException, NamingException
+    public void testRfc1() throws ParseException
     {
         String value = "( 2.5.13.5 NAME 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
         MatchingRule matchingRule = parser.parse( value );
@@ -325,7 +323,7 @@ public class MatchingRuleDescriptionSchemaParserTest
 
 
     @Test
-    public void testSun1() throws ParseException, NamingException
+    public void testSun1() throws ParseException
     {
         String value = "( 2.5.13.5 NAME 'caseExactMatch' DESC 'Case Exact Matching on Directory String [defined in X.520]' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
         MatchingRule matchingRule = parser.parse( value );
@@ -343,9 +341,11 @@ public class MatchingRuleDescriptionSchemaParserTest
     /**
      * This is a real matching rule from Sun Directory 5.2. It has an invalid 
      * syntax, no DOTs allowed in NAME value. 
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testSun2() throws ParseException, NamingException
+    public void testSun2() throws ParseException
     {
         String value = "( 1.3.6.1.4.1.42.2.27.9.4.34.3.6 NAME 'caseExactSubstringMatch-2.16.840.1.113730.3.3.2.11.3' DESC 'en' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
         if ( !parser.isQuirksMode() )
@@ -376,6 +376,8 @@ public class MatchingRuleDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -392,6 +394,9 @@ public class MatchingRuleDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
+     * @throws NamingException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException, NamingException

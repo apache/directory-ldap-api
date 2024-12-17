@@ -67,7 +67,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
     /**
      * Get the LDAP decoder.
      *
-     * @param session the IO session
+     * @param ioSession the IO session
      * @return the decoder
      */
     @Override
@@ -80,7 +80,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
     /**
      * Get the LDAP encoder.
      *
-     * @param session the IO session
+     * @param ioSession the IO session
      * @return the encoder
      */
     @Override

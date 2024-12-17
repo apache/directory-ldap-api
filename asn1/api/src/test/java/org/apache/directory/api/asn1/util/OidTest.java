@@ -547,7 +547,7 @@ public class OidTest
 
     /**
      * Test an OID with a node which does not fit in a long
-     * @throws DecoderException 
+     * @throws DecoderException  If the test failed
      */
     @Test
     public void testOidLongValue() throws DecoderException
@@ -823,8 +823,8 @@ public class OidTest
 
 
     /**
-     * Test an OID with 2 at the first position and a second node > 39
-     * @throws DecoderException 
+     * Test an OID with 2 at the first position and a second node &gt; 39
+     * @throws DecoderException  If the test failed
      */
     @Test
     public void testOidNode2() throws DecoderException
@@ -898,6 +898,7 @@ public class OidTest
 
     /**
      * Test NewOid Equals
+     * @throws DecoderException  If the test failed
      */
     @Test
     public void testNewOidEqualsPerf() throws DecoderException

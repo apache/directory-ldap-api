@@ -57,6 +57,9 @@ public class CompareRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a full CompareRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeCompareRequestSuccess() throws DecoderException, EncoderException
@@ -110,7 +113,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
      * Test the decoding of an empty CompareRequest
      */
     @Test
-    public void testDecodeCompareRequestEmptyRequest() throws DecoderException
+    public void testDecodeCompareRequestEmptyRequest()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -139,7 +142,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
      * Test the decoding of an empty entry CompareRequest
      */
     @Test
-    public void testDecodeCompareRequestEmptyEntry() throws DecoderException
+    public void testDecodeCompareRequestEmptyEntry()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x18 );
 
@@ -175,7 +178,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
      * Test the decoding of an empty ava
      */
     @Test
-    public void testDecodeCompareRequestEmptyAVA() throws DecoderException
+    public void testDecodeCompareRequestEmptyAVA()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
@@ -210,7 +213,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
      * Test the decoding of an empty ava
      */
     @Test
-    public void testDecodeCompareRequestInvalidDN() throws DecoderException
+    public void testDecodeCompareRequestInvalidDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2B );
 
@@ -259,7 +262,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
      * Test the decoding of an empty attributeDesc ava
      */
     @Test
-    public void testDecodeCompareRequestEmptyAttributeDesc() throws DecoderException
+    public void testDecodeCompareRequestEmptyAttributeDesc()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x2D );
 
@@ -307,6 +310,9 @@ public class CompareRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of an empty attributeValue ava
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeCompareRequestEmptyAttributeValue() throws DecoderException, EncoderException
@@ -357,6 +363,9 @@ public class CompareRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of an compare request with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeCompareRequestWithControls() throws DecoderException, EncoderException

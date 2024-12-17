@@ -50,6 +50,8 @@ public class ObjectClassTest
 
     /**
      * Initialize object class instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initObjectClasses() throws Exception

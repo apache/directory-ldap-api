@@ -60,7 +60,7 @@ public class EndTransactionRequestTest
      * Test the decoding of a EndTransactionRequest with nothing in it
      */
     @Test
-    public void testDecodeEndTransactionRequestEmpty() throws DecoderException
+    public void testDecodeEndTransactionRequestEmpty()
     {
         byte[] bb = new byte[]
             { 
@@ -81,7 +81,7 @@ public class EndTransactionRequestTest
      * Test the decoding of a EndTransactionRequest with an commit but no identifier
      */
     @Test
-    public void testEndTransactionRequestCommitNoIdentifier() throws DecoderException
+    public void testEndTransactionRequestCommitNoIdentifier()
     {
         byte[] bb = new byte[]
             { 
@@ -101,7 +101,9 @@ public class EndTransactionRequestTest
 
     /**
      * Test the decoding of a EndTransactionRequest with an identifier but no commit
-     * @throws EncoderException 
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testEndTransactionRequestNoCommitIdentifier() throws DecoderException, EncoderException
@@ -130,7 +132,9 @@ public class EndTransactionRequestTest
 
     /**
      * Test the decoding of a EndTransactionRequest with an identifier and a commit
-     * @throws EncoderException 
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testEndTransactionRequesoCommitIdentifier() throws DecoderException, EncoderException
@@ -160,7 +164,9 @@ public class EndTransactionRequestTest
 
     /**
      * Test the decoding of a EndTransactionRequest with an empty identifier and a commit
-     * @throws EncoderException 
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testEndTransactionRequesoCommitEmptyIdentifier() throws DecoderException, EncoderException

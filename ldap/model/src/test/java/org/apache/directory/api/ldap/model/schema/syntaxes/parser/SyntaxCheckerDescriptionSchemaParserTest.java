@@ -125,8 +125,6 @@ public class SyntaxCheckerDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -137,8 +135,6 @@ public class SyntaxCheckerDescriptionSchemaParserTest
 
     /**
      * Test required elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testRequiredElements()
@@ -223,6 +219,8 @@ public class SyntaxCheckerDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -233,6 +231,8 @@ public class SyntaxCheckerDescriptionSchemaParserTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException
@@ -263,5 +263,4 @@ public class SyntaxCheckerDescriptionSchemaParserTest
             parser.setQuirksMode( false );
         }
     }
-
 }

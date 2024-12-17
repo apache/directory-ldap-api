@@ -50,6 +50,8 @@ public class ACIItemParserTest
 
     /**
      * Initialization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void init() throws Exception
@@ -71,6 +73,8 @@ public class ACIItemParserTest
 
     /**
      * Tests the parser with a rangeOfValues with a nested filter.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testRangeOfValues() throws Exception
@@ -95,6 +99,8 @@ public class ACIItemParserTest
 
     /**
      * Tests the parser with an ACIItem of ItemFirst main component.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testItemFirst() throws Exception
@@ -142,6 +148,8 @@ public class ACIItemParserTest
 
     /**
      * Tests the parser with an ACIItem of UserFirst main component.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testUserFirst() throws Exception
@@ -772,6 +780,8 @@ public class ACIItemParserTest
 
     /**
      * Test case for DIRSTUDIO-440
+     *
+     * @throws Exception If th test failed
      */
     @Test
     public void testPrecedenceOfUserFirst() throws Exception

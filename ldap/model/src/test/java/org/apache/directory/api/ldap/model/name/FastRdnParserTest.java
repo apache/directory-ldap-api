@@ -33,8 +33,6 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Ava;
-import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -66,7 +64,7 @@ public class FastRdnParserTest
     /**
      * test an empty Rdn
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnEmpty() throws LdapException
@@ -78,7 +76,7 @@ public class FastRdnParserTest
     /**
      * test a simple Rdn : a = b
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimple() throws LdapException
@@ -91,7 +89,7 @@ public class FastRdnParserTest
      * test a composite Rdn with or without spaces: a=b, a =b, a= b, a = b, a =
      * b
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnCompositeWithSpace() throws LdapException
@@ -119,7 +117,7 @@ public class FastRdnParserTest
      * test a simple Rdn with an oid attribut wiithout oid prefix : 12.34.56 =
      * azerty
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnOidWithoutPrefix() throws LdapException
@@ -131,7 +129,7 @@ public class FastRdnParserTest
     /**
      * Test the clone method for a Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCloningOneNameComponent() throws LdapException
@@ -149,7 +147,7 @@ public class FastRdnParserTest
     /**
      * Test the creation of a new Rdn
      * 
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCreation() throws LdapException
@@ -164,7 +162,7 @@ public class FastRdnParserTest
      * Test for DIRSHARED-3.
      * Tests that equals() is invertable for single-valued RDNs.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareInvertableNC2NC() throws LdapException
@@ -180,7 +178,7 @@ public class FastRdnParserTest
     /**
      * Compares with a null Rdn.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNullRdn() throws LdapException
@@ -194,7 +192,7 @@ public class FastRdnParserTest
     /**
      * Compares a simple NC to a simple NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NC() throws LdapException
@@ -209,7 +207,7 @@ public class FastRdnParserTest
     /**
      * Compares a simple NC to a simple NC in UperCase.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCUperCase() throws LdapException
@@ -224,7 +222,7 @@ public class FastRdnParserTest
     /**
      * Compares a simple NC to a different simple NC.
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRDNCompareToNC2NCNotEquals() throws LdapException
@@ -275,6 +273,10 @@ public class FastRdnParserTest
 
     /**
      * Test serialization of an empty Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testEmptyRDNSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -320,6 +322,10 @@ public class FastRdnParserTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -344,6 +350,10 @@ public class FastRdnParserTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdn2Serialization() throws LdapException, IOException, ClassNotFoundException
@@ -368,6 +378,10 @@ public class FastRdnParserTest
 
     /**
      * Test serialization of a simple Rdn with no value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnNoValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -392,6 +406,10 @@ public class FastRdnParserTest
 
     /**
      * Test serialization of a simple Rdn with one value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnOneValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -416,6 +434,8 @@ public class FastRdnParserTest
 
     /**
      * test that a RDN can have an attributeType twice
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAvaConstructorRdnAtUsedTwice() throws LdapException
@@ -428,6 +448,8 @@ public class FastRdnParserTest
 
     /**
      * test that a RDN can have an attributeType twice
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnPerf() throws LdapException

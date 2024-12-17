@@ -27,7 +27,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -73,7 +72,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a simple LdifEntry
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testSimpleLdifEntry() throws Exception
@@ -108,7 +107,7 @@ public class LdifEntrySerializationTest
     /**
      * Test a Delete changeType LdifEntry with no control
      * 
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifParserChangeTypeDeleteNoControl() throws Exception
@@ -142,7 +141,7 @@ public class LdifEntrySerializationTest
     /**
      * Test a Delete changeType LdifEntry with one control
      * 
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifParserChangeTypeDeleteWithControl() throws Exception
@@ -177,7 +176,7 @@ public class LdifEntrySerializationTest
     /**
      * Test a Delete changeType LdifEntry with controls
      * 
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifParserChangeTypeDeleteWithControls() throws Exception
@@ -212,7 +211,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a Add changeType LdifEntry with no control
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeAddNoControl() throws Exception
@@ -247,7 +246,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a Add changeType LdifEntry with a control
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeAddWithControl() throws Exception
@@ -283,7 +282,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a Add changeType LdifEntry with controls
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeAddWithControls() throws Exception
@@ -320,6 +319,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a ModDn changeType LdifEntry with no control
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModDnNoControl() throws Exception
@@ -350,6 +350,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a ModDn changeType LdifEntry with no control and a newSuperior
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModDnRenameNoControlNewSuperior() throws Exception
@@ -381,7 +382,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a ModDn changeType LdifEntry with a control
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModdnWithControl() throws Exception
@@ -413,7 +414,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a ModDN changeType LdifEntry with controls
-     * @throws Exception
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModddnWithControls() throws Exception
@@ -446,6 +447,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a Modify changeType LdifEntry with no control
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModifySimple() throws Exception
@@ -478,6 +480,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a Modify changeType LdifEntry with no attributes
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoAttribute() throws Exception
@@ -508,6 +511,7 @@ public class LdifEntrySerializationTest
 
     /**
      * Test a Modify changeType LdifEntry with no attributes and controls
+     * @throws Exception If the test fails
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoAttributeWithControls() throws Exception

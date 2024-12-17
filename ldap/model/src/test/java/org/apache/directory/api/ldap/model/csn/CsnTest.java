@@ -30,8 +30,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.apache.directory.api.ldap.model.csn.Csn;
-import org.apache.directory.api.ldap.model.csn.InvalidCSNException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;

@@ -277,7 +277,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWith1Modification() throws LdapException
@@ -314,7 +314,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element and Increment operation
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWith1ModificationIncrement() throws LdapException
@@ -351,7 +351,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element with Base64 Value
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWith1ModificationBase64Value() throws LdapException
@@ -394,7 +394,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with 2 Modification elements
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWith2Modifications() throws LdapException
@@ -462,7 +462,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with operation attribute to Add value
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithOperationAdd() throws LdapException
@@ -495,7 +495,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with operation attribute to Delete value
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithOperationDelete() throws LdapException
@@ -528,7 +528,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with operation attribute to Replace value
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithOperationReplace() throws LdapException
@@ -571,7 +571,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element without Value element
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithModificationWithoutValue() throws LdapException
@@ -608,7 +608,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithModificationWith2Values() throws LdapException
@@ -649,7 +649,7 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element with an empty value
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithModificationWithEmptyValue() throws LdapException

@@ -1648,7 +1648,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * &lt;spaces&gt; &lt;attributeValue&gt; &lt;nameComponents&gt;
      * </p>
      *
-     * @param dn The string to parse
+     * @param rdn The string to parse
      * @return <code>true</code> if the Rdn is valid
      */
     public static boolean isValid( String rdn )

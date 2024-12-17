@@ -43,6 +43,8 @@ public class MatchingRuleUseTest
 
     /**
      * Initialize matching rule use instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initMatchingRuleUses() throws Exception

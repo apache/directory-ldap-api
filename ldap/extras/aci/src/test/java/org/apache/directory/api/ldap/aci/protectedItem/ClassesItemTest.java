@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.aci.protectedItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.apache.directory.api.ldap.aci.protectedItem.ClassesItem;
 import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.apache.directory.api.ldap.model.filter.UndefinedNode;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +46,8 @@ public class ClassesItemTest
 
     /**
      * Initialize classesItem instances
+     * 
+     * @throws Exception if the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception

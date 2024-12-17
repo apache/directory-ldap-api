@@ -44,6 +44,8 @@ public class SchemaAwareDnTest
 
     /**
      * Initialize OIDs maps for normalization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void setup() throws Exception
@@ -53,6 +55,8 @@ public class SchemaAwareDnTest
 
     /**
      * test a simple Dn with multiple NameComponents : cn=Kate + sn=Bush,ou=system
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     @Disabled

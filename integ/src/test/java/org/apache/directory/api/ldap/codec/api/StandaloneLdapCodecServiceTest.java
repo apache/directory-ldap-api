@@ -102,7 +102,9 @@ public class StandaloneLdapCodecServiceTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.codec.standalone.StandaloneLdapCodecService#StandaloneLdapCodecService()}.
+     * Test method for {@link org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService#StandaloneLdapApiService()}.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadingExtras() throws Exception
@@ -119,6 +121,8 @@ public class StandaloneLdapCodecServiceTest
 
     /**
      * Test an extended operation.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadingExtendedOperation() throws Exception
@@ -141,6 +145,8 @@ public class StandaloneLdapCodecServiceTest
 
     /**
      * Test an intermediate response.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLoadingIntermediateResponse() throws Exception

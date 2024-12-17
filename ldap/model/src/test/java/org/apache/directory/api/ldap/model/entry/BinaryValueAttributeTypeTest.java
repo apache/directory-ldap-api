@@ -197,7 +197,6 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the constructor with bad AttributeType
-     * @throws LdapInvalidAttributeValueException 
      */
     @Test
     public void testBadConstructor()
@@ -212,6 +211,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the constructor with a null value
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testServerBinaryValueNullValue() throws LdapInvalidAttributeValueException
@@ -227,6 +228,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the constructor with an empty value
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testServerBinaryValueEmptyValue() throws LdapInvalidAttributeValueException
@@ -242,7 +245,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the constructor with a value
-     * @throws LdapInvalidAttributeValueException 
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testServerBinaryValueNoValue() throws LdapInvalidAttributeValueException
@@ -258,6 +262,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the constructor with a value
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testServerBinaryValue() throws LdapInvalidAttributeValueException
@@ -275,6 +281,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the clone method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClone() throws LdapException
@@ -299,6 +307,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the equals method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testEquals() throws LdapInvalidAttributeValueException
@@ -334,6 +344,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the getNormValue method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetNormalizedValue() throws LdapInvalidAttributeValueException
@@ -353,6 +365,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the getNormValue method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetNormalizedValueCopy() throws LdapInvalidAttributeValueException
@@ -372,6 +386,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the getNormValue method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetNormalizedValueReference() throws LdapInvalidAttributeValueException
@@ -391,7 +407,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the getAttributeType method
-     * @throws LdapInvalidAttributeValueException 
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testgetAttributeType() throws LdapInvalidAttributeValueException
@@ -407,6 +424,8 @@ public class BinaryValueAttributeTypeTest
      * Test the isValid method
      * 
      * The SyntaxChecker does not accept values longer than 5 chars.
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testIsValid() throws LdapInvalidAttributeValueException
@@ -433,7 +452,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Tests to make sure the hashCode method is working properly.
-     * @throws Exception on errors
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testHashCode() throws LdapInvalidAttributeValueException
@@ -462,6 +482,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the instanceOf method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testInstanceOf() throws LdapException
@@ -479,6 +501,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the normalize method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNormalize() throws LdapException
@@ -498,6 +522,8 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test the compareTo method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testCompareTo() throws LdapInvalidAttributeValueException
@@ -519,6 +545,10 @@ public class BinaryValueAttributeTypeTest
     /**
      * Test serialization of a Value which normalized value is the same
      * than the value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNormalizedBinarySameValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -536,6 +566,10 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test serialization of a Value which does not have a normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNoNormalizedBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -559,6 +593,10 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test serialization of a null Value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -579,6 +617,10 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test serialization of an empty Value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testEmptyBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -599,6 +641,10 @@ public class BinaryValueAttributeTypeTest
 
     /**
      * Test serialization of a Value which is the same than the value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSameNormalizedBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException

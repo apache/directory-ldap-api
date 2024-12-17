@@ -84,6 +84,8 @@ public class StringValueTest
     //----------------------------------------------------------------------------------
     /**
      * Serialize a Value
+     * 
+     * @throws IOException If the test failed
      */
     private ByteArrayOutputStream serializeValue( Value value ) throws IOException
     {
@@ -99,6 +101,9 @@ public class StringValueTest
 
     /**
      * Deserialize a Value
+     * 
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     private Value deserializeValue( AttributeType at, ByteArrayOutputStream out ) throws IOException,
         ClassNotFoundException
@@ -141,6 +146,8 @@ public class StringValueTest
     //----------------------------------------------------------------------------------
     /**
      * Test cloning an empty value
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCloneEmptyValue() throws LdapException
@@ -161,6 +168,8 @@ public class StringValueTest
 
     /**
      * Test cloning a value
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCloneValue() throws LdapException
@@ -201,7 +210,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#ClientStringValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#Value(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClientStringValueNull() throws LdapException
@@ -217,7 +228,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#ClientStringValue(java.lang.String)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#Value(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClientStringValueEmpty() throws LdapException
@@ -234,7 +247,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#ClientStringValue(java.lang.String)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#Value(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClientStringValueString() throws LdapException
@@ -264,7 +279,7 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getCopy()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getString()}.
      */
     @Test
     public void testGetCopy()
@@ -279,7 +294,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#set(java.lang.String)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#Value(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testSet() throws LdapException
@@ -323,6 +340,8 @@ public class StringValueTest
 
     /**
      * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#isSchemaAware()}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIsNormalized() throws LdapException
@@ -342,7 +361,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#setNormalized(boolean)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#Value(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testSetNormalized() throws LdapException
@@ -362,7 +383,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getNormValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#compareTo(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetNormalizedValue() throws LdapException
@@ -381,7 +404,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#getNormValue()}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#compareTo(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void getNormValueCopy() throws LdapException
@@ -400,7 +425,9 @@ public class StringValueTest
 
 
     /**
-     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#normalize(org.apache.directory.api.ldap.model.schema.Normalizer)}.
+     * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#compareTo(java.lang.String)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNormalize() throws LdapException
@@ -425,6 +452,8 @@ public class StringValueTest
 
     /**
      * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#isValid(org.apache.directory.api.ldap.model.schema.SyntaxChecker)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIsValid() throws LdapException
@@ -440,6 +469,8 @@ public class StringValueTest
 
     /**
      * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#compareTo(org.apache.directory.api.ldap.model.entry.Value)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testCompareTo() throws LdapException
@@ -474,6 +505,8 @@ public class StringValueTest
 
     /**
      * Test method for {@link org.apache.directory.api.ldap.model.entry.Value#equals(java.lang.Object)}.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEquals() throws LdapException
@@ -516,6 +549,10 @@ public class StringValueTest
 
     /**
      * Test the serialization of a CSV with a value and a normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeStandard() throws LdapException, IOException, ClassNotFoundException
@@ -534,6 +571,10 @@ public class StringValueTest
 
     /**
      * Test the serialization of a CSV with a value and no normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeNotNormalized() throws LdapException, IOException, ClassNotFoundException
@@ -551,6 +592,10 @@ public class StringValueTest
 
     /**
      * Test the serialization of a CSV with a value and an empty normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEmptyNormalized() throws LdapException, IOException, ClassNotFoundException
@@ -569,6 +614,10 @@ public class StringValueTest
 
     /**
      * Test the serialization of a CSV with a null value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeNullValue() throws LdapException, IOException, ClassNotFoundException
@@ -587,6 +636,10 @@ public class StringValueTest
 
     /**
      * Test the serialization of a CSV with an empty value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEmptyValue() throws LdapException, IOException, ClassNotFoundException
@@ -605,6 +658,10 @@ public class StringValueTest
 
     /**
      * Test the serialization of a CSV with an empty value not normalized
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEmptyValueNotNormalized() throws LdapException, IOException, ClassNotFoundException

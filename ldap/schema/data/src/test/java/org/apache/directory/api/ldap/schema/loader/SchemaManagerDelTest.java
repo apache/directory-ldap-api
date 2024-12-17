@@ -215,6 +215,8 @@ public class SchemaManagerDelTest
     //-------------------------------------------------------------------------
     /**
      * Try to delete an AttributeType not existing in the schemaManager
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteNonExistingAttributeType() throws Exception
@@ -241,6 +243,8 @@ public class SchemaManagerDelTest
 
     /**
      * Delete an existing AT not referenced by any object
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingAttributeType() throws Exception
@@ -264,6 +268,10 @@ public class SchemaManagerDelTest
 
     /**
      * Delete an existing AT referenced by some other OC
+     * 
+     * @throws Exception If the test failed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingAttributeTypeUsedByOC() throws Exception
@@ -288,6 +296,8 @@ public class SchemaManagerDelTest
 
     /**
      * Delete an existing AT stored in some disabled schema
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDelAttributeTypeFromDisabledSchema() throws Exception
@@ -312,6 +322,8 @@ public class SchemaManagerDelTest
 
     /**
      * Delete an existing AT referenced by some descendant
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingAttributeTypeUsedByDescendant() throws Exception
@@ -413,6 +425,8 @@ public class SchemaManagerDelTest
     /**
      * Check that a Comparator which has been used by a deleted MatchingRule
      * can be removed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingComparatorUsedByRemovedMatchingRule() throws Exception
@@ -519,6 +533,8 @@ public class SchemaManagerDelTest
     /**
      * Check that a MatchingRule which has been used by a deleted AttributeType
      * can be removed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingMatchingRuleUsedByRemovedAttributeType() throws Exception
@@ -654,6 +670,8 @@ public class SchemaManagerDelTest
     /**
      * Check that a Normalizer which has been used by a deleted MatchingRule
      * can be removed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingNormalizerUsedByRemovedMatchingRule() throws Exception
@@ -866,6 +884,8 @@ public class SchemaManagerDelTest
     /**
      * Check that a Syntax which has been used by a deleted MatchingRule
      * can be removed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingSyntaxUsedByRemovedMatchingRule() throws Exception
@@ -913,6 +933,8 @@ public class SchemaManagerDelTest
     /**
      * Check that a Syntax which has been used by a deleted AttributeType
      * can be removed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingSyntaxUsedByRemovedAttributeType() throws Exception
@@ -960,6 +982,8 @@ public class SchemaManagerDelTest
     /**
      * Check that a SyntaxChecker which has been used by a deleted Syntax
      * can be removed
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDeleteExistingSyntaxCheckerUsedByRemovedSyntax() throws Exception

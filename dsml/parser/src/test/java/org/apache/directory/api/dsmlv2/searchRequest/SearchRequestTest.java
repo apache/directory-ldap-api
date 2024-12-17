@@ -53,9 +53,7 @@ import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
-import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -342,7 +340,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with scope attribute to BaseObject value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithScopeBaseObject()
@@ -370,7 +367,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with scope attribute to SingleLevel value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithScopeSingleLevel()
@@ -398,7 +394,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with scope attribute to WholeSubtree value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithScopeWholeSubtree()
@@ -446,7 +441,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with derefAliases attribute to derefAlways value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithDerefAliasesDerefAlways()
@@ -474,7 +468,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with derefAliases attribute to derefFindingBaseObj value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithDerefAliasesDerefFindingBaseObj()
@@ -502,7 +495,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with derefAliases attribute to derefinSearching value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithDerefAliasesDerefinSearching()
@@ -530,7 +522,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with derefAliases attribute to neverDerefAliases value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithDerefAliasesNeverDerefAliases()
@@ -558,7 +549,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with derefAliases attribute to Error value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithDerefAliasesError()
@@ -569,7 +559,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with the sizeLimit (optional) attribute
-     * @throws NamingException
      */
     @Test
     public void testRequestWithSizeLimitAttribute()
@@ -597,7 +586,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with sizeLimit attribute to Error value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithSizeLimitError()
@@ -608,7 +596,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with the timeLimit (optional) attribute
-     * @throws NamingException
      */
     @Test
     public void testRequestWithTimeLimitAttribute()
@@ -636,7 +623,6 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with timeLimit attribute to Error value
-     * @throws NamingException
      */
     @Test
     public void testRequestWithTimeLimitError()
@@ -810,7 +796,7 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with an Attributes element with 1 Attribute element
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithAttributes1Attribute() throws LdapException
@@ -842,7 +828,7 @@ public class SearchRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with an Attributes element with 2 Attribute elements
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRequestWithAttributes2Attribute() throws LdapException

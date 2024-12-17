@@ -70,7 +70,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericOid() throws ParseException
@@ -82,7 +82,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNames() throws ParseException
@@ -94,7 +94,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -106,7 +106,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testObsolete() throws ParseException
@@ -118,10 +118,10 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Test SUP and its values.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testSuperior() throws ParseException, NamingException
+    public void testSuperior() throws ParseException
     {
         String value = null;
         ObjectClass objectClass = null;
@@ -246,7 +246,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Tests kind (ABSTRACT, AUXILIARY, STRUCTURAL)
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testKind() throws ParseException
@@ -297,7 +297,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
      * Test MUST and its values.
      * Very similar to SUP, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMust() throws ParseException
@@ -352,7 +352,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
      * Test MAY and its values.
      * Very similar to SUP, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMay() throws ParseException
@@ -398,7 +398,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -411,10 +411,10 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Test full object class description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testFull() throws ParseException, NamingException
+    public void testFull() throws ParseException
     {
         String value = null;
         ObjectClass objectClass = null;
@@ -458,8 +458,6 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -476,10 +474,10 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     /**
      * Ensure that element order is ignored
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
-    public void testIgnoreElementOrder() throws ParseException, NamingException
+    public void testIgnoreElementOrder() throws ParseException
     {
         String value = "( 2.5.6.6 STRUCTURAL MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) SUP top DESC 'RFC2256: a person' MUST ( sn $ cn ) NAME 'person' )";
         ObjectClass objectClass = parser.parse( value );
@@ -509,7 +507,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
     ////////////////////////////////////////////////////////////////
 
     @Test
-    public void testRfcTop() throws ParseException, NamingException
+    public void testRfcTop() throws ParseException
     {
         String value = "( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRACT MUST objectClass )";
         ObjectClass objectClass = parser.parse( value );
@@ -528,7 +526,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testRfcPerson() throws ParseException, NamingException
+    public void testRfcPerson() throws ParseException
     {
         String value = "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )";
         ObjectClass objectClass = parser.parse( value );
@@ -553,7 +551,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testRfcSimpleSecurityObject() throws ParseException, NamingException
+    public void testRfcSimpleSecurityObject() throws ParseException
     {
         String value = "( 0.9.2342.19200300.100.4.19 NAME 'simpleSecurityObject' DESC 'RFC1274: simple security object' SUP top AUXILIARY MUST userPassword )";
         ObjectClass objectClass = parser.parse( value );
@@ -573,7 +571,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testSunAlias() throws ParseException, NamingException
+    public void testSunAlias() throws ParseException
     {
         String value = "( 2.5.6.1 NAME 'alias' DESC 'Standard LDAP objectclass' SUP top ABSTRACT MUST aliasedObjectName X-ORIGIN 'RFC 2256' )";
         ObjectClass objectClass = parser.parse( value );
@@ -597,7 +595,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testNovellDcObject() throws ParseException, NamingException
+    public void testNovellDcObject() throws ParseException
     {
         String value = "( 1.3.6.1.4.1.1466.344 NAME 'dcObject' AUXILIARY MUST dc X-NDS_NAMING 'dc' X-NDS_NOT_CONTAINER '1' X-NDS_NONREMOVABLE '1' )";
         ObjectClass objectClass = parser.parse( value );
@@ -626,7 +624,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testNovellList() throws ParseException, NamingException
+    public void testNovellList() throws ParseException
     {
         String value = "( 2.16.840.1.113719.1.1.6.1.30 NAME 'List' SUP Top STRUCTURAL MUST cn MAY ( description $ l $ member $ ou $ o $ eMailAddress $ mailboxLocation $ mailboxID $ owner $ seeAlso $ fullName ) X-NDS_NAMING 'cn' X-NDS_CONTAINMENT ( 'Organization' 'organizationalUnit' 'domain' ) X-NDS_NOT_CONTAINER '1' X-NDS_NONREMOVABLE '1' X-NDS_ACL_TEMPLATES '2#entry#[Root Template]#member' )";
         ObjectClass objectClass = parser.parse( value );
@@ -673,7 +671,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testMicrosoftAds2000Locality() throws ParseException, NamingException
+    public void testMicrosoftAds2000Locality() throws ParseException
     {
         String value = "( 2.5.6.3 NAME 'locality' SUP top STRUCTURAL MUST (l ) MAY (st $ street $ searchGuide $ seeAlso ) )";
         ObjectClass objectClass = parser.parse( value );
@@ -697,7 +695,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testMicrosoftAds2003Msieee() throws ParseException, NamingException
+    public void testMicrosoftAds2003Msieee() throws ParseException
     {
         String value = "( 1.2.840.113556.1.5.240 NAME 'msieee80211-Policy' SUP top STRUCTURAL MAY (msieee80211-Data $ msieee80211-DataType $ msieee80211-ID ) )";
         ObjectClass objectClass = parser.parse( value );
@@ -719,7 +717,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
 
     @Test
-    public void testSiemensDirxX500Subschema() throws ParseException, NamingException
+    public void testSiemensDirxX500Subschema() throws ParseException
     {
         String value = "( 2.5.20.1 NAME 'x500subSchema' AUXILIARY MAY (dITStructureRules $ nameForms $ dITContentRules $ x500objectClasses $ x500attributeTypes $ matchingRules $ matchingRuleUse) )";
         ObjectClass objectClass = parser.parse( value );
@@ -740,6 +738,8 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
     /**
      * Tests the multi-threaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException
@@ -756,6 +756,9 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
 
     /**
      * Tests quirks mode.
+     * 
+     * @throws ParseException If the test failed
+     * @throws NamingException If the test failed
      */
     @Test
     public void testQuirksMode() throws ParseException, NamingException
@@ -828,5 +831,4 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
             parser.setQuirksMode( false );
         }
     }
-
 }

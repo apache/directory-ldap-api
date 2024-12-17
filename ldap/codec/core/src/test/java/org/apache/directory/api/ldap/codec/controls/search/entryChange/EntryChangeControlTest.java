@@ -49,6 +49,8 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a EntryChangeControl
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeEntryChangeControlSuccess() throws DecoderException
@@ -86,6 +88,8 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a EntryChangeControl
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeEntryChangeControlSuccessLongChangeNumber() throws DecoderException
@@ -124,6 +128,8 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a EntryChangeControl with a add and a change number
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeEntryChangeControlWithADDAndChangeNumber() throws DecoderException
@@ -163,7 +169,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
      * have a PreviousDN
      */
     @Test
-    public void testDecodeEntryChangeControlWithADDAndPreviousDNBad() throws DecoderException
+    public void testDecodeEntryChangeControlWithADDAndPreviousDNBad()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0D );
         bb.put( new byte[]
@@ -193,6 +199,8 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a EntryChangeControl with a add and nothing else
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeEntryChangeControlWithADD() throws DecoderException
@@ -231,7 +239,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
      * nothing else
      */
     @Test
-    public void testDecodeEntryChangeControlWithWrongChangeType() throws DecoderException
+    public void testDecodeEntryChangeControlWithWrongChangeType()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
@@ -259,7 +267,7 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
      * Test the decoding of a EntryChangeControl with a wrong changeNumber
      */
     @Test
-    public void testDecodeEntryChangeControlWithWrongChangeNumber() throws DecoderException
+    public void testDecodeEntryChangeControlWithWrongChangeNumber()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x1C );
         bb.put( new byte[]
@@ -289,6 +297,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a EntryChangeControl.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEncodeEntryChangeControl() throws DecoderException, EncoderException, LdapException
@@ -327,6 +339,10 @@ public class EntryChangeControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a EntryChangeControl with a long changeNumber.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEncodeEntryChangeControlLong() throws DecoderException, EncoderException, LdapException

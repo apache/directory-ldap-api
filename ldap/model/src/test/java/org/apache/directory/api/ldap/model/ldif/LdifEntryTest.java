@@ -50,6 +50,8 @@ public class LdifEntryTest
 {
     /**
      * Check that we can't create an empty LdifEntry
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryEmpty() throws Exception
@@ -63,6 +65,8 @@ public class LdifEntryTest
 
     /**
      * Check that we can create an LdifEntry with an Empty Dn
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryEmptyDn() throws Exception
@@ -79,6 +83,8 @@ public class LdifEntryTest
 
     /**
      * Check that we can create an LdifEntry with a null Dn
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryNullDn() throws Exception
@@ -95,7 +101,8 @@ public class LdifEntryTest
 
     /**
      * Test a simple LdifEntry
-     * @throws Exception
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testSimpleLdifEntry() throws Exception
@@ -125,7 +132,7 @@ public class LdifEntryTest
     /**
      * Test a Delete changeType LdifEntry with no control
      * 
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifParserChangeTypeDeleteNoControl() throws Exception
@@ -151,7 +158,7 @@ public class LdifEntryTest
      * Test a Delete changeType LdifEntry with no control and following Attrs :
      * should get an exception
      * 
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifParserChangeTypeDeleteNoControlAttribute() throws Exception
@@ -174,7 +181,7 @@ public class LdifEntryTest
     /**
      * Test a Delete changeType LdifEntry with one control
      * 
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifParserChangeTypeDeleteWithControl() throws Exception
@@ -206,7 +213,7 @@ public class LdifEntryTest
     /**
      * Test a Delete changeType LdifEntry with controls
      * 
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifParserChangeTypeDeleteWithControls() throws Exception
@@ -245,7 +252,8 @@ public class LdifEntryTest
 
     /**
      * Test a Add changeType LdifEntry with no control
-     * @throws Exception
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeAddNoControl() throws Exception
@@ -275,7 +283,8 @@ public class LdifEntryTest
 
     /**
      * Test a Add changeType LdifEntry with a control
-     * @throws Exception
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeAddWithControl() throws Exception
@@ -312,7 +321,8 @@ public class LdifEntryTest
 
     /**
      * Test a Add changeType LdifEntry with controls
-     * @throws Exception
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeAddWithControls() throws Exception
@@ -357,6 +367,8 @@ public class LdifEntryTest
 
     /**
      * Test a ModDn changeType LdifEntry with no control
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModDnNoControl() throws Exception
@@ -382,6 +394,8 @@ public class LdifEntryTest
 
     /**
      * Test a ModDn changeType LdifEntry with no newRdn
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModDnNoNewRdn() throws Exception
@@ -399,6 +413,8 @@ public class LdifEntryTest
 
     /**
      * Test a ModDn changeType LdifEntry with no deleteOldRdn flag
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModDnNoDeleteOldRdn() throws Exception
@@ -416,6 +432,8 @@ public class LdifEntryTest
 
     /**
      * Test a ModDn changeType LdifEntry with no control and a newSuperior
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModDnRenameNoControlNewSuperior() throws Exception
@@ -442,7 +460,8 @@ public class LdifEntryTest
 
     /**
      * Test a ModDn changeType LdifEntry with a control
-     * @throws Exception
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModdnWithControl() throws Exception
@@ -476,7 +495,8 @@ public class LdifEntryTest
 
     /**
      * Test a ModDN changeType LdifEntry with controls
-     * @throws Exception
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModddnWithControls() throws Exception
@@ -517,6 +537,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with no control
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifySimple() throws Exception
@@ -555,6 +577,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with no end separator ("-")
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoEndSeparator() throws Exception
@@ -574,6 +598,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with increment operation
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyIncrement() throws Exception
@@ -610,6 +636,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with increment operation
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyIncrementNumber() throws Exception
@@ -648,6 +676,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with no operation
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoOperator() throws Exception
@@ -667,6 +697,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with no attributes
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoAttribute() throws Exception
@@ -703,6 +735,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with a different attribute used
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyNotSameAttr() throws Exception
@@ -723,6 +757,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with a different attribute used
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyNotSameAttr2() throws Exception
@@ -743,6 +779,8 @@ public class LdifEntryTest
 
     /**
      * Test a Modify changeType LdifEntry with no attributes and controls
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoAttributeWithControls() throws Exception

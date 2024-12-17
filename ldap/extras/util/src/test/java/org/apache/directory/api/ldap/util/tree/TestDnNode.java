@@ -34,7 +34,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
-import org.apache.directory.api.ldap.util.tree.DnNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -53,6 +52,8 @@ public class TestDnNode
     //---------------------------------------------------------------------------
     /**
      * Test the addition of a null Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddNullDNNoElem() throws LdapException
@@ -68,6 +69,8 @@ public class TestDnNode
 
     /**
      * Test the addition of a Dn with three Rdn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd3LevelDNNoElem() throws LdapException
@@ -96,6 +99,8 @@ public class TestDnNode
 
     /**
      * Test the addition of two DNs not overlapping
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd2DistinctDNsNoElem() throws LdapException
@@ -131,6 +136,8 @@ public class TestDnNode
 
     /**
      * Test the addition of two overlapping DNs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd2OverlappingDNsNoElem() throws LdapException
@@ -172,6 +179,8 @@ public class TestDnNode
 
     /**
      * Test the addition of two equal DNs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd2EqualDNsNoElem() throws LdapException
@@ -195,6 +204,8 @@ public class TestDnNode
     //---------------------------------------------------------------------------
     /**
      * Test the addition of a null Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddNullDN() throws LdapException
@@ -211,6 +222,8 @@ public class TestDnNode
 
     /**
      * Test the addition of a Dn with three Rdn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd3LevelDN() throws LdapException
@@ -239,6 +252,8 @@ public class TestDnNode
 
     /**
      * Test the addition of two DNs not overlapping
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd2DistinctDNs() throws LdapException
@@ -274,6 +289,8 @@ public class TestDnNode
 
     /**
      * Test the addition of two overlapping DNs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd2OverlappingDNs() throws LdapException
@@ -315,6 +332,8 @@ public class TestDnNode
 
     /**
      * Test the addition of two equal DNs
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAdd2EqualDNs() throws LdapException
@@ -693,6 +712,8 @@ public class TestDnNode
 
     /**
      * test the deletion of elements in a tree
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testComplexTreeDeletion() throws LdapException

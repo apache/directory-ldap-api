@@ -53,6 +53,8 @@ public class AbstractResultResponseTest
 
     /**
      * Tests to see the same exact copy returns true.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsExactCopy() throws LdapException
@@ -90,6 +92,8 @@ public class AbstractResultResponseTest
 
     /**
      * Tests to see the same exact copy returns true.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNotEqualsDiffResult() throws LdapException

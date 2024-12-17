@@ -52,6 +52,9 @@ public class AddResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a AddResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseSuccess() throws DecoderException, EncoderException
@@ -103,7 +106,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a AddResponse with no LdapResult
      */
     @Test
-    public void testDecodeAddResponseEmptyResult() throws DecoderException
+    public void testDecodeAddResponseEmptyResult()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x0E );
 
@@ -129,6 +132,9 @@ public class AddResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a AddResponse with a control
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeAddResponseSuccessWithControl() throws DecoderException, EncoderException

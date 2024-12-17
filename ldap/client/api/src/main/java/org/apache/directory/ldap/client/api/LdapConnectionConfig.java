@@ -337,7 +337,7 @@ public class LdapConnectionConfig
      * It is used when operation-specific timeouts are not specified.
      * It is also used for extended operations.
      *
-     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
+     * @param timeout the timeout in milliseconds to set. If &lt; 0, will be set to infinite
      */
     public void setTimeout( long timeout )
     {
@@ -370,7 +370,7 @@ public class LdapConnectionConfig
      * Connect timeout is applied to connect and bind operations.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
+     * @param timeout the timeout in milliseconds to set. If &lt; 0, will be set to infinite
      */
     public void setConnectTimeout( Long timeout )
     {
@@ -403,7 +403,7 @@ public class LdapConnectionConfig
      * Write operation timeout is applied to operations that write data, such as add, modify and delete.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
+     * @param timeout the timeout in milliseconds to set. If &lt; 0, will be set to infinite
      */
     public void setWriteOperationTimeout( Long timeout )
     {
@@ -436,7 +436,7 @@ public class LdapConnectionConfig
      * This timeout is applied to read operations, such as search and compare.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
+     * @param timeout the timeout in milliseconds to set. If &lt; 0, will be set to infinite
      */
     public void setReadOperationTimeout( Long timeout )
     {
@@ -469,7 +469,7 @@ public class LdapConnectionConfig
      * Close timeout is applied to close and unbind operations.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
+     * @param timeout the timeout in milliseconds to set. If &lt; 0, will be set to infinite
      */
     public void setCloseTimeout( Long timeout )
     {
@@ -502,7 +502,7 @@ public class LdapConnectionConfig
      * Send timeout is used for I/O (TCP) write operations.
      * If not specified, global timeout setting is applied.
      *
-     * @param timeout the timeout in milliseconds to set. If < 0, will be set to infinite
+     * @param timeout the timeout in milliseconds to set. If &lt; 0, will be set to infinite
      */
     public void setSendTimeout( Long timeout )
     {

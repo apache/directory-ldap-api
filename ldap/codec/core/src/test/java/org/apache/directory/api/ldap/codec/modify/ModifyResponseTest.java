@@ -53,6 +53,9 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a ModifyResponse
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyResponseSuccess() throws DecoderException, EncoderException
@@ -102,6 +105,9 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a ModifyResponse with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeModifyResponseSuccessWithControls() throws DecoderException, EncoderException
@@ -171,7 +177,7 @@ public class ModifyResponseTest extends AbstractCodecServiceTest
      * Test the decoding of a ModifyResponse with no LdapResult
      */
     @Test
-    public void testDecodeModifyResponseEmptyResult() throws DecoderException
+    public void testDecodeModifyResponseEmptyResult()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 

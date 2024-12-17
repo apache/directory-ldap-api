@@ -610,6 +610,8 @@ public class ValueTest
 
     /**
      * Test the decoding of integer values
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDecodeInt() throws Exception
@@ -661,6 +663,7 @@ public class ValueTest
 
     /**
      * Test the decoding of long values
+     * @throws Exception If the test failed
      */
     @Test
     public void testDecodeLong() throws Exception

@@ -31,8 +31,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.IOException;
-
 /**
  * Tests for the schemaAware Rdn class
  * 
@@ -68,7 +66,7 @@ public class RdnTest
     /**
      * test an empty Rdn
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnEmpty() throws LdapException
@@ -83,7 +81,7 @@ public class RdnTest
     /**
      * test a simple Rdn : ' cn = b    C d'
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimple() throws LdapException
@@ -103,7 +101,7 @@ public class RdnTest
     /**
      * test a simple Rdn with no value : ' dc = '
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnSimpleEmptyValue() throws LdapException
@@ -261,6 +259,8 @@ public class RdnTest
     /**
      * test that a RDN with an attributeType used twice with the same value
      * throws an exception
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testWrongRdnAtUsedTwiceSameValue() throws LdapException
@@ -275,6 +275,8 @@ public class RdnTest
     /**
      * test that a RDN with an attributeType used twice but with different value
      * is accepted
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRdnAtUsedTwiceDifferentValue() throws LdapException

@@ -39,6 +39,8 @@ public class DummyComparator extends LdapComparator<String> implements Serializa
     /**
      * The DummyComparator constructor. Its OID is the StringOrderingMatch matching
      * rule OID.
+     * 
+     * @param oid The Comparator's Oid
      */
     public DummyComparator( String oid )
     {
@@ -51,7 +53,7 @@ public class DummyComparator extends LdapComparator<String> implements Serializa
      * 
      * @param obj1 First object
      * @param obj2 Second object
-     * @return 1 if obj1 > obj2, 0 if obj1 == obj2, -1 if obj1 < obj2
+     * @return 1 if obj1 &gt; obj2, 0 if obj1 == obj2, -1 if obj1 &lt; obj2
      */
     public int compare( String obj1, String obj2 )
     {

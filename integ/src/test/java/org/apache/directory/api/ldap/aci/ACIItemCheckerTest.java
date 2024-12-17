@@ -47,6 +47,8 @@ public class ACIItemCheckerTest
 
     /**
      * Initialization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void init() throws Exception
@@ -61,6 +63,8 @@ public class ACIItemCheckerTest
 
     /**
      * Tests the checker with an ACIItem of ItemFirst main component.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testItemFirst() throws Exception
@@ -115,6 +119,8 @@ public class ACIItemCheckerTest
 
     /**
      * Tests the checker with an ACIItem of UserFirst main component.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testUserFirst() throws Exception

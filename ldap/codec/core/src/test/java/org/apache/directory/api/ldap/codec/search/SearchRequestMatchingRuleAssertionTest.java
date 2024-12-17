@@ -96,6 +96,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
 
     /**
      * Tests an search request decode with a simple equality match filter.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestExtensibleMatch() throws DecoderException, EncoderException, LdapException
@@ -182,7 +186,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * Test the decoding of a SearchRequest with an empty extensible match
      */
     @Test
-    public void testDecodeSearchRequestEmptyExtensibleMatch() throws DecoderException
+    public void testDecodeSearchRequestEmptyExtensibleMatch()
     {
         byte[] asn1BER = new byte[]
             {
@@ -223,7 +227,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * empty matching rule
      */
     @Test
-    public void testDecodeSearchRequestExtensibleMatchEmptyMatchingRule() throws DecoderException
+    public void testDecodeSearchRequestExtensibleMatchEmptyMatchingRule()
     {
         byte[] asn1BER = new byte[]
             {
@@ -264,7 +268,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * empty type
      */
     @Test
-    public void testDecodeSearchRequestExtensibleMatchEmptyType() throws DecoderException
+    public void testDecodeSearchRequestExtensibleMatchEmptyType()
     {
         byte[] asn1BER = new byte[]
             {
@@ -303,6 +307,10 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
     /**
      * Test the decoding of a SearchRequest with an extensible match and an
      * empty matchValue
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestExtensibleMatchEmptyMatchValue() throws DecoderException, EncoderException, LdapException
@@ -375,7 +383,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * matching rule and an empty type
      */
     @Test
-    public void testDecodeSearchRequestExtensibleMatchMatchingRuleEmptyType() throws DecoderException
+    public void testDecodeSearchRequestExtensibleMatchMatchingRuleEmptyType()
     {
         byte[] asn1BER = new byte[]
             {
@@ -418,7 +426,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * matching rule and an empty dnAttributes
      */
     @Test
-    public void testDecodeSearchRequestExtensibleMatchDnAttributesEmptyType() throws DecoderException
+    public void testDecodeSearchRequestExtensibleMatchDnAttributesEmptyType()
     {
         byte[] asn1BER = new byte[]
             {
@@ -479,7 +487,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
      * matching rule and nothing else
      */
     @Test
-    public void testDecodeSearchRequestExtensibleMatchMatchingRuleAlone() throws DecoderException
+    public void testDecodeSearchRequestExtensibleMatchMatchingRuleAlone()
     {
         byte[] asn1BER = new byte[]
             {
@@ -519,6 +527,9 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
     /**
      * Test the decoding of a SearchRequest with an extensible match and a type
      * and nothing else
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchRequestExtensibleMatchTypeAlone() throws DecoderException, EncoderException
@@ -561,6 +572,9 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
     /**
      * Test the decoding of a SearchRequest with an extensible match and a match
      * Value and nothing else
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchRequestExtensibleMatchMatchValueAlone() throws DecoderException, EncoderException

@@ -56,6 +56,9 @@ public class CertGenerationRequestTest
     
     /**
      * test the decode operation
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testCertGenrationDecode() throws DecoderException, EncoderException

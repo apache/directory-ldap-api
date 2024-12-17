@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.name;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Dn;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -41,6 +40,8 @@ public class DnParserDIRSERVER_584_Test
 {
     /**
      * Need this testa() to run first to mess up the state of the static parser.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testa() throws Exception
@@ -55,6 +56,8 @@ public class DnParserDIRSERVER_584_Test
     /**
      * Need this testb() to run second to use the mess up static parser.  This
      * test should succeed but fails.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testb() throws Exception

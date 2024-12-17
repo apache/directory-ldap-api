@@ -42,6 +42,8 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a BindRequest with Simple authentication and no
      * controls
+     * 
+     * @throws Exception If the ASN1 encoding failed
      */
     @Test
     @Disabled

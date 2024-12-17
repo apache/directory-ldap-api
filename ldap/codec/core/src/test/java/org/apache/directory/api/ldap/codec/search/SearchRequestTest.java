@@ -111,7 +111,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest with no controls. The search filter
-     * is : (&(|(objectclass=top)(ou=contacts))(!(objectclass=ttt)))
+     * is : (&amp;(|(objectclass=top)(ou=contacts))(!(objectclass=ttt)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestGlobalNoControls() throws DecoderException, EncoderException, LdapException
@@ -256,8 +260,12 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest with no controls. Test the various
-     * types of filter : >=, <=, ~= The search filter is :
-     * (&(|(objectclass~=top)(ou<=contacts))(!(objectclass>=ttt)))
+     * types of filter : ;gt;=, &lt;=, ~= The search filter is :
+     * (&amp;(|(objectclass~=top)(ou&lt;=contacts))(!(objectclass&gt;=ttt)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestCompareFiltersNoControls()
@@ -400,7 +408,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with no controls. Test the present
      * filter : =* The search filter is :
-     * (&(|(objectclass=*)(ou=*))(!(objectclass>=ttt)))
+     * (&amp;(|(objectclass=*)(ou=*))(!(objectclass&gt;=ttt)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestPresentNoControls() throws DecoderException, EncoderException, LdapException
@@ -538,6 +550,9 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with no attributes. The search
      * filter is : (objectclass=*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchRequestNoAttributes() throws DecoderException, EncoderException
@@ -647,6 +662,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with an empty attribute. The search
      * filter is : (objectclass=*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestOneEmptyAttribute()
@@ -763,6 +782,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a star and an attribute. The search
      * filter is : (objectclass=*)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestWithStarAndAttr() throws DecoderException, EncoderException, LdapException
@@ -858,6 +881,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Tests an search request decode with a simple equality match filter:
      * (|(uid=akarasulu)(cn=aok)(ou=Human Resources)(l=Santa Clara)(cn=abok))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestOrFilters() throws DecoderException, EncoderException, LdapException
@@ -985,6 +1012,9 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest with controls.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchRequestWithControls() throws DecoderException, EncoderException
@@ -1111,7 +1141,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with no controls but with oid
      * attributes. The search filter is :
-     * (&(|(objectclass=top)(2.5.4.11=contacts))(!(organizationalUnitName=ttt)))
+     * (&amp;(|(objectclass=top)(2.5.4.11=contacts))(!(organizationalUnitName=ttt)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestGlobalNoControlsOidAndAlias()
@@ -1270,6 +1304,9 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest with SubEntry control.
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSearchRequestSubEntryControl() throws DecoderException, EncoderException
@@ -1350,7 +1387,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty body
      */
     @Test
-    public void testDecodeSearchRequestEmptyBody() throws DecoderException
+    public void testDecodeSearchRequestEmptyBody()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1379,7 +1416,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty baseDN and nothing more
      */
     @Test
-    public void testDecodeSearchRequestBaseDnOnly() throws DecoderException
+    public void testDecodeSearchRequestBaseDnOnly()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1407,7 +1444,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest with no controls. The search filter
-     * is : (&(|(objectclass=top)(ou=contacts))(!(objectclass=ttt)))
+     * is : (&amp;(|(objectclass=top)(ou=contacts))(!(objectclass=ttt)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestEmptyBaseDnNoControls() throws DecoderException, EncoderException, LdapException
@@ -1555,7 +1596,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a bad objectBase
      */
     @Test
-    public void testDecodeSearchRequestGlobalBadObjectBase() throws DecoderException
+    public void testDecodeSearchRequestGlobalBadObjectBase()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x90 );
@@ -1651,7 +1692,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty scope
      */
     @Test
-    public void testDecodeSearchRequestEmptyScope() throws DecoderException
+    public void testDecodeSearchRequestEmptyScope()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1684,7 +1725,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a bad scope
      */
     @Test
-    public void testDecodeSearchRequestGlobalBadScope() throws DecoderException
+    public void testDecodeSearchRequestGlobalBadScope()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x90 );
@@ -1762,7 +1803,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty derefAlias
      */
     @Test
-    public void testDecodeSearchRequestEmptyDerefAlias() throws DecoderException
+    public void testDecodeSearchRequestEmptyDerefAlias()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1796,7 +1837,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a bad derefAlias
      */
     @Test
-    public void testDecodeSearchRequestGlobalBadDerefAlias() throws DecoderException
+    public void testDecodeSearchRequestGlobalBadDerefAlias()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x90 );
@@ -1874,7 +1915,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty size limit
      */
     @Test
-    public void testDecodeSearchRequestEmptySizeLimit() throws DecoderException
+    public void testDecodeSearchRequestEmptySizeLimit()
     {
         byte[] asn1BER = new byte[]
             {
@@ -1909,7 +1950,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a bad sizeLimit
      */
     @Test
-    public void testDecodeSearchRequestGlobalBadSizeLimit() throws DecoderException
+    public void testDecodeSearchRequestGlobalBadSizeLimit()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x8F );
@@ -1986,7 +2027,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty time limit
      */
     @Test
-    public void testDecodeSearchRequestEmptyTimeLimit() throws DecoderException
+    public void testDecodeSearchRequestEmptyTimeLimit()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2022,7 +2063,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with a bad timeLimit
      */
     @Test
-    public void testDecodeSearchRequestGlobalBadTimeLimit() throws DecoderException
+    public void testDecodeSearchRequestGlobalBadTimeLimit()
     {
 
         ByteBuffer stream = ByteBuffer.allocate( 0x8F );
@@ -2104,7 +2145,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyTypeOnly() throws DecoderException
+    public void testDecodeSearchRequestEmptyTypeOnly()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2141,7 +2182,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2179,7 +2220,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty Present filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyPresentFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyPresentFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2217,7 +2258,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty equalityMatch filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyEqualityMatchFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyEqualityMatchFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2255,7 +2296,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty greaterOrEqual filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyGreaterOrEqualFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyGreaterOrEqualFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2293,7 +2334,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty lessOrEqual filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyLessOrEqualFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyLessOrEqualFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2331,7 +2372,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an approxMatch filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyApproxMatchFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyApproxMatchFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2371,7 +2412,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      */
     @Test
     public void testDecodeSearchRequestEmptyGreaterOrEqualEmptyAttrDesc()
-        throws DecoderException
+       
     {
         byte[] asn1BER = new byte[]
             {
@@ -2409,6 +2450,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a greaterOrEqual filter and an
      * empty attributeValue, and an empty attribute List
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestEmptyGreaterOrEqualEmptyAttrValue()
@@ -2481,6 +2526,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a greaterOrEqual filter and an
      * empty attributeValue, and an '*' attribute List
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestEmptyGreaterOrEqualEmptyAttrValueStar()
@@ -2556,6 +2605,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a greaterOrEqual filter and an
      * empty attributeValue, and an empty attribute List
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeSearchRequestEmptyGreaterOrEqualEmptyAttrValueEmpty() throws DecoderException
@@ -2622,7 +2673,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty And filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyAndFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyAndFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2662,7 +2713,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty Or filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyOrFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyOrFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2702,7 +2753,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a SearchRequest with an empty Not filter
      */
     @Test
-    public void testDecodeSearchRequestEmptyNotFilter() throws DecoderException
+    public void testDecodeSearchRequestEmptyNotFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2743,7 +2794,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
      * filter
      */
     @Test
-    public void testDecodeSearchRequestNotFilterEmptyAndFilter() throws DecoderException
+    public void testDecodeSearchRequestNotFilterEmptyAndFilter()
     {
         byte[] asn1BER = new byte[]
             {
@@ -2784,6 +2835,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with a greaterOrEqual filter and an
      * empty attributeValue, and an '*' attribute List
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestDIRSERVER_651() throws DecoderException, EncoderException, LdapException
@@ -2874,6 +2929,10 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest
      * (a=b)
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestEq() throws DecoderException, EncoderException, LdapException
@@ -2955,7 +3014,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(a=b))
+     * (&amp;(a=b))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAndEq() throws DecoderException, EncoderException, LdapException
@@ -3046,7 +3109,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(a=b)(c=d))
+     * (&amp;(a=b)(c=d))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAndEqEq() throws DecoderException, EncoderException, LdapException
@@ -3151,7 +3218,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(&(a=b))
+     * (&amp;(&amp;(a=b))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAndAndEq() throws DecoderException, EncoderException, LdapException
@@ -3248,7 +3319,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(&(a=b)(c=d))
+     * (&amp;(&amp;(a=b)(c=d))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAndAndEqEq() throws DecoderException, EncoderException, LdapException
@@ -3360,8 +3435,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(&(a=b))(c=d))
-     * @throws LdapException
+     * (&amp;(&amp;(a=b))(c=d))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAnd_AndEq_Eq() throws DecoderException, EncoderException, LdapException
@@ -3472,7 +3550,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(&(a=b)(c=d))(e=f))
+     * (&amp;(&amp;(a=b)(c=d))(e=f))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAnd_AndEqEq_Eq() throws DecoderException, EncoderException, LdapException
@@ -3596,7 +3678,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(a=b)(|(a=b)(c=d)))
+     * (&amp;(a=b)(|(a=b)(c=d)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAndEq_OrEqEq() throws DecoderException, EncoderException, LdapException
@@ -3720,7 +3806,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(&(a=b))(&(c=d)))
+     * (&amp;(&amp;(a=b))(&amp;(c=d)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAnd_AndEq_AndEq()
@@ -3840,7 +3930,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(&(a=b)(c=d))(&(e=f)))
+     * (&amp;(&amp;(a=b)(c=d))(&amp;(e=f)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAnd_AndEqEq_AndEq() throws DecoderException, EncoderException, LdapException
@@ -3972,7 +4066,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(|(abcdef=*)(ghijkl=*))(!(e>=f)))
+     * (&amp;(|(abcdef=*)(ghijkl=*))(!(e&gt;=f)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAnd_OrPrPr_NotGEq() throws DecoderException, EncoderException, LdapException
@@ -4090,7 +4188,11 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest
-     * (&(|(abcdef=*)(ghijkl=*))(!(e>=f)))
+     * (&amp;(|(abcdef=*)(ghijkl=*))(!(e&gt;=f)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDecodeSearchRequestAnd_OrPrPr_NotGEqNoSelector() throws DecoderException, EncoderException, LdapException
@@ -4151,6 +4253,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest
      * for rootDSE
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeSearchRequestRootDse() throws DecoderException
@@ -4207,6 +4311,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SearchRequest with special length (long form)
      * for rootDSE
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeSearchRequestDIRSERVER_810() throws DecoderException
@@ -4289,7 +4395,9 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a SearchRequest with a complex filter :
-     * (&(objectClass=person)(|(cn=Tori*)(sn=Jagger)))
+     * (&amp;(objectClass=person)(|(cn=Tori*)(sn=Jagger)))
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeSearchRequestComplexFilterWithControl() throws DecoderException

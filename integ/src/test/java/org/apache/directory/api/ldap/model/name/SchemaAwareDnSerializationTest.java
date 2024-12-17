@@ -48,6 +48,8 @@ public class SchemaAwareDnSerializationTest
 
     /**
      * Initialize OIDs maps for normalization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void setup() throws Exception
@@ -127,7 +129,7 @@ public class SchemaAwareDnSerializationTest
     /**
      * Test the serialization of a Dn
      *
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testNameSerialization() throws Exception
@@ -172,7 +174,7 @@ public class SchemaAwareDnSerializationTest
     /**
      * Test the serialization of a Dn
      *
-     * @throws Exception
+     * @throws Exception If the test failed
      */
     @Test
     public void testNameStaticSerialization() throws Exception

@@ -27,10 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.SchemaUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -120,8 +116,7 @@ public class SchemaUtilsTest
 
     /**
      * Tests rendering operations on qdescrs render method. Both overloaded
-     * operations {@link org.apache.directory.api.ldap.model.schema.SchemaUtils#render(StringBuilder, String[])} and
-     * {@link org.apache.directory.api.ldap.model.schema.SchemaUtils#render(String[])} are tested here.
+     * operations {@link org.apache.directory.api.ldap.model.schema.SchemaUtils#renderQDescrs(StringBuilder, List)} 
      */
     @Test
     public void testRenderQdescrs()

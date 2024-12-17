@@ -52,6 +52,8 @@ public class UserClass_NameTest
 
     /**
      * Initialize name instances
+     * 
+     * @throws LdapInvalidDnException if the setup failed
      */
     @BeforeEach
     public void initNames() throws LdapInvalidDnException

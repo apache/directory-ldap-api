@@ -28,9 +28,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.ldap.model.name.FastDnParser;
-import org.apache.directory.api.ldap.model.name.TooComplexDnException;
 import org.apache.directory.api.util.Strings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -51,6 +48,8 @@ public class FastDnParserTest
 
     /**
      * test an empty Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNEmpty() throws LdapException
@@ -62,6 +61,8 @@ public class FastDnParserTest
     /**
      * Tests incomplete DNs, used to check that the parser does not
      * run into infinite loops.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNIncomplete() throws LdapException
@@ -156,6 +157,8 @@ public class FastDnParserTest
 
     /**
      * test a simple Dn : a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNSimple() throws LdapException
@@ -181,6 +184,8 @@ public class FastDnParserTest
 
     /**
      * test a composite Dn : a = b, d = e
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNComposite() throws LdapException
@@ -193,6 +198,8 @@ public class FastDnParserTest
 
     /**
      * test a composite Dn with or without spaces: a=b, a =b, a= b, a = b, a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeWithSpace() throws LdapException
@@ -206,6 +213,8 @@ public class FastDnParserTest
     /**
      * test a composite Dn with differents separators : a=b;c=d,e=f It should
      * return a=b,c=d,e=f (the ';' is replaced by a ',')
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeSepators() throws LdapException
@@ -217,6 +226,8 @@ public class FastDnParserTest
 
     /**
      * Test an attributeType with '_' (Microsoft morons support...)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAttributeTypeWithUnderscore() throws LdapException
@@ -228,6 +239,8 @@ public class FastDnParserTest
     
     /**
      * test a simple Dn with multiple NameComponents : a = b + c = d
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNSimpleMultivaluedAttribute() throws LdapException
@@ -242,6 +255,8 @@ public class FastDnParserTest
     /**
      * test a composite Dn with multiple NC and separators : a=b+c=d, e=f + g=h +
      * i=j
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeMultivaluedAttribute() throws LdapException
@@ -255,6 +270,8 @@ public class FastDnParserTest
 
     /**
      * test a simple Dn with an oid prefix (uppercase) : OID.12.34.56 = azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNOidUpper() throws LdapException
@@ -268,6 +285,8 @@ public class FastDnParserTest
 
     /**
      * test a simple Dn with an oid prefix (lowercase) : oid.12.34.56 = azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNOidLower() throws LdapException
@@ -282,6 +301,8 @@ public class FastDnParserTest
     /**
      * test a simple Dn with an oid attribut without oid prefix : 12.34.56 =
      * azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNOidWithoutPrefix() throws LdapException
@@ -295,6 +316,8 @@ public class FastDnParserTest
     /**
      * test a composite Dn with an oid attribut wiithout oid prefix : 12.34.56 =
      * azerty; 7.8 = test
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNCompositeOidWithoutPrefix() throws LdapException
@@ -306,7 +329,9 @@ public class FastDnParserTest
 
 
     /**
-     * test a simple Dn with pair char attribute value : a = \,\=\+\<\>\#\;\\\"\C3\A9"
+     * test a simple Dn with pair char attribute value : a = \,\=\+\&lt;\&gt;\#\;\\\"\C3\A9"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNPairCharAttributeValue() throws LdapException
@@ -320,6 +345,8 @@ public class FastDnParserTest
 
     /**
      * test a simple Dn with hexString attribute value : a = #0010A0AAFF
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNHexStringAttributeValue() throws LdapException
@@ -333,6 +360,8 @@ public class FastDnParserTest
 
     /**
      * test exception from illegal hexString attribute value : a=#zz.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testBadLdapDNHexStringAttributeValue() throws LdapException
@@ -346,6 +375,8 @@ public class FastDnParserTest
 
     /**
      * test a simple Dn with quoted attribute value : a = "quoted \"value"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapDNQuotedAttributeValue() throws LdapException
@@ -397,6 +428,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringEmpty() throws LdapException
@@ -409,6 +442,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringNull() throws LdapException
@@ -421,6 +456,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC1779_1() throws LdapException
@@ -438,6 +475,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC2253_1() throws LdapException
@@ -450,6 +489,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC2253_2() throws LdapException
@@ -463,6 +504,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC2253_3() throws LdapException
@@ -476,6 +519,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC2253_4() throws LdapException
@@ -489,6 +534,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC2253_5() throws LdapException
@@ -502,6 +549,8 @@ public class FastDnParserTest
 
     /**
      * Class under test for Name parse(String)
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testParseStringRFC2253_6() throws LdapException
@@ -536,6 +585,8 @@ public class FastDnParserTest
      * value of a name component. This test was added to try to reproduce the
      * bug encountered in DIRSERVER-297 <a
      * href="https://issues.apache.org/jira/browse/DIRSERVER-297"> here</a>.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public final void testPreserveSpaceAfterEscape() throws LdapException
@@ -592,6 +643,8 @@ public class FastDnParserTest
     /**
      * Test that we can have non-ascii characters in a DN when we use the 
      * fast DN parser
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testNameTurkishChars() throws Exception
@@ -614,7 +667,7 @@ public class FastDnParserTest
      * fast DN parser, but not followded by bytes
      */
     @Test
-    public void testAUmlautPlusBytes() throws Exception
+    public void testAUmlautPlusBytes()
     {
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, 0x5C, 0x32, 0x42 }, StandardCharsets.UTF_8 );
@@ -631,7 +684,7 @@ public class FastDnParserTest
      * fast DN parser
      */
     @Test
-    public void testAUmlautPlusChar() throws Exception
+    public void testAUmlautPlusChar()
     {
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, '\\', '+' }, StandardCharsets.UTF_8 );
@@ -648,7 +701,7 @@ public class FastDnParserTest
      * or at least an error is generated.
      */
     @Test
-    public final void testNonEscapedChars() throws LdapException
+    public final void testNonEscapedChars()
     {
         String input = "ou=ou+test";
 

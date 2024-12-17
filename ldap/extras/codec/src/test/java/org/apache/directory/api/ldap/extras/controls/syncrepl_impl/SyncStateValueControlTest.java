@@ -70,6 +70,9 @@ public class SyncStateValueControlTest
     
     /**
      * Test the decoding of a SyncStateValue control with a refreshOnly mode
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncStateValueControlWithStateType() throws DecoderException, EncoderException
@@ -104,6 +107,9 @@ public class SyncStateValueControlTest
 
     /**
      * Test the decoding of a SyncStateValue control with no cookie
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncStateValueControlNoCookie() throws DecoderException, EncoderException
@@ -136,6 +142,9 @@ public class SyncStateValueControlTest
 
     /**
      * Test the decoding of a SyncStateValue control with an empty cookie
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncStateValueControlEmptyCookie() throws DecoderException, EncoderException
@@ -184,7 +193,7 @@ public class SyncStateValueControlTest
      * Test the decoding of a SyncStateValue control with an empty sequence
      */
     @Test
-    public void testDecodeSyncStateValueControlEmptySequence() throws DecoderException
+    public void testDecodeSyncStateValueControlEmptySequence()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
@@ -208,7 +217,7 @@ public class SyncStateValueControlTest
      * Test the decoding of a SyncStateValue control with no syncState
      */
     @Test
-    public void testDecodeSyncStateValueControlNoSyancState() throws DecoderException
+    public void testDecodeSyncStateValueControlNoSyancState()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
@@ -234,7 +243,7 @@ public class SyncStateValueControlTest
      * Test the decoding of a SyncStateValue control with no syncUUID
      */
     @Test
-    public void testDecodeSyncStateValueControlNoSyncUUID() throws DecoderException
+    public void testDecodeSyncStateValueControlNoSyncUUID()
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
@@ -260,6 +269,9 @@ public class SyncStateValueControlTest
     /**
      * Test the decoding of a SyncStateValue control with a refreshOnly mode
      * and MODDN state type
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeSyncStateValueControlWithModDnStateType() throws DecoderException, EncoderException

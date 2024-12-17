@@ -65,7 +65,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNumericOid() throws ParseException
@@ -77,7 +77,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNames() throws ParseException
@@ -89,7 +89,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testDescription() throws ParseException
@@ -101,7 +101,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testObsolete() throws ParseException
@@ -113,7 +113,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Test AUX and its values.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testAux() throws ParseException
@@ -268,7 +268,7 @@ public class DitContentRuleDescriptionSchemaParserTest
      * Test MUST and its values.
      * Very similar to AUX, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMust() throws ParseException
@@ -326,7 +326,7 @@ public class DitContentRuleDescriptionSchemaParserTest
      * Test MAY and its values.
      * Very similar to AUX, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMay() throws ParseException
@@ -372,7 +372,7 @@ public class DitContentRuleDescriptionSchemaParserTest
      * Test NOT and its values.
      * Very similar to AUX, so here are less test cases. 
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testNot() throws ParseException
@@ -417,7 +417,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testExtensions() throws ParseException
@@ -430,7 +430,7 @@ public class DitContentRuleDescriptionSchemaParserTest
     /**
      * Test full object class description.
      * 
-     * @throws ParseException
+     * @throws ParseException If the test failed
      */
     @Test
     public void testFull() throws ParseException
@@ -481,8 +481,6 @@ public class DitContentRuleDescriptionSchemaParserTest
 
     /**
      * Test unique elements.
-     * 
-     * @throws ParseException
      */
     @Test
     public void testUniqueElements()
@@ -497,6 +495,8 @@ public class DitContentRuleDescriptionSchemaParserTest
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @throws ParseException If the test failed
      */
     @Test
     public void testMultiThreaded() throws ParseException

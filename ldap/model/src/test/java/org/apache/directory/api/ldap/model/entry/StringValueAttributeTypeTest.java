@@ -96,6 +96,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Serialize a Value
+     * 
+     * @throws IOException If the test failed
      */
     private ByteArrayOutputStream serializeValue( Value value ) throws IOException
     {
@@ -133,6 +135,9 @@ public class StringValueAttributeTypeTest
 
     /**
      * Deserialize a Value
+     * 
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     private Value deserializeValue( ByteArrayOutputStream out ) throws IOException, ClassNotFoundException
     {
@@ -172,6 +177,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the constructor with a null value
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testClientStringValueNullValue() throws LdapInvalidAttributeValueException
@@ -187,6 +194,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the getNormValue method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testGetNormalizedValue() throws LdapInvalidAttributeValueException
@@ -214,6 +223,8 @@ public class StringValueAttributeTypeTest
      * Test the isValid method
      * 
      * The SyntaxChecker does not accept values longer than 5 chars.
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testIsValid() throws LdapInvalidAttributeValueException
@@ -238,6 +249,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the normalize method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApply() throws LdapException
@@ -259,6 +272,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the instanceOf method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testInstanceOf() throws LdapException
@@ -289,6 +304,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the equals method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testEquals() throws LdapInvalidAttributeValueException
@@ -335,7 +352,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Tests to make sure the hashCode method is working properly.
-     * @throws Exception on errors
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testHashCode() throws LdapInvalidAttributeValueException
@@ -365,6 +383,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the compareTo method
+     * 
+     * @throws LdapInvalidAttributeValueException If the test failed
      */
     @Test
     public void testCompareTo() throws LdapInvalidAttributeValueException
@@ -385,6 +405,8 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test the clone method
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClone() throws LdapException
@@ -414,7 +436,7 @@ public class StringValueAttributeTypeTest
      * strings: LOW, MEDIUM, HIGH.  Normalization does nothing. MatchingRules
      * are exact case matching.
      *
-     * @throws Exception on errors
+     * @throws LdapInvalidAttributeValueException on errors
      */
     @Test
     public void testConstrainedString() throws LdapInvalidAttributeValueException
@@ -505,7 +527,8 @@ public class StringValueAttributeTypeTest
      * value is the same as the normalized value.  This makes the at technically
      * a binary value however it can be dealt with as a string so this test
      * is still OK.
-     * @throws Exception on errors
+     * 
+     * @throws LdapInvalidAttributeValueException on errors
      */
     @Test
     public void testAcceptAllNoNormalization() throws LdapInvalidAttributeValueException
@@ -601,6 +624,10 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test serialization of a Value which has a normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNormalizedStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -619,6 +646,10 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test serialization of a Value which does not have a normalized value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNoNormalizedStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -637,6 +668,10 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test serialization of a null Value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testNullStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -655,6 +690,10 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test serialization of an empty Value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testEmptyStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -673,6 +712,10 @@ public class StringValueAttributeTypeTest
 
     /**
      * Test serialization of an empty Value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testStringValueEmptyNormalizedSerialization() throws LdapException, IOException, ClassNotFoundException

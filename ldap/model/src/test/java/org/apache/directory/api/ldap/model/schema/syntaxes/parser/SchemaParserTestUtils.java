@@ -47,9 +47,11 @@ public class SchemaParserTestUtils
     /**
      * Test numericoid
      * 
-     * @throws ParseException
+     * @param parser The schema parser instance
+     * @param required The required part
+     * @throws ParseException If the test failed
      */
-    public static void testNumericOid( AbstractSchemaParser parser, String required ) throws ParseException
+    public static void testNumericOid( AbstractSchemaParser<?> parser, String required ) throws ParseException
     {
         String value = null;
         SchemaObject asd = null;
@@ -228,9 +230,12 @@ public class SchemaParserTestUtils
     /**
      * Tests NAME and its values
      * 
-     * @throws ParseException
+     * @param parser The schema parser instance
+     * @param oid The base OID
+     * @param required The required part
+     * @throws ParseException If the test failed
      */
-    public static void testNamesStrict( AbstractSchemaParser parser, String oid, String required ) throws ParseException
+    public static void testNamesStrict( AbstractSchemaParser<?> parser, String oid, String required ) throws ParseException
     {
         String value = null;
         SchemaObject asd = null;
@@ -459,9 +464,12 @@ public class SchemaParserTestUtils
     /**
      * Tests NAME and its values in relaxed mode
      * 
-     * @throws ParseException
+     * @param parser The schema parser instance
+     * @param oid The base OID
+     * @param required The required part
+     * @throws ParseException If the test failed
      */
-    public static void testNamesRelaxed( AbstractSchemaParser parser, String oid, String required ) throws ParseException
+    public static void testNamesRelaxed( AbstractSchemaParser<?> parser, String oid, String required ) throws ParseException
     {
         String value = null;
         SchemaObject asd = null;
@@ -656,9 +664,12 @@ public class SchemaParserTestUtils
     /**
      * Tests DESC
      * 
-     * @throws ParseException
+     * @param parser The schema parser instance
+     * @param oid The base OID
+     * @param required The required part
+     * @throws ParseException If the test failed
      */
-    public static void testDescription( AbstractSchemaParser parser, String oid, String required )
+    public static void testDescription( AbstractSchemaParser<?> parser, String oid, String required )
         throws ParseException
     {
         String value = null;
@@ -727,7 +738,6 @@ public class SchemaParserTestUtils
         }
         catch ( ParseException pe )
         {
-            pe.printStackTrace();
             // expected
         }
 
@@ -841,9 +851,12 @@ public class SchemaParserTestUtils
     /**
      * Test extensions.
      * 
-     * @throws ParseException
+     * @param parser The schema parser instance
+     * @param oid The base OID
+     * @param required The required part
+     * @throws ParseException If the test failed
      */
-    public static void testExtensions( AbstractSchemaParser parser, String oid, String required ) throws ParseException
+    public static void testExtensions( AbstractSchemaParser<?> parser, String oid, String required ) throws ParseException
     {
         String value = null;
         SchemaObject asd = null;
@@ -941,9 +954,12 @@ public class SchemaParserTestUtils
     /**
      * Tests OBSOLETE
      * 
-     * @throws ParseException
+     * @param parser The schema parser instance
+     * @param oid The base OID
+     * @param required The required part
+     * @throws ParseException If the test failed
      */
-    public static void testObsolete( AbstractSchemaParser parser, String oid, String required ) throws ParseException
+    public static void testObsolete( AbstractSchemaParser<?> parser, String oid, String required ) throws ParseException
     {
         String value = null;
         SchemaObject asd = null;
@@ -1002,9 +1018,10 @@ public class SchemaParserTestUtils
     /**
      * Tests for unique elements.
      * 
-     * @throws ParseException
+     * @param parser The schema parser
+     * @param testValues The values to test
      */
-    public static void testUnique( AbstractSchemaParser parser, String[] testValues )
+    public static void testUnique( AbstractSchemaParser<?> parser, String[] testValues )
     {
         for ( int i = 0; i < testValues.length; i++ )
         {
@@ -1025,8 +1042,11 @@ public class SchemaParserTestUtils
 
     /**
      * Tests the multithreaded use of a single parser.
+     * 
+     * @param parser The schema parser
+     * @param testValues The values to test
      */
-    public static void testMultiThreaded( AbstractSchemaParser parser, String[] testValues )
+    public static void testMultiThreaded( AbstractSchemaParser<?> parser, String[] testValues )
     {
         final boolean[] isSuccessMultithreaded = new boolean[1];
         isSuccessMultithreaded[0] = true;
@@ -1065,8 +1085,12 @@ public class SchemaParserTestUtils
 
     /**
      * Tests quirks mode.
+     * 
+     * @param parser The schema parser
+     * @param required The resuired part
+     * @throws ParseException If the test failed
      */
-    public static void testQuirksMode( AbstractSchemaParser parser, String required ) throws ParseException
+    public static void testQuirksMode( AbstractSchemaParser<?> parser, String required ) throws ParseException
     {
         try
         {
@@ -1104,14 +1128,14 @@ public class SchemaParserTestUtils
 
     static class ParseSpecification implements Runnable
     {
-        private final AbstractSchemaParser parser;
+        private final AbstractSchemaParser<?> parser;
         private final String value;
         private final boolean[] isSuccessMultithreaded;
 
         private SchemaObject result;
 
 
-        public ParseSpecification( AbstractSchemaParser parser, String value, boolean[] isSuccessMultithreaded )
+        public ParseSpecification( AbstractSchemaParser<?> parser, String value, boolean[] isSuccessMultithreaded )
         {
             this.parser = parser;
             this.value = value;
@@ -1133,5 +1157,4 @@ public class SchemaParserTestUtils
             isSuccessMultithreaded[0] = isSuccessMultithreaded[0] && ( result != null );
         }
     }
-
 }

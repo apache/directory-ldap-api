@@ -41,6 +41,8 @@ public class MatchingRuleTest
 
     /**
      * Initialize matching rule instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initMatchingRules() throws Exception

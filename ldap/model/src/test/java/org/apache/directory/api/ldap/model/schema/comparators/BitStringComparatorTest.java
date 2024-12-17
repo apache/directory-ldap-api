@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.schema.comparators;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.apache.directory.api.ldap.model.schema.comparators.BitStringComparator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;

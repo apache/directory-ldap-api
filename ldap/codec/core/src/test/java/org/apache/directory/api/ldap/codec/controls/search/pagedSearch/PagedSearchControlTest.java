@@ -47,6 +47,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 {
     /**
      * Test encoding of a PagedSearchControl.
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testEncodePagedSearchControl() throws Exception
@@ -82,6 +84,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PagedSearchControl with no cookie
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodePagedSearchRequestNoCookie() throws Exception
@@ -106,6 +110,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PagedSearchControl with no size
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodePagedSearchRequestNoSize() throws Exception
@@ -131,6 +137,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a PagedSearchControl with no size  and no cookie
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testDecodePagedSearchRequestNoSizeNoCookie() throws Exception
@@ -154,6 +162,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a PagedSearchControl with a negative size
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testEncodePagedSearchControlNegativeSize() throws Exception
@@ -195,6 +205,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a PagedSearchControl with a empty size
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testEncodePagedSearchControlEmptySize() throws Exception
@@ -221,6 +233,8 @@ public class PagedSearchControlTest extends AbstractCodecServiceTest
 
     /**
      * Test encoding of a PagedSearchControl with a empty cookie
+     * 
+     * @throws Exception If the ASN1 decoding failed
      */
     @Test
     public void testEncodePagedSearchControlEmptyCookie() throws Exception

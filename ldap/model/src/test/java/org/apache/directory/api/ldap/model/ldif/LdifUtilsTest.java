@@ -39,12 +39,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.api.ldap.model.ldif.ChangeType;
-import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
-import org.apache.directory.api.ldap.model.ldif.LdifEntry;
-import org.apache.directory.api.ldap.model.ldif.LdifReader;
-import org.apache.directory.api.ldap.model.ldif.LdifRevertor;
-import org.apache.directory.api.ldap.model.ldif.LdifUtils;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -152,7 +146,7 @@ public class LdifUtilsTest
 
     /**
      * Tests the method IsLdifSafe with a String starting with the
-     * char LESS_THAN (<) (ASCII code 60)
+     * char LESS_THAN (&lt;) (ASCII code 60)
      */
     @Test
     public void testIsLdifSafeStartingWithLessThan()
@@ -329,9 +323,8 @@ public class LdifUtilsTest
 
     /**
      * Tests that unsafe characters are encoded using UTF-8 charset. 
-     * @throws LdapException 
      * 
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testConvertToLdifEncoding() throws LdapException
@@ -345,7 +338,7 @@ public class LdifUtilsTest
     /**
      * Tests that null values are correctly encoded 
      * 
-     * @throws NamingException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testConvertToLdifAttrWithNullValues() throws LdapException
@@ -358,6 +351,8 @@ public class LdifUtilsTest
 
     /**
      * Test a conversion of an entry from a LDIF file
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testConvertToLdif() throws LdapException
@@ -376,7 +371,9 @@ public class LdifUtilsTest
 
     /**
      * Test a conversion of an attributes from a LDIF file
-     * @throws org.apache.directory.api.ldap.model.ldif.LdapLdifException
+     * 
+     * @throws LdapException If the test failed
+     * @throws LdapLdifException If the test failed
      */
     @Test
     public void testConvertAttributesfromLdif() throws LdapException, LdapLdifException
@@ -403,8 +400,8 @@ public class LdifUtilsTest
      * Check that the correct reverse LDIF is produced for a modifyDn
      * operation that moves and renames the entry while preserving the
      * old rdn.
-     *
-     * @throws NamingException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyDNSuperior() throws LdapException
@@ -436,8 +433,8 @@ public class LdifUtilsTest
 
     /**
      * Test a reversed ModifyDN with a deleteOldRdn, rdn change, and a superior
-     *
-     * @throws NamingException on error
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testReverseModifyDNDeleteOldRdnSuperior() throws LdapException

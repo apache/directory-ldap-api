@@ -30,7 +30,6 @@ import java.io.ObjectOutputStream;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.name.Rdn;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -112,6 +111,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of an empty Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testEmptyRDNStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -159,6 +162,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -184,6 +191,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of a simple Rdn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdn2StaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -209,6 +220,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of a simple Rdn with no value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnNoValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -234,6 +249,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of a simple Rdn with one value
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnOneValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
@@ -259,6 +278,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of a simple Rdn with three values
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnThreeValuesStaticSerialization() throws LdapException, IOException,
@@ -285,6 +308,10 @@ public class RdnSerializationTest
 
     /**
      * Test serialization of a simple Rdn with three unordered values
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSimpleRdnThreeValuesUnorderedStaticSerialization() throws LdapException, IOException,

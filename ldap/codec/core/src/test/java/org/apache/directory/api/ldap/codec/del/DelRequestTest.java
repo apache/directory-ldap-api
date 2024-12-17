@@ -57,6 +57,9 @@ public class DelRequestTest extends AbstractCodecServiceTest
 {
     /**
      * Test the decoding of a full DelRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeDelRequestSuccess() throws DecoderException, EncoderException
@@ -101,7 +104,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a full DelRequest
      */
     @Test
-    public void testDecodeDelRequestBadDN() throws DecoderException
+    public void testDecodeDelRequestBadDN()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x27 );
 
@@ -146,7 +149,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
      * Test the decoding of an empty DelRequest
      */
     @Test
-    public void testDecodeDelRequestEmpty() throws DecoderException
+    public void testDecodeDelRequestEmpty()
     {
         ByteBuffer stream = ByteBuffer.allocate( 0x07 );
 
@@ -174,6 +177,9 @@ public class DelRequestTest extends AbstractCodecServiceTest
 
     /**
      * Test the decoding of a full DelRequest with controls
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
      */
     @Test
     public void testDecodeDelRequestSuccessWithControls() throws DecoderException, EncoderException

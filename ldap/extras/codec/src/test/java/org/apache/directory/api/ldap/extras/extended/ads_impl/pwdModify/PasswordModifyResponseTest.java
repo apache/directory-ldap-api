@@ -56,6 +56,8 @@ public class PasswordModifyResponseTest
     
     /**
      * Test the decoding of a PasswordModifyResponse with nothing in it
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyResponseEmpty() throws DecoderException
@@ -81,6 +83,8 @@ public class PasswordModifyResponseTest
 
     /**
      * Test the decoding of a PasswordModifyResponse with an empty genPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyResponseUserIdentityNull() throws DecoderException
@@ -108,6 +112,8 @@ public class PasswordModifyResponseTest
 
     /**
      * Test the decoding of a PasswordModifyResponse with a genPassword
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodePasswordModifyResponseUserIdentityValue() throws DecoderException

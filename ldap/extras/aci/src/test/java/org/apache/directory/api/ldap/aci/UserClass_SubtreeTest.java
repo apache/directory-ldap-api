@@ -50,6 +50,8 @@ public class UserClass_SubtreeTest
 
     /**
      * Initialize name instances
+     * 
+     * @throws Exception if the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception

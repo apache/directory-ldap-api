@@ -87,6 +87,7 @@ public class BitStringTest
 
     /**
      * Test a single bit BitString
+     * @throws DecoderException If the test failed
      */
     @Test
     public void testSingleBitBitString() throws DecoderException
@@ -101,6 +102,7 @@ public class BitStringTest
 
     /**
      * Test a 32 bits BitString
+     * @throws DecoderException If the test failed
      */
     @Test
     public void test32BitsBitString() throws DecoderException
@@ -120,6 +122,7 @@ public class BitStringTest
 
     /**
      * Test a 33 bits BitString
+     * @throws DecoderException If the test failed
      */
     @Test
     public void test33BitsBitString() throws DecoderException
@@ -141,6 +144,7 @@ public class BitStringTest
 
     /**
      * Test all bits from 0 to 128 BitString
+     * @throws DecoderException If the test failed
      */
     @Test
     public void test0to128BitString() throws DecoderException

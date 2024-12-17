@@ -116,6 +116,8 @@ public class SubstringNodeTest
 
     /**
      * Tests StringTools.getRegex() with some LDAP filter special characters.
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testGetRegexpWithLdapFilterSpecialChars() throws Exception

@@ -60,6 +60,8 @@ public class DnTest
 
     /**
      * Initialize OIDs maps for normalization
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeAll
     public static void setup() throws Exception
@@ -86,6 +88,8 @@ public class DnTest
 
     /**
      * test an empty Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnEmpty() throws LdapException
@@ -98,6 +102,8 @@ public class DnTest
 
     /**
      * test a simple Dn : a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnSimple() throws LdapException
@@ -112,6 +118,8 @@ public class DnTest
 
     /**
      * test a simple Dn with some spaces : "a = b  "
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnSimpleWithSpaces() throws LdapException
@@ -126,6 +134,8 @@ public class DnTest
 
     /**
      * test a composite Dn : a = b, d = e
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnComposite() throws LdapException
@@ -140,6 +150,8 @@ public class DnTest
 
     /**
      * test a composite Dn with spaces : a = b  , d = e
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnCompositeWithSpaces() throws LdapException
@@ -154,6 +166,8 @@ public class DnTest
 
     /**
      * test a composite Dn with or without spaces: a=b, a =b, a= b, a = b, a = b
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnCompositeWithSpace() throws LdapException
@@ -169,6 +183,8 @@ public class DnTest
     /**
      * test a composite Dn with differents separators : a=b;c=d,e=f It should
      * return a=b,c=d,e=f (the ';' is replaced by a ',')
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnCompositeSepators() throws LdapException
@@ -183,6 +199,8 @@ public class DnTest
 
     /**
      * test a simple Dn with multiple NameComponents : a = b + c = d
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnSimpleMultivaluedAttribute() throws LdapException
@@ -198,6 +216,8 @@ public class DnTest
     /**
      * test a composite Dn with multiple NC and separators : a=b+c=d, e=f + g=h +
      * i=j
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnCompositeMultivaluedAttribute() throws LdapException
@@ -212,6 +232,8 @@ public class DnTest
 
     /**
     * Test to see if a Dn with multiRdn values is preserved after an addAll.
+     * 
+     * @throws LdapException If the test failed
     */
     @Test
     public void testAddAllWithMultivaluedAttribute() throws LdapException
@@ -228,6 +250,8 @@ public class DnTest
 
     /**
      * test a simple Dn with an oid prefix (uppercase) : OID.12.34.56 = azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnOidUpper() throws LdapException
@@ -242,6 +266,8 @@ public class DnTest
 
     /**
      * test a simple Dn with an oid prefix (lowercase) : oid.12.34.56 = azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnOidLower() throws LdapException
@@ -257,6 +283,8 @@ public class DnTest
     /**
      * test a simple Dn with an oid attribut without oid prefix : 12.34.56 =
      * azerty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnOidWithoutPrefix() throws LdapException
@@ -272,6 +300,8 @@ public class DnTest
     /**
      * test a composite Dn with an oid attribut wiithout oid prefix : 12.34.56 =
      * azerty; 7.8 = test
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnCompositeOidWithoutPrefix() throws LdapException
@@ -285,7 +315,9 @@ public class DnTest
 
 
     /**
-     * test a simple Dn with pair char attribute value : a = \,\=\+\<\>\#\;\\\"\C4\8D"
+     * test a simple Dn with pair char attribute value : a = \,\=\+\&lt;\&gt;\#\;\\\"\C4\8D"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnPairCharAttributeValue() throws LdapException
@@ -300,6 +332,8 @@ public class DnTest
 
     /**
      * test a simple Dn with pair char attribute value : "SN=Lu\C4\8Di\C4\87"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnRFC253_Lucic() throws LdapException
@@ -314,6 +348,8 @@ public class DnTest
 
     /**
      * test a simple Dn with hexString attribute value : a = #0010A0AAFF
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnHexStringAttributeValue() throws LdapException
@@ -331,6 +367,8 @@ public class DnTest
      *
      * Check escaped sharp followed by a hex sequence
      * (without the ESC it would be a valid hexstring).
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnEscSharpNumber() throws LdapException, LdapException
@@ -361,9 +399,11 @@ public class DnTest
      *
      * Check escaped sharp followed by a hex sequence
      * (without the ESC it would be a valid hexstring).
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
-    public void testDnEscValue() throws LdapException, LdapException
+    public void testDnEscValue() throws LdapException
     {
         Dn dn = new Dn( "cn = Exa\\+mple  one " );
 
@@ -380,8 +420,10 @@ public class DnTest
 
 
     /**
-      * test a simple Dn with a # on first position
-      */
+     * test a simple Dn with a # on first position
+     * 
+     * @throws LdapException If the test failed
+     */
     @Test
     public void testDnSharpFirst() throws LdapException, LdapException
     {
@@ -398,9 +440,11 @@ public class DnTest
 
     /**
      * Normalize a simple Dn with a # on first position
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
-    public void testNormalizeDnSharpFirst() throws LdapException, LdapException
+    public void testNormalizeDnSharpFirst() throws LdapException
     {
         Dn dn = new Dn( "ou = \\#this is a sharp" );
 
@@ -419,6 +463,8 @@ public class DnTest
     /**
      * Normalize a Dn with sequence ESC ESC HEX HEX (\\C3\\A4).
      * This is a corner case for the parser and normalizer.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNormalizeDnEscEscHexHexEscSpecial() throws LdapException
@@ -437,6 +483,8 @@ public class DnTest
     /**
      * Normalize a Dn with sequence ESC ESC HEX HEX (\\DC).
      * This is a corner case for the parser and normalizer.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testNormalizeDnEscEscHexHex() throws LdapException
@@ -494,6 +542,8 @@ public class DnTest
 
     /**
      * test a simple Dn with a quote in attribute value : a = quoted \"value\"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnQuoteInAttributeValue() throws LdapException
@@ -508,6 +558,8 @@ public class DnTest
 
     /**
      * test a simple Dn with quoted attribute value : a = \" quoted value \"
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnQuotedAttributeValue() throws LdapException
@@ -541,88 +593,6 @@ public class DnTest
     }
 
 
-    // REMOVE operation -------------------------------------------------------
-
-    /**
-     * test a remove from position 0
-     *
-    @Test
-    public void testDnRemove0() throws LdapException
-    {
-        Dn dn = new Dn( "a=b, c=d, e=f" );
-
-        assertTrue( Dn.isValid("a=b, c=d, e=f") );
-        // now remove method returns a modified cloned Dn
-        dn = dn.remove( 0 );
-        assertEquals( "a=b,c=d", dn.getEscaped() );
-        assertEquals( "a=b, c=d", dn.getName() );
-    }
-
-
-    /**
-     * test a remove from position 1
-     *
-    @Test
-    public void testDnRemove1() throws LdapException
-    {
-        Dn dn = new Dn( "a=b, c=d, e=f" );
-
-        assertTrue( Dn.isValid("a=b, c=d, e=f") );
-        assertEquals( "a=b, c=d, e=f", dn.getName() );
-    }
-
-
-    /**
-     * test a remove from position 2
-     *
-    @Test
-    public void testDnRemove2() throws LdapException
-    {
-        Dn dn = new Dn( "a=b, c=d, e=f" );
-
-        assertTrue( Dn.isValid("a=b, c=d, e=f") );
-        dn = dn.remove( 2 );
-        assertEquals( " c=d, e=f", dn.getName() );
-    }
-
-
-    /**
-     * test a remove from position 1 whith semi colon
-     *
-    @Test
-    public void testDnRemove1WithSemiColon() throws LdapException
-    {
-        Dn dn = new Dn( "a=b, c=d; e=f" );
-
-        assertTrue( Dn.isValid("a=b, c=d; e=f") );
-        dn = dn.remove( 1 );
-        assertEquals( "a=b, e=f", dn.getName() );
-    }
-
-
-    /**
-     * test a remove out of bound
-     *
-    @Test
-    public void testDnRemoveOutOfBound() throws LdapException
-    {
-        Dn dn = new Dn( "a=b, c=d; e=f" );
-
-        assertTrue( Dn.isValid("a=b, c=d; e=f") );
-
-        try
-        {
-            dn.remove( 4 );
-            // We whould never reach this point
-            fail();
-        }
-        catch ( ArrayIndexOutOfBoundsException aoobe )
-        {
-            assertTrue( true );
-        }
-    }
-
-
     // SIZE operations
     /**
      * test a 0 size
@@ -639,6 +609,8 @@ public class DnTest
 
     /**
      * test a 1 size
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnSize1() throws LdapException
@@ -652,6 +624,8 @@ public class DnTest
 
     /**
      * test a 3 size
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnSize3() throws LdapException
@@ -665,6 +639,8 @@ public class DnTest
 
     /**
      * test a 3 size with NameComponents
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnSize3NC() throws LdapException
@@ -678,6 +654,8 @@ public class DnTest
 
     /**
      * test size after operations
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapResizing() throws LdapException
@@ -702,6 +680,8 @@ public class DnTest
     // ADD Operations
     /**
      * test Add on a new Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testLdapEmptyAdd() throws LdapException
@@ -717,6 +697,8 @@ public class DnTest
 
     /**
      * test Add to an existing Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAdd() throws LdapException
@@ -732,6 +714,8 @@ public class DnTest
 
     /**
      * test Add a composite Rdn to an existing Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddComposite() throws LdapException
@@ -750,6 +734,8 @@ public class DnTest
 
     /**
      * test Add at the end of an existing Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddEnd() throws LdapException
@@ -766,7 +752,7 @@ public class DnTest
     /**
      * Test AddAll
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddAll() throws LdapException
@@ -780,8 +766,8 @@ public class DnTest
 
     /**
      * Test AddAll with an empty added name
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddAllAddedNameEmpty() throws LdapException
@@ -796,8 +782,8 @@ public class DnTest
 
     /**
      * Test AddAll to an empty name
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddAllNameEmpty() throws LdapException
@@ -812,7 +798,7 @@ public class DnTest
     /**
      * Test AddAll at position 0
      *
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAt0AddAll() throws LdapException
@@ -826,8 +812,8 @@ public class DnTest
 
     /**
      * Test AddAll at position 1
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAt1AddAll() throws LdapException
@@ -841,8 +827,8 @@ public class DnTest
 
     /**
      * Test AddAll with an empty added name at position 0
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddAllAt0AddedNameEmpty() throws LdapException
@@ -857,8 +843,8 @@ public class DnTest
 
     /**
      * Test AddAll to an empty name at position 0
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnAddAllAt0NameEmpty() throws LdapException
@@ -873,6 +859,8 @@ public class DnTest
     // GET PREFIX actions
     /**
      * Get the prefix at pos 0
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetPrefixPos0() throws LdapException
@@ -885,6 +873,8 @@ public class DnTest
 
     /**
      * Get the prefix at pos 1
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetPrefixPos1() throws LdapException
@@ -897,6 +887,8 @@ public class DnTest
 
     /**
      * Get the prefix at pos 2
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetPrefixPos2() throws LdapException
@@ -909,6 +901,8 @@ public class DnTest
 
     /**
      * Get the prefix at pos 3
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetPrefixPos3() throws LdapException
@@ -921,6 +915,8 @@ public class DnTest
 
     /**
      * Get the prefix out of bound
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetPrefixPos4() throws LdapException
@@ -936,6 +932,8 @@ public class DnTest
 
     /**
      * Get the prefix of an empty LdapName
+     * 
+     * @throws LdapInvalidDnException If the test failed
      */
     @Test
     public void testDnGetPrefixEmptyDN() throws LdapInvalidDnException
@@ -949,6 +947,8 @@ public class DnTest
     // GET SUFFIX operations
     /**
      * Get the suffix at pos 0
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetSuffixPos0() throws LdapException
@@ -961,6 +961,8 @@ public class DnTest
 
     /**
      * Get the suffix at pos 1
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetSuffixPos1() throws LdapException
@@ -973,6 +975,8 @@ public class DnTest
 
     /**
      * Get the suffix at pos 2
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetSuffixPos2() throws LdapException
@@ -985,6 +989,8 @@ public class DnTest
 
     /**
      * Get the suffix at pos 3
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetSuffixPos3() throws LdapException
@@ -997,6 +1003,8 @@ public class DnTest
 
     /**
      * Get the suffix out of bound
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnGetSuffixPos4() throws LdapException
@@ -1016,18 +1024,6 @@ public class DnTest
     }
 
 
-    /**
-     * Get the suffix of an empty LdapName
-     *
-    @Test
-    public void testDnGetSuffixEmptyDN()
-    {
-        Dn dn = new Dn();
-        Dn newDn = ( dn.getSuffix( 0 ) );
-        assertEquals( "", newDn.getName() );
-    }
-
-
     // IS EMPTY operations
     /**
      * Test that a Dn is empty
@@ -1042,6 +1038,8 @@ public class DnTest
 
     /**
      * Test that a Dn is empty
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnNotEmpty() throws LdapException
@@ -1051,26 +1049,11 @@ public class DnTest
     }
 
 
-    /**
-     * Test that a Dn is empty
-     *
-    @Test
-    public void testDnRemoveIsEmpty() throws LdapException
-    {
-        Dn dn = new Dn( "a=b, c=d" );
-        Dn clonedDn = dn.remove( 0 );
-
-        assertFalse( dn == clonedDn );
-
-        clonedDn = clonedDn.remove( 0 );
-
-        assertEquals( true, clonedDn.isEmpty() );
-    }
-
-
     // STARTS WITH operations
     /**
      * Test a startsWith a null Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithNull() throws LdapException
@@ -1082,6 +1065,8 @@ public class DnTest
 
     /**
      * Test a startsWith an empty Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithEmpty() throws LdapException
@@ -1093,6 +1078,8 @@ public class DnTest
 
     /**
      * Test a startsWith an simple Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithSimple() throws LdapException
@@ -1104,6 +1091,8 @@ public class DnTest
 
     /**
      * Test a startsWith a complex Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithComplex() throws LdapException
@@ -1115,6 +1104,8 @@ public class DnTest
 
     /**
      * Test a startsWith a complex Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithComplexMixedCase() throws LdapException
@@ -1126,6 +1117,8 @@ public class DnTest
 
     /**
      * Test a startsWith a full Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithFull() throws LdapException
@@ -1137,6 +1130,8 @@ public class DnTest
 
     /**
      * Test a startsWith which returns false
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnStartsWithWrong() throws LdapException
@@ -1149,6 +1144,8 @@ public class DnTest
     // ENDS WITH operations
     /**
      * Test a endsWith a null Dn
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testDnEndsWithNull() throws LdapException
@@ -1248,8 +1245,7 @@ public class DnTest
     /**
      * Class to test for Dn(String)
      *
-     * @throws Exception
-     *             if anything goes wrong.
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testDnString() throws Exception
@@ -1283,8 +1279,7 @@ public class DnTest
     /**
      * Class to test for Dn(SchemaManager, String)
      *
-     * @throws Exception
-     *             if anything goes wrong.
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testDnStringSchemaAware() throws Exception
@@ -1315,25 +1310,9 @@ public class DnTest
 
 
     /**
-     * Class to test for Object clone()
-     *
-     * @throws Exception
-     *             if anything goes wrong.
-     *
-    @Test
-    public void testClone() throws Exception
-    {
-        String strName = "cn=HomeDir,cn=John,ou=Marketing,ou=East";
-        Dn name = new Dn( strName );
-        assertEquals( name, name.clone() );
-    }
-
-
-    /**
      * Class to test for size
      *
-     * @throws Exception
-     *             if anything goes wrong.
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testSize() throws Exception
@@ -1359,8 +1338,7 @@ public class DnTest
     /**
      * Class to test for isEmpty
      *
-     * @throws Exception
-     *             if anything goes wrong.
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testIsEmpty() throws Exception
@@ -1384,185 +1362,9 @@ public class DnTest
 
 
     /**
-     * Class to test for getAll
-     *
-     * @throws Exception
-     *             if anything goes wrong.
-     *
-    @Test
-    public void testGetAll() throws Exception
-    {
-        Dn name0 = new Dn( "" );
-        Dn name1 = new Dn( "ou=East" );
-        Dn name2 = new Dn( "ou=Marketing,ou=East" );
-        Dn name3 = new Dn( "cn=John,ou=Marketing,ou=East" );
-        Dn name4 = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
-        Dn name5 = new Dn( "cn=Website,cn=HomeDir,cn=John,ou=Marketing,ou=West" );
-        Dn name6 = new Dn( "cn=Airline,cn=Website,cn=HomeDir,cn=John,ou=Marketing,ou=West" );
-
-        Enumeration<String> enum0 = name0.getAll();
-        assertEquals( false, enum0.hasMoreElements() );
-
-        Enumeration<String> enum1 = name1.getAll();
-        assertEquals( true, enum1.hasMoreElements() );
-
-        for ( int i = 0; enum1.hasMoreElements(); i++ )
-        {
-            String element = ( String ) enum1.nextElement();
-
-            if ( i == 0 )
-            {
-                assertEquals( "ou=East", element );
-            }
-        }
-
-        Enumeration<String> enum2 = name2.getAll();
-        assertEquals( true, enum2.hasMoreElements() );
-
-        for ( int i = 0; enum2.hasMoreElements(); i++ )
-        {
-            String element = ( String ) enum2.nextElement();
-
-            if ( i == 0 )
-            {
-                assertEquals( "ou=East", element );
-            }
-
-            if ( i == 1 )
-            {
-                assertEquals( "ou=Marketing", element );
-            }
-        }
-
-        Enumeration<String> enum3 = name3.getAll();
-        assertEquals( true, enum3.hasMoreElements() );
-
-        for ( int i = 0; enum3.hasMoreElements(); i++ )
-        {
-            String element = ( String ) enum3.nextElement();
-
-            if ( i == 0 )
-            {
-                assertEquals( "ou=East", element );
-            }
-
-            if ( i == 1 )
-            {
-                assertEquals( "ou=Marketing", element );
-            }
-
-            if ( i == 2 )
-            {
-                assertEquals( "cn=John", element );
-            }
-        }
-
-        Enumeration<String> enum4 = name4.getAll();
-        assertEquals( true, enum4.hasMoreElements() );
-
-        for ( int i = 0; enum4.hasMoreElements(); i++ )
-        {
-            String element = ( String ) enum4.nextElement();
-
-            if ( i == 0 )
-            {
-                assertEquals( "ou=East", element );
-            }
-
-            if ( i == 1 )
-            {
-                assertEquals( "ou=Marketing", element );
-            }
-
-            if ( i == 2 )
-            {
-                assertEquals( "cn=John", element );
-            }
-
-            if ( i == 3 )
-            {
-                assertEquals( "cn=HomeDir", element );
-            }
-        }
-
-        Enumeration<String> enum5 = name5.getAll();
-        assertEquals( true, enum5.hasMoreElements() );
-
-        for ( int i = 0; enum5.hasMoreElements(); i++ )
-        {
-            String element = ( String ) enum5.nextElement();
-
-            if ( i == 0 )
-            {
-                assertEquals( "ou=West", element );
-            }
-
-            if ( i == 1 )
-            {
-                assertEquals( "ou=Marketing", element );
-            }
-
-            if ( i == 2 )
-            {
-                assertEquals( "cn=John", element );
-            }
-
-            if ( i == 3 )
-            {
-                assertEquals( "cn=HomeDir", element );
-            }
-
-            if ( i == 4 )
-            {
-                assertEquals( "cn=Website", element );
-            }
-        }
-
-        Enumeration<String> enum6 = name6.getAll();
-        assertEquals( true, enum6.hasMoreElements() );
-
-        for ( int i = 0; enum6.hasMoreElements(); i++ )
-        {
-            String element = ( String ) enum6.nextElement();
-
-            if ( i == 0 )
-            {
-                assertEquals( "ou=West", element );
-            }
-
-            if ( i == 1 )
-            {
-                assertEquals( "ou=Marketing", element );
-            }
-
-            if ( i == 2 )
-            {
-                assertEquals( "cn=John", element );
-            }
-
-            if ( i == 3 )
-            {
-                assertEquals( "cn=HomeDir", element );
-            }
-
-            if ( i == 4 )
-            {
-                assertEquals( "cn=Website", element );
-            }
-
-            if ( i == 5 )
-            {
-                assertEquals( "cn=Airline", element );
-            }
-        }
-    }
-
-
-    /**
      * Class to test for getAllRdn
      *
-     * @throws Exception
-     *             if anything goes wrong.
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testIterator() throws Exception
@@ -1582,6 +1384,8 @@ public class DnTest
 
     /**
      * Test the getRdn( int ) method
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testGetRdn() throws Exception
@@ -1596,6 +1400,8 @@ public class DnTest
 
     /**
      * Test the getRdns() method
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testGetRdns() throws Exception
@@ -1618,8 +1424,7 @@ public class DnTest
     /**
      * Class to test for getSuffix
      *
-     * @throws Exception
-     *             anything goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testGetXSuffix() throws Exception
@@ -1636,8 +1441,7 @@ public class DnTest
     /**
      * Class to test for getPrefix
      *
-     * @throws Exception
-     *             anything goes wrong
+     * @throws Exception if anything goes wrong
      */
     @Test
     public void testGetPrefix() throws Exception
@@ -1655,8 +1459,7 @@ public class DnTest
     /**
      * Class to test for startsWith
      *
-     * @throws Exception
-     *             anything goes wrong
+     * @throws Exception if anything goes wrong
      */
     @Test
     public void testStartsWith() throws Exception
@@ -1716,8 +1519,7 @@ public class DnTest
     /**
      * Class to test for Dn addAll(Dn)
      *
-     * @throws Exception
-     *             when anything goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testAddAllName0() throws Exception
@@ -1731,8 +1533,7 @@ public class DnTest
     /**
      * Class to test for Dn addAll(Dn)
      *
-     * @throws Exception
-     *             when anything goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testAddAllNameExisting0() throws Exception
@@ -1747,8 +1548,7 @@ public class DnTest
     /**
      * Class to test for Dn addAll(Dn)
      *
-     * @throws Exception
-     *             when anything goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testAddAllName1() throws Exception
@@ -1767,8 +1567,7 @@ public class DnTest
     /**
      * Class to test for Dn addAll(int, Dn)
      *
-     * @throws Exception
-     *             when something goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testAddAllintName0() throws Exception
@@ -1822,8 +1621,7 @@ public class DnTest
     /**
      * Class to test for Name add(int, String)
      *
-     * @throws Exception
-     *             if anything goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testAddintString() throws Exception
@@ -1876,6 +1674,8 @@ public class DnTest
 
     /**
      * Tests getParent().
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testGetParent() throws Exception
@@ -1914,8 +1714,7 @@ public class DnTest
     /**
      * Class to test for boolean equals(Object)
      *
-     * @throws Exception
-     *             if anything goes wrong
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testEqualsObject() throws Exception
@@ -1972,6 +1771,8 @@ public class DnTest
 
     /**
      * Class to test for toOid( Dn, Map)
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testLdapNameToName() throws Exception
@@ -2018,6 +1819,8 @@ public class DnTest
 
     /**
      * Class to test for toOid( Dn, Map) with a NULL dn
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testLdapNameToNameEmpty() throws Exception
@@ -2031,6 +1834,8 @@ public class DnTest
 
     /**
      * Class to test for toOid( Dn, Map) with a multiple NameComponent
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testLdapNameToNameMultiNC() throws Exception
@@ -2050,6 +1855,8 @@ public class DnTest
 
     /**
      * Class to test for toOid( Dn, Map) with a multiple NameComponent
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testLdapNameToNameAliasMultiNC() throws Exception
@@ -2068,6 +1875,8 @@ public class DnTest
 
     /**
      * Class to test for hashCode().
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testLdapNameHashCode() throws Exception
@@ -2085,6 +1894,9 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-191
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testName() throws LdapException, InvalidNameException
@@ -2099,6 +1911,9 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-191
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testGetPrefixName() throws LdapException, InvalidNameException
@@ -2117,6 +1932,9 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-191
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testGetSuffix() throws LdapException, InvalidNameException
@@ -2136,6 +1954,9 @@ public class DnTest
     /**
      * Test for DIRSERVER-191. The Dn is immutable, thus we can't add a new Rdn
      * to a Dn, it simply creates a new one.
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testAddStringName() throws LdapException, InvalidNameException
@@ -2151,6 +1972,9 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-191
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testAddAllName() throws LdapException, InvalidNameException
@@ -2166,6 +1990,9 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-191
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testAddAllIntName() throws LdapException, InvalidNameException
@@ -2189,6 +2016,9 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-191
+     *
+     * @throws LdapException if anything goes wrong.
+     * @throws InvalidNameException if anything goes wrong.
      */
     @Test
     public void testStartsWithName() throws LdapException, InvalidNameException
@@ -2204,30 +2034,12 @@ public class DnTest
 
 
     /**
-     * Test for DIRSERVER-191
-     *
-    @Test
-    public void testRemoveName() throws LdapException, InvalidNameException
-    {
-        LdapName jName = new LdapName( "cn=four,cn=three,cn=two,cn=one" );
-        Dn aName = new Dn( "cn=four,cn=three,cn=two,cn=one" );
-        jName.remove( 0 );
-
-        assertEquals( jName.toString(), aName.remove( 0 ).toString() );
-        assertNotSame( jName.toString(), aName.toString() );
-
-        jName.remove( jName.size() - 1 );
-        assertEquals( jName.toString(), aName.getParent().remove( 0 ).toString() );
-        assertNotSame( jName.toString(), aName.toString() );
-    }
-
-
-    /**
      * Test for DIRSERVER-642
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
-    public void testDoubleQuoteInNameDIRSERVER_642() throws LdapException, LdapException
+    public void testDoubleQuoteInNameDIRSERVER_642() throws LdapException
     {
         Dn name1 = new Dn( "cn=\"Kylie Minogue\",dc=example,dc=com" );
 
@@ -2247,7 +2059,8 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-642
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDoubleQuoteInNameDIRSERVER_642_1() throws LdapException
@@ -2261,7 +2074,8 @@ public class DnTest
 
     /**
      * Test for DIRSTUDIO-250
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDoubleQuoteWithSpecialCharsInNameDIRSERVER_250() throws LdapException
@@ -2275,7 +2089,8 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testLeadingAndTrailingSpacesDIRSERVER_184() throws LdapException
@@ -2289,7 +2104,6 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
      */
     @Test
     public void testDIRSERVER_184_1()
@@ -2307,7 +2121,6 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
      */
     @Test
     public void testDIRSERVER_184_2()
@@ -2325,7 +2138,8 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDIRSERVER_184_3() throws LdapException
@@ -2339,7 +2153,8 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDIRSERVER_184_4() throws LdapException
@@ -2353,7 +2168,8 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDIRSERVER_184_5() throws LdapException
@@ -2367,7 +2183,6 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
      */
     @Test
     public void testDIRSERVER_184_6()
@@ -2385,7 +2200,6 @@ public class DnTest
 
     /**
      * Test for DIRSERVER-184
-     * @throws LdapException
      */
     @Test
     public void testDIRSERVER_184_7()
@@ -2415,7 +2229,8 @@ public class DnTest
     /**
      * Added a test to check the parsing of a Dn with more than one Rdn
      * which are OIDs, and with one Rdn which has more than one atav.
-     * @throws LdapException
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDNWithMultiOidsRDN() throws LdapException
@@ -2452,6 +2267,8 @@ public class DnTest
 
     /**
      * This leads to the bug in DIRSERVER-832.
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testPreserveAttributeIdCase() throws LdapException
@@ -2522,6 +2339,8 @@ public class DnTest
 
     /**
      * Tests that AttributeTypeAndValues are correctly trimmed.
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testTrimAtavs() throws LdapException
@@ -2567,6 +2386,8 @@ public class DnTest
     /**
      * Test for DIRSHARED-39.
      * (Trailing escaped space not parsed correctly by the Dn parser(
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testTrailingEscapedSpace() throws Exception
@@ -2600,6 +2421,8 @@ public class DnTest
     /**
      * Test for DIRSHARED-41, DIRSTUDIO-603.
      * (Dn parser fails to parse names containing an numeric OID value)
+     *
+     * @throws Exception if anything goes wrong.
      */
     @Test
     public void testNumericOid() throws Exception
@@ -3153,6 +2976,8 @@ public class DnTest
 
     /**
      * test a simple Dn with hexString attribute value, schema aware
+     *
+     * @throws LdapException if anything goes wrong.
      */
     @Test
     public void testDnHexStringAttributeValueDSchemaAware() throws LdapException

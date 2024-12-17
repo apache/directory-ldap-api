@@ -173,7 +173,7 @@ public class SchemaAwareEntryTest
 
 
     /**
-     * @throws java.lang.Exception
+     * @throws Exception If the test failed
      */
     @BeforeAll
     public static void setUpBeforeClass() throws Exception
@@ -199,6 +199,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for DefaultEntry()
+     * 
+     * @throws Exception If the test failed
      */
     @Test
     public void testDefaultClientEntryLdif() throws Exception
@@ -236,6 +238,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for add( EntryAttribute... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddEntryAttributeArray() throws LdapException
@@ -272,6 +276,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for add( String, byte[]... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddStringByteArrayArray() throws LdapException
@@ -297,6 +303,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for add( String, String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddStringStringArray() throws LdapException
@@ -322,6 +330,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for add( String, Value... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testAddStringValueArray() throws LdapException
@@ -364,6 +374,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for clear()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClear() throws LdapException
@@ -388,6 +400,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for clone()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testClone() throws LdapException
@@ -422,6 +436,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for contains( EntryAttribute... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsEntryAttributeArray() throws LdapException
@@ -448,6 +464,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for contains( String, byte[]... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsStringByteArray() throws LdapException
@@ -472,6 +490,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for contains( String, String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsStringStringArray() throws LdapException
@@ -501,6 +521,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for contains( Sring, Value... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsStringValueArray() throws LdapException
@@ -534,6 +556,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for containsAttribute( String )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testContainsAttribute() throws LdapException
@@ -565,6 +589,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for equals()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testEqualsObject() throws LdapException
@@ -613,6 +639,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for get( String )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGet() throws LdapException
@@ -641,6 +669,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for getDN()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testGetDn() throws LdapException
@@ -658,6 +688,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for hashcode()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHashCode() throws LdapException, LdapException
@@ -692,6 +724,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for hasObjectClass( String )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testHasObjectClass() throws LdapException
@@ -713,6 +747,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for Iterator()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testIterator() throws LdapException
@@ -744,6 +780,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for put( EntryAttribute... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testPutEntryAttributeArray() throws LdapException
@@ -947,6 +985,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for removeAttributes( String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRemoveAttributesStringArray() throws LdapException
@@ -973,6 +1013,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for remove( EntryAttribute... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRemoveEntryAttributeArray() throws LdapException
@@ -1005,6 +1047,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for remove(String, byte[]... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRemoveStringByteArrayArray() throws LdapException
@@ -1032,6 +1076,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for remove( String, String... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRemoveStringStringArray() throws LdapException
@@ -1056,6 +1102,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for remove(String, Value... )
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testRemoveStringValueArray() throws LdapException
@@ -1110,6 +1158,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for size()
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testSize() throws LdapException
@@ -1165,6 +1215,10 @@ public class SchemaAwareEntryTest
 
     /**
      * Test the serialization of a complete entry
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeCompleteEntry() throws LdapException, IOException, ClassNotFoundException
@@ -1185,6 +1239,10 @@ public class SchemaAwareEntryTest
 
     /**
      * Test the serialization of an entry with no Dn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEntryWithNoDN() throws LdapException, IOException, ClassNotFoundException
@@ -1203,6 +1261,10 @@ public class SchemaAwareEntryTest
 
     /**
      * Test the serialization of an entry with no attribute and no Dn
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEntryWithNoDNNoAttribute() throws LdapException, IOException, ClassNotFoundException
@@ -1217,6 +1279,10 @@ public class SchemaAwareEntryTest
 
     /**
      * Test the serialization of an entry with no attribute
+     * 
+     * @throws LdapException If the test failed
+     * @throws IOException If the test failed
+     * @throws ClassNotFoundException If the test failed
      */
     @Test
     public void testSerializeEntryWithNoAttribute() throws LdapException, IOException, ClassNotFoundException
@@ -1233,6 +1299,8 @@ public class SchemaAwareEntryTest
 
     /**
      * Test method for userCertificate;binary AT
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testUserCertificateBinary() throws LdapException

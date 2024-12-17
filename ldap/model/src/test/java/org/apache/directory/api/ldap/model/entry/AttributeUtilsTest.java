@@ -28,15 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
-import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.util.Strings;
 
@@ -63,6 +54,8 @@ public class AttributeUtilsTest
 
     /**
      * Initialize name instances
+     * 
+     * @throws Exception If the setup failed
      */
     @BeforeEach
     public void initNames() throws Exception
@@ -77,6 +70,8 @@ public class AttributeUtilsTest
 
     /**
      * Test a addModification applied to an empty entry
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyAddModificationToEmptyEntry() throws LdapException
@@ -93,6 +88,8 @@ public class AttributeUtilsTest
 
     /**
      * Test a addModification applied to an entry 
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyAddModificationToEntry() throws LdapException
@@ -114,6 +111,8 @@ public class AttributeUtilsTest
     /**
      * Test a addModification applied to an entry with the same attribute
      * but with another value 
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyAddModificationToEntryWithValues() throws LdapException
@@ -152,6 +151,8 @@ public class AttributeUtilsTest
     /**
      * Test a addModification applied to an entry with the same attribute
      * and the same value 
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyAddModificationToEntryWithSameValue() throws LdapException
@@ -189,6 +190,8 @@ public class AttributeUtilsTest
 
     /**
      * Test the deletion of an attribute into an empty entry
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyRemoveModificationFromEmptyEntry() throws LdapException
@@ -206,6 +209,8 @@ public class AttributeUtilsTest
 
     /**
      * Test the deletion of an attribute into an entry which does not contain the attribute
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyRemoveModificationFromEntryAttributeNotPresent() throws LdapException
@@ -231,6 +236,8 @@ public class AttributeUtilsTest
     /**
      * Test the deletion of an attribute into an entry which contains the attribute
      * but without the value to be deleted
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyRemoveModificationFromEntryAttributeNotSameValue() throws LdapException
@@ -256,6 +263,8 @@ public class AttributeUtilsTest
      * Test the deletion of an attribute into an entry which contains the attribute.
      * 
      * The entry should not contain the attribute after the operation
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyRemoveModificationFromEntrySameAttributeSameValue() throws LdapException
@@ -279,6 +288,8 @@ public class AttributeUtilsTest
      * with more than one value
      * 
      * The entry should contain the attribute after the operation, but with one less value
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyRemoveModificationFromEntrySameAttributeValues() throws LdapException
@@ -315,8 +326,8 @@ public class AttributeUtilsTest
      * test the addition by modification of an attribute in an empty entry.
      * 
      * As we are replacing a non existing attribute, it should be added.
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyModifyModificationFromEmptyEntry() throws LdapException
@@ -336,8 +347,8 @@ public class AttributeUtilsTest
      * Test the replacement by modification of an attribute in an empty entry.
      * 
      * As we are replacing a non existing attribute, it should not change the entry.
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyModifyEmptyModificationFromEmptyEntry() throws LdapException
@@ -357,8 +368,8 @@ public class AttributeUtilsTest
      * Test the replacement by modification of an attribute in an empty entry.
      * 
      * As we are replacing a non existing attribute, it should not change the entry.
-     *
-     * @throws LdapException
+     * 
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyModifyAttributeModification() throws LdapException
@@ -402,7 +413,7 @@ public class AttributeUtilsTest
     /**
      * Test the removing by modification of an existing attribute in an .
      * 
-     * @throws LdapException
+     * @throws LdapException If the test failed
      */
     @Test
     public void testApplyModifyModificationRemoveAttribute() throws LdapException
