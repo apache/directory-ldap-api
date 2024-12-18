@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;

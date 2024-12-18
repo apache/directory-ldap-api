@@ -1222,7 +1222,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.VALS_STATE,
                 LdapStatesEnum.CHANGE_STATE,
                 SEQUENCE,
-                FollowUp.MANDATORY );
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from vals to Controls

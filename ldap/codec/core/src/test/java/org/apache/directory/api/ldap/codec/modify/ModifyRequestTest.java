@@ -158,6 +158,104 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         assertArrayEquals( stream.array(), buffer.getBytes().array() );
     }
+    /**
+     * Test the decoding of a ModifyRequest
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     * @throws EncoderException If the ASN1 encoding failed
+     * @throws LdapException If an LDAP operation failed
+     */
+    @Test
+    public void testDecodeModifyRequest2AttrsNoValSuccessWithControl()
+        throws LdapException, DecoderException, EncoderException
+    {
+        ByteBuffer stream = ByteBuffer.allocate( 0x6E );
+
+        stream.put( new byte[]
+            {
+                0x30, 0x6C,                 // LDAPMessage ::= SEQUENCE {
+                  0x02, 0x01, 0x05,         // messageID MessageID
+                  0x66, 0x4A,               // CHOICE { ..., modifyRequest ModifyRequest, ...
+                                            // ModifyRequest ::= [APPLICATION 6] SEQUENCE {
+                    0x04, 0x16,             // entry LDAPDN,
+                      'c', 'n', '=', 'T', 'o', 'r', 'i', ' ', 'A', 'm', 'o', 's', ',',
+                      'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                    0x30, 0x30,             // modification SEQUENCE OF SEQUENCE {
+                      0x30, 0x18,
+                        0x0A, 0x01, 0x01,   // operation ENUMERATED {
+                                            // add (0),
+                                            // delete (1),
+                                            // replace (2) },
+                                            // modification AttributeTypeAndValues } }
+                        0x30, 0x13,         // AttributeTypeAndValues ::= SEQUENCE {
+                          0x04, 0x0F,
+                            'T', 'e', 'l', 'e', 'p', 'h', 'o', 'n', 'e', 'N', 'u', 'm', 'b', 'e', 'r',            // type AttributeDescription,
+                          0x31, 0x00,       // vals SET OF AttributeValue }
+                      0x30, 0x14,           // modification SEQUENCE OF *SEQUENCE* {
+                        0x0A, 0x01, 0x01,   // operation ENUMERATED {
+                                            // add (0),
+                                            // delete (1),
+                                            // replace (2) },
+                                            // modification AttributeTypeAndValues } }
+                        0x30, 0x0f,         // AttributeTypeAndValues ::= SEQUENCE {
+                                            // type AttributeDescription,
+                          0x04, 0x0B,
+                            'd', 'e', 's', 'c', 'r', 'i', 'p', 't', 'i', 'o', 'n',
+                          0x31, 0x00,       // vals SET OF AttributeValue }
+                  (byte)0xA0, 0x1B,         // Controls
+                    0x30, 0x19,
+                      0x04, 0x17,
+                        '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', '1', '1', '3', '7', '3', '0', '.', '3', '.', '4', '.', '2'
+            } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        LdapMessageContainer<ModifyRequest> ldapMessageContainer = new LdapMessageContainer<>( codec );
+
+        // Decode a ModifyRequest PDU
+        Asn1Decoder.decode( stream, ldapMessageContainer );
+
+        // Check the decoded PDU
+        ModifyRequest modifyRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( 5, modifyRequest.getMessageId() );
+        assertEquals( "cn=Tori Amos,ou=system", modifyRequest.getName().toString() );
+
+        Collection<Modification> modifications = modifyRequest.getModifications();
+
+        assertEquals( 2, modifications.size() );
+
+        for ( Modification modification : modifications )
+        {
+            Attribute attribute = modification.getAttribute();
+
+            if ( "TelephoneNumber".equalsIgnoreCase( attribute.getUpId() ) )
+            {
+                assertEquals( 0, attribute.size());
+            }
+            else if ( "description".equalsIgnoreCase( attribute.getUpId() ) )
+            {
+                assertEquals( 0, attribute.size());
+            }
+        }
+
+        // Check the Control
+        Map<String, Control> controls = modifyRequest.getControls();
+
+        assertEquals( 1, controls.size() );
+
+        Control control = modifyRequest.getControl( "2.16.840.1.113730.3.4.2" );
+        assertTrue( control instanceof ManageDsaIT );
+        assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
+
+        // Check encode reverse
+        Asn1Buffer buffer = new Asn1Buffer();
+
+        LdapEncoder.encodeMessage( buffer, codec, modifyRequest );
+
+        assertArrayEquals( stream.array(), buffer.getBytes().array() );
+    }
 
 
     /**
@@ -863,7 +961,6 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
             }
             catch ( DecoderException de )
             {
-                de.printStackTrace();
                 assertTrue( de instanceof ResponseCarryingException );
                 Message response = ( ( ResponseCarryingException ) de ).getResponse();
                 assertTrue( response instanceof ModifyResponseImpl );
