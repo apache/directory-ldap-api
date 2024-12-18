@@ -2473,7 +2473,7 @@ public final class LdapMessageGrammar extends
                 LdapStatesEnum.CONTROL_STATE,
                 SEQUENCE,
                 new CheckLengthNotNull(),
-                FollowUp.MANDATORY );
+                FollowUp.OPTIONAL );
 
         // --------------------------------------------------------------------------------------------
         // Transition from message ID to SearchRequest Message
