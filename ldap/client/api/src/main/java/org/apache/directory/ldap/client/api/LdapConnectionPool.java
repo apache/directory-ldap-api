@@ -96,11 +96,6 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     {
         super( factory, poolConfig == null ? new GenericObjectPoolConfig() : poolConfig );
         this.factory = factory;
-        
-        if ( factory instanceof AbstractPoolableLdapConnectionFactory )
-        {
-            ( ( AbstractPoolableLdapConnectionFactory ) factory ).configurePooledLdapConnectionFactory( this );
-        }
     }
 
 
@@ -147,7 +142,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             throw new RuntimeException( e );
         }
 
-        return connection;
+        return new PooledLdapConnection(connection, this);
     }
 
 

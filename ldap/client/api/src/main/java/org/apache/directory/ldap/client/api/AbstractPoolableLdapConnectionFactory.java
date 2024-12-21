@@ -54,37 +54,24 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     {
         private final LdapConnectionFactory delegate;
 
-        private final LdapConnectionPool connectionPool;
 
-        PooledLdapConnectionFactory( LdapConnectionFactory delegate, LdapConnectionPool connectionPool )
+        PooledLdapConnectionFactory( LdapConnectionFactory delegate )
         {
             this.delegate = delegate;
-            this.connectionPool = connectionPool;
-        }
-
-
-        private LdapConnection wrap( LdapConnection ldapConnection )
-        {
-            if ( ldapConnection instanceof PooledLdapConnection )
-            {
-                return ldapConnection;
-            }
-
-            return new PooledLdapConnection( ldapConnection, connectionPool );
         }
 
 
         @Override
         public LdapConnection bindConnection( LdapConnection connection ) throws LdapException
         {
-            return wrap( delegate.bindConnection( connection ) );
+            return delegate.bindConnection( connection );
         }
 
 
         @Override
         public LdapConnection configureConnection( LdapConnection connection )
         {
-            return wrap( delegate.configureConnection( connection ) );
+            return delegate.configureConnection( connection );
         }
 
 
@@ -98,14 +85,14 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
         @Override
         public LdapConnection newLdapConnection() throws LdapException
         {
-            return wrap( delegate.newLdapConnection() );
+            return delegate.newLdapConnection();
         }
 
 
         @Override
         public LdapConnection newUnboundLdapConnection()
         {
-            return wrap( delegate.newUnboundLdapConnection() );
+            return delegate.newUnboundLdapConnection();
         }
     }
     
@@ -120,11 +107,6 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
         this.connectionFactory = connectionFactory;
     }
 
-    
-    void configurePooledLdapConnectionFactory( LdapConnectionPool connectionPool )
-    {
-        this.connectionFactory = new PooledLdapConnectionFactory( connectionFactory, connectionPool );
-    }
     
     
     /**
