@@ -166,6 +166,11 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      */
     public void releaseConnection( LdapConnection connection ) throws LdapException
     {
+        // Unwrap if required
+        if(connection instanceof PooledLdapConnection) {
+           releaseConnection(((PooledLdapConnection) connection).wrapped());
+           return;
+        }
         try
         {
             super.returnObject( connection );
