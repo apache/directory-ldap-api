@@ -518,7 +518,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 assertNotNull( connection );
                 internal = ( InternalMonitoringLdapConnection ) unwrap( unwrap( connection ) ); // two levels of wrapping
                 borrowedCount = internal.incrementBorrowedCount();
-                org.mockito.Mockito.verify( validator, times( 2 * borrowedCount - 1 ) ).validate( connection );
+                org.mockito.Mockito.verify( validator, times( 2 * borrowedCount - 1 ) ).validate( unwrap( connection ) );
                 internal.resetMonitors();
 
                 withConnection.execute( connection, internal.counts );
@@ -533,7 +533,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 {
                     int adminBindCount = internal.counts.adminBindCount;
                     pool.releaseConnection( connection );
-                    org.mockito.Mockito.verify( validator, times( 2 * borrowedCount ) ).validate( connection );
+                    org.mockito.Mockito.verify( validator, times( 2 * borrowedCount ) ).validate( unwrap(connection) );
 
                     if ( internal.startTlsCalled() )
                     {
