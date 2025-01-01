@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.apache.directory.api.asn1.DecoderException;
@@ -73,7 +74,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 public void execute( LdapConnection connection, Counts counts ) throws LdapException
                 {
                     connection.bind();
-                    verify( connection, times( 1 ) ).bind();
+                    verifyConnection( connection, times( 1 ) ).bind();
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -86,7 +87,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 public void execute( LdapConnection connection, Counts counts ) throws LdapException
                 {
                     connection.anonymousBind();
-                    verify( connection, times( 1 ) ).anonymousBind();
+                    verifyConnection( connection, times( 1 ) ).anonymousBind();
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -99,7 +100,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 public void execute( LdapConnection connection, Counts counts ) throws LdapException
                 {
                     connection.bind( "" );
-                    verify( connection, times( 1 ) ).bind( "" );
+                    verifyConnection( connection, times( 1 ) ).bind( "" );
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -124,7 +125,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 public void execute( LdapConnection connection, Counts counts ) throws LdapException
                 {
                     connection.bind( "", "" );
-                    verify( connection, times( 1 ) ).bind( "", "" );
+                    verifyConnection( connection, times( 1 ) ).bind( "", "" );
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -138,7 +139,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 {
                     Dn dn = new Dn();
                     connection.bind( dn );
-                    verify( connection, times( 1 ) ).bind( dn );
+                    verifyConnection( connection, times( 1 ) ).bind( dn );
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -152,7 +153,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 {
                     Dn dn = new Dn();
                     connection.bind( dn, "" );
-                    verify( connection, times( 1 ) ).bind( dn, "" );
+                    verifyConnection( connection, times( 1 ) ).bind( dn, "" );
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -166,7 +167,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 {
                     BindRequest bindRequest = new BindRequestImpl();
                     connection.bind( bindRequest );
-                    verify( connection, times( 1 ) ).bind( bindRequest );
+                    verifyConnection( connection, times( 1 ) ).bind( bindRequest );
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
@@ -258,11 +259,11 @@ public class ValidatingPoolableLdapConnectionFactoryTest
 
     private static final void verifyAdminBind( LdapConnection connection, VerificationMode mode ) throws LdapException
     {
-        verify( connection, mode ).bind( ADMIN_DN, ADMIN_CREDENTIALS );
+        verifyConnection( connection, mode ).bind( ADMIN_DN, ADMIN_CREDENTIALS );
     }
 
 
-    private static final LdapConnection verify( LdapConnection connection, VerificationMode mode )
+    private static final LdapConnection verifyConnection( LdapConnection connection, VerificationMode mode )
     {
         if ( MockUtil.isMock( connection ) )
         {
@@ -274,7 +275,8 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 @SuppressWarnings("unchecked")
                 LdapConnection unwrapped = ( ( Wrapper<LdapConnection> ) connection ).wrapped();
-                return verify( unwrapped, mode );
+                
+                return verifyConnection( unwrapped, mode );
             }
         }
         throw new NotAMockException( "connection is not a mock, nor a wrapper for a connection that is one" );
@@ -518,7 +520,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 assertNotNull( connection );
                 internal = ( InternalMonitoringLdapConnection ) unwrap( unwrap( connection ) ); // two levels of wrapping
                 borrowedCount = internal.incrementBorrowedCount();
-                org.mockito.Mockito.verify( validator, times( 2 * borrowedCount - 1 ) ).validate( connection );
+                verify( validator, times( 2 * borrowedCount - 1 ) ).validate( unwrap( connection ) );
                 internal.resetMonitors();
 
                 withConnection.execute( connection, internal.counts );
@@ -533,11 +535,11 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 {
                     int adminBindCount = internal.counts.adminBindCount;
                     pool.releaseConnection( connection );
-                    org.mockito.Mockito.verify( validator, times( 2 * borrowedCount ) ).validate( connection );
+                    verify( validator, times( 2 * borrowedCount ) ).validate( unwrap(connection) );
 
                     if ( internal.startTlsCalled() )
                     {
-                        verify( connection, times( internal.counts.unBindCount ) ).unBind();
+                        verifyConnection( connection, times( internal.counts.unBindCount ) ).unBind();
                     }
 
                     int expectedCount = internal.bindCalled() || internal.startTlsCalled() || internal.unBindCalled()
