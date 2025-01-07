@@ -142,7 +142,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             throw new RuntimeException( e );
         }
 
-        return new PooledLdapConnection(connection, this);
+        return new PooledLdapConnection( connection, this );
     }
 
 
@@ -167,7 +167,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     public void releaseConnection( LdapConnection connection ) throws LdapException
     {
         // Unwrap if required
-        if(connection instanceof PooledLdapConnection ) 
+        if ( connection instanceof PooledLdapConnection ) 
         {
            releaseConnection( ( ( PooledLdapConnection ) connection ).wrapped() );
            
