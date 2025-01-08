@@ -31,11 +31,20 @@ import java.util.Iterator;
  */
 public final class CollectionUtils
 {
+    /**
+     * A private constructor to avoid the creation of an instance of this class
+     */
     private CollectionUtils()
     {
     }
 
-
+    /**
+     * A method used to create a reversed iterable element
+     *  
+     * @param <T> The iterable object to reverse
+     * @param iterator The objet to reverse
+     * @return A reversed iterator
+     */
     public static <T> Iterator<T> reverse( Iterator<T> iterator )
     {
         ArrayDeque<T> deque = new ArrayDeque<>();

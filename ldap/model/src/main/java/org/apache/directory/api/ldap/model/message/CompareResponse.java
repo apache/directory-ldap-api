@@ -29,7 +29,7 @@ package org.apache.directory.api.ldap.model.message;
 public interface CompareResponse extends ResultResponse
 {
     /**
-     * @return <tt>true</tt> if the compare response is TRUE, <tt>false</tt> otherwise
+     * @return <code>true</code> if the compare response is TRUE, <code>false</code> otherwise
      */
     boolean isTrue();
 }

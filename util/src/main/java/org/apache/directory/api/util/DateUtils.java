@@ -72,6 +72,7 @@ public final class DateUtils
 
 
     /**
+     * Create a GeneralizedTime based on a Date instance
      * 
      * @see DateUtils#getGeneralizedTime(TimeProvider)
      *
@@ -85,6 +86,7 @@ public final class DateUtils
 
 
     /**
+     * Create a GeneralizedTime based on a time
      * 
      * @see DateUtils#getGeneralizedTime(TimeProvider)
      *
@@ -101,7 +103,6 @@ public final class DateUtils
      * Converts the 18-digit Active Directory timestamps, also named 'Windows NT time format' or 'Win32 FILETIME or SYSTEMTIME'.
      * These are used in Microsoft Active Directory for pwdLastSet, accountExpires, LastLogon, LastLogonTimestamp and LastPwdSet.
      * The timestamp is the number of 100-nanoseconds intervals (1 nanosecond = one billionth of a second) since Jan 1, 1601 UTC.
-     * <p>
      *
      * @param intervalDate 18-digit number. Time in 100-nanoseconds intervals since 1.1.1601
      * @return The converted date

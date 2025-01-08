@@ -60,7 +60,7 @@ public interface PersistentSearch extends Control
 
 
     /**
-     * @return <TT>TRUE</TT> if the changesOnly flag is set
+     * @return <code>true</code> if the changesOnly flag is set
      */
     boolean isChangesOnly();
 
@@ -74,7 +74,7 @@ public interface PersistentSearch extends Control
 
 
     /**
-     * @return <TT>TRUE</TT> if the return entry changes flag is set
+     * @return <code>true</code> if the return entry changes flag is set
      */
     boolean isReturnECs();
 
@@ -98,7 +98,7 @@ public interface PersistentSearch extends Control
      * For each changeType, tells if the notification is enabled
      * 
      * @param changeType The ChnageType we are interested in
-     * @return <tt>TRUE</tt> if the notification is set for this ChangeType
+     * @return <code>true</code> if the notification is set for this ChangeType
      */
     boolean isNotificationEnabled( ChangeType changeType );
 

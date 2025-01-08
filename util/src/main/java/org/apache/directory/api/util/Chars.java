@@ -174,7 +174,9 @@ public final class Chars
             false, false, false, false, false, false, false, false 
         };
 
-
+    /**
+     * A private constructor to avoid the creation of an instance of this class
+     */
     private Chars()
     {
     }

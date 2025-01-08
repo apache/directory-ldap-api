@@ -64,8 +64,8 @@ public class ACITuple
      * @param authenticationLevel the level of authentication required
      * @param protectedItems the collection of {@link ProtectedItem}s this tuple relates
      * @param microOperations the collection of {@link MicroOperation}s this tuple relates
-     * @param grant <tt>true</tt> if and only if this tuple grants an access
-     * @param precedence the precedence of this tuple (<tt>0</tt>-<tt>255</tt>)
+     * @param grant <code>true</code> if and only if this tuple grants an access
+     * @param precedence the precedence of this tuple (<code>0</code>-<code>255</code>)
      */
     public ACITuple(
         Collection<UserClass> userClasses,
@@ -139,9 +139,9 @@ public class ACITuple
 
 
     /**
-     * Gets <tt>true</tt> if and only if this tuple grants an access.
+     * Gets <code>true</code> if and only if this tuple grants an access.
      *
-     * @return <tt>true</tt> if and only if this tuple grants an access
+     * @return <code>true</code> if and only if this tuple grants an access
      */
     public boolean isGrant()
     {
@@ -150,7 +150,7 @@ public class ACITuple
 
 
     /**
-     * Gets the precedence of this tuple (<tt>0</tt>-<tt>255</tt>).
+     * Gets the precedence of this tuple (<code>0</code>-<code>255</code>).
      *
      * @return the precedence
      */

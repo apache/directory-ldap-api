@@ -42,7 +42,7 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
     protected Map<String, Anonymizer<K>> attributeAnonymizers = new HashMap<>();
     
-    /** A flag set to <tt>true</tt> if the AttributeType is case sensitive */
+    /** A flag set to <code>true</code> if the AttributeType is case sensitive */
     protected boolean caseSensitive = false;
     
     /** Map of chars to use in the anonymized values 0    5    10   15   20   25   30   35   40*/

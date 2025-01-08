@@ -40,6 +40,8 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
 
     /**
      * A static Builder for this class
+     * 
+     * @param <SC> The SyntaxChecker type
      */
     public abstract static class SCBuilder<SC>
     {

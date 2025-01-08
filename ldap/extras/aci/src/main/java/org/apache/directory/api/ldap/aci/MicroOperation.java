@@ -28,7 +28,7 @@ package org.apache.directory.api.ldap.aci;
  */
 public enum MicroOperation
 {
-    // Permissions that may be used in conjunction with any component of <tt>ProtectedItem</tt>s.
+    // Permissions that may be used in conjunction with any component of <code>ProtectedItem</code>s.
     /** The Add permission, may be used in conjunction with any component of {@link ProtectedItem}s. */
     ADD("Add"),
 
@@ -60,7 +60,7 @@ public enum MicroOperation
     /** The ReturnDN permission, may be used only in conjunction with the entry component. */
     RETURN_DN("ReturnDN"),
 
-    // Permissions that may be used in conjunction with any component, except entry, of <tt>ProtectedItem</tt>s.
+    // Permissions that may be used in conjunction with any component, except entry, of <code>ProtectedItem</code>s.
     /** The Compare permission, may be used in conjunction with any component, except entry. */
     COMPARE("Compare"),
 

@@ -814,7 +814,7 @@ public class OpenLdapSchemaParser
     
     /**
      * @param pos The position in the Schema
-     * @return <tt>true</tt> if this is a comment
+     * @return <code>true</code> if this is a comment
      */
     private static boolean isComment( PosSchema pos )
     {
@@ -829,7 +829,7 @@ public class OpenLdapSchemaParser
     
     /**
      * @param pos The position in the Schema
-     * @return <tt>true</tt> of the line is empty
+     * @return <code>true</code> of the line is empty
      */
     private static boolean isEmpty( PosSchema pos )
     {
@@ -840,7 +840,7 @@ public class OpenLdapSchemaParser
     /**
      * @param pos The position in the Schema
      * @param text The text to find at the beginning of the line
-     * @return <tt>true</tt> if teh line starts with the given text
+     * @return <code>true</code> if the line starts with the given text
      */
     private static boolean startsWith( PosSchema pos, String text )
     {
@@ -859,7 +859,7 @@ public class OpenLdapSchemaParser
      * @param reader The stream reader
      * @param pos The position in the Schema
      * @param c The char to check
-     * @return <tt>true</tT> if the stream starts with the given char at the given position
+     * @return <code>true</code> if the stream starts with the given char at the given position
      * @throws IOException If we can't read the stream
      * @throws LdapSchemaException If we have no char to read
      */
@@ -875,8 +875,8 @@ public class OpenLdapSchemaParser
      * @param reader The stream reader
      * @param pos The position in the Schema
      * @param c The char to check
-     * @param quoted <tt>true</tt> if the char is quoted
-     * @return <tt>true</tt> if the stream starts with the given char at the given position
+     * @param quoted <code>true</code> if the char is quoted
+     * @return <code>true</code> if the stream starts with the given char at the given position
      * @throws IOException If we can't read the stream
      * @throws LdapSchemaException If we have no char to read
      */
@@ -917,7 +917,7 @@ public class OpenLdapSchemaParser
     /**
      * @param pos The position in the Schema
      * @param c The char to find at the beginning of the line
-     * @return <tt>true</tt> if the char is found at the beginning of the line
+     * @return <code>true</code> if the char is found at the beginning of the line
      */
     private static boolean startsWith( PosSchema pos, char c )
     {
@@ -932,7 +932,7 @@ public class OpenLdapSchemaParser
     
     /**
      * @param pos The position in the Schema
-     * @return <tt>true</tt> if the first char is alphabetic
+     * @return <code>true</code> if the first char is alphabetic
      */
     private static boolean isAlpha( PosSchema pos )
     {
@@ -942,7 +942,7 @@ public class OpenLdapSchemaParser
     
     /**
      * @param pos The position in the Schema
-     * @return <tt>true</tt> if the first char is a digit
+     * @return <code>true</code> if the first char is a digit
      */
     private static boolean isDigit( PosSchema pos )
     {

@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.Response;
 /**
  * A Future implementation used in LdapConnection operations.
  *
- * @param <R> The result type returned by this Future's <tt>get</tt> method
+ * @param <R> The result type returned by this Future's <code>get</code> method
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ResponseFuture<R extends Response> extends Future<R>

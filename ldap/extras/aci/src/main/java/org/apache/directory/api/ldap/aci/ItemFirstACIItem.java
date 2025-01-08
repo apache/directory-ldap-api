@@ -50,7 +50,7 @@ public class ItemFirstACIItem extends ACIItem
      * @param precedence the precedence of this item
      * @param authenticationLevel the level of authentication required to this item
      * @param protectedItems the collection of {@link ProtectedItem}s this item protects
-     * @param itemPermissions the collection of {@link ItemPermission}s each <tt>protectedItems</tt> will have
+     * @param itemPermissions the collection of {@link ItemPermission}s each <code>protectedItems</code> will have
      */
     public ItemFirstACIItem( String identificationTag, int precedence, AuthenticationLevel authenticationLevel,
         Collection<ProtectedItem> protectedItems, Collection<ItemPermission> itemPermissions )

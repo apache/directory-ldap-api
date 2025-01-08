@@ -28,7 +28,7 @@ package org.apache.directory.api.ldap.aci;
 public enum GrantAndDenial
 {
     // Permissions that may be used in conjunction with any component of
-    // <tt>ProtectedItem</tt>s.
+    // <code>ProtectedItem</code>s.
     /** Grant for {@link MicroOperation#ADD} */
     GRANT_ADD(MicroOperation.ADD, 0, true),
 
@@ -92,7 +92,7 @@ public enum GrantAndDenial
     DENY_RETURN_DN(MicroOperation.RETURN_DN, 19, false),
 
     // Permissions that may be used in conjunction with any component,
-    // except entry, of <tt>ProtectedItem</tt>s.
+    // except entry, of <code>ProtectedItem</code>s.
     /** Grant for {@link MicroOperation#COMPARE} */
     GRANT_COMPARE(MicroOperation.COMPARE, 20, true),
 
@@ -167,9 +167,9 @@ public enum GrantAndDenial
 
 
     /**
-     * Returns <tt>true</tt> if and only if this is grant.
+     * Returns <code>true</code> if and only if this is grant.
      *
-     * @return <tt>true</tt> if and only if this is grant
+     * @return <code>true</code> if and only if this is grant
      */
     public boolean isGrant()
     {

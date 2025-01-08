@@ -29,6 +29,8 @@ import java.util.Arrays;
 
 
 /**
+ * A class used to manage some class reflection methods
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class MethodUtils

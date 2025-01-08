@@ -81,6 +81,8 @@ public class ExpansibleByteBuffer
 
 
     /**
+     * Position of the last byte in the buffer
+     * 
      * @return The position of the last byte in the buffer
      */
     public final int position()
@@ -101,6 +103,8 @@ public class ExpansibleByteBuffer
 
 
     /**
+     * Capacity of the buffer
+     * 
      * @return The number of bytes that can be added into this buffer
      */
     public final int capacity()
@@ -199,7 +203,11 @@ public class ExpansibleByteBuffer
         pos++;
     }
 
-
+    /**
+     * Grow the buffer
+     * 
+     * @param size Number of bytes to add
+     */
     private void growBuffer( int size )
     {
         if ( size > initialSize )
@@ -217,6 +225,9 @@ public class ExpansibleByteBuffer
     }
 
 
+    /**
+     * Grow the buffer
+     */
     private void growBuffer()
     {
         byte[] copy = new byte[buf.length + initialSize];

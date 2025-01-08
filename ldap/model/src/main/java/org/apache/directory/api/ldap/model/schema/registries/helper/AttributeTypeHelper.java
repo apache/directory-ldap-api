@@ -148,7 +148,7 @@ public final class AttributeTypeHelper
      * @param attributeType The AttributeType to process
      * @param errorHandler The error handler
      * @param registries The Registries instance
-     * @return <tt>true</tt> if the AttributeType superiors hierarchy is correct, or if we don't have any superior
+     * @return <code>true</code> if the AttributeType superiors hierarchy is correct, or if we don't have any superior
      */
     private static boolean buildSuperior( AttributeType attributeType, SchemaErrorHandler errorHandler, 
             Registries registries )

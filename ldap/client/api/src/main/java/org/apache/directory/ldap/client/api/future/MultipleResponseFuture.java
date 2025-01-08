@@ -32,7 +32,7 @@ import org.apache.directory.ldap.client.api.LdapConnection;
 /**
  * A Future implementation used in LdapConnection operations.
  *
- * @param <R> The result type returned by this Future's <tt>get</tt> method
+ * @param <R> The result type returned by this Future's <code>get</code> method
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class MultipleResponseFuture<R extends Response> implements ResponseFuture<R>

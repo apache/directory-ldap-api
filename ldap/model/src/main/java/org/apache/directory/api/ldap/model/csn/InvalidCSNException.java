@@ -48,8 +48,8 @@ public class InvalidCSNException extends RuntimeException
 
 
     /**
-     * Creates a new instance with the specified <tt>message</tt> and
-     * <tt>cause</tt>.
+     * Creates a new instance with the specified <code>message</code> and
+     * <code>cause</code>.
      * 
      * @param message The message associated with the exception
      * @param cause The root cause for this exception
@@ -61,7 +61,7 @@ public class InvalidCSNException extends RuntimeException
 
 
     /**
-     * Creates a new instance with the specified <tt>message</tt>.
+     * Creates a new instance with the specified <code>message</code>.
      * 
      * @param message The message associated with the exception
      */
@@ -72,7 +72,7 @@ public class InvalidCSNException extends RuntimeException
 
 
     /**
-     * Creates a new instance with the specified <tt>cause</tt>.
+     * Creates a new instance with the specified <code>cause</code>.
      * 
      * @param cause The root cause for this exception
      */

@@ -331,7 +331,7 @@ public class DnNode<N>
      * Recursively check if the node has a descendant having an element
      * 
      * @param node The node to start from
-     * @return <tt>true</tt> if the node has some descendant
+     * @return <code>true</code> if the node has some descendant
      */
     private synchronized boolean hasDescendantElement( DnNode<N> node )
     {

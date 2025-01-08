@@ -694,7 +694,7 @@ public interface SchemaManager
      * Add a new Schema into the SchemaManager.
      *
      * @param schema The schema to add
-     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     * @return <code>true</code> if the Shcema has been correctly loaded, <code>false</code> if we had some errors 
      */
     //boolean add( Schema schema ) throws LdapException;
     
@@ -703,7 +703,7 @@ public interface SchemaManager
      * Add a new Schema from a file into the SchemaManager. We will use the default schemaLoader.
      *
      * @param schemaFile The file containing the schema to add
-     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     * @return <code>true</code> if the Shcema has been correctly loaded, <code>false</code> if we had some errors 
      */
     //boolean add( String schemaFile ) throws LdapException;
 
@@ -713,7 +713,7 @@ public interface SchemaManager
      *
      * @param schemaFile The file containing the schema to add
      * @param schemaLoader The SchemaLoader to use to load this new schema
-     * @return <tt>true</tt> if the Shcema has been correctly loaded, <tt>false</tt> if we had some errors 
+     * @return <code>true</code> if the Shcema has been correctly loaded, <code>false</code> if we had some errors 
      */
     //boolean add( String schemaFile, SchemaLoader schemaLoader ) throws LdapException;
 

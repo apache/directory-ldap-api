@@ -40,7 +40,7 @@ public class UserPermission extends Permission
      * Creates a new instance
      * 
      * @param precedence
-     *            the precedence of this permission (<tt>-1</tt> to use the
+     *            the precedence of this permission (<code>-1</code> to use the
      *            default)
      * @param grantsAndDenials
      *            the set of {@link GrantAndDenial}s

@@ -40,7 +40,7 @@ public class RestrictedByElem
      * Creates a new instance.
      * 
      * @param attributeType the attribute type to restrict
-     * @param valuesIn the attribute type only whose values are allowed in <tt>attributeType</tt>.
+     * @param valuesIn the attribute type only whose values are allowed in <code>attributeType</code>.
      */
     public RestrictedByElem( AttributeType attributeType, AttributeType valuesIn )
     {
@@ -62,7 +62,7 @@ public class RestrictedByElem
 
     /**
      * Gets the attribute type only whose values are allowed in
-     * <tt>attributeType</tt>.
+     * <code>attributeType</code>.
      *
      * @return the list of allowed AttributeType values
      */

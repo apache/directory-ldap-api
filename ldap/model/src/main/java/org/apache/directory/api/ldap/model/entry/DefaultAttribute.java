@@ -586,7 +586,7 @@ public class DefaultAttribute implements Attribute, Cloneable
      * 
      * @param id The ID to check
      * @param attributeType The attributeType to verify
-     * @return <tt>true</tt> if the id is a name or an OID
+     * @return <code>true</code> if the id is a name or an OID
      */
     private boolean areCompatible( String id, AttributeType attributeType )
     {

@@ -1289,7 +1289,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /**
      * Tells if the Ava is schema aware or not.
      * 
-     * @return <tt>true</tt> if the Ava is schema aware
+     * @return <code>true</code> if the Ava is schema aware
      */
     public boolean isSchemaAware()
     {

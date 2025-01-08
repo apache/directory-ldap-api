@@ -284,7 +284,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     /**
      * Set this AttributeType mode to relaxed
      * 
-     * @param isRelaxed <tt>true</tt> if the syntax checker for this AttributeType should not be activated
+     * @param isRelaxed <code>true</code> if the syntax checker for this AttributeType should not be activated
      */
     public void setRelaxed( boolean isRelaxed )
     {
@@ -776,7 +776,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     /**
      * Tells if an AttributeType is HumanReadable or not, depending on its Syntax.
      * 
-     * @return <tt>true</tt> if the AttributeType is Human Readable.
+     * @return <code>true</code> if the AttributeType is Human Readable.
      */
     public boolean isHR()
     {

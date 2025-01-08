@@ -352,7 +352,7 @@ public final class PasswordUtil
      *  
      * @param provided The provided password
      * @param stored The stored password
-     * @return <tt>true</tt> if the compared passwords are equal
+     * @return <code>true</code> if the compared passwords are equal
      */
     private static boolean compareBytes( byte[] provided, byte[] stored )
     {

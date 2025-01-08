@@ -28,7 +28,7 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  * A Future implementation used in LdapConnection operations for operations
  * that only get one single response.
  *
- * @param <R> The result type returned by this Future's <tt>get</tt> method
+ * @param <R> The result type returned by this Future's <code>get</code> method
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class UniqueResponseFuture<R extends Response> implements ResponseFuture<R>

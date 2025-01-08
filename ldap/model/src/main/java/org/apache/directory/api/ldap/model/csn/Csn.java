@@ -99,7 +99,7 @@ public class Csn implements Comparable<Csn>
      * 
      * @param timestamp GMT timestamp of modification
      * @param changeCount The operation increment
-     * @param replicaId Replica ID where modification occurred (<tt>[-_A-Za-z0-9]{1,16}</tt>)
+     * @param replicaId Replica ID where modification occurred (<code>[-_A-Za-z0-9]{1,16}</code>)
      * @param operationNumber Operation number in a modification operation
      */
     public Csn( long timestamp, int changeCount, int replicaId, int operationNumber )

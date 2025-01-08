@@ -749,7 +749,7 @@ public class DefaultSchemaManager implements SchemaManager
      * 
      * @param registries The Registries to process
      * @param schema The schema to load in the Registries
-     * @return <tt>true</tt> if the schema has been loaded
+     * @return <code>true</code> if the schema has been loaded
      * @throws LdapException If the schema cannot be loaded
      */
     private boolean load( Registries registries, Schema schema ) throws LdapException
@@ -847,7 +847,7 @@ public class DefaultSchemaManager implements SchemaManager
      * 
      * @param registries The Registries to process
      * @param schema The schema to unload from the Registries
-     * @return <tt>true</tt> if the schema has been unloaded
+     * @return <code>true</code> if the schema has been unloaded
      * @throws LdapException If the schema cannot be unloaded
      */
     private boolean unload( Registries registries, Schema schema ) throws LdapException
@@ -1915,7 +1915,7 @@ public class DefaultSchemaManager implements SchemaManager
      * Check that the given OID exists in the globalOidRegistry.
      * 
      * @param schemaObject The SchemaObject to check
-     * @return <tt>true</tt> if the OID exists
+     * @return <code>true</code> if the OID exists
      */
     private boolean checkOidExist( SchemaObject schemaObject )
     {

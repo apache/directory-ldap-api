@@ -56,7 +56,7 @@ public class UserFirstACIItem extends ACIItem
      *            the collection of {@link UserClass}es this item protects
      * @param userPermissions
      *            the collection of {@link UserPermission}s each
-     *            <tt>protectedItems</tt> will have
+     *            <code>protectedItems</code> will have
      */
     public UserFirstACIItem( String identificationTag, int precedence, AuthenticationLevel authenticationLevel,
         Collection<UserClass> userClasses, Collection<UserPermission> userPermissions )

@@ -129,7 +129,7 @@ public class LdifControl implements Control, Externalizable
 
 
     /**
-     * @return <tt>TRUE</tt> if the control has a value
+     * @return <code>true</code> if the control has a value
      */
     public boolean hasValue()
     {

@@ -101,8 +101,8 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
      * 
      * @param backendValue The stored value
      * @param assertValue The provided value
-     * @return <tt>0</tt> if the values are equal, <tt>-1</tt> if the provided value is below
-     * the stored value, <tt>+1</tt> otherwise
+     * @return <code>0</code> if the values are equal, <code>-1</code> if the provided value is below
+     * the stored value, <code>+1</code> otherwise
      */
     private int compare( String backendValue, String assertValue )
     {

@@ -49,7 +49,7 @@ public interface EndTransactionRequest extends ExtendedRequest
     String EXTENSION_OID = "1.3.6.1.1.21.3";
     
     /**
-     * @return <tt>true</tt> if the operation should be committed, <tt>false</tt> otherwise
+     * @return <code>true</code> if the operation should be committed, <code>false</code> otherwise
      */
     boolean getCommit();
     
@@ -57,7 +57,7 @@ public interface EndTransactionRequest extends ExtendedRequest
     /**
      * Set the Commit flag for this transaction.
      * 
-     * @param commit <tt>true</tt> if the transaction should be committed, <tt>false</tt> if
+     * @param commit <code>true</code> if the transaction should be committed, <code>false</code> if
      * it should be rollbacked.
      */
     void setCommit( boolean commit );

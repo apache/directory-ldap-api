@@ -28,7 +28,8 @@ package org.apache.directory.api.asn1.ber.tlv;
  * <p>
  * These tags can have one of the following values:
  * </p>
- * <table border="1" cellspacing="1" width="60%" summary="ASN.1 tags">
+ * <table border="1">
+ *   <caption>ASN.1 tags</caption>
  *   <tr>
  *     <th>Id</th>
  *     <th>Usage</th>

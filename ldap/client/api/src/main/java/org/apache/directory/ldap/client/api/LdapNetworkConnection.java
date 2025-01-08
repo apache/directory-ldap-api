@@ -592,7 +592,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * Tells if the connection is using a secured channel
      * 
-     * @return <tt>true</tt> if the session is using a secured channel
+     * @return <code>true</code> if the session is using a secured channel
      */
     public boolean isSecured()
     {
@@ -2596,7 +2596,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * Check if the message is a NoticeOfDisconnect message
      * 
      * @param message The message to check
-     * @return <tt>true</tt> if the message is a Notice of Disconnect
+     * @return <code>true</code> if the message is a Notice of Disconnect
      */
     private boolean isNoticeOfDisconnect( Message message )
     {

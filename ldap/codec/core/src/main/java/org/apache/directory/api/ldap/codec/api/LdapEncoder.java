@@ -88,7 +88,7 @@ public final class LdapEncoder
      * @param codec The LdapApiService instance 
      * @param controls The controls to encode
      * @param iterator The Iterator instance we are processing
-     * @param isRequest A flag set to <tt>true</tt> if the LdapMessage is a request
+     * @param isRequest A flag set to <code>true</code> if the LdapMessage is a request
      * @throws EncoderException If the encoding failed
      */
     private static void encodeControls( Asn1Buffer buffer, LdapApiService codec,
