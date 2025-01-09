@@ -29,7 +29,6 @@ package org.apache.directory.api.asn1.ber.tlv;
  */
 public class LongDecoderException extends Exception
 {
-
     /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 

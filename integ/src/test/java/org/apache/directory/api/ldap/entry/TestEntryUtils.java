@@ -46,6 +46,7 @@ public final class TestEntryUtils
      */
     static class AT extends AttributeType
     {
+        /** Declares the Serial Version Uid */
         private static final long serialVersionUID = 0L;
 
 
@@ -68,7 +69,7 @@ public final class TestEntryUtils
      */
     static class MR extends MatchingRule
     {
-        /** The mandatory serialVersionUID field */
+        /** Declares the Serial Version Uid */
         public static final long serialVersionUID = 1L;
 
 
@@ -98,6 +99,7 @@ public final class TestEntryUtils
 
     static class S extends LdapSyntax
     {
+        /** Declares the Serial Version Uid */
         private static final long serialVersionUID = 0L;
 
 
@@ -116,7 +118,7 @@ public final class TestEntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2.1" )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
@@ -145,7 +147,7 @@ public final class TestEntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
@@ -157,7 +159,7 @@ public final class TestEntryUtils
 
         Normalizer normalizer = new Normalizer( "1.1.1" )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
@@ -190,7 +192,7 @@ public final class TestEntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2" )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
@@ -207,7 +209,7 @@ public final class TestEntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
@@ -233,7 +235,7 @@ public final class TestEntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
@@ -250,7 +252,7 @@ public final class TestEntryUtils
 
         matchingRule.setNormalizer( new Normalizer( "1.1.1" )
         {
-            /** The mandatory serialVersionUID field */
+            /** Declares the Serial Version Uid */
             public static final long serialVersionUID = 1L;
 
 
