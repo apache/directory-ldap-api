@@ -30,21 +30,33 @@ import java.io.ObjectOutput;
  * operations: all is done in the same buffer without creating a bunch of string
  * objects.
  * 
+ * Note that UTF-8 can use up to 8 bytes to encode an Unicode value. This is
+ * define by <a href="https://datatracker.ietf.org/doc/html/rfc3629">RFC 3629</a>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class Unicode
 {
+    /** The UTF-8 multi-bytes mask */
     private static final int UTF8_MULTI_BYTES_MASK = 0x0080;
+
+    /** The UTF-8 two-bytes mask */
     private static final int UTF8_TWO_BYTES_MASK = 0x00E0;
+    
+    /** A marker if the UTF-8 string has 2 bytes */
     private static final int UTF8_TWO_BYTES = 0x00C0;
+
+    /** The UTF-8 three-bytes mask */
     private static final int UTF8_THREE_BYTES_MASK = 0x00F0;
+
+    /** A marker if the UTF-8 string has 3 bytes */
     private static final int UTF8_THREE_BYTES = 0x00E0;
+
+    /** The UTF-8 four-bytes mask */
     private static final int UTF8_FOUR_BYTES_MASK = 0x00F8;
+
+    /** A marker if the UTF-8 string has 4 bytes */
     private static final int UTF8_FOUR_BYTES = 0x00F0;
-    private static final int UTF8_FIVE_BYTES_MASK = 0x00FC;
-    private static final int UTF8_FIVE_BYTES = 0x00F8;
-    private static final int UTF8_SIX_BYTES_MASK = 0x00FE;
-    private static final int UTF8_SIX_BYTES = 0x00FC;
 
     /** %01-%27 %2B-%5B %5D-%7F */
     private static final boolean[] UNICODE_SUBSET =
@@ -69,11 +81,22 @@ public final class Unicode
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
         };
+    
+    /** A mask to get a one byte UTF-8 character */
     private static final int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
+    
+    /** A mask to get a two bytes UTF-8 character */
     private static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
+    
+    /** A mask to get a three bytes UTF-8 character */
     private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
+    
+    /** A mask to get a four bytes UTF-8 character */
     private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
-
+    
+    /** 
+     * A private constructor. This class should not be instanciated 
+     */
     private Unicode()
     {
     }
@@ -111,14 +134,6 @@ public final class Unicode
         else if ( ( bytes[pos] & UTF8_FOUR_BYTES_MASK ) == UTF8_FOUR_BYTES )
         {
             return 4;
-        }
-        else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
-        {
-            return 5;
-        }
-        else if ( ( bytes[pos] & UTF8_SIX_BYTES_MASK ) == UTF8_SIX_BYTES )
-        {
-            return 6;
         }
         else
         {
@@ -188,37 +203,6 @@ public final class Unicode
                     + ( ( bytes[pos + 2] & 0x3C ) << 6 )
                     + ( ( bytes[pos + 2] & 0x03 ) << 6 )
                     + ( bytes[pos + 3] & 0x3F )
-                );
-            }
-            else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
-            {
-                // Five bytes char
-                return ( char ) (
-                // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
-                // 0000-00tt uuuu-uuvv wwww-xxxx yyzz-zzzz (03 FF FF FF)
-                ( ( bytes[pos] & 0x03 ) << 24 )
-                    + ( ( bytes[pos + 1] & 0x3F ) << 18 )
-                    + ( ( bytes[pos + 2] & 0x30 ) << 12 )
-                    + ( ( bytes[pos + 2] & 0x0F ) << 12 )
-                    + ( ( bytes[pos + 3] & 0x3C ) << 6 )
-                    + ( ( bytes[pos + 3] & 0x03 ) << 6 )
-                    + ( bytes[pos + 4] & 0x3F )
-                );
-            }
-            else if ( ( bytes[pos] & UTF8_SIX_BYTES_MASK ) == UTF8_SIX_BYTES )
-            {
-                // Six bytes char
-                return ( char ) (
-                // 1111-110s 10tt-tttt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz
-                // -> 0stt-tttt uuuu-uuvv wwww-xxxx yyzz-zzzz (7F FF FF FF)
-                ( ( bytes[pos] & 0x01 ) << 30 )
-                    + ( ( bytes[pos + 1] & 0x3F ) << 24 )
-                    + ( ( bytes[pos + 2] & 0x3F ) << 18 )
-                    + ( ( bytes[pos + 3] & 0x30 ) << 12 )
-                    + ( ( bytes[pos + 3] & 0x0F ) << 12 )
-                    + ( ( bytes[pos + 4] & 0x3C ) << 6 )
-                    + ( ( bytes[pos + 4] & 0x03 ) << 6 )
-                    + ( bytes[pos + 5] & 0x3F )
                 );
             }
             else

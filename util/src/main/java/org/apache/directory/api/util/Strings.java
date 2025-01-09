@@ -91,6 +91,9 @@ public final class Strings
             true,  true,  true,  false, false, false, false, false
     };
 
+    /**
+     * An array used to convert uper case chars to lowercase
+     */
     private static final char[] TO_LOWER_CASE =
         {
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
@@ -127,6 +130,9 @@ public final class Strings
             0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
     };
 
+    /**
+     * An array used to convert a byte array to lower case
+     */
     private static final byte[] TO_LOWER_CASE_BYTE =
         {
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
@@ -2438,7 +2444,10 @@ public final class Strings
 
 
     /**
+     * Compate two byte arrrays
+     * 
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     * 
      * @param b1 The first byte[] to compare
      * @param b2 The second byte[] to compare
      * @return -1 if the first byte[] is inferior to the second one, 1 if teh first byte[]

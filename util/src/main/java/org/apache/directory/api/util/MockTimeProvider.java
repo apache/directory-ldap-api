@@ -27,33 +27,57 @@ package org.apache.directory.api.util;
  */
 public class MockTimeProvider implements TimeProvider
 {
+    /** The time in millisecond */
     private long timeInMillis;
 
 
+    /**
+     * A MockTimeProvider constructor which sets the time to teh cirrent time
+     */
     public MockTimeProvider()
     {
         this.timeInMillis = System.currentTimeMillis();
     }
 
 
+    /**
+     * Get the current time in millisecond
+     * 
+     * @return The current time 
+     */
     public long currentIimeMillis()
     {
         return timeInMillis;
     }
 
 
+    /**
+     * Set the current time in millisecond
+     * 
+     * @param timeInMillis The current time 
+     */
     public void setTimeInMillis( long timeInMillis )
     {
         this.timeInMillis = timeInMillis;
     }
 
 
+    /**
+     * Add some time to the current time
+     * 
+     * @param millis The time to add to the current time 
+     */
     public void addMillis( long millis )
     {
         this.timeInMillis += millis;
     }
 
 
+    /**
+     * Substract some time to the current time
+     * 
+     * @param millis The time to substract from the current time 
+     */
     public void substractMillis( long millis )
     {
         this.timeInMillis -= millis;

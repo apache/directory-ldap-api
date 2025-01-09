@@ -25,7 +25,6 @@ package org.apache.directory.api.util;
  * This class is used to store the position of a token in a string.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- *
  */
 public class Position
 {
@@ -37,10 +36,18 @@ public class Position
 
     /** The token end position in the string */
     public int end = 0;
+    
+    /**
+     * A public constructor
+     */
+    public Position()
+    {
+        // Nothing to do
+    }
 
 
     /**
-     * @see Object#toString()
+     * {@inheritDoc}
      */
     @Override
     public String toString()

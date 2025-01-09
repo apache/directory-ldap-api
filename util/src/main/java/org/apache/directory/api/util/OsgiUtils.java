@@ -44,6 +44,9 @@ public final class OsgiUtils
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( OsgiUtils.class );
 
+    /** 
+     * A private constructor. This class should not be instanciated 
+     */
     private OsgiUtils()
     {
     }

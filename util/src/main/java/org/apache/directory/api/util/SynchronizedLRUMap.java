@@ -47,8 +47,7 @@ import java.io.Externalizable;
  */
 public final class SynchronizedLRUMap extends SequencedHashMap implements Externalizable
 {
-    // add a serial version uid, so that if we change things in the future
-    // without changing the format, we can still deserialize properly.
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2197433140769957051L;
 
     /** Maximum size */

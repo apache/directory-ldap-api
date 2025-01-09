@@ -34,9 +34,8 @@ import java.io.Writer;
  */
 public class StringBuilderWriter extends Writer
 {
-
+    /** The internal StringBuilder */
     private final StringBuilder builder;
-
 
     /**
      * Construct a new {@link StringBuilder} instance with default capacity.

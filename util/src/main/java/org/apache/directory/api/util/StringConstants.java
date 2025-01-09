@@ -44,6 +44,9 @@ public final class StringConstants
     public static final int NOT_EQUAL = -1;
 
 
+    /** 
+     * A private constructor. This class should not be instanciated 
+     */
     private StringConstants()
     {
     }

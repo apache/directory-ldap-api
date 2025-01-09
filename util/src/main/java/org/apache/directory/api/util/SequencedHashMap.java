@@ -60,17 +60,21 @@ import org.apache.directory.api.i18n.I18n;
 @SuppressWarnings("rawtypes")
 public class SequencedHashMap implements Map, Cloneable, Externalizable
 {
-    // add a serial version uid, so that if we change things in the future
-    // without changing the format, we can still deserialize properly.
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 3380552487888102930L;
     
     // constants to define what the iterator should return on "next"
+    /** The iterator will return the key */
     private static final int KEY = 0;
 
+    /** The iterator will return the value */
     private static final int VALUE = 1;
 
+    
+    /** The iterator will return the numeric order */
     private static final int ENTRY = 2;
 
+    /** A flag to determinate if an entry has been removed or not */
     private static final int REMOVED_MASK = 0x80000000;
 
     /**
@@ -109,18 +113,28 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         // when to stop cloning, and thus you end up in a recursive loop,
         // continuously cloning the "next" in the list.
 
+        /** The entry key */
         private final Object key;
 
+        /** The entry value */
         private Object value;
 
         // package private to allow the SequencedHashMap to access and
         // manipulate
         // them.
+        /** The next entry */
         MapEntry next = null;
 
+        /** The previous entry */
         MapEntry prev = null;
 
 
+        /**
+         * Create a MapEntry instance
+         * 
+         * @param key The entry key
+         * @param value The entry value
+         */
         MapEntry( Object key, Object value )
         {
             this.key = key;
@@ -128,7 +142,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         }
 
 
-        // per Map.Entry.getKey()
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Object getKey()
         {
@@ -136,7 +152,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         }
 
 
-        // per Map.Entry.getValue()
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Object getValue()
         {
@@ -144,7 +162,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         }
 
 
-        // per Map.Entry.setValue()
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Object setValue( Object newValue )
         {
@@ -156,7 +176,8 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
         /**
          * Compute the instance's hash code
-         * @return the instance's hash code 
+         * 
+         * @return the computed instance's hash code 
          */
         @Override
         public int hashCode()
@@ -165,7 +186,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             return ( getKey() == null ? 0 : getKey().hashCode() ) ^ ( getValue() == null ? 0 : getValue().hashCode() );
         }
 
-
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean equals( Object obj )
         {
@@ -193,6 +216,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public String toString()
         {
@@ -962,6 +988,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         };
     }
 
+    /**
+     * An ordered iterator 
+     */
     private final class OrderedIterator implements Iterator
     {
         /**
@@ -1048,10 +1077,13 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             {
                 case KEY:
                     return pos.getKey();
+                    
                 case VALUE:
                     return pos.getValue();
+                    
                 case ENTRY:
                     return pos;
+                    
                 default:
                     // should never happen
                     throw new Error( I18n.err( I18n.ERR_17030_BAD_ITERATOR_TYPE, returnType ) );

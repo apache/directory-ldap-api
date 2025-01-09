@@ -32,7 +32,9 @@ public final class Serialize
     /** The serialized value for FALSE */
     public static final byte FALSE = 0x00;
 
-
+    /** 
+     * A private constructor. This class should not be instanciated 
+     */
     private Serialize()
     {
     }

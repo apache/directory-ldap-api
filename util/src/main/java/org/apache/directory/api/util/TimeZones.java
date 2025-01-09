@@ -33,7 +33,9 @@ public final class TimeZones
     /** The GMT TimeZone */
     public static final TimeZone GMT = TimeZone.getTimeZone( "GMT" );
 
-
+    /**
+     * A private constructor. This class should not be instanciated
+     */
     private TimeZones()
     {
     }

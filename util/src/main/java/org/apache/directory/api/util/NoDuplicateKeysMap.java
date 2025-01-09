@@ -35,9 +35,16 @@ import org.apache.directory.api.i18n.I18n;
 @SuppressWarnings("rawtypes")
 public class NoDuplicateKeysMap extends HashMap
 {
-    // add a serial version uid, so that if we change things in the future
-    // without changing the format, we can still deserialize properly.
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 5107433500719957457L;
+    
+    /**
+     * A public constructor
+     */
+    public NoDuplicateKeysMap()
+    {
+        super();
+    }
 
     /**
      * Overrides java.util.Map.put(java.lang.Object, java.lang.Object) to
