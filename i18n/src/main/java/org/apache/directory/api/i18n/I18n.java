@@ -1596,7 +1596,6 @@ public enum I18n
 
 
     /**
-     *
      * Translate a message code with argument(s)
      *
      * @param msg The message code
@@ -1682,6 +1681,13 @@ public enum I18n
     }
 
 
+    /**
+     * Format a message
+     * 
+     * @param pattern The pattern to apply
+     * @param args Tha arguments to inject into the pattern
+     * @return The formatted message
+     */
     public static String format( String pattern, Object... args )
     {
         return new MessageFormat( pattern, Locale.ROOT ).format( args );

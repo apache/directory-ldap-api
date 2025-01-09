@@ -34,6 +34,17 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <sourceFileExcludes>
+            <sourceFileExclude>**/I18n.java</sourceFileExclude>
+          </sourceFileExcludes>
+        </configuration>
+      </plugin>
+      
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration> 
           <forkMode>always</forkMode>
