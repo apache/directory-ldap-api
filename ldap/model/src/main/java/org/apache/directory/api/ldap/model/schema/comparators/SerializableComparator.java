@@ -40,7 +40,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  */
 public class SerializableComparator<E> extends LdapComparator<E> implements Serializable
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** the OID of the matchingRule for this comparator */

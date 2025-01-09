@@ -27,10 +27,10 @@ package org.apache.directory.api.ldap.model.exception;
  */
 public class LdapTlsHandshakeException extends LdapException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
     private LdapTlsHandshakeFailCause failCause;
-
 
     /**
      * The constructor with a reason string argument.

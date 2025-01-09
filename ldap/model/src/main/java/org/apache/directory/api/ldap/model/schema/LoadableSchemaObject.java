@@ -32,7 +32,7 @@ import org.apache.directory.api.util.Strings;
  */
 public abstract class LoadableSchemaObject extends AbstractSchemaObject
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** The Full Qualified Class Name */
@@ -40,7 +40,6 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
     /** The base64 encoded bytecode for this schema */
     private String bytecode;
-
 
     /**
      * Constructor to use when the OID is known in advance.
@@ -72,6 +71,8 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
 
     /**
+     * Get the SchemaObject bytecode
+     * 
      * @return The associated bytecode of this SchemaObject instance
      */
     public String getBytecode()
@@ -98,7 +99,9 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
 
 
     /**
-     * @return The chemaObject instance Fully Qualified Class Name
+     * Get the schemaObject fully qualified class name
+     * 
+     * @return The schemaObject instance Fully Qualified Class Name
      */
     public String getFqcn()
     {

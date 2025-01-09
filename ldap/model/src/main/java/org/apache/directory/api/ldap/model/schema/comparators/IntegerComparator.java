@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IntegerComparator extends LdapComparator<Object> implements Serializable
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */

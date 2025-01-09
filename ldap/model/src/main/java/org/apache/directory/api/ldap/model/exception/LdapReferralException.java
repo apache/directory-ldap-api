@@ -41,7 +41,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
  */
 public class LdapReferralException extends AbstractLdapReferralException
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 
     /** The list of referrals */

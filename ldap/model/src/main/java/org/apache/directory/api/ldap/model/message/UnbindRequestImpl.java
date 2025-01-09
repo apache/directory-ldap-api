@@ -30,8 +30,8 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = -6217184085100410116L;
-
 
     /**
      * Creates an UnbindRequest which takes no parameter other than those in the

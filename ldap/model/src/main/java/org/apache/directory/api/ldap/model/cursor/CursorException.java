@@ -28,7 +28,7 @@ package org.apache.directory.api.ldap.model.cursor;
  */
 public class CursorException extends Exception
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
 

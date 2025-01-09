@@ -32,6 +32,7 @@ import org.apache.directory.api.ldap.model.message.ResultResponse;
  */
 public class LdapRequestUnsuccessfulException extends RuntimeException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1982294624076306127L;
 
     private final transient ResultResponse response;

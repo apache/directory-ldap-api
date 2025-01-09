@@ -203,6 +203,8 @@ public interface SchemaObject
 
 
     /**
+     * Get the schemaObjct extensions
+     * 
      * @return The SchemaObject extensions, as a Map of [extension, values]
      */
     Map<String, List<String>> getExtensions();

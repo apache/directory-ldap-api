@@ -32,6 +32,7 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRespo
  */
 final class PasswordWarningImpl implements PasswordWarning
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = -8952246313604352357L;
 
     private int timeBeforeExpiration = -1;

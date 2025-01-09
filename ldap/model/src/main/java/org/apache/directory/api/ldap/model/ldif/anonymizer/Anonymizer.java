@@ -66,24 +66,32 @@ public interface Anonymizer<K>
     
     
     /**
+     * Get the map of anonymized values
+     * 
      * @return The latest String anonymized value map
      */
     Map<Integer, String> getLatestStringMap();
     
     
     /**
+     * Set a new map of anynomized values
+     * 
      * @param latestStringMap The latest String anonymized value map
      */
     void setLatestStringMap( Map<Integer, String> latestStringMap );
     
     
     /**
+     * Get the map of anonymized byte[] values
+     * 
      * @return The latest byte[] anonymized value map
      */
     Map<Integer, byte[]> getLatestBytesMap();
     
     
     /**
+     * Set a new map of anynomized binary values
+     * 
      * @param latestBytesMap The latest byte[] anonymized value map
      */
     void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap );

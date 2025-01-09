@@ -80,7 +80,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class DitStructureRule extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The rule ID. A DSR does not have an OID */

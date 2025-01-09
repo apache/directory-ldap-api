@@ -35,8 +35,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  */
 public class DnComparator extends LdapComparator<Object>
 {
-    /** The serial version UID */
-    private static final long serialVersionUID = 2L;
+    /** Declares the Serial Version Uid */
+     private static final long serialVersionUID = 2L;
 
     /** A reference to the schema manager */
     private transient SchemaManager schemaManager;

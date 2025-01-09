@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class LdapContextNotEmptyException extends LdapOperationException
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 
 

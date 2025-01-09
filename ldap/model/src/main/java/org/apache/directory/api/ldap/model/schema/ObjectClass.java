@@ -70,7 +70,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class ObjectClass extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The ObjectClass type : ABSTRACT, AUXILIARY or STRUCTURAL */
@@ -93,7 +93,6 @@ public class ObjectClass extends AbstractSchemaObject
 
     /** The list of required AttributeTypes */
     protected transient List<AttributeType> mustAttributeTypes;
-
 
     /**
      * Creates a new instance of MatchingRuleUseDescription

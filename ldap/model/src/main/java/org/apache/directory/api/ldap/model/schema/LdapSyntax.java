@@ -69,7 +69,7 @@ import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
  */
 public class LdapSyntax extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** the human readable flag */
@@ -80,7 +80,6 @@ public class LdapSyntax extends AbstractSchemaObject
 
     /** The associated SyntaxChecker */
     protected SyntaxChecker syntaxChecker;
-
 
     /**
      * Creates a Syntax object using a unique OID.

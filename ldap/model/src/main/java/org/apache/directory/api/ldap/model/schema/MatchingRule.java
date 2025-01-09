@@ -72,7 +72,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class MatchingRule extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The associated Comparator */
@@ -86,7 +86,6 @@ public class MatchingRule extends AbstractSchemaObject
 
     /** The associated LdapSyntax OID */
     protected String ldapSyntaxOid;
-
 
     /**
      * Creates a new instance of MatchingRule.

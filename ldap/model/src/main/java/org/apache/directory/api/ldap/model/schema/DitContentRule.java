@@ -111,7 +111,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class DitContentRule extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The list of Auxiliary ObjectClass OIDs entries may belong to */

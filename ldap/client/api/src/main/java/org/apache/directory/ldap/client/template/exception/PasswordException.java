@@ -33,6 +33,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class PasswordException extends Exception
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = -1185823188085178776L;
 
     private LdapException ldapException;

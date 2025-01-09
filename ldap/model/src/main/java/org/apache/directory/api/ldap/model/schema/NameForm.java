@@ -92,7 +92,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class NameForm extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The structural object class OID this rule applies to */
@@ -112,7 +112,6 @@ public class NameForm extends AbstractSchemaObject
 
     /** The set of allowed AttributeTypes for this name form */
     private List<AttributeType> mayAttributeTypes;
-
 
     /**
      * Creates a new instance of MatchingRule.

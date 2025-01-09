@@ -517,6 +517,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
         return new javax.naming.ldap.ExtendedRequest()
         {
+            /** Declares the Serial Version Uid */
             private static final long serialVersionUID = -4160980385909987475L;
 
 
@@ -547,6 +548,7 @@ public class DefaultLdapCodecService implements LdapApiService
                     
                     return new javax.naming.ldap.ExtendedResponse()
                     {
+                        /** Declares the Serial Version Uid */
                         private static final long serialVersionUID = -7686354122066100703L;
 
 

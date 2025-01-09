@@ -38,6 +38,17 @@ import javax.naming.NamingEnumeration;
 public class EmptyEnumeration<T> implements NamingEnumeration<T>
 {
     /**
+     * Public constructor
+     */
+    public EmptyEnumeration()
+    {
+        // Nothing to do
+    }
+
+
+    /**
+     * Close the enumeration
+     * 
      * @see javax.naming.NamingEnumeration#close()
      */
     @Override

@@ -36,6 +36,7 @@ import java.util.List;
  */
 public class ReferralImpl implements Referral
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 2638820668325359096L;
 
     /** Sequence of LDAPUrls composing this Referral */

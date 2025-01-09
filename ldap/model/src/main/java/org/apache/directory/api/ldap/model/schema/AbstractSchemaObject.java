@@ -77,7 +77,7 @@ import org.apache.directory.api.util.Strings;
  */
 public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** The SchemaObject numeric OID */

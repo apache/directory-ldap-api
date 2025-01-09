@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  */
 public class LdapRuntimeException extends RuntimeException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 3618077059423567243L;
 
     /**

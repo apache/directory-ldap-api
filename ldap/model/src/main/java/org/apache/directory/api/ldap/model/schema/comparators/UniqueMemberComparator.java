@@ -38,14 +38,14 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  */
 public class UniqueMemberComparator extends LdapComparator<String>
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A reference to the schema manager */
     private transient SchemaManager schemaManager;
     
+    /** A DN comparator instance */
     private transient ParsedDnComparator dnComparator = new ParsedDnComparator( SchemaConstants.ENTRY_DN_AT_OID );
-
 
     /**
      * The IntegerComparator constructor. Its OID is the IntegerOrderingMatch matching

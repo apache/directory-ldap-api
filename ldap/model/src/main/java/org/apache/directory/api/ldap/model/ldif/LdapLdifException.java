@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  */
 public class LdapLdifException extends LdapException
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
 

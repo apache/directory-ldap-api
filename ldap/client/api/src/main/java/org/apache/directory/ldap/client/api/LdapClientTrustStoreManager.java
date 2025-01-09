@@ -53,7 +53,7 @@ import java.util.List;
  */
 public final class LdapClientTrustStoreManager implements X509TrustManager, Serializable
 {
-    /** Default serialVersionUID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
     
     // Logging

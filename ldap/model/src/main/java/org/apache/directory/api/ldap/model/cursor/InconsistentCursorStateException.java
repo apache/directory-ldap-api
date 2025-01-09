@@ -28,7 +28,7 @@ package org.apache.directory.api.ldap.model.cursor;
  */
 public class InconsistentCursorStateException extends CursorException
 {
-    /** The serialVersion UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 6222645005251534704L;
 
 

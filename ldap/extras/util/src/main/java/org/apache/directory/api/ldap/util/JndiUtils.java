@@ -359,6 +359,7 @@ public final class JndiUtils
 // a ReferralException around the LdapReferralException to be used in tests
 class WrappedReferralException extends ReferralException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
     private LdapReferralException lre;
@@ -453,6 +454,7 @@ class WrappedReferralException extends ReferralException
 // a PartialResultException around the LdapPartialResultException to be used in tests
 class WrappedPartialResultException extends PartialResultException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
     private LdapPartialResultException lpre;

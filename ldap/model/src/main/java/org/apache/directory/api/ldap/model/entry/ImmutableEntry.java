@@ -44,7 +44,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
  */
 public class ImmutableEntry implements Entry
 {
-    /** Used for serialization */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** The wrapped Entry for this entry */

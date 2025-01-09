@@ -27,8 +27,8 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class AddResponseImpl extends AbstractResultResponse implements AddResponse
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 4027132942339551383L;
-
 
     /**
      * Creates an AddResponse as a reply to an AddRequest.

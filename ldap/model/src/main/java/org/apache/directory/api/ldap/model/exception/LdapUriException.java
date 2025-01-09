@@ -27,6 +27,7 @@ package org.apache.directory.api.ldap.model.exception;
  */
 public class LdapUriException extends LdapException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
     /**

@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaObject;
  */
 public class LdapSchemaException extends LdapException
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 
     /** The code of the exception */

@@ -38,6 +38,15 @@ public abstract class AbstractCursor<E> implements Cursor<E>
 
 
     /**
+     * A default constructor
+     */
+    protected AbstractCursor()
+    {
+        // Nothing to do
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     @Override

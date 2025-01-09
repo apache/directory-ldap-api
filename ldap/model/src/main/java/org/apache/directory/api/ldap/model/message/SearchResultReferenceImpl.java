@@ -27,11 +27,11 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class SearchResultReferenceImpl extends AbstractResponse implements SearchResultReference
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 7423807019951309810L;
 
     /** Referral holding the reference urls */
     private Referral referral = new ReferralImpl();
-
 
     /**
      * Creates a SearchResponseReference as a reply to an SearchRequest

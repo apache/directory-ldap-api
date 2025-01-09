@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BooleanComparator extends LdapComparator<String>
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */

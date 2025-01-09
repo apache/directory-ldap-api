@@ -32,9 +32,9 @@ import org.apache.directory.api.util.Strings;
  */
 public final class LowerCaseKeyMap extends HashMap<String, Schema>
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
-    
     /**
      * {@inheritDoc}
      */

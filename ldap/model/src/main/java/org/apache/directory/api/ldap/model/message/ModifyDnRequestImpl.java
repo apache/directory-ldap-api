@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.name.Rdn;
  */
 public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements ModifyDnRequest
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1233507339633051696L;
 
     /** PDU's modify Dn candidate <b>entry</b> distinguished name property */

@@ -36,12 +36,11 @@ import org.apache.directory.api.ldap.model.schema.normalizers.NoOpNormalizer;
  */
 public abstract class LdapComparator<T> extends LoadableSchemaObject implements Comparator<T>, Serializable
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A default normalizer*/
     protected Normalizer normalizer = new NoOpNormalizer();
-
 
     /**
      * Create a new instance of a Comparator

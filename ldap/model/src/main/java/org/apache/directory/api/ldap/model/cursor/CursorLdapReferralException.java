@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public class CursorLdapReferralException extends CursorException
 {
-    /** The serialVersion UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = -5723233489761854394L;
 
     /** A static exception to be used by the monitor */

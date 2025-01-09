@@ -31,7 +31,7 @@ import java.io.Serializable;
  */
 public class LdapContextParameter implements Serializable
 {
-    /** Serial UUID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = -8703671542595407603L;
 
     /** The parameter name */

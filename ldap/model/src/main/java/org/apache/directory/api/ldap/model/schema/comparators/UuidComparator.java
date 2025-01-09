@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UuidComparator extends SerializableComparator<String>
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
@@ -42,7 +42,6 @@ public class UuidComparator extends SerializableComparator<String>
     
     /** A static instance of the UuidComparator */
     public static final UuidComparator INSTANCE = new UuidComparator( "1.3.6.1.1.16.4" );
-
 
     /**
      * The UUIDComparator constructor. Its OID is the UUIDMatch matching

@@ -27,6 +27,6 @@ package org.apache.directory.api.ldap.model.exception;
  */
 public class OperationAbandonedException extends LdapException
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 }

@@ -31,6 +31,7 @@ import org.apache.directory.api.asn1.EncoderException;
  */
 public class MessageEncoderException extends EncoderException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = -4634398228257729537L;
 
     /** The message ID */

@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public class LdapOperationException extends LdapException
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
 
     /** The operation resultCode */
@@ -103,6 +103,8 @@ public class LdapOperationException extends LdapException
 
 
     /**
+     * Get the resolved DN
+     * 
      * @return the resolvedDn
      */
     public Dn getResolvedDn()
@@ -112,6 +114,8 @@ public class LdapOperationException extends LdapException
 
 
     /**
+     * Set the resolved DN
+     * 
      * @param resolvedDn the resolvedDn to set
      */
     public void setResolvedDn( Dn resolvedDn )

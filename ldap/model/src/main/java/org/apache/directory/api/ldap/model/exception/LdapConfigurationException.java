@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class LdapConfigurationException extends LdapOperationException
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 
     /** The exception cause */

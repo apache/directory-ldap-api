@@ -35,12 +35,11 @@ import org.slf4j.LoggerFactory;
  */
 public class StringComparator extends LdapComparator<String> implements Serializable
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( StringComparator.class );
-
 
     /**
      * The StringComparator constructor. Its OID is the StringMatch matching

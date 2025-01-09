@@ -127,7 +127,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class AttributeType extends AbstractSchemaObject implements Cloneable
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The syntax OID associated with this AttributeType */

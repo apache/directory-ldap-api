@@ -30,7 +30,10 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class InvalidCharacterException extends IOException
 {
+    /** Serial UUID */
     private static final long serialVersionUID = 1L;
+    
+    /** The char that caused the exception to be thrown */
     private final int input;
 
     /**

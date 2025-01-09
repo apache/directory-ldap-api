@@ -27,6 +27,7 @@ package org.apache.directory.api.ldap.model.message;
  */
 public abstract class AbstractExtendedResponse extends AbstractResultResponse implements ExtendedResponse
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = -6646752766410531060L;
 
     /** Object identifier for the extended response */

@@ -36,11 +36,13 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public class AddRequestImpl extends AbstractAbandonableRequest implements AddRequest
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 7534132448349520346L;
 
     /** A MultiMap of the new entry's attributes and their values */
     private Entry entry;
 
+    /** The associated response */
     private AddResponse response;
 
     /** The current attribute being decoded */

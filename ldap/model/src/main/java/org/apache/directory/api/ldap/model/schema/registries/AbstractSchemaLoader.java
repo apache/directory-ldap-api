@@ -56,6 +56,14 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     /** The flag that tells about the SchemaLoader mode : relaxed or strict */
     private boolean relaxed;
+    
+    /**
+     * Default constructor
+     */
+    protected AbstractSchemaLoader()
+    {
+        // Nothing to do
+    }
 
     /**
      * {@inheritDoc}
@@ -194,7 +202,12 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         return new DefaultSchema( this, name, owner, dependencies, isDisabled );
     }
 
-
+    /**
+     * Create an array of schemas instance
+     * 
+     * @param schemaNames The list of schema name to construct
+     * @return A list of schemas instance
+     */
     private Schema[] buildSchemaArray( String... schemaNames )
     {
         Schema[] schemas = new Schema[schemaNames.length];

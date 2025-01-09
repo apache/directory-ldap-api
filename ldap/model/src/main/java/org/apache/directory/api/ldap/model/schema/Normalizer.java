@@ -30,9 +30,8 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  */
 public abstract class Normalizer extends LoadableSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
-
 
     /**
      * The Normalizer base constructor. We use it's MR OID to

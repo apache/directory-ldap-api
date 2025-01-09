@@ -33,7 +33,7 @@ import org.apache.directory.api.util.Strings;
  */
 public final class ExtendedNoDResponse extends AbstractExtendedResponse
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 2L;
 
     /** The OID of the NotiveOfDisconnect extended operation. */

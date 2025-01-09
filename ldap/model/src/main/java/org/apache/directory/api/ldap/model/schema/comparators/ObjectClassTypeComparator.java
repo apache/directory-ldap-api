@@ -34,9 +34,8 @@ import org.apache.directory.api.util.Strings;
  */
 public class ObjectClassTypeComparator<T> extends LdapComparator<T>
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
-
 
     /**
      * Creates a new instance of ObjectClassTypeComparator.

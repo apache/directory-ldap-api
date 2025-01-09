@@ -372,6 +372,11 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Initialize the calendar
+     * 
+     * @param newCalendar The caldenar to initialize
+     */
     private void setUp( Calendar newCalendar )
     {
         if ( newCalendar == null )
@@ -388,6 +393,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Parse the time zone
+     *  
+     * @param pos Position of the TZ
+     * @throws ParseException If the le ngth is too short, the TZ is invalid or missing
+     */
     private void parseTimezone( int pos ) throws ParseException
     {
         if ( upGeneralizedTime.length() < pos + 1 )
@@ -440,6 +451,11 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Parse the fraction part and convert it to milliseconds
+     * 
+     * @throws ParseException If there is no fraction part
+     */
     private void parseFractionOfSecond() throws ParseException
     {
         parseFractionDelmiter( 14 );
@@ -453,6 +469,11 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Parse the fraction part and convert it to seconds, milliseconds
+     * 
+     * @throws ParseException If there is no fraction part
+     */
     private void parseFractionOfMinute() throws ParseException
     {
         parseFractionDelmiter( 12 );
@@ -469,6 +490,11 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Parse the fraction part and convert it to minutes, seconds, milliseconds
+     * 
+     * @throws ParseException If there is no fraction part
+     */
     private void parseFractionOfHour() throws ParseException
     {
         parseFractionDelmiter( 10 );
@@ -487,6 +513,11 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Find the fraction delimiter (a '.' or a ',')
+     * 
+     * @param fractionDelimiterPos The fraction delimiter position
+     */
     private void parseFractionDelmiter( int fractionDelimiterPos )
     {
         char c = upGeneralizedTime.charAt( fractionDelimiterPos );
@@ -494,6 +525,13 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the fraction part
+     * 
+     * @param startIndex The start of the fraction part
+     * @return The fraction part
+     * @throws ParseException If the fraction part is null
+     */
     private String getFraction( int startIndex ) throws ParseException
     {
         String fraction = getAllDigits( startIndex );
@@ -508,12 +546,20 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the Generalized time digits up to the first non-digit char
+     * 
+     * @param startIndex Starting point to scan for digits
+     * @return The digits in a string
+     */
     private String getAllDigits( int startIndex )
     {
         StringBuilder sb = new StringBuilder();
+        
         while ( upGeneralizedTime.length() > startIndex )
         {
             char c = upGeneralizedTime.charAt( startIndex );
+            
             if ( '0' <= c && c <= '9' )
             {
                 sb.append( c );
@@ -524,13 +570,20 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 break;
             }
         }
+        
         return sb.toString();
     }
 
 
+    /**
+     * Get the seconds from the instance.
+     * 
+     * @throws ParseException If the GeneralizedTime is shorter than 14 chars, or if the 
+     * seconds' part (chars 12/13) aren't parsable as an int
+     */
     private void parseSecond() throws ParseException
     {
-        // read minute
+        // read seconds
         if ( upGeneralizedTime.length() < 14 )
         {
             throw new ParseException( I18n.err( I18n.ERR_17056_TIME_TOO_SHORT_NO_SECOND ), 12 );
@@ -547,6 +600,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the minutes from the instance.
+     * 
+     * @throws ParseException If the GeneralizedTime is shorter than 12 chars, or if the 
+     * minutes' part (chars 10/11) aren't parsable as an int
+     */
     private void parseMinute() throws ParseException
     {
         // read minute
@@ -566,6 +625,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the hours from the instance.
+     * 
+     * @throws ParseException If the GeneralizedTime is shorter than 10 chars, or if the 
+     * hours' part (chars 8/9) aren't parsable as an int
+     */
     private void parseHour() throws ParseException
     {
         if ( upGeneralizedTime.length() < 10 )
@@ -584,6 +649,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the day from the instance.
+     * 
+     * @throws ParseException If the GeneralizedTime is shorter than 8 chars, or if the 
+     * day's part (chars 6/7) aren't parsable as an int
+     */
     private void parseDay() throws ParseException
     {
         if ( upGeneralizedTime.length() < 8 )
@@ -602,6 +673,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the month from the instance.
+     * 
+     * @throws ParseException If the GeneralizedTime is shorter than 6 chars, or if the 
+     * month's part (chars 4/5) aren't parsable as an int
+     */
     private void parseMonth() throws ParseException
     {
         if ( upGeneralizedTime.length() < 6 )
@@ -620,6 +697,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
+    /**
+     * Get the year from the instance.
+     * 
+     * @throws ParseException If the GeneralizedTime is shorter than 4 chars, or if the 
+     * year's part (chars 0/1/2/3) aren't parsable as an int
+     */
     private void parseYear() throws ParseException
     {
         if ( upGeneralizedTime.length() < 4 )
@@ -1009,6 +1092,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the time
+     * 
      * @return A Date representing the time as milliseconds
      */
     public long getTime()
@@ -1018,6 +1103,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the date
+     * 
      * @return A Date representing the time
      */
     public Date getDate()
@@ -1027,6 +1114,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the year
+     * 
      * @return The year part of the date
      */
     public int getYear()
@@ -1036,6 +1125,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the month
+     * 
      * @return The month part of the date
      */
     public int getMonth()
@@ -1045,6 +1136,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the day
+     * 
      * @return The day part of the date
      */
     public int getDay()
@@ -1054,6 +1147,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the hours
+     * 
      * @return The hours part of the date
      */
     public int getHour()
@@ -1063,6 +1158,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the minutes
+     * 
      * @return The minutes part of the date
      */
     public int getMinutes()
@@ -1072,6 +1169,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the seconds
+     * 
      * @return The seconds part of the date
      */
     public int getSeconds()
@@ -1081,6 +1180,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Get the milliseconds
+     * 
      * @return The fractional (ie, milliseconds) part of the date
      */
     public int getFraction()
@@ -1090,7 +1191,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
-     * Get a Dat einstance from a given String
+     * Get a Date instance from a given String
      *
      * @param zuluTime The time as a String
      * @return A Date instance

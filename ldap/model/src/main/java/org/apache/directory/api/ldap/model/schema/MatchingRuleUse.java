@@ -83,7 +83,7 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class MatchingRuleUse extends AbstractSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
 
     /** The list of attributes types OID the matching rule applies to */
@@ -91,7 +91,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
 
     /** The list of attributes types the matching rule applies to */
     private List<AttributeType> applicableAttributes;
-
 
     /**
      * Creates a new instance of MatchingRuleUseDescription

@@ -27,8 +27,8 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class DeleteResponseImpl extends AbstractResultResponse implements DeleteResponse
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = -6830004960050713586L;
-
 
     /**
      * Creates a DeleteResponse as a reply to an DeleteRequest.

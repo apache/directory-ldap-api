@@ -31,10 +31,8 @@ import org.apache.directory.api.util.exception.RuntimeMultiException;
  */
 public class MessageException extends RuntimeMultiException
 {
-
-    /** The serialVersionUID. */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = -155089078576745029L;
-
 
     /**
      * Constructs an Exception without a message.

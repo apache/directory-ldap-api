@@ -45,8 +45,10 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
     /** A flag set to <code>true</code> if the AttributeType is case sensitive */
     protected boolean caseSensitive = false;
     
-    /** Map of chars to use in the anonymized values 0    5    10   15   20   25   30   35   40*/
+    /** Map of non sensitive chars to use in the anonymized values*/
     private static final char[] NOT_SENSITIVE_MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()-./".toCharArray();
+    
+    /** Map of sensitive chars to use in the anonymized values*/
     private static final char[] SENSITIVE_MAP =     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()-./abcdefghijklmnopqrstuvwxyz".toCharArray();
     
     /** A table containing booleans when the corresponding char is printable */
@@ -85,6 +87,15 @@ public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
             // 'x', 'y', 'z', ---, ---, ---, ---, ---
                65,  66,  67,   0,   0,   0,   0,   0, 
     };
+
+
+    /**
+     * A protected constructor
+     */
+    protected AbstractAnonymizer()
+    {
+        // Nothing to do
+    }
 
     /**
      * {@inheritDoc}

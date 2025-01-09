@@ -44,7 +44,12 @@ public final class Network
     {
     }
 
-    
+
+    /**
+     * Fetch the loopback host name
+     * 
+     * @return The loopback host name
+     */
     private static String getLoopbackHostName()
     {
         InetAddress loopbackAddress = InetAddress.getLoopbackAddress();
@@ -52,6 +57,11 @@ public final class Network
     }
 
 
+    /**
+     * Fetch the loopback address
+     * 
+     * @return The loopback address
+     */
     private static InetAddress getLoopbackAddress()
     {
         return InetAddress.getLoopbackAddress();

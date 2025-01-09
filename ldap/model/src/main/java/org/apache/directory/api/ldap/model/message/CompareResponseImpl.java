@@ -27,8 +27,8 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class CompareResponseImpl extends AbstractResultResponse implements CompareResponse
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 6452521899386487731L;
-
 
     /**
      * Creates a CompareResponse as a reply to an CompareRequest.

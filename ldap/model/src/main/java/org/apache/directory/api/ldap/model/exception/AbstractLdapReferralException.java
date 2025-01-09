@@ -38,7 +38,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
  */
 public class AbstractLdapReferralException extends LdapOperationException
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 
     /** The remaining Dn */
@@ -107,6 +107,8 @@ public class AbstractLdapReferralException extends LdapOperationException
 
 
     /**
+     * Get the remaining Dn
+     * 
      * @return the remainingDn
      */
     public Dn getRemainingDn()
@@ -116,6 +118,8 @@ public class AbstractLdapReferralException extends LdapOperationException
 
 
     /**
+     * Set the remaining Dn
+     * 
      * @param remainingDn the remainingName to set
      */
     public void setRemainingDn( Dn remainingDn )
@@ -125,6 +129,8 @@ public class AbstractLdapReferralException extends LdapOperationException
 
 
     /**
+     * Get the reolved Object
+     * 
      * @return the resolvedObject
      */
     public Object getResolvedObject()
@@ -134,6 +140,8 @@ public class AbstractLdapReferralException extends LdapOperationException
 
 
     /**
+     * Set the reolved Object
+     * 
      * @param resolvedObject the resolvedObject to set
      */
     public void setResolvedObject( Object resolvedObject )

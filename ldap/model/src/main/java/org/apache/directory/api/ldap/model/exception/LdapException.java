@@ -28,9 +28,8 @@ package org.apache.directory.api.ldap.model.exception;
  */
 public class LdapException extends Exception
 {
-    /** The serial version UUID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
-
 
     /**
      * Creates a new instance of LdapException.

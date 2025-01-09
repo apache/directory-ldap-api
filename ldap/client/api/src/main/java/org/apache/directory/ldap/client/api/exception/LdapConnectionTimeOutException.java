@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  */
 public class LdapConnectionTimeOutException extends LdapException
 {
-    /** The serialVersionUID. */
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = 1L;
 
 

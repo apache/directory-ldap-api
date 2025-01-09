@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class SyntaxChecker extends LoadableSchemaObject
 {
-    /** The mandatory serialVersionUID */
+    /** Declares the Serial Version Uid */
     public static final long serialVersionUID = 1L;
     
     /** A logger for this class */

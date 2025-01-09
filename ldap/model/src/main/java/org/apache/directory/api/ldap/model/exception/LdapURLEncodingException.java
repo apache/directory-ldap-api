@@ -28,8 +28,8 @@ package org.apache.directory.api.ldap.model.exception;
  */
 public class LdapURLEncodingException extends LdapException
 {
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 193461058160901616L;
-
 
     /**
      * Creates a LdapStringEncodingException

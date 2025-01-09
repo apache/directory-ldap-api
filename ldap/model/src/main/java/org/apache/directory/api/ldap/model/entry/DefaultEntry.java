@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class DefaultEntry implements Entry
 {
-    /** Used for serialization */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** The logger for this class */

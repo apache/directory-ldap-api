@@ -32,6 +32,7 @@ import java.util.Observer;
  */
 public abstract class AbstractAbandonableRequest extends AbstractRequest implements AbandonableRequest
 {
+    /** Declares the Serial Version Uid */
     static final long serialVersionUID = -4511116249089399040L;
 
     /** Flag indicating whether or not this request returns a response. */
@@ -111,8 +112,23 @@ public abstract class AbstractAbandonableRequest extends AbstractRequest impleme
     }
 
     // False positive
+    /** 
+     * A class used to receive notifications for a Request 
+     */
     static class RequestObservable extends Observable
     {
+        /** 
+         * Public constructor
+         */
+        RequestObservable()
+        {
+            super();
+        }
+
+
+        /** 
+         * {@inheritDoc}
+         */
         @Override
         public void setChanged()
         {

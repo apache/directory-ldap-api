@@ -310,12 +310,16 @@ public interface SchemaLoader
 
 
     /**
+     * Get the list of enabled schemas
+     * 
      * @return the list of enabled schemas
      */
     Collection<Schema> getAllEnabled();
 
 
     /**
+     * Get the list of all schemas
+     * 
      * @return the list of all schemas
      */
     Collection<Schema> getAllSchemas();
@@ -338,13 +342,17 @@ public interface SchemaLoader
     
     
     /**
-     * @return Tells if the SchemaLoader is in RELAXED mode
+     * Is the schemaLoader in relaxed mode?
+     * 
+     * @return <code>true</code> if the SchemaLoader is in RELAXED mode
      */
     boolean isRelaxed();
     
     
     /**
-     * @return Tells if the SchemaLoader is in STRICT mode
+     * Is the schemaLoader in strict mode?
+     * 
+     * @return <code>true</code>  if the SchemaLoader is in STRICT mode
      */
     boolean isStrict();
     

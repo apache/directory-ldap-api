@@ -72,7 +72,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Value implements Cloneable, Externalizable, Comparable<Value>
 {
-    /** Used for serialization */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** logger for reporting errors that might not be handled properly upstream */

@@ -30,6 +30,8 @@ package org.apache.directory.api.ldap.model.message;
 public interface Control
 {
     /**
+     * Get the control's OID
+     * 
      * @return The Control's OID
      */
     String getOid();

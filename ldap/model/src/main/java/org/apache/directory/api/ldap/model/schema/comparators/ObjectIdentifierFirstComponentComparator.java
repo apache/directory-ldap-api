@@ -36,12 +36,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ObjectIdentifierFirstComponentComparator extends LdapComparator<String>
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectIdentifierFirstComponentComparator.class );
-
 
     /**
      * The ObjectIdentifierFirstComponentComparator constructor. Its OID is the 

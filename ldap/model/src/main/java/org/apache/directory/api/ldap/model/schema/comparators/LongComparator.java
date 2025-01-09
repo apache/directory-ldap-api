@@ -33,7 +33,7 @@ import org.apache.directory.api.ldap.model.schema.LdapComparator;
  */
 public class LongComparator extends LdapComparator<Long> implements Serializable
 {
-    /** The serial version UID */
+    /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 2L;
 
 
