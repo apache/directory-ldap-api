@@ -42,7 +42,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
 public class LdapReferralException extends AbstractLdapReferralException
 {
     /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /** The list of referrals */
     private final List<String> refs;

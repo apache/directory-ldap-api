@@ -30,15 +30,11 @@ import org.apache.directory.api.util.Strings;
  */
 public class OpaqueExtendedRequest extends AbstractExtendedRequest
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 7916990159044177480L;
-
     /** Extended request value as an opaque byte array */
     private byte[] requestValue;
 
     /** The associated response */
     protected ExtendedResponse response;
-
 
     /**
      * Creates an ExtendedRequest implementing object used to perform

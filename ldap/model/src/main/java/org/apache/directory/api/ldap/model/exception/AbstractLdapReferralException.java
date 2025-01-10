@@ -39,7 +39,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
 public class AbstractLdapReferralException extends LdapOperationException
 {
     /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /** The remaining Dn */
     private Dn remainingDn;

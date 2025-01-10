@@ -32,9 +32,6 @@ import org.apache.directory.api.util.Strings;
  */
 public class CompareRequestImpl extends AbstractAbandonableRequest implements CompareRequest
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 1699731530016468977L;
-
     /** Distinguished name identifying the compared entry */
     private Dn name;
 
@@ -46,7 +43,6 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
 
     /** The associated response */
     private CompareResponse response;
-
 
     // ------------------------------------------------------------------------
     // Constructors

@@ -32,12 +32,8 @@ import org.apache.directory.api.util.Strings;
  */
 public class BindResponseImpl extends AbstractResultResponse implements BindResponse
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = -5146809476518669755L;
-
     /** optional property holding SASL authentication response parameters */
     private byte[] serverSaslCreds;
-
 
     // ------------------------------------------------------------------------
     // Constructors

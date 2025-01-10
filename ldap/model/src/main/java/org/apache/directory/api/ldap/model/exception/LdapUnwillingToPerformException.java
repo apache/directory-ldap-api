@@ -33,7 +33,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 public class LdapUnwillingToPerformException extends LdapOperationException
 {
     /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new instance of LdapUnwillingToPerformException, with

@@ -27,9 +27,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class ModifyDnResponseImpl extends AbstractResultResponse implements ModifyDnResponse
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 996870775343263543L;
-
     /**
      * Creates a ModifyDnResponse as a reply to an ModifyDnRequest.
      */

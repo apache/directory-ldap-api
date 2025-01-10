@@ -27,9 +27,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class SearchResultDoneImpl extends AbstractResultResponse implements SearchResultDone
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 8698484213877460215L;
-
     /**
      * Creates a SearchResponseDone as a reply to an SearchRequest to
      * indicate the end of a search operation.

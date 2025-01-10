@@ -43,9 +43,6 @@ import org.apache.directory.api.util.StringConstants;
  */
 public class ModifyRequestImpl extends AbstractAbandonableRequest implements ModifyRequest
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = -505803669028990304L;
-
     /** Dn of the entry to modify or PDU's <b>object</b> field */
     private Dn name;
 
@@ -54,7 +51,6 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
     /** The associated response */
     private ModifyResponse response;
-
 
     // -----------------------------------------------------------------------
     // Constructors

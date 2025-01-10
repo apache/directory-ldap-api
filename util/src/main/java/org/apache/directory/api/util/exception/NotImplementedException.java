@@ -32,7 +32,7 @@ package org.apache.directory.api.util.exception;
 public class NotImplementedException extends RuntimeException
 {
     /** The serialVersionUID. */
-    static final long serialVersionUID = -5899307402675964298L;
+    private static final long serialVersionUID = -5899307402675964298L;
 
 
     /**

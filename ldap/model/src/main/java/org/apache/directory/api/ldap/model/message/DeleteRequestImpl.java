@@ -30,9 +30,6 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public class DeleteRequestImpl extends AbstractAbandonableRequest implements DeleteRequest
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 3187847454305567542L;
-
     /** The distinguished name of the entry to delete */
     private Dn name;
 

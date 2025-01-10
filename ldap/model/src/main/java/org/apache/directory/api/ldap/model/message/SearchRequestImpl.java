@@ -43,9 +43,6 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  */
 public class SearchRequestImpl extends AbstractAbandonableRequest implements SearchRequest
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = -5655881944020886218L;
-
     /** Search base distinguished name */
     private Dn baseDn;
 
@@ -75,7 +72,6 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
     /** A flag set to tell the search what to do wth referrals */
     private ReferralsPolicyEnum referralHandling = ReferralsPolicyEnum.THROW;
-
 
     // -----------------------------------------------------------------------
     // Constructors

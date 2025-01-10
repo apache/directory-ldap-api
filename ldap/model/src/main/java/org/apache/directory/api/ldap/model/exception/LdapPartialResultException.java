@@ -29,7 +29,7 @@ package org.apache.directory.api.ldap.model.exception;
 public class LdapPartialResultException extends AbstractLdapReferralException
 {
     /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 

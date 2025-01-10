@@ -30,12 +30,8 @@ import org.apache.directory.api.util.Strings;
  */
 public class OpaqueExtendedResponse extends AbstractExtendedResponse
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 7916990159044177480L;
-
     /** Extended response value as an opaque byte array */
     private byte[] responseValue;
-
 
     /**
      * Creates an ExtendedResponse implementing object used to perform

@@ -27,9 +27,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public abstract class AbstractRequest extends AbstractMessage implements Request
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = -4511116249089399040L;
-
     /** Flag indicating whether or not this request returns a response. */
     private final boolean hasResponse;
 

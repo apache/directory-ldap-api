@@ -32,12 +32,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public class SearchResultEntryImpl extends AbstractResponse implements SearchResultEntry
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = -8357316233060886637L;
-
     /** Entry returned in response to search */
     private Entry entry = new DefaultEntry();
-
 
     /**
      * Creates a SearchResponseEntry as a reply to an SearchRequest to

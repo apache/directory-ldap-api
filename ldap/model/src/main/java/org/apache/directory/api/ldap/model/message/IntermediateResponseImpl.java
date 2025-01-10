@@ -32,9 +32,6 @@ import org.apache.directory.api.util.Strings;
  */
 public class IntermediateResponseImpl extends AbstractResultResponse implements IntermediateResponse
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = -6646752766410531060L;
-
     /** ResponseName for the intermediate response */
     protected String responseName;
 

@@ -26,9 +26,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public class ModifyResponseImpl extends AbstractResultResponse implements ModifyResponse
 {
-    /** Declares the Serial Version Uid */
-    static final long serialVersionUID = 4132526905748233730L;
-
     /**
      * Creates a ModifyResponse as a reply to an ModifyRequest.
      */
