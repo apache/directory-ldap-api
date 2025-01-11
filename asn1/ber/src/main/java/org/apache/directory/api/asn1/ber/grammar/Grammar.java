@@ -36,8 +36,10 @@ public interface Grammar<C extends Asn1Container>
     /** The flag used to tell if a given state must have a follow up in the same PDU or not */
     enum FollowUp
     {
+        /** When a following state is mandatory */
         MANDATORY,
         
+        /** When a following state is optional */
         OPTIONAL;
     }
     

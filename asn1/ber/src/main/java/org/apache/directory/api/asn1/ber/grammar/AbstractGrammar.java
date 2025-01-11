@@ -56,6 +56,7 @@ public abstract class AbstractGrammar<C extends Asn1Container> implements Gramma
     /** Default constructor */
     public AbstractGrammar()
     {
+        // Nothing to do
     }
 
 

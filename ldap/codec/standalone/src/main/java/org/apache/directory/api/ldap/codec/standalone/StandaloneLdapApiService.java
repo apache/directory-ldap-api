@@ -93,7 +93,10 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
     /** The control's type */
     public enum ControlType
     {
+        /** A Request control type */
         REQUEST( REQUEST_CONTROLS_LIST ),
+
+        /** A Response control type */
         RESPONSE( RESPONSE_CONTROLS_LIST );
         
         private String property;

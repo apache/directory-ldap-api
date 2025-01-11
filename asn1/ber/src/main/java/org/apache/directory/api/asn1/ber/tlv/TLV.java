@@ -176,6 +176,8 @@ public class TLV
 
 
     /**
+     * Get the TLV's tag
+     * 
      * @return Returns the tag.
      */
     public byte getTag()
@@ -196,6 +198,8 @@ public class TLV
 
 
     /**
+     * Get the TLV's value part
+     * 
      * @return Returns the value.
      */
     public BerValue getValue()
@@ -320,6 +324,8 @@ public class TLV
 
 
     /**
+     * Get the TLV's parent
+     * 
      * @return The parent.
      */
     public TLV getParent()
@@ -329,6 +335,8 @@ public class TLV
 
 
     /**
+     * Set the TLV's parent
+     * 
      * @param parent The parent to set.
      */
     public void setParent( TLV parent )
@@ -360,6 +368,8 @@ public class TLV
 
 
     /**
+     * Get the TLV's length
+     * 
      * @return The number of bytes necessary to store the TLV's length
      */
     public int getLengthNbBytes()
@@ -380,6 +390,7 @@ public class TLV
 
 
     /**
+     * Get the TLV's length
      * @return the TLV's length
      */
     public int getLength()
@@ -400,6 +411,8 @@ public class TLV
 
 
     /**
+     * Get the already read bytes
+     * 
      * @return The currently read TLV's length bytes
      */
     public int getLengthBytesRead()
@@ -421,7 +434,6 @@ public class TLV
 
     /**
      * Increment the number of bytes read for this TLV
-     *
      */
     public void incLengthBytesRead()
     {
@@ -430,6 +442,8 @@ public class TLV
 
 
     /**
+     * Get the TLV's ID
+     * 
      * @return The TLV's ID
      */
     public int getId()

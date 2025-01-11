@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.model.message.controls.Subentries;
 
 
 /**
+ * The SubEntries control ASN1 Container.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class SubentriesContainer extends AbstractContainer implements ControlContainer

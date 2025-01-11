@@ -38,6 +38,8 @@ import org.apache.directory.api.ldap.model.message.Control;
 public interface ControlFactory<C extends Control>
 {
     /**
+     * Get the control's OID
+     * 
      * @return The OID of the Control this factory creates.
      */
     String getOid();

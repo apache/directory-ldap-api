@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 
 
 /**
+ * The EntryChange control ASN1 Container.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class EntryChangeContainer extends AbstractContainer implements ControlContainer

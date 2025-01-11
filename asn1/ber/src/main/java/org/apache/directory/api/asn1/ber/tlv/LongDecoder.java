@@ -35,7 +35,9 @@ public final class LongDecoder
         { 0x00000000000000FFL, 0x000000000000FFFFL, 0x0000000000FFFFFFL, 0x00000000FFFFFFFFL, 0x000000FFFFFFFFFFL,
             0x0000FFFFFFFFFFFFL, 0x00FFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL };
 
-
+    /**
+     * A private constructor
+     */
     private LongDecoder()
     {
     }

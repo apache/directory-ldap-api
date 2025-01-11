@@ -28,12 +28,16 @@ package org.apache.directory.api.asn1.ber.grammar;
 public interface States
 {
     /**
+     * Tells if this is an end state
+     * 
      * @return True if this is the END_STATE
      */
     boolean isEndState();
 
 
     /**
+     * Get the starting state
+     * 
      * @return The START_STATE of the enum
      */
     Enum<?> getStartState();

@@ -28,14 +28,14 @@ import javax.security.auth.login.Configuration;
 
 
 /**
+ * The JAAS Login Configuration File for Kerberos
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Krb5LoginConfiguration extends Configuration
 {
-
     /** The list with configuration entries. */
     private static AppConfigurationEntry[] configList = new AppConfigurationEntry[1];
-
 
     /**
      * Creates a new instance of Krb5LoginConfiguration.

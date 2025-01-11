@@ -78,6 +78,8 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
 
 
     /**
+     * Get the codec service
+     * 
      * @return The codec to use to encode or decode this message
      */
     public LdapApiService getCodecService()

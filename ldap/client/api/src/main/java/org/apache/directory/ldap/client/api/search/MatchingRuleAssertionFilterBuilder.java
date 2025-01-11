@@ -21,6 +21,7 @@ package org.apache.directory.ldap.client.api.search;
 
 
 /**
+ * The filter buildee for MatchingRuleAssertion
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

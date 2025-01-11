@@ -122,6 +122,8 @@ public abstract class AbstractRequestDsml<E extends Request>
 
 
     /**
+     * Get the length of the encoded request
+     * 
      * @return the buffer's length (always 0)
      */
     public int computeLength()

@@ -136,6 +136,8 @@ public class GrammarTransition<C extends Asn1Container>
 
 
     /**
+     * Get the transition's action
+     * 
      * @return Returns the action associated with the transition
      */
     public Action<C> getAction()
@@ -145,6 +147,8 @@ public class GrammarTransition<C extends Asn1Container>
 
 
     /**
+     * Get the current state
+     * 
      * @return The current state
      */
     public Enum<?> getCurrentState()
@@ -154,6 +158,8 @@ public class GrammarTransition<C extends Asn1Container>
 
 
     /**
+     * Get the previous state
+     * 
      * @return The previous state
      */
     public Enum<?> getPreviousState()
@@ -163,6 +169,8 @@ public class GrammarTransition<C extends Asn1Container>
 
 
     /**
+     * Get the followUp flag
+     * 
      * @return the followUp flag
      */
     public boolean hasFollowUp()
@@ -172,6 +180,8 @@ public class GrammarTransition<C extends Asn1Container>
 
 
     /**
+     * Set the followUp flag
+     * 
      * @param followUp the followUp flag to set
      */
     public void setFollowUp( FollowUp followUp )

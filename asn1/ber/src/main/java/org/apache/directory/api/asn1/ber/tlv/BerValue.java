@@ -210,6 +210,8 @@ public class BerValue
 
 
     /**
+     * Get the current length
+     * 
      * @return The number of bytes actually stored
      */
     public int getCurrentLength()

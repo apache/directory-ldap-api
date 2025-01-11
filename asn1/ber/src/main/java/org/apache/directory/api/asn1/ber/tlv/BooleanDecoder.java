@@ -36,7 +36,9 @@ public final class BooleanDecoder
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( BooleanDecoder.class );
 
-
+    /**
+     * A private constructor
+     */
     private BooleanDecoder()
     {
     }

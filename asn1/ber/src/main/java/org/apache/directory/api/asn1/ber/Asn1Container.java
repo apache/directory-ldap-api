@@ -116,6 +116,7 @@ public interface Asn1Container
 
 
     /**
+     * Get the parent's TLV
      * @return The parent TLV.
      */
     TLV getParentTLV();
@@ -161,6 +162,8 @@ public interface Asn1Container
 
 
     /**
+     * Get the size of the decoded message
+     * 
      * @return The number of decoded bytes for this message. This is used
      * to control the PDU size and avoid PDU exceeding the maximum allowed
      * size to break the server.
@@ -169,6 +172,8 @@ public interface Asn1Container
 
 
     /**
+     * Set the size of the decoded messagz
+     * 
      * @param decodedBytes The number of decoded bytes for this message.
      */
     void setDecodedBytes( int decodedBytes );
@@ -176,12 +181,15 @@ public interface Asn1Container
 
     /**
      * Increment the decodedBytes by the latest received buffer's size.
+     * 
      * @param nb The buffer size.
      */
     void incrementDecodedBytes( int nb );
 
 
     /**
+     * Get the maximum PDU size allowed
+     * 
      * @return The maximum PDU size.
      */
     int getMaxPDUSize();
@@ -189,6 +197,7 @@ public interface Asn1Container
 
     /**
      * Set the maximum PDU size.
+     * 
      * @param maxPDUSize The maximum PDU size (if negative or null, will be
      * replaced by the max integer value)
      */
@@ -210,6 +219,8 @@ public interface Asn1Container
 
 
     /**
+     * Tells if the decoding should be done immediately or if the container should gather the data before
+     * 
      * @return true if the container should gather the value into itself, false
      * if the decoding of the Value part should be done immediately for
      * constructed types.

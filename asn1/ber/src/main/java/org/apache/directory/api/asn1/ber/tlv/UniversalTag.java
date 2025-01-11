@@ -286,6 +286,8 @@ public enum UniversalTag
 
 
     /**
+     * Get the UniversalTag value
+     * 
      * @return The UniversalTag value
      */
     public byte getValue()
