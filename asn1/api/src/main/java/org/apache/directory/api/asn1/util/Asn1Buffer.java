@@ -39,7 +39,6 @@ public class Asn1Buffer
     /** A buffer to store the encoded PDU */
     private byte[] buffer;
     
-    
     /**
      * Creates a new Asn1Buffer instance
      */
@@ -50,6 +49,8 @@ public class Asn1Buffer
 
 
     /**
+     * Get the current position in the buffer
+     * 
      * @return The current position in the buffer
      */
     public int getPos()
@@ -129,6 +130,8 @@ public class Asn1Buffer
 
 
     /**
+     * Get the interned bytes
+     * 
      * @return The stored encoded PDU.
      */
     public ByteBuffer getBytes()
@@ -143,6 +146,8 @@ public class Asn1Buffer
 
 
     /**
+     * Get the buffer size
+     * 
      * @return The buffer size (ie the maximum number of bytes that can be
      * added to this bffder before it gets extended).
      */

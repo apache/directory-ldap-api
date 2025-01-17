@@ -46,7 +46,6 @@ public class BitString
     /** Actual length of the bit string */
     private int nbBits;
 
-
     /**
      * Creates a BitString with a specific length (length is the number of
      * bits).
@@ -234,6 +233,8 @@ public class BitString
 
 
     /**
+     * Get the number of stored bits
+     * 
      * @return The number of bits stored in this BitString
      */
     public int size()

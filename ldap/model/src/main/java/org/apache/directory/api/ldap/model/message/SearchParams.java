@@ -333,7 +333,7 @@ public class SearchParams
             sb.append( "    no timeLimit\n" );
         }
 
-        if ( timeLimit > 0 )
+        if ( sizeLimit > 0 )
         {
             sb.append( "    sizeLimit : " ).append( sizeLimit ).append( "\n" );
         }

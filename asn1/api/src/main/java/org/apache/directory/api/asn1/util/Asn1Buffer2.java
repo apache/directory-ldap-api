@@ -40,6 +40,14 @@ public class Asn1Buffer2
     /** The internal buffer storage */
     private final class InternalBuffer
     {
+        /**
+         * private constructor
+         */
+        InternalBuffer()
+        {
+            // Nothing to do
+        }
+
         /** A buffer to store the encoded PDU */
         private byte[] buffer = new byte[DEFAULT_SIZE];
 
@@ -61,6 +69,8 @@ public class Asn1Buffer2
 
 
     /**
+     * Get the current position in the buffer
+     * 
      * @return The current position in the buffer
      */
     public int getPos()
@@ -147,6 +157,8 @@ public class Asn1Buffer2
 
 
     /**
+     * Get the interned bytes
+     * 
      * @return The stored encoded PDU.
      */
     public byte[] getBytes()
@@ -177,6 +189,8 @@ public class Asn1Buffer2
 
 
     /**
+     * Get the buffer size
+     * 
      * @return The buffer size (ie the maximum number of bytes that can be
      * added to this buffer before it gets extended).
      */

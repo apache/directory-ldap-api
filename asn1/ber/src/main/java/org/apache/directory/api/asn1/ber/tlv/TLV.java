@@ -391,6 +391,7 @@ public class TLV
 
     /**
      * Get the TLV's length
+     * 
      * @return the TLV's length
      */
     public int getLength()

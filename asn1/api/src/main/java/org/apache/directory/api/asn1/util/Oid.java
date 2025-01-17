@@ -81,6 +81,7 @@ public final class Oid
     /** The OID as a String */
     private String oidString;
     
+    /** A OID contai er for a joint-iso-itu-t(2) arc */
     private static final BigInteger JOINT_ISO_ITU_T = BigInteger.valueOf( 80 );
     
     /**
@@ -135,19 +136,147 @@ public final class Oid
      */
     private enum OidFSAState 
     {
+        /** 
+         * Starting state
+         * 
+         * <pre> 
+         * (Start) --['0','1']--&gt; (A)
+         * (start) --['2']--&gt; (F)
+         * </pre>
+         **/
         START,
+        
+        /** 
+         * State
+         *   
+         * <pre> 
+         * (A) --['.']--&gt; (B)
+         * </pre> 
+         **/
         STATE_A,
+        
+        /** 
+         * State B
+         *   
+         * <pre> 
+         * (B) --['0']--&gt; (D)
+         * (B) --['1'..'3']--&gt; (C)
+         * (B) --['4'..'9']--&gt; (E)
+         * </pre> 
+         **/
         STATE_B,
+        
+        /** 
+         * State C
+         *   
+         * <pre> 
+         * (C) --[]--&gt; (End)
+         * (C) --['.']--&gt; (K)
+         * (C) --['0'..'9']--&gt; (E)
+         * </pre> 
+         **/
         STATE_C,
+        
+        /** 
+         * State D
+         *   
+         * <pre> 
+         * (D) --[]--&gt; (End)
+         * (D) --['.']--&gt; (K)
+         * </pre> 
+         **/
         STATE_D,
+        
+        /** 
+         * State E
+         *   
+         * <pre> 
+         * (E) --[]--&gt; (End)
+         * (E) --['.']--&gt; (K)
+         * </pre> 
+         **/
         STATE_E,
+        
+        /** 
+         * State F
+         *   
+         * <pre> 
+         * (F) --['.']--&gt; (G)
+         * </pre> 
+         **/
         STATE_F,
+        
+        /** 
+         * State G
+         *   
+         * <pre> 
+         * (G) --['0']--&gt; (I)
+         * (G) --['1'..'9']--&gt; (H)
+         * </pre> 
+         **/
         STATE_G,
+        
+        /** 
+         * State H
+         *   
+         * <pre> 
+         * (H) --[]--&gt; (End)
+         * (H) --['.']--&gt; (K)
+         * (H) --['0'..'9']--&gt; (J)
+         * </pre> 
+         **/
         STATE_H,
+        
+        /** 
+         * State I
+         *   
+         * <pre> 
+         * (I) --[]--&gt; (End)
+         * (I) --['.']--&gt; (K)
+         * </pre> 
+         **/
         STATE_I,
+        
+        /** 
+         * State J
+         *   
+         * <pre> 
+         * (J) --[]--&gt; (End)
+         * (J) --['.']--&gt; (K)
+         * (J) --['0'..'9']--&gt; (J)
+         * </pre> 
+         **/
         STATE_J,
+        
+        /** 
+         * State L
+         *   
+         * <pre> 
+         * (K) --['0']--&gt; (M) 
+         * (K) --['1'..'9']--&gt; (L)
+         * </pre> 
+         **/
         STATE_K,
+        
+        /** 
+         * State L
+         *   
+         * <pre> 
+         * (L) --[]--&gt; (End)
+         * (L) --['.']--&gt; (K)
+         * (L) --['0'..'9']--&gt; (L)
+         * </pre> 
+         **/
         STATE_L,
+        
+        /** 
+         * State M
+         *   
+         * <pre> 
+         * (M) --[]--&gt; (End)
+         * (M) --['.']--&gt; (K)
+         * </pre> 
+         **/
         STATE_M,
     }
 
