@@ -36,20 +36,36 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class LdapProtocolCodecActivator implements BundleActivator
 {
+    /** The LDapApi service tracker */
     private ServiceTracker<LdapApiService, LdapApiService> serviceTracker;
 
+    /**
+     * A class used to track the LdapApi service
+     * 
+     */
     class LdapApiServiceTracker implements ServiceTrackerCustomizer<LdapApiService, LdapApiService>
     {
+        /** The Bundle Context instance */
         private BundleContext bundleContext;
+        
+        /** The Serviceregistration instance */
         private ServiceRegistration<?> registration;
 
 
+        /**
+         * Create a LdapApiServiceTracker instance with a context
+         * 
+         * @param context The BundleContext for this instance
+         */
         LdapApiServiceTracker( BundleContext context )
         {
             this.bundleContext = context;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public LdapApiService addingService( ServiceReference<LdapApiService> reference )
         {
@@ -61,6 +77,9 @@ public class LdapProtocolCodecActivator implements BundleActivator
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void modifiedService( ServiceReference<LdapApiService> reference, LdapApiService service )
         {
@@ -68,6 +87,9 @@ public class LdapProtocolCodecActivator implements BundleActivator
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void removedService( ServiceReference<LdapApiService> reference, LdapApiService service )
         {

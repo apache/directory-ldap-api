@@ -99,13 +99,24 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         /** A Response control type */
         RESPONSE( RESPONSE_CONTROLS_LIST );
         
+        /** The control's property */
         private String property;
         
+        /**
+         * Create a ControlType with a property
+         * 
+         * @param property The added property
+         */
         ControlType( String property )
         {
             this.property = property;
         }
         
+        /**
+         * Get the controlType's property
+         * 
+         * @return The controlType's property
+         */
         private String getProperty()
         {
             return property;
