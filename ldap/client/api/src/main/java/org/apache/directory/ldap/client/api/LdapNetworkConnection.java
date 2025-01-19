@@ -791,6 +791,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * Close the connection and generate the appropriate exception
      * 
+     * @param connectionFuture The connection to close
      * @exception LdapException If we weren't able to close the connection
      */
     private void close( ConnectFuture connectionFuture ) throws LdapException
@@ -826,6 +827,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * Verify that the connection has been secured, otherwise throw a meaningful exception
      * 
+     * @param connectionFuture The connection to check
      * @exception LdapException If we weren't able to check that the connection is secured
      */
     private void checkSecured( ConnectFuture connectionFuture ) throws LdapException
@@ -4988,12 +4990,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * Adds a {@link SaslFilter} to the session's filter chain.
      * 
      * @param saslClient The initialized SASL client
-     * 
-     * @throws LdapException
      */
-    private void addSaslFilter( SaslClient saslClient ) throws LdapException
+    private void addSaslFilter( SaslClient saslClient )
     {
         IoFilterChain filterChain = ioSession.getFilterChain();
+
         if ( filterChain.contains( SASL_FILTER_KEY ) )
         {
             filterChain.remove( SASL_FILTER_KEY );

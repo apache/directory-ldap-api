@@ -531,6 +531,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @param avaList The list of Ava
      * @param newAva The Ava to add
      * @return The list of Ava with the new Ava at the right position
+     * @throws LdapInvalidDnException If the added AVA already exists in the RDN 
      */
     /*package protected*/ static List<Ava> addOrdered( List<Ava> avaList, Ava newAva ) throws LdapInvalidDnException
     {

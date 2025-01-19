@@ -151,6 +151,7 @@ public final class LdapEncoder
      * @param buffer The buffer that will contain the encoded control
      * @param codec The LdapApiService instance
      * @param message The message to encode
+     * @throws EncoderException If the encoding failed
      */
     private static void encodeProtocolOp( Asn1Buffer buffer, LdapApiService codec, Message message ) throws EncoderException
     {
