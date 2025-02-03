@@ -41,6 +41,9 @@ public final class ModifyDnRequestFactory implements Messagefactory
     /** The static instance */
     public static final ModifyDnRequestFactory INSTANCE = new ModifyDnRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private ModifyDnRequestFactory()
     {
         // Nothing to do

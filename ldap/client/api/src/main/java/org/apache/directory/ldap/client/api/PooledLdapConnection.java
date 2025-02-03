@@ -28,13 +28,25 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  */
 public class PooledLdapConnection extends LdapConnectionWrapper
 {
+    /** The connection pool */
     private LdapConnectionPool pool;
 
+    /**
+     * A PooledLdapConnection instance that delegates the LdapConnection creation
+     * 
+     * @param delegate The instance that will create the connection under the hood
+     */
     PooledLdapConnection( LdapConnection delegate )
     {
         super( delegate );
     }
 
+    /**
+     * A PooledLdapConnection instance that delegates the LdapConnection creation
+     * 
+     * @param delegate The instance that will create the connection under the hood
+     * @param pool The underlying pool to use
+     */
     PooledLdapConnection( LdapConnection delegate, LdapConnectionPool pool )
     {
         super( delegate );
@@ -54,6 +66,11 @@ public class PooledLdapConnection extends LdapConnectionWrapper
         }
     }
 
+    /**
+     * Set the connection pool to use
+     * 
+     * @param pool The connection pool to use
+     */
     public void setConnectionPool( LdapConnectionPool pool )
     {
         this.pool = pool;

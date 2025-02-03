@@ -69,6 +69,12 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
         this( LdapApiServiceFactory.getSingleton() );
     }
 
+    /**
+     * Creates a new instance of and AbstractLdapConnection.java, with 
+     * a LdapApiService instance/
+     * 
+     * @param codec The LdapApiService instance to use
+     */
     protected AbstractLdapConnection( LdapApiService codec )
     {
         messageId = new AtomicInteger( 0 );

@@ -99,6 +99,8 @@ public abstract class Filter
 
 
     /**
+     * Get the TLV ID
+     * 
      * @return The TLV identifier
      */
     public int getTlvId()

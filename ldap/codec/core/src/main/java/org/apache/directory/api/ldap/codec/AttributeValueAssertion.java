@@ -48,6 +48,13 @@ public class AttributeValueAssertion
     /** The assertion as we received it */
     private byte[] assertion;
 
+    /**
+     * Default constructor
+     */
+    public AttributeValueAssertion()
+    {
+        // Nothing to do
+    }
 
     /**
      * Helper method to render an object which can be a String or a byte[]
@@ -167,6 +174,8 @@ public class AttributeValueAssertion
 
 
     /**
+     * Get the Assertion
+     * 
      * @return the assertion
      */
     public byte[] getAssertion()
@@ -176,6 +185,8 @@ public class AttributeValueAssertion
 
 
     /**
+     * Set the Assertion
+     * 
      * @param assertion the assertion to set
      */
     public void setAssertion( byte[] assertion )

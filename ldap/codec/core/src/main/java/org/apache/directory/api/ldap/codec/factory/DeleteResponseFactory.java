@@ -34,6 +34,9 @@ public final class DeleteResponseFactory extends ResponseFactory
     /** The static instance */
     public static final DeleteResponseFactory INSTANCE = new DeleteResponseFactory();
 
+    /**
+     * A default private constructor
+     */
     private DeleteResponseFactory()
     {
         super();

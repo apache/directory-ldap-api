@@ -829,6 +829,8 @@ public interface LdapConnection extends Closeable
 
 
     /**
+     * Get the SchemaManager instance
+     * 
      * @return The SchemaManager associated with this LdapConection if any
      */
     SchemaManager getSchemaManager();
@@ -864,6 +866,8 @@ public interface LdapConnection extends Closeable
 
 
     /**
+     * Get the BinaryAttribute dectore instance
+     * 
      * @return the object responsible for the detection of binary attributes
      */
     BinaryAttributeDetector getBinaryAttributeDetector();

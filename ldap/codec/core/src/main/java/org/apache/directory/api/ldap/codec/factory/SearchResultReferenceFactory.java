@@ -37,6 +37,9 @@ public final class SearchResultReferenceFactory extends ResponseFactory
     /** The static instance */
     public static final SearchResultReferenceFactory INSTANCE = new SearchResultReferenceFactory();
 
+    /**
+     * A default private constructor
+     */
     private SearchResultReferenceFactory()
     {
         super();

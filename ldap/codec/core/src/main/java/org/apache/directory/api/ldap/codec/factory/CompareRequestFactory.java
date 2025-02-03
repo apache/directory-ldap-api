@@ -36,6 +36,9 @@ public final class CompareRequestFactory implements Messagefactory
     /** The static instance */
     public static final CompareRequestFactory INSTANCE = new CompareRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private CompareRequestFactory()
     {
         // Nothing to do

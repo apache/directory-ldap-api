@@ -55,6 +55,8 @@ public class SortRequestContainer extends AbstractContainer implements ControlCo
 
 
     /**
+     * Get the SortRequest control
+     * 
      * @return the control
      */
     public SortRequest getControl()
@@ -64,10 +66,11 @@ public class SortRequestContainer extends AbstractContainer implements ControlCo
 
 
     /**
+     * Set the control
+     * 
      * @param control the control to set
      */
-    public void setControl( Control
-        control )
+    public void setControl( Control control )
     {
         this.control = control;
     }
@@ -85,6 +88,8 @@ public class SortRequestContainer extends AbstractContainer implements ControlCo
 
 
     /**
+     * Get the current key
+     * 
      * @return the currentKey
      */
     public SortKey getCurrentKey()
@@ -94,6 +99,8 @@ public class SortRequestContainer extends AbstractContainer implements ControlCo
 
 
     /**
+     * Set the current key
+     * 
      * @param currentKey the currentKey to set
      */
     public void setCurrentKey( SortKey currentKey )

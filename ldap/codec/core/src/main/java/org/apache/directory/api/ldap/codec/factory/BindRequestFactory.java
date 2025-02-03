@@ -38,6 +38,9 @@ public final class BindRequestFactory implements Messagefactory
     /** The static instance */
     public static final BindRequestFactory INSTANCE = new BindRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private BindRequestFactory()
     {
         // Nothing to do

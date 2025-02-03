@@ -53,6 +53,9 @@ public final class SearchRequestFactory implements Messagefactory
     /** The static instance */
     public static final SearchRequestFactory INSTANCE = new SearchRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private SearchRequestFactory()
     {
         // Nothing to do

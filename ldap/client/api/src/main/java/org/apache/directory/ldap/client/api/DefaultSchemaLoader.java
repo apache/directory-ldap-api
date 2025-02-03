@@ -104,6 +104,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private static final NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
     private static final SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
 
+    /**
+     * A default constructor
+     * 
+     * @throws LdapException If the instance creation failed
+     */
     protected DefaultSchemaLoader() throws LdapException
     {
         // For use in subclasses
@@ -235,11 +240,21 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         loadSchemas();
     }
 
+    /**
+     * Get the LdapConnecgion instance
+     * 
+     * @return the LdapConnecgion instance
+     */
     protected LdapConnection getConnection()
     {
         return connection;
     }
 
+    /**
+     * Set the LdapConnection to use
+     * 
+     * @param connection The LdapConnection to use
+     */
     protected void setConnection( LdapConnection connection )
     {
         this.connection = connection;
@@ -617,6 +632,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     }
 
 
+    /**
+     * Update the schema with the provided schema object
+     * 
+     * @param schemaObject The schema object to add to the current schema
+     */
     protected void updateSchemas( SchemaObject schemaObject )
     {
         String schemaName = schemaObject.getSchemaName();

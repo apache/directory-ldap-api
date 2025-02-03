@@ -38,6 +38,9 @@ public final class IntermediateResponseFactory extends ResponseFactory
     /** The static instance */
     public static final IntermediateResponseFactory INSTANCE = new IntermediateResponseFactory();
 
+    /**
+     * A default private constructor
+     */
     private IntermediateResponseFactory()
     {
         super();

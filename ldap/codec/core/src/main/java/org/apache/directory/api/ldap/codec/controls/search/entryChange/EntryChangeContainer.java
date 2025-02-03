@@ -51,6 +51,7 @@ public class EntryChangeContainer extends AbstractContainer implements ControlCo
 
 
     /**
+     * Get the EntryChange control
      * @return Returns the EntryChangeControl.
      */
     public EntryChange getEntryChange()

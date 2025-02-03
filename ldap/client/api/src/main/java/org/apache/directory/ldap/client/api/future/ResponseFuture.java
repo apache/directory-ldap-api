@@ -43,6 +43,8 @@ public interface ResponseFuture<R extends Response> extends Future<R>
 
 
     /**
+     * Get the associated cause
+     * 
      * @return the cause
      */
     Throwable getCause();
@@ -50,6 +52,7 @@ public interface ResponseFuture<R extends Response> extends Future<R>
 
     /**
      * Associate a cause to the ResponseFuture
+     * 
      * @param cause the cause to set
      */
     void setCause( Throwable cause );

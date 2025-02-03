@@ -39,6 +39,9 @@ public final class ExtendedResponseFactory extends ResponseFactory
     /** The static instance */
     public static final ExtendedResponseFactory INSTANCE = new ExtendedResponseFactory();
 
+    /**
+     * A default private constructor
+     */
     private ExtendedResponseFactory()
     {
         super();

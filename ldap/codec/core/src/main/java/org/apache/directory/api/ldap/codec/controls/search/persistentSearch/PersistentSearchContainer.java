@@ -52,11 +52,12 @@ public class PersistentSearchContainer extends AbstractContainer implements Cont
 
 
     /**
+     * Get the PërsistentSearch decorator
+     * 
      * @return Returns the persistent search decorator.
      */
     public PersistentSearch getPersistentSearch()
     {
-
         return ( PersistentSearch ) control;
     }
 

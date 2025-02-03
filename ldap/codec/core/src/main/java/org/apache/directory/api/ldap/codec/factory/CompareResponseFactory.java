@@ -34,6 +34,9 @@ public final class CompareResponseFactory extends ResponseFactory
     /** The static instance */
     public static final CompareResponseFactory INSTANCE = new CompareResponseFactory();
 
+    /**
+     * A default private constructor
+     */
     private CompareResponseFactory()
     {
         super();

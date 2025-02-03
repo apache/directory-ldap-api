@@ -65,6 +65,7 @@ public class PagedResultsContainer extends AbstractContainer implements ControlC
 
 
     /**
+     * Get the PagedResults control
      * @return the control
      */
     public PagedResults getPagedResults()

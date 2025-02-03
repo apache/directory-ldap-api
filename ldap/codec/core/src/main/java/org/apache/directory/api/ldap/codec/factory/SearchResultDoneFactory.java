@@ -34,6 +34,9 @@ public final class SearchResultDoneFactory extends ResponseFactory
     /** The static instance */
     public static final SearchResultDoneFactory INSTANCE = new SearchResultDoneFactory();
 
+    /**
+     * A default private constructor
+     */
     private SearchResultDoneFactory()
     {
         super();

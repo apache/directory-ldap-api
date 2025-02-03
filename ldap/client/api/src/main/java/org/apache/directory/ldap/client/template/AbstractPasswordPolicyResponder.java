@@ -44,7 +44,11 @@ public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyR
 {
     private final PasswordPolicyResponse passwordPolicyResponseControl;
 
-
+    /**
+     * Creates a AbstractPasswordPolicyResponder instance
+     * 
+     * @param ldapApiService The LdapApiServoce to use
+     */
     protected AbstractPasswordPolicyResponder( LdapApiService ldapApiService )
     {
         this.passwordPolicyResponseControl = new PasswordPolicyResponseImpl();

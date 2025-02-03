@@ -36,6 +36,9 @@ public final class BindResponseFactory extends ResponseFactory
     /** The static instance */
     public static final BindResponseFactory INSTANCE = new BindResponseFactory();
 
+    /**
+     * A default private constructor
+     */
     private BindResponseFactory()
     {
         super();

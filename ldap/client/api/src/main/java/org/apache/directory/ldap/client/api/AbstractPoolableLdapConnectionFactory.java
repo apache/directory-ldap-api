@@ -194,6 +194,13 @@ public abstract class AbstractPoolableLdapConnectionFactory implements PooledObj
     }
 
 
+    /**
+     * Create a new LdapConnectionFactory instance
+     * 
+     * @param config The connection configuration to use
+     * @param connectionFactoryClass The factory class to use
+     * @return An instance of LdapConnectionFactory
+     */
     protected static LdapConnectionFactory newLdapConnectionFactory(
         LdapConnectionConfig config,
         Class<? extends LdapConnectionFactory> connectionFactoryClass )

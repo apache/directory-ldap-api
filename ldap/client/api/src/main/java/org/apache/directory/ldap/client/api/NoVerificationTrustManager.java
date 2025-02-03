@@ -46,6 +46,15 @@ public class NoVerificationTrustManager extends X509ExtendedTrustManager
     
     
     /**
+     * A public constructor
+     */
+    public NoVerificationTrustManager()
+    {
+        super();
+    }
+    
+    
+    /**
      * {@inheritDoc}
      */
     @Override

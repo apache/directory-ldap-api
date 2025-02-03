@@ -36,8 +36,12 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
     private SchemaManager schemaManager;
     
     
+    /**
+     * A default constructor
+     */
     protected SchemaBinaryAttributeDetector()
     {
+        // Nothing to do
     }
     
     
@@ -52,6 +56,8 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
     }
 
     /**
+     * Set the SchemaManager
+     * 
      * @param schemaManager the schemaManager to set
      */
     public void setSchemaManager( SchemaManager schemaManager )

@@ -64,7 +64,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
 
 
     /**
-     * @return tells if a Bind has been issued 
+     * Tells if a Bind has been issued
+     * 
+     * @return <code>true</code> if a Bind has been issued
      */
     public boolean bindCalled()
     {
@@ -83,7 +85,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
 
 
     /**
-     * @return tells if the StarTLS extended operation has been called
+     * Tells if the StarTLS extended operation has been called
+     * 
+     * @return <code>true</code> if the StarTLS extended operation has been called
      */
     public boolean startTlsCalled()
     {

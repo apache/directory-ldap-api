@@ -66,6 +66,8 @@ public class MessageEncoderException extends EncoderException
 
 
     /**
+     * Get the message ID
+     * 
      * @return the messageId
      */
     public int getMessageId()

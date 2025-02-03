@@ -34,6 +34,15 @@ import org.apache.directory.api.ldap.model.name.Dn;
 public final class LookupLdapConnectionValidator implements LdapConnectionValidator
 {
     /**
+     * Default constructor
+     */
+     public LookupLdapConnectionValidator()
+     {
+         // nothing to do
+     }
+     
+     
+    /**
      * Returns true if <code>connection</code> is connected, authenticated, and
      * a lookup on the rootDSE returns a non-null response.
      * 

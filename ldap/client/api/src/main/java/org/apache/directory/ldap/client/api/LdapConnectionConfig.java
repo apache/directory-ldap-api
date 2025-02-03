@@ -667,6 +667,8 @@ public class LdapConnectionConfig
 
 
     /**
+     * Get the BinaryAttribute detector instance
+     * 
      * @return the binaryAttributeDetector
      */
     public BinaryAttributeDetector getBinaryAttributeDetector()
@@ -676,6 +678,8 @@ public class LdapConnectionConfig
 
 
     /**
+     * Set the BinaryAttribute detector instance
+     * 
      * @param binaryAttributeDetector the binaryAttributeDetector to set
      */
     public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
@@ -707,6 +711,8 @@ public class LdapConnectionConfig
 
 
     /**
+     * Get the the LdapApiService instance
+     * 
      * @return the ldapApiService
      */
     public LdapApiService getLdapApiService()
@@ -716,6 +722,8 @@ public class LdapConnectionConfig
 
 
     /**
+     * Set the LdapApiService instance
+     * 
      * @param ldapApiService the ldapApiService to set
      */
     public void setLdapApiService( LdapApiService ldapApiService )

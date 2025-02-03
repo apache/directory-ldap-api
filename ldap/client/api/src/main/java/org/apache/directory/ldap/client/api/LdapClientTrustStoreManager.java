@@ -56,18 +56,26 @@ public final class LdapClientTrustStoreManager implements X509TrustManager, Seri
     /** Declares the Serial Version Uid */
     private static final long serialVersionUID = 1L;
     
-    // Logging
+    /** The class logger name */
     private static final String CLS_NM = LdapClientTrustStoreManager.class.getName();
+    
+    /** The class logger */
     private static final Logger LOG = LoggerFactory.getLogger( CLS_NM );
 
-    // Config variables
+    /** A flag tellling of the validity dates should be checked or not */
     private boolean isExamineValidityDates;
+    
+    /** The trust store password */
     private char[] trustStorePw;
     
     // This is found on the classpath if trust.store.onclasspath = true (default), otherwise must include exact location on filepath:
+    /** The trsut stre file path */
     private String trustStoreFile;
+    
+    /** The trust store format (one of jceks, jks or PKCS12) */
     private String trustStoreFormat;
     
+    /** The list of TrustManagers */
     private X509TrustManager[] x509TrustManagers;
 
 

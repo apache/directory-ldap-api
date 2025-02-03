@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SaslFilter extends IoFilterAdapter
 {
+    /** The class logger */
     private static final Logger LOG = LoggerFactory.getLogger( SaslFilter.class );
 
     /**
@@ -128,6 +129,11 @@ public class SaslFilter extends IoFilterAdapter
     }
 
 
+    /**
+     * Initialize the QoP flag
+     * 
+     * @param qop Contain the desire QoP. If 'auth-int' or ''auth-conf', will be set to <code>true</code>
+     */
     private void initHasSecurityLayer( String qop )
     {
         this.hasSecurityLayer = ( qop != null && ( qop.equals( SaslQoP.AUTH_INT.getValue() ) || qop
@@ -135,6 +141,11 @@ public class SaslFilter extends IoFilterAdapter
     }
 
 
+    /**
+     * Initialize the maximum buffer size
+     * 
+     * @param maxBuffer The maximum buffer size. Default to 65536 if the provided value is null
+     */
     private void initMaxBuffer( String maxBuffer )
     {
         this.maxBufferSize = maxBuffer != null ? Integer.parseInt( maxBuffer ) : 65536;
@@ -277,6 +288,15 @@ public class SaslFilter extends IoFilterAdapter
     }
 
 
+    /**
+     * Wrap a message into the SaslClient or SaslServer
+     * 
+     * @param buffer The buffer containing the message to send
+     * @param offset The starting position in the buffer to use
+     * @param length The length  of the message
+     * @return The resulting non null message
+     * @throws SaslException If the message cannot be wrapped
+     */
     private byte[] wrap( byte[] buffer, int offset, int length ) throws SaslException
     {
         if ( saslClient != null )
@@ -290,6 +310,15 @@ public class SaslFilter extends IoFilterAdapter
     }
 
 
+    /**
+     * Unrap a received message from the SaslClient or SaslServer
+     * 
+     * @param buffer The buffer containing the received message
+     * @param offset The starting position in the received buffer
+     * @param length The length  of the received message
+     * @return The resulting non null message
+     * @throws SaslException If the message cannot be unwrapped
+     */
     private byte[] unwrap( byte[] buffer, int offset, int length ) throws SaslException
     {
         if ( saslClient != null )

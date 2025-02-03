@@ -138,6 +138,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the currrent message
+     * 
      * @return Returns the ldapMessage.
      */
     public E getMessage()
@@ -183,8 +185,10 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
-     * @return Returns true if the attribute is binary.
-     * @param id checks if an attribute id is binary
+     * Tells if a specific attribute is binary
+     * 
+     * @param id The attribute id to check
+     * @return Returns <code>true</code> if the attribute is binary.
      */
     public boolean isBinary( String id )
     {
@@ -193,6 +197,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the message ID
+     * 
      * @return The message ID
      */
     public int getMessageId()
@@ -203,6 +209,7 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
     /**
      * Set the message ID
+     * 
      * @param messageId the id of the message
      */
     public void setMessageId( int messageId )
@@ -212,6 +219,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the current control
+     * 
      * @return the current control being created
      */
     public Control getCurrentControl()
@@ -222,6 +231,7 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
     /**
      * Store a newly created control
+     * 
      * @param currentControl The control to store
      */
     public void setCurrentControl( Control currentControl )
@@ -231,7 +241,7 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
-     * Sets the binary attribute detector
+     * Set the binary attribute detector
      * 
      * @param binaryAttributeDetector the binary attribute detector
      */
@@ -242,6 +252,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the BinaryAttributeDetector instance
+     * 
      * @return the binary attribute detector
      */
     public BinaryAttributeDetector getBinaryAttributeDetector()
@@ -251,6 +263,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the LdapResult
+     * 
      * @return the ldapResult
      */
     public LdapResult getLdapResult()
@@ -260,6 +274,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the LdapResult
+     *  
      * @param ldapResult the ldapResult to set
      */
     public void setLdapResult( LdapResult ldapResult )
@@ -269,6 +285,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the Control factory
+     * 
      * @return the controlFactory
      */
     public ControlFactory<?> getControlFactory()
@@ -278,6 +296,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the Control factory
+     * 
      * @param controlFactory the controlFactory to set
      */
     public void setControlFactory( ControlFactory<?> controlFactory )
@@ -287,6 +307,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the current attribute
+     * 
      * @return the currentAttribute
      */
     public Attribute getCurrentAttribute()
@@ -296,6 +318,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the current attribute
+     *  
      * @param currentAttribute the currentAttribute to set
      */
     public void setCurrentAttribute( Attribute currentAttribute )
@@ -305,6 +329,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the currrent modification
+     * 
      * @return the currentModification
      */
     public Modification getCurrentModification()
@@ -314,6 +340,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the currrent modification
+     * 
      * @param currentModification the currentModification to set
      */
     public void setCurrentModification( Modification currentModification )
@@ -324,6 +352,7 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
     /**
      * Set the SearchRequest PDU TLV's Id
+     * 
      * @param tlvId The TLV id
      */
     public void setTlvId( int tlvId )
@@ -333,6 +362,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the terminal Filter
+     * 
      * @return the terminalFilter
      */
     public Filter getTerminalFilter()
@@ -342,6 +373,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the terminal Filter
+     * 
      * @param terminalFilter the terminalFilter to set
      */
     public void setTerminalFilter( Filter terminalFilter )
@@ -351,6 +384,7 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the current Filter
      * @return the currentFilter
      */
     public Filter getCurrentFilter()
@@ -360,6 +394,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the current Filter
+     * 
      * @param currentFilter the currentFilter to set
      */
     public void setCurrentFilter( Filter currentFilter )
@@ -490,6 +526,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the TopFilter element
+     * 
      * @return the topFilter
      */
     public Filter getTopFilter()
@@ -499,6 +537,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the TopFilter element
+     * 
      * @param topFilter the topFilter to set
      */
     public void setTopFilter( Filter topFilter )
@@ -508,6 +548,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the TLV ID
+     * 
      * @return the tlvId
      */
     public int getTlvId()
@@ -517,6 +559,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the IntermediateMessage factory instance
+     * 
      * @return the intermediateFactory
      */
     public IntermediateOperationFactory getIntermediateFactory()
@@ -526,6 +570,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the IntermediateMessage factory instance
+     * 
      * @param intermediateFactory the intermediateFactory to set
      */
     public void setIntermediateFactory( IntermediateOperationFactory intermediateFactory )
@@ -535,6 +581,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the ExtendedRequest factory
+     * 
      * @return the extendedFactory
      */
     public ExtendedOperationFactory getExtendedFactory()
@@ -544,6 +592,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the ExtendedRequest factory
+     * 
      * @param extendedFactory the extendedFactory to set
      */
     public void setExtendedFactory( ExtendedOperationFactory extendedFactory )
@@ -553,6 +603,7 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Get the DnFactory instance
      * @return the dnFactory
      */
     public DnFactory getDnFactory()
@@ -562,6 +613,8 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
 
 
     /**
+     * Set the DnFactory instance
+     * 
      * @param dnFactory the dnFactory to set
      */
     public void setDnFactory( DnFactory dnFactory )

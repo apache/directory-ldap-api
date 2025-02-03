@@ -188,6 +188,7 @@ public class SubstringFilter extends Filter
 
 
     /**
+     * Get the Substrings length
      * @return Returns the substringsLength.
      */
     public int getSubstringsLength()
@@ -197,6 +198,8 @@ public class SubstringFilter extends Filter
 
 
     /**
+     * Set the Substrings length
+     * 
      * @param substringsLength The substringsLength to set.
      */
     public void setSubstringsLength( int substringsLength )

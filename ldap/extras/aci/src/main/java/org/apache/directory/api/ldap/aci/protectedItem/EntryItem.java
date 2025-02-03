@@ -36,6 +36,15 @@ import org.apache.directory.api.ldap.aci.ProtectedItem;
 public class EntryItem extends ProtectedItem
 {
     /**
+     * A default constructor
+     */
+    public EntryItem()
+    {
+        super();
+    }
+    
+    
+    /**
      * {@inheritDoc}
      */
     @Override

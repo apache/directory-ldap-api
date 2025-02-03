@@ -36,8 +36,13 @@ public class PasswordException extends Exception
     /** Declares the Serial Version Uid */
     private static final long serialVersionUID = -1185823188085178776L;
 
+    /** The wrapped exception */
     private LdapException ldapException;
+    
+    /** The associated result code */
     private ResultCodeEnum resultCode;
+    
+    /** The PasswordPolicy error code */
     private PasswordPolicyErrorEnum passwordPolicyError;
 
 

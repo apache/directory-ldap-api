@@ -274,6 +274,8 @@ public class DnNode<N>
 
 
     /**
+     * Get the stored element
+     * 
      * @return Return the stored element, if any
      */
     public synchronized N getElement()
@@ -283,6 +285,8 @@ public class DnNode<N>
 
 
     /**
+     * Get the stored element associated to a DN
+     * 
      * @return Return the stored element, if any
      * @param dn The Dn we want to get the element for
      */
@@ -300,6 +304,8 @@ public class DnNode<N>
 
 
     /**
+     * Tells if there is an element 
+     * 
      * @return True if the Node stores an element. BranchNode may not hold any
      * element.
      */
@@ -310,6 +316,8 @@ public class DnNode<N>
 
 
     /**
+     * tells if there is an element for a given Dn
+     * 
      * @return True if the Node stores an element. BranchNode may not hold any
      * element.
      * @param dn The Dn we want to get the element for
@@ -359,6 +367,8 @@ public class DnNode<N>
 
 
     /**
+     * tells if tehre are some descendant elemnts for a given Dn
+     * 
      * @return True if one of the node below the current node has one element, 
      * False otherwise
      * @param dn The Dn we want to get the element for
@@ -422,6 +432,8 @@ public class DnNode<N>
 
 
     /**
+     * Get the descendant of an element at a given Dn position
+     * 
      * @return True if one of the node below the current node has one element, 
      * False otherwise
      * @param dn The Dn we want to get the element for
@@ -484,6 +496,8 @@ public class DnNode<N>
 
 
     /**
+     * Get the chidren for the current node
+     * 
      * @return The list of DnNode
      */
     public synchronized Map<String, DnNode<N>> getChildren()
@@ -493,6 +507,8 @@ public class DnNode<N>
 
 
     /**
+     * Get the parent's node
+     * 
      * @return The parent DnNode, if any
      */
     public synchronized DnNode<N> getParent()
@@ -502,7 +518,9 @@ public class DnNode<N>
 
 
     /**
-     * @return True if the current DnNode has a parent
+     * Tells if the current noe has a parent
+     * 
+     * @return <code>true</code> if the current DnNode has a parent
      */
     public synchronized boolean hasParent()
     {
@@ -713,6 +731,8 @@ public class DnNode<N>
 
 
     /**
+     * Get a node's Rdn
+     * 
      * @return The Node's Rdn
      */
     public synchronized Rdn getRdn()

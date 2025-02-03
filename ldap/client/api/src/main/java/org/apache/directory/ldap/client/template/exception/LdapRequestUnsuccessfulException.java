@@ -50,6 +50,8 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
 
 
     /**
+     * Get the associate LDAP Response
+     * 
      * @return the associate LDAP Response
      */
     public ResultResponse getResponse()

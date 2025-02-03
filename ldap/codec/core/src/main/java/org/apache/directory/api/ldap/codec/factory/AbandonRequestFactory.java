@@ -36,6 +36,9 @@ public final class AbandonRequestFactory implements Messagefactory
     /** The static instance */
     public static final AbandonRequestFactory INSTANCE = new AbandonRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private AbandonRequestFactory()
     {
         // Nothing to do

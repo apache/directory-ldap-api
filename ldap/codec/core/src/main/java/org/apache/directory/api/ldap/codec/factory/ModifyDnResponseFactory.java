@@ -34,6 +34,9 @@ public final class ModifyDnResponseFactory extends ResponseFactory
     /** The static instance */
     public static final ModifyDnResponseFactory INSTANCE = new ModifyDnResponseFactory();
 
+    /**
+     * A default private constructor
+     */
     private ModifyDnResponseFactory()
     {
         super();

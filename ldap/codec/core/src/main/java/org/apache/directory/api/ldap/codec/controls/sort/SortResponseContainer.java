@@ -51,6 +51,8 @@ public class SortResponseContainer extends AbstractContainer implements ControlC
 
 
     /**
+     * Get the SoreResponse control
+     *  
      * @return the control
      */
     public SortResponse getControl()
@@ -60,6 +62,8 @@ public class SortResponseContainer extends AbstractContainer implements ControlC
 
 
     /**
+     * Set the control
+     * 
      * @param control the control to set
      */
     public void setControl( Control control )

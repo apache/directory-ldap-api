@@ -37,6 +37,9 @@ public final class DeleteRequestFactory implements Messagefactory
     /** The static instance */
     public static final DeleteRequestFactory INSTANCE = new DeleteRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private DeleteRequestFactory()
     {
         // Nothing to do

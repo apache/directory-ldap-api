@@ -4687,6 +4687,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Add a Schema
+     * 
      * @see #addSchema(File)
      * @param schemaFileName The schema file name to add
      * @throws LdapException If the schema addition failed
@@ -5448,6 +5450,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Get the SockectSession configuration
+     * 
      * @return the socketSessionConfig
      */
     public SocketSessionConfig getSocketSessionConfig()
@@ -5457,6 +5461,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Set the SockectSession configuration
+     * 
      * @param socketSessionConfig the socketSessionConfig to set
      */
     public void setSocketSessionConfig( SocketSessionConfig socketSessionConfig )

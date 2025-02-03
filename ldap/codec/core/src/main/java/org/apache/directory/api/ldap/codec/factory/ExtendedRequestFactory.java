@@ -38,6 +38,9 @@ public final class ExtendedRequestFactory implements Messagefactory
     /** The static instance */
     public static final ExtendedRequestFactory INSTANCE = new ExtendedRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private ExtendedRequestFactory()
     {
         super();

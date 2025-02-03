@@ -35,6 +35,9 @@ public final class UnbindRequestFactory implements Messagefactory
     /** The static instance */
     public static final UnbindRequestFactory INSTANCE = new UnbindRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private UnbindRequestFactory()
     {
         // Nothing to do

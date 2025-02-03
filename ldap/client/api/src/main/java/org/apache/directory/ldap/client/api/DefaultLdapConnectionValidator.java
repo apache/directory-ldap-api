@@ -29,6 +29,15 @@ package org.apache.directory.ldap.client.api;
 public final class DefaultLdapConnectionValidator implements LdapConnectionValidator
 {
     /**
+     * A default constructor
+     */
+    public DefaultLdapConnectionValidator()
+    {
+        // Nothing to do
+    }
+    
+    
+    /**
      * Returns true if <code>connection</code> is connected, and authenticated.
      * 
      * @param connection The connection to validate

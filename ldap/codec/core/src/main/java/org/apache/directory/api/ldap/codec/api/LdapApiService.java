@@ -148,6 +148,8 @@ public interface LdapApiService
 
 
     /**
+     * Get the response controlFactories
+     * 
      * @return the response controlFactories
      */
     Map<String, ControlFactory<? extends Control>> getResponseControlFactories();
@@ -233,12 +235,16 @@ public interface LdapApiService
     
     
     /**
-     * @return the extendedRequestFactories
+     * Get the extendedResponseFactories
+     * 
+     * @return the extendedResponseFactories
      */
     Map<String, ExtendedOperationFactory> getExtendedRequestFactories();
 
 
     /**
+     * Get the extendedResponseFactories
+     * 
      * @return the extendedResponseFactories
      */
     Map<String, ExtendedOperationFactory> getExtendedResponseFactories();
@@ -286,6 +292,8 @@ public interface LdapApiService
 
 
     /**
+     * Get the intermediateResponseFactories
+     * 
      * @return the intermediateResponseFactories
      */
     Map<String, IntermediateOperationFactory> getIntermediateResponseFactories();

@@ -633,6 +633,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Set the request controlFactories
+     * 
      * @param requestControlFactories the request controlFactories to set
      */
     public void setRequestControlFactories( Map<String, ControlFactory<? extends Control>> requestControlFactories )
@@ -642,6 +644,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Set the response controlFactories
+     * 
      * @param responseControlFactories the response controlFactories to set
      */
     public void setResponseControlFactories( Map<String, ControlFactory<? extends Control>> responseControlFactories )
@@ -651,6 +655,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Get the extendedRequestFactories
+     * 
      * @return the extendedRequestFactories
      */
     public Map<String, ExtendedOperationFactory> getExtendedRequestFactories()
@@ -660,6 +666,7 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Get the extendedResponsetFactories
      * @return the extendedResponseFactories
      */
     @Override
@@ -670,6 +677,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Get the intermediateResponseFactories
+     * 
      * @return the intermediateResponseFactories
      */
     public Map<String, IntermediateOperationFactory> getIntermediateResponseFactories()
@@ -679,6 +688,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Set the extendedRequestFactories
+     * 
      * @param extendedOperationFactories the extendedOperationFactories to set
      */
     public void setExtendedRequestFactories( Map<String, ExtendedOperationFactory> extendedOperationFactories )
@@ -688,6 +699,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Set the extendedOperationFactories
+     * 
      * @param extendedOperationFactories the extendedOperationFactories to set
      */
     public void setExtendedResponseFactories( Map<String, ExtendedOperationFactory> extendedOperationFactories )
@@ -697,6 +710,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Set the intermediateResponseFactories
+     * 
      * @param intermediateResponseFactories the intermediateResponseFactories to set
      */
     public void setIntermediateResponseFactories( Map<String, IntermediateOperationFactory> intermediateResponseFactories )
@@ -706,6 +721,8 @@ public class DefaultLdapCodecService implements LdapApiService
 
 
     /**
+     * Set the protocolCodecFactory
+     * 
      * @param protocolCodecFactory the protocolCodecFactory to set
      */
     public void setProtocolCodecFactory( ProtocolCodecFactory protocolCodecFactory )

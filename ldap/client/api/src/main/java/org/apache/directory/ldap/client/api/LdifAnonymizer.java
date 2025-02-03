@@ -373,6 +373,8 @@ public class LdifAnonymizer
     
     
     /**
+     * Get the list of configured anonymizers
+     * 
      * @return The list of configured anonymizers
      */
     public Map<String, Anonymizer> getAttributeAnonymizers()
@@ -1021,6 +1023,8 @@ public class LdifAnonymizer
 
 
     /**
+     * Get the map of stored values
+     * 
      * @return the valueMap
      */
     public Map<Value, Value> getValueMap()
@@ -1030,6 +1034,8 @@ public class LdifAnonymizer
 
 
     /**
+     * Set the map of stored values
+     * 
      * @param valueMap the valueMap to set
      */
     public void setValueMap( Map<Value, Value> valueMap )
@@ -1039,6 +1045,8 @@ public class LdifAnonymizer
 
 
     /**
+     * Get the map containing the latest anonymised Strings
+     * 
      * @return the latest String Value Map
      */
     public Map<Integer, String> getLatestStringMap()
@@ -1048,6 +1056,8 @@ public class LdifAnonymizer
 
 
     /**
+     * Set the map containing the latest anonymised Strings
+     * 
      * @param latestStringMap the latest String Value Map to set
      */
     public void setLatestStringMap( Map<Integer, String> latestStringMap )
@@ -1057,6 +1067,8 @@ public class LdifAnonymizer
 
 
     /**
+     * Get the map containing the latest anonymised bytes
+     * 
      * @return the latest byte[] Value Map
      */
     public Map<Integer, byte[]> getLatestBytesMap()
@@ -1066,6 +1078,8 @@ public class LdifAnonymizer
 
 
     /**
+     * Set the map containing the latest anonymised bytes
+     * 
      * @param latestBytesMap the latest byte[] Value Map to set
      */
     public void setLatestBytesMap( Map<Integer, byte[]> latestBytesMap )

@@ -43,6 +43,9 @@ public final class AddRequestFactory implements Messagefactory
     /** The static instance */
     public static final AddRequestFactory INSTANCE = new AddRequestFactory();
 
+    /**
+     * A default private constructor
+     */
     private AddRequestFactory()
     {
         // Nothing to do

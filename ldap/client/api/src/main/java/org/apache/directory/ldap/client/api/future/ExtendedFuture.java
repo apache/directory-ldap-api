@@ -51,6 +51,8 @@ public class ExtendedFuture extends MultipleResponseFuture<Response>
 
 
     /**
+     * Get the extended request instance
+     * 
      * @return the extendedRequest
      */
     public ExtendedRequest getExtendedRequest()
@@ -60,6 +62,8 @@ public class ExtendedFuture extends MultipleResponseFuture<Response>
 
 
     /**
+     * Set the ExtendedRequest
+     * 
      * @param extendedRequest the extendedRequest to set
      */
     public void setExtendedRequest( ExtendedRequest extendedRequest )

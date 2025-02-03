@@ -52,6 +52,8 @@ public class SubentriesContainer extends AbstractContainer implements ControlCon
 
 
     /**
+     * Get the Subentries control
+     * 
      * @return Returns the persistent search control.
      */
     public Subentries getSubentriesControl()

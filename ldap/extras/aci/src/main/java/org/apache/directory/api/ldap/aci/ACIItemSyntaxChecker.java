@@ -64,6 +64,12 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
         }
         
         
+        /**
+         * Set the SchemaManager instance
+         * 
+         * @param schemaManager The SchemaManager instance
+         * @return A reference to the Builder instance
+         */
         public Builder setSchemaManager( SchemaManager schemaManager )
         {
             this.schemaManager = schemaManager;
@@ -73,6 +79,7 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
         
         /**
          * Create a new instance of ACIItemSyntaxChecker
+         * 
          * @return A new instance of ACIItemSyntaxChecker
          */
         @Override
@@ -97,6 +104,8 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
 
     
     /**
+     * Get the SyntaxChecker instance
+     * 
      * @return An instance of the Builder for this class
      */
     public static Builder builder()
