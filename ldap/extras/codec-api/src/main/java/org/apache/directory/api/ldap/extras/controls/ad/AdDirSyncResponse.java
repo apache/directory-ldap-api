@@ -54,26 +54,33 @@ public interface AdDirSyncResponse extends Control
     /** This control OID */
     String OID = "1.2.840.113556.1.4.841";
 
-
     /**
+     * Get the maximum length of attributes
+     * 
      * @return The maximum length of attributes to be returned
      */
     int getMaxReturnLength();
 
 
     /**
+     * Set the maximum length of attributes
+     * 
      * @param maxReturnLength The maximum length of attributes to be returned
      */
     void setMaxReturnLength( int maxReturnLength );
 
 
     /**
+     * Get the cookie
+     * 
      * @return The cookie used while processing the successive DirSync operations
      */
     byte[] getCookie();
 
 
     /**
+     * Set the cookie
+     * 
      * @param cookie The cookie to send to the server. It's the value found in the response control. Should be null
      * for the first control.
      */
@@ -81,30 +88,38 @@ public interface AdDirSyncResponse extends Control
 
 
     /**
-     * @return The flags returned by the server. Zero or more of :
+     * Get the flags returned by the server. Zero or more of :
      * <ul>
      * <li>LDAP_DIRSYNC_OBJECT_SECURITY (0x0001)</li>
      * <li>LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER (0x0800)</li>
      * <li>LDAP_DIRSYNC_PUBLIC_DATA_ONLY (0x2000)(</li>
      * <li>LDAP_DIRSYNC_INCREMENTAL_VALUES (0x7FFFFFFF)</li>
      * </ul>
+     * 
+     * @return The flags 
      */
     Set<AdDirSyncResponseFlag> getFlags();
 
 
     /**
+     * Set the flags 
+     * 
      * @param flags The flags to be set. See {@link EnumSet} for how to generate EnumSets.
      */
     void setFlags( Set<AdDirSyncResponseFlag> flags );
 
 
     /**
+     * Add a flag to the collection of flags
+     * 
      * @param flag The flag to be added to the current collection of flags.
      */
     void addFlag( AdDirSyncResponseFlag flag );
 
 
     /**
+     * Remove a given flag from the collection of flags
+     * 
      * @param flag The flag to be removed from the current collection of flags.
      */
     void removeFlag( AdDirSyncResponseFlag flag );

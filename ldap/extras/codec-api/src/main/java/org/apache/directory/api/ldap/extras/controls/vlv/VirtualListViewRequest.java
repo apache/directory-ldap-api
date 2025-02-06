@@ -48,85 +48,112 @@ public interface VirtualListViewRequest extends Control
 
 
     /**
+     * Get the number of entries before the target entry that are going to be sent
+     * 
      * @return The number of entries before the target entry that are going to be sent
      */
     int getBeforeCount();
 
 
     /**
-     * @param beforeCount Set the number of entries to be returned before the target entry
+     * Set the number of entries to be returned before the target entry
+     * 
+     * @param beforeCount The number of entries to be returned before the target entry
      */
     void setBeforeCount( int beforeCount );
 
 
     /**
+     * Get the number of entries after the target entry that are going to be sent
+     * 
      * @return The number of entries after the target entry that are going to be sent
      */
     int getAfterCount();
 
 
     /**
-     * @param afterCount Set the number of entries to be returned after the target entry
+     * Set the number of entries to be returned after the target entry
+     * 
+     * @param afterCount The number of entries to be returned after the target entry
      */
     void setAfterCount( int afterCount );
 
 
     /**
+     * Get the position of the target entry
+     * 
      * @return The position of the target entry
      */
     int getOffset();
 
 
     /**
+     * Set the position of the target entry
+     * 
      * @param offset the position of the target entry
      */
     void setOffset( int offset );
 
 
     /**
+     * Get the number of expected entries
+     * 
      * @return The number of expected entries
      */
     int getContentCount();
 
 
     /**
+     * Set the number of entries
+     * 
      * @param contentCount The number of entries
      */
     void setContentCount( int contentCount );
 
 
     /**
+     * Get the AssertionValue
+     * 
      * @return The AssertionValue
      */
     byte[] getAssertionValue();
 
 
     /**
-     * @param assertionValue Set the AssertionValue
+     * Set the AssertionValue
+     * 
+     * @param assertionValue The AssertionValue
      */
     void setAssertionValue( byte[] assertionValue );
 
 
     /**
+     * Get the ID used for this request
+     * 
      * @return The ID used for this request
      */
     byte[] getContextId();
 
 
     /**
-     * @param contextId Set the context ID
+     * Set the context ID
+     * 
+     * @param contextId The context ID
      */
     void setContextId( byte[] contextId );
 
 
     /**
-     * @return <code>true</code> if the VLV target is an offset, false otherwise
+     * Tells if the VLV target is an offset
+     * @return <code>true</code> if the VLV target is an offset, <code>false</code> otherwise
      */
     boolean hasOffset();
 
 
     /**
-     * @return <code>true</code> if the VLV target is an assertionValue, false otherwise
+     * Tells if the VLV target is an assertionValue
+     * 
+     * @return <code>true</code> if the VLV target is an assertionValue, <code>false</code> otherwise
      */
     boolean hasAssertionValue();
 }

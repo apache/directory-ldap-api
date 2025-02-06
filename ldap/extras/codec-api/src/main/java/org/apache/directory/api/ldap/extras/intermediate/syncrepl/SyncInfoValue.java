@@ -70,60 +70,78 @@ public interface SyncInfoValue extends IntermediateResponse
 
 
     /**
+     * Set the the synchronization type 
+     * 
      * @param type the synchronization type to set
      */
     void setSyncInfoValueType( SynchronizationInfoEnum type );
 
 
     /**
+     * Get the cookie
+     * 
      * @return the cookie
      */
     byte[] getCookie();
 
 
     /**
+     * Set the cookie
+     * 
      * @param cookie the cookie to set
      */
     void setCookie( byte[] cookie );
 
 
     /**
+     * Tells if the refreshDone flag is set to <code>true</code>
+     * 
      * @return the refreshDone
      */
     boolean isRefreshDone();
 
 
     /**
+     * Set the refreshDone flag
+     * 
      * @param refreshDone the refreshDone to set
      */
     void setRefreshDone( boolean refreshDone );
 
 
     /**
+     * Tells if the refreshDeletes flag is set to <code>true</code>
+     * 
      * @return the refreshDeletes
      */
     boolean isRefreshDeletes();
 
 
     /**
+     * Set the refreshDeletes flag
+     * 
      * @param refreshDeletes the refreshDeletes to set
      */
     void setRefreshDeletes( boolean refreshDeletes );
 
 
     /**
+     * Get the syncUUIDs
      * @return the syncUUIDs
      */
     List<byte[]> getSyncUUIDs();
 
 
     /**
+     * Set the syncUUIDs
      * @param syncUUIDs the syncUUIDs to set
      */
     void setSyncUUIDs( List<byte[]> syncUUIDs );
 
 
     /**
+     * Set the syncUUID
+     * 
      * @param syncUUID the syncUUIDs to set
      */
     void addSyncUUID( byte[] syncUUID );

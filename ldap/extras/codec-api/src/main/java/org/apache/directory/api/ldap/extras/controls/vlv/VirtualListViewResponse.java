@@ -57,6 +57,8 @@ public interface VirtualListViewResponse extends Control
 
 
     /**
+     * Get the position in the list of entries
+     * 
      * @return the position in the list of entries
      */
     int getTargetPosition();
@@ -71,6 +73,7 @@ public interface VirtualListViewResponse extends Control
 
 
     /**
+     * Get the number of returned entries
      * @return The number of returned entries
      */
     int getContentCount();
@@ -85,6 +88,8 @@ public interface VirtualListViewResponse extends Control
 
 
     /**
+     * Get the VLV result
+     * 
      * @return The VLV result
      */
     VirtualListViewResultCode getVirtualListViewResult();
@@ -99,6 +104,8 @@ public interface VirtualListViewResponse extends Control
 
 
     /**
+     * Get the context ID
+     * 
      * @return The context ID
      */
     byte[] getContextId();

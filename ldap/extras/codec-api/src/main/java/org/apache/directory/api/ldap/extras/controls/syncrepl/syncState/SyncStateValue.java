@@ -57,19 +57,25 @@ public interface SyncStateValue extends Control
 
 
     /**
-     * @return the cookie
+     * get the cookie
+     * 
+     * @return The cookie
      */
     byte[] getCookie();
 
 
     /**
-     * @param cookie the cookie to set
+     * Set the cookie
+     * 
+     * @param cookie The cookie to set
      */
     void setCookie( byte[] cookie );
 
 
     /**
-     * @return the syncState's type
+     * Get the the syncState's type
+     * 
+     * @return The syncState's type
      */
     SyncStateTypeEnum getSyncStateType();
 
@@ -83,15 +89,17 @@ public interface SyncStateValue extends Control
 
 
     /**
+     * Get the entryUUID
+     * 
      * @return the entryUUID
      */
     byte[] getEntryUUID();
 
 
     /**
-     * set the entryUUID
+     * Set the entryUUID
      *
-     * @param entryUUID the entryUUID
+     * @param entryUUID The entryUUID
      */
     void setEntryUUID( byte[] entryUUID );
 }

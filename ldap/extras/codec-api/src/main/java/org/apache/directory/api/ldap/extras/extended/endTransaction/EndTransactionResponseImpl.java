@@ -130,7 +130,7 @@ public class EndTransactionResponseImpl extends AbstractExtendedResponse impleme
     }
     
     /**
-     * @return the updateControls
+     * {@inheritDoc}
      */
     @Override
     public List<UpdateControls> getUpdateControls()
@@ -140,6 +140,8 @@ public class EndTransactionResponseImpl extends AbstractExtendedResponse impleme
 
 
     /**
+     * Set the update controls
+     * 
      * @param updateControls the updateControls to set
      */
     public void setUpdateControls( List<UpdateControls> updateControls )

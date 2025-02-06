@@ -42,7 +42,6 @@ public interface CertGenerationRequest extends ExtendedRequest
     /** The OID for the Certificate Generation extended operation request. */
     String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.8";
 
-
     /** 
      * Get the Target DN for the certificate storage
      * 
@@ -60,6 +59,8 @@ public interface CertGenerationRequest extends ExtendedRequest
 
 
     /**
+     * Get the Issuer's DN
+     * 
      * @return The issuer's DN
      */
     String getIssuerDN();
@@ -74,6 +75,7 @@ public interface CertGenerationRequest extends ExtendedRequest
 
 
     /**
+     * Get the Subect's DN
      * @return The subect's DN
      */
     String getSubjectDN();
@@ -88,6 +90,8 @@ public interface CertGenerationRequest extends ExtendedRequest
 
 
     /**
+     * Get the Key algorithm
+     * 
      * @return The Key algorithm 
      */
     String getKeyAlgorithm();
@@ -95,6 +99,7 @@ public interface CertGenerationRequest extends ExtendedRequest
 
     /**
      * Sets the Key algorithm
+     * 
      * @param keyAlgorithm The Key algorithm
      */
     void setKeyAlgorithm( String keyAlgorithm );

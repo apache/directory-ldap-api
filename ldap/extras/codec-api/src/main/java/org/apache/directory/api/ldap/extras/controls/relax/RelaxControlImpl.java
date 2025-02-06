@@ -29,19 +29,22 @@ import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
  */
 public class RelaxControlImpl extends AbstractControl implements RelaxControl
 {
+    /** 
+     * The RelaxControlImpl default constructor
+     */
     public RelaxControlImpl()
     {
         super( OID );
     }
 
+    /** 
+     * The RelaxControlImpl default constructor
+     * 
+     * @param isCritical If the control is critical
+     */
     public RelaxControlImpl( boolean isCritical )
     {
         super( OID );
         this.setCritical( isCritical );
-    }
-
-    public String getOID()
-    {
-        return OID;
     }
 }

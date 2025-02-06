@@ -61,6 +61,8 @@ public enum AdDirSyncResponseFlag
     
     
     /**
+     * Get the value
+     * 
      * @return The associated value of a given flag
      */
     public int getValue()
@@ -81,6 +83,7 @@ public enum AdDirSyncResponseFlag
 
     /**
      * Get back the combination of flags associated with a given value
+     * 
      * @param value The integer value
      * @return a set of all flags associated with the integer value
      */
@@ -100,6 +103,7 @@ public enum AdDirSyncResponseFlag
 
     /**
      * Get back the bitmask (as an integer) associated with the given flags
+     * 
      * @param flags The AdDirSync flags
      * @return a bitmask in integer form associated with the set of flags
      */

@@ -54,6 +54,8 @@ public interface AdDirSyncRequest extends Control
     String OID = "1.2.840.113556.1.4.841";
 
     /**
+     * Tells if the parents should be returned first
+     * 
      * @return 1 if the parents of the children comes before their children
      */
     int getParentsFirst();
@@ -70,24 +72,32 @@ public interface AdDirSyncRequest extends Control
 
 
     /**
+     * Get the maximum attribute count
+     * 
      * @return The maximum attribute count to be returned
      */
     int getMaxAttributeCount();
 
 
     /**
+     * Set the maximum attribute count
+     * 
      * @param maxAttributeCount The maximum attribute count to be returned
      */
     void setMaxAttributeCount( int maxAttributeCount );
 
 
     /**
+     * Get the dialogue cookie
+     * 
      * @return The cookie used while processing the successive DirSync operations
      */
     byte[] getCookie();
 
 
     /**
+     * Set the dialogue cookie
+     * 
      * @param cookie The cookie to send to the server. It's the value found in the response control. Should be null
      * for the first control.
      */

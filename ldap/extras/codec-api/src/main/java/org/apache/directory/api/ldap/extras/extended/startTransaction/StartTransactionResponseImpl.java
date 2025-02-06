@@ -174,7 +174,9 @@ public class StartTransactionResponseImpl extends AbstractExtendedResponse imple
     
     
     /**
-     * {@inheritDoc}
+     * Set the transaction ID
+     * 
+     * @param transactionId The transaction ID to set
      */
     public void setTransactionId( byte[] transactionId )
     {

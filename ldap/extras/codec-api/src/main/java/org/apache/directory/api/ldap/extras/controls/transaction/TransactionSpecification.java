@@ -33,6 +33,8 @@ public interface TransactionSpecification extends Control
     String OID = "1.3.6.1.1.21.2";
 
     /**
+     * Get the transaction identifier
+     * 
      * @return The transaction identifier
      */
     byte[] getIdentifier();
@@ -40,6 +42,7 @@ public interface TransactionSpecification extends Control
     
     /**
      * Set the transaction ID
+     * 
      * @param identifier The transaction identifier, an opaque byte array
      */
     void setIdentifier( byte[] identifier );

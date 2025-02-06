@@ -53,12 +53,16 @@ public interface StoredProcedureRequest extends ExtendedRequest
 
 
     /**
+     * Get the procedure bytecode
+     * 
      * @return The byte[] containing the procedure's bytecode
      */
     byte[] getProcedure();
 
 
     /**
+     * Set the procedure bytecode
+     * 
      * @param procedure The procedure's bytecode
      */
     void setProcedure( byte[] procedure );
@@ -134,6 +138,8 @@ public interface StoredProcedureRequest extends ExtendedRequest
 
 
     /**
+     * Get the list of parameters for this stored procedure
+     * 
      * @return The list of parameters for this stored procedure
      */
     List<StoredProcedureParameter> getParameters();

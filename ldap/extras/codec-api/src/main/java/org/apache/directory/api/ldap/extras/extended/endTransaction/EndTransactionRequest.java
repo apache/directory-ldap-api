@@ -49,6 +49,8 @@ public interface EndTransactionRequest extends ExtendedRequest
     String EXTENSION_OID = "1.3.6.1.1.21.3";
     
     /**
+     * Tells if the operation should be committed
+     * 
      * @return <code>true</code> if the operation should be committed, <code>false</code> otherwise
      */
     boolean getCommit();
@@ -64,9 +66,12 @@ public interface EndTransactionRequest extends ExtendedRequest
     
     
     /**
+     * Get the transaction ID
+     * 
      * @return The transaction ID 
      */
     byte[] getTransactionId();
+    
 
     /**
      * Set the transaction ID to commit or rollback

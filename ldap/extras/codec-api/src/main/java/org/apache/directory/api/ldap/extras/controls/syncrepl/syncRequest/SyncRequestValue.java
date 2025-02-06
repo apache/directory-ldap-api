@@ -36,36 +36,48 @@ public interface SyncRequestValue extends Control
 
 
     /**
+     * Get the mode
+     * 
      * @return the mode
      */
     SynchronizationModeEnum getMode();
 
 
     /**
+     * Set the mode
+     * 
      * @param mode the syncMode to set
      */
     void setMode( SynchronizationModeEnum mode );
 
 
     /**
+     * Get the cookie
+     * 
      * @return the cookie
      */
     byte[] getCookie();
 
 
     /**
+     * Set the cookie
+     * 
      * @param cookie the cookie to set
      */
     void setCookie( byte[] cookie );
 
 
     /**
+     * Get the reloadHint flag
+     * 
      * @return the reloadHint
      */
     boolean isReloadHint();
 
 
     /**
+     * Set the reloadHint flag
+     * 
      * @param reloadHint the reloadHint to set
      */
     void setReloadHint( boolean reloadHint );

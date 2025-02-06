@@ -40,6 +40,8 @@ public interface AdPolicyHints extends Control
     String OID = "1.2.840.113556.1.4.2239";
 
     /**
+     * Get the set flags
+     * 
      * @return The flags
      */
     int getFlags();

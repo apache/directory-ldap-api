@@ -69,6 +69,8 @@ public enum SynchronizationModeEnum
 
 
     /**
+     * Get the value associated with the current element.
+     * 
      * @return The value associated with the current element.
      */
     public int getValue()

@@ -55,6 +55,8 @@ public class UpdateControls
     
     
     /**
+     * Get the message ID
+     * 
      * @return The messageID
      */
     public int getMessageId()
@@ -64,6 +66,8 @@ public class UpdateControls
     
     
     /**
+     * Set the message ID
+     * 
      * @param messageId the messageId to set
      */
     public void setMessageId( int messageId )
@@ -73,6 +77,8 @@ public class UpdateControls
    
    
     /**
+     * Get the set of controls associated with the messageID
+     * 
      * @return The set of controls associated with the messageID
      */
     public List<Control> getControls()
@@ -82,6 +88,8 @@ public class UpdateControls
 
 
     /**
+     * Set controls
+     * 
      * @param controls the controls to set
      */
     public void setControls( List<Control> controls )

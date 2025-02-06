@@ -73,6 +73,8 @@ public enum SyncStateTypeEnum
 
 
     /**
+     * Get the value
+     * 
      * @return The value associated with the current element.
      */
     public int getValue()

@@ -52,26 +52,32 @@ public interface SyncDoneValue extends Control
 
 
     /**
+     * get the cookie
+     * 
      * @return the cookie
      */
     byte[] getCookie();
 
 
     /**
+     * Set the cookie
+     * 
      * @param cookie cookie to be set
      */
     void setCookie( byte[] cookie );
 
 
     /**
-     * @return true, if refreshDeletes flag is set, false otherwise
+     * Tells if the refreshDeletes flag is set to <code>true</code>
+     * @return <code>true</code>, if refreshDeletes flag is set, <code>false</code> otherwise
      */
     boolean isRefreshDeletes();
 
 
     /**
+     * Set the refreshDeletes flag
+     * 
      * @param refreshDeletes set the refreshDeletes flag
      */
     void setRefreshDeletes( boolean refreshDeletes );
-
 }

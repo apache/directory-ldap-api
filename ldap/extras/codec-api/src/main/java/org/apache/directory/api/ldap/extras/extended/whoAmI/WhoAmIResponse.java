@@ -40,13 +40,17 @@ public interface WhoAmIResponse extends ExtendedResponse
 
     
     /**
+     * Tells if the response contains a DN authz (dn:XXX)
+     * 
      * @return true if the response contains a DN authz (dn:XXX)
      */
     boolean isDnAuthzId();
     
     
     /**
-     * @return true if the response contains a userID authz (u:XXX)
+     * Tells if the response contains a userID authz (u:XXX)
+     * 
+     * @return <code>true</code> if the response contains a userID authz (u:XXX)
      */
     boolean isUserAuthzId();
     

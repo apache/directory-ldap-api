@@ -40,6 +40,8 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 public interface StartTransactionResponse extends ExtendedResponse
 {
     /**
+     * Get the transaction ID
+     * 
      * @return The transaction ID if success
      */
     byte[] getTransactionId();

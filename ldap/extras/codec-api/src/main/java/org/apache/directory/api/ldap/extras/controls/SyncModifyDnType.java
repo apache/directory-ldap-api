@@ -54,6 +54,8 @@ public enum SyncModifyDnType
 
 
     /**
+     * Get the value associated with the current element.
+     * 
      * @return The value associated with the current element.
      */
     public int getValue()
@@ -64,6 +66,7 @@ public enum SyncModifyDnType
 
     /**
      * Get the instance from it's interger value
+     * 
      * @param value The value we are looking for 
      * @return The associated value
      */

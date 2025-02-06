@@ -41,6 +41,8 @@ public interface CancelRequest extends ExtendedRequest
 
 
     /**
+     * Get the cancel ID
+     * 
      *  @return The id of the Message to cancel.
      */
     int getCancelId();

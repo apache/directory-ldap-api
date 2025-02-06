@@ -80,6 +80,8 @@ public enum VirtualListViewResultCode
 
 
     /**
+     * Get the value
+     * 
      * @return The associated integer value
      */
     public int getValue()
@@ -89,6 +91,8 @@ public enum VirtualListViewResultCode
 
 
     /**
+     * Get the associated description
+     * 
      * @return The associated description
      */
     public String getDesc()

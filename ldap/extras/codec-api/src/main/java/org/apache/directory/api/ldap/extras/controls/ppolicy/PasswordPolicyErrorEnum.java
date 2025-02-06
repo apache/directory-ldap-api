@@ -35,7 +35,7 @@ public enum PasswordPolicyErrorEnum
     /** The account is locked */
     ACCOUNT_LOCKED(1),
     
-    /** */
+    /** A change is requested after a password reset*/
     CHANGE_AFTER_RESET(2),
     
     /** the password modification is not allowed */
@@ -116,6 +116,8 @@ public enum PasswordPolicyErrorEnum
 
 
     /**
+     * Get the PasswordPolicyError interned value
+     * 
      * @return the PasswordPolicyError interned value
      */
     public int getValue()

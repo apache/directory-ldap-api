@@ -42,6 +42,8 @@ public interface PasswordModifyRequest extends ExtendedRequest
 
 
     /**
+     * Get the user identioty
+     * 
      * @return the userIdentity
      */
     byte[] getUserIdentity();
@@ -56,6 +58,8 @@ public interface PasswordModifyRequest extends ExtendedRequest
 
 
     /**
+     * Get the previous password
+     * 
      * @return the oldPassword
      */
     byte[] getOldPassword();
@@ -70,6 +74,8 @@ public interface PasswordModifyRequest extends ExtendedRequest
 
 
     /**
+     * Get the new password
+     * 
      * @return the newPassword
      */
     byte[] getNewPassword();
