@@ -51,6 +51,8 @@ public class SyncStateValueContainer extends AbstractContainer implements Contro
 
 
     /**
+     * Get the syncStateValue control.
+     * 
      * @return Returns the syncStateValue control.
      */
     public SyncStateValue getSyncStateValue()

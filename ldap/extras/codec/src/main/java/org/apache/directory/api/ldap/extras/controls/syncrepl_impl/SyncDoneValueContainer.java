@@ -52,6 +52,8 @@ public class SyncDoneValueContainer extends AbstractContainer implements Control
 
 
     /**
+     * Get the SyncDoneValue
+     * 
      * @return the SyncDoneValueControlCodec object
      */
     public SyncDoneValue getSyncDoneValue()

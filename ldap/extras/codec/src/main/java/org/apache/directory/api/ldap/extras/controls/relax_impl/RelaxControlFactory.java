@@ -26,6 +26,9 @@ import org.apache.directory.api.ldap.extras.controls.relax.RelaxControl;
 import org.apache.directory.api.ldap.extras.controls.relax.RelaxControlImpl;
 
 
+/**
+ * A factory to create relaxed controls
+ */
 public class RelaxControlFactory extends AbstractControlFactory<RelaxControl>
 {
     /**

@@ -45,6 +45,7 @@ public enum VirtualListViewerTags
 
 
     /**
+     * Get the value
      * @return The interned value
      */
     public int getValue()

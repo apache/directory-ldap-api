@@ -117,6 +117,8 @@ public final class VirtualListViewResponseGrammar extends AbstractGrammar<Virtua
 
 
     /**
+     * Get the grammar instance
+     * 
      * @return the singleton instance of the VirtualListViewResponseGrammar
      */
     public static Grammar<?> getInstance()

@@ -62,6 +62,8 @@ public final class AdPolicyHintsGrammar extends AbstractGrammar<AdPolicyHintsCon
 
 
     /**
+     * Get the grammar instance
+     * 
      * @return the singleton instance of the AdPolicyHintsGrammar
      */
     public static Grammar<?> getInstance()

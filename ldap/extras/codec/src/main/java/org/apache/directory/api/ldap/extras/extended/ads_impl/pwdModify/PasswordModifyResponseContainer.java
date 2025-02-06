@@ -47,6 +47,8 @@ public class PasswordModifyResponseContainer extends AbstractContainer
 
 
     /**
+     * Get the PwdModifyResponset instance.
+     * 
      * @return Returns the PwdModifyResponset instance.
      */
     public PasswordModifyResponse getPwdModifyResponse()

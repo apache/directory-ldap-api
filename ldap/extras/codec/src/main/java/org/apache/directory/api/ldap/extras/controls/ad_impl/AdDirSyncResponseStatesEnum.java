@@ -30,11 +30,10 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum AdDirSyncResponseStatesEnum implements States
 {
-
     /** The END_STATE */
     END_STATE,
 
-    /***/
+    /** The start state */
     START_STATE,
 
     /** sequence start state */

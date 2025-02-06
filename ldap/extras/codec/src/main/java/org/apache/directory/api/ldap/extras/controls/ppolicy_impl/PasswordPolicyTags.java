@@ -51,6 +51,8 @@ public enum PasswordPolicyTags
 
 
     /**
+     * Get the numeric value associated with the PasswordPolicy tag
+     * 
      * @return The numeric value associated with the PasswordPolicy tag
      */
     public int getValue()

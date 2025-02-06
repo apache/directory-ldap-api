@@ -65,9 +65,7 @@ public final class AdDirSyncResponseGrammar extends AbstractGrammar<AdDirSyncRes
 
 
     /**
-     *
      * Creates a new instance of AdDirSyncResponseControlGrammar.
-     *
      */
     @SuppressWarnings("unchecked")
     private AdDirSyncResponseGrammar()
@@ -222,7 +220,9 @@ public final class AdDirSyncResponseGrammar extends AbstractGrammar<AdDirSyncRes
 
 
     /**
-     * @return the singleton instance of the AdDirSyncControlGrammar
+     * Get the singleton instance of the AdDirSyncControlGrammar
+     * 
+     * @return The singleton instance of the AdDirSyncControlGrammar
      */
     public static Grammar<AdDirSyncResponseContainer> getInstance()
     {

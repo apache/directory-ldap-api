@@ -51,6 +51,8 @@ public class AdPolicyHintsContainer extends AbstractContainer implements Control
 
 
     /**
+     * Get the AdPolicyHints control
+     * 
      * @return The AdPolicyHints control
      */
     public AdPolicyHints getAdPolicyHints()

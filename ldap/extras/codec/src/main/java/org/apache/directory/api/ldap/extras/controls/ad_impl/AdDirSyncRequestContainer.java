@@ -53,6 +53,8 @@ public class AdDirSyncRequestContainer extends AbstractContainer implements Cont
 
 
     /**
+     * Get the AdDirSyncRequestControlCodec object
+     * 
      * @return the AdDirSyncRequestControlCodec object
      */
     public AdDirSyncRequest getAdDirSyncRequest()

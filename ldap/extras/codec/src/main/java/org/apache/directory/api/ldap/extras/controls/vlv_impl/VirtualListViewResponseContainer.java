@@ -52,6 +52,8 @@ public class VirtualListViewResponseContainer extends AbstractContainer implemen
 
 
     /**
+     * Get the decorated VLV control
+     * 
      * @return The decorated VLV control
      */
     public VirtualListViewResponse getVirtualListViewResponse()

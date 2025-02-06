@@ -47,6 +47,8 @@ public class GracefulShutdownRequestContainer extends AbstractContainer
 
 
     /**
+     * Get the Graceful Shutdown object.
+     * 
      * @return Returns the Graceful Shutdown object.
      */
     public GracefulShutdownRequest getGracefulShutdownRequest()

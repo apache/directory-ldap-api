@@ -51,6 +51,8 @@ public class SyncRequestValueContainer extends AbstractContainer implements Cont
 
 
     /**
+     * Get the syncRequestValue control.
+     * 
      * @return Returns the syncRequestValue control.
      */
     public SyncRequestValue getSyncRequestValue()

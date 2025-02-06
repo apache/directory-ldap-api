@@ -60,6 +60,8 @@ public class EndTransactionResponseContainer extends AbstractContainer
 
 
     /**
+     * Get the EndTransactionResponse instance
+     * 
      * @return Returns the EndTransactionResponse instance.
      */
     public EndTransactionResponse getEndTransactionResponse()
@@ -81,6 +83,8 @@ public class EndTransactionResponseContainer extends AbstractContainer
 
     
     /**
+     * Get the currentUpdateControls
+     * 
      * @return the currentUpdateControls
      */
     public UpdateControls getCurrentUpdateControls()
@@ -90,6 +94,8 @@ public class EndTransactionResponseContainer extends AbstractContainer
 
     
     /**
+     * set the currentUpdateControls
+     * 
      * @param currentUpdateControls the currentUpdateControls to set
      */
     public void setCurrentControls( UpdateControls currentUpdateControls )

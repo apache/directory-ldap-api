@@ -47,6 +47,8 @@ public class CertGenerationRequestContainer extends AbstractContainer
 
 
     /**
+     * Get the CertGenerationRequest instance.
+     * 
      * @return Returns the CertGenerationRequest instance.
      */
     public CertGenerationRequest getCertGenerationRequest()

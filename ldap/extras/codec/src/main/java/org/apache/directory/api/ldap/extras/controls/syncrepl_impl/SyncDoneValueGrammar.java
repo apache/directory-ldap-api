@@ -190,6 +190,8 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
 
 
     /**
+     * Get the grammar instance
+     * 
      * @return the singleton instance of the SyncDoneValueControlGrammar
      */
     public static Grammar<SyncDoneValueContainer> getInstance()

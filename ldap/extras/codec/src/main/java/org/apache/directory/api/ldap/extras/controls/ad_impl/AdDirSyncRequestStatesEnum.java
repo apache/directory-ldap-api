@@ -34,7 +34,7 @@ public enum AdDirSyncRequestStatesEnum implements States
     /** The END_STATE */
     END_STATE,
 
-    /***/
+    /** Start state */
     START_STATE,
 
     /** sequence start state */

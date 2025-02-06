@@ -210,6 +210,8 @@ public final class AdDirSyncRequestGrammar extends AbstractGrammar<AdDirSyncRequ
 
 
     /**
+     * Get the grammar instance
+     * 
      * @return the singleton instance of the AdDirSyncControlGrammar
      */
     public static Grammar<AdDirSyncRequestContainer> getInstance()

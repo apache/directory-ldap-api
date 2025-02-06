@@ -47,6 +47,8 @@ public class EndTransactionRequestContainer extends AbstractContainer
 
 
     /**
+     * Get the EndTransactionRequest instance
+     * 
      * @return Returns the EndTransactionRequest instance.
      */
     public EndTransactionRequest getEndTransactionRequest()

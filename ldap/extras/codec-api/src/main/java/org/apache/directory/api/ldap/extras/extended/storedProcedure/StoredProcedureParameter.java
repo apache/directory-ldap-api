@@ -36,9 +36,17 @@ public class StoredProcedureParameter
     /** the value of the parameter */
     private byte[] value;
 
-
     /**
-     * Gets the type as a UTF8 String.
+     * Default constructor
+     */
+    public StoredProcedureParameter()
+    {
+        // Nothing to do
+    }
+
+    
+    /**
+     * Get the type as a UTF8 String.
      *
      * @return The type as a UTF8 String.
      */

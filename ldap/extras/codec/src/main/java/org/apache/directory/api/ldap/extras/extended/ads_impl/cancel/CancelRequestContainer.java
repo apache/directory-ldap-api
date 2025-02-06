@@ -47,6 +47,8 @@ public class CancelRequestContainer extends AbstractContainer
 
 
     /**
+     * Get the cancel request 
+     * 
      * @return Returns the Cancel object.
      */
     public CancelRequest getCancelRequest()

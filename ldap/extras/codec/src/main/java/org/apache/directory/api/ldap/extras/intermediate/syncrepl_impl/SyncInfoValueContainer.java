@@ -50,6 +50,8 @@ public class SyncInfoValueContainer extends AbstractContainer
 
 
     /**
+     * Get the syncInfoValue instance
+     * 
      * @return Returns the syncInfoValue instance.
      */
     public SyncInfoValue getSyncInfoValue()

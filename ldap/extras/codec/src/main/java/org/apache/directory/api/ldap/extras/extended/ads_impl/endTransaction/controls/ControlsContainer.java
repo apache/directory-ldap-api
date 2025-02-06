@@ -71,6 +71,8 @@ public class ControlsContainer extends AbstractContainer
 
     
     /**
+     * Get the current control
+     * 
      * @return the currentControl
      */
     public Control getCurrentControl()
@@ -80,6 +82,8 @@ public class ControlsContainer extends AbstractContainer
 
 
     /**
+     * Set the current control
+     * 
      * @param currentControl the currentControl to set
      */
     public void setCurrentControl( Control currentControl )
@@ -89,6 +93,8 @@ public class ControlsContainer extends AbstractContainer
 
 
     /**
+     * Get the controls list
+     * 
      * @return the controls
      */
     public List<Control> getControls()
@@ -98,6 +104,8 @@ public class ControlsContainer extends AbstractContainer
     
 
     /**
+     * Add a control
+     * 
      * @param control the controls to add to the list of controls
      */
     public void addControl( Control control )
@@ -107,6 +115,8 @@ public class ControlsContainer extends AbstractContainer
 
 
     /**
+     * Get the control factory
+     * 
      * @return the factory
      */
     public ControlFactory<?> getFactory()
@@ -116,6 +126,8 @@ public class ControlsContainer extends AbstractContainer
 
 
     /**
+     * Set the control factory
+     * 
      * @param factory the factory to set
      */
     public void setFactory( ControlFactory<?> factory )

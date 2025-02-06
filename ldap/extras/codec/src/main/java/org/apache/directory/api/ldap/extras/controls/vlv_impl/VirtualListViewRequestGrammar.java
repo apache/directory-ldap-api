@@ -129,6 +129,8 @@ public final class VirtualListViewRequestGrammar extends AbstractGrammar<Virtual
 
 
     /**
+     * Get the grammar instance
+     * 
      * @return the singleton instance of the VirtualListViewRequestGrammar
      */
     public static Grammar<?> getInstance()

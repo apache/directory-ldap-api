@@ -52,6 +52,8 @@ public class VirtualListViewRequestContainer extends AbstractContainer implement
 
 
     /**
+     * Get the VLV control
+     * 
      * @return The VLV control
      */
     public VirtualListViewRequest getVirtualListViewRequest()

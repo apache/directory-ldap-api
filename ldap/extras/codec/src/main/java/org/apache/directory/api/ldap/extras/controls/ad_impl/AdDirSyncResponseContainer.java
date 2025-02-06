@@ -52,7 +52,9 @@ public class AdDirSyncResponseContainer extends AbstractContainer implements Con
 
 
     /**
-     * @return the AdDirSyncResponseControlCodec object
+     * Get the AdDirSyncResponseControlCodec object
+     * 
+     * @return The AdDirSyncResponseControlCodec object
      */
     public AdDirSyncResponse getAdDirSyncResponseControl()
     {

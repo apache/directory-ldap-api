@@ -48,6 +48,8 @@ public class GracefulDisconnectResponseContainer extends AbstractContainer
 
 
     /**
+     * Get the GracefulDisconnectResponse object.
+     * 
      * @return Returns the GracefulDisconnectResponse object.
      */
     public GracefulDisconnectResponse getGracefulDisconnectResponse()

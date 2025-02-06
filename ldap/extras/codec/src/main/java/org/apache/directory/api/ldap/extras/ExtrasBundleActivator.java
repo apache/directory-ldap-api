@@ -41,10 +41,18 @@ public class ExtrasBundleActivator implements BundleActivator
 {
 
     private ServiceTracker<LdapApiService, LdapApiService> serviceTracker;
+    
+    /**
+     * default constructor
+     */
+    public ExtrasBundleActivator()
+    {
+        // Nothing to do
+    }
+    
 
     class LdapApiServiceTracker implements ServiceTrackerCustomizer<LdapApiService, LdapApiService>
     {
-
         private BundleContext context;
 
 

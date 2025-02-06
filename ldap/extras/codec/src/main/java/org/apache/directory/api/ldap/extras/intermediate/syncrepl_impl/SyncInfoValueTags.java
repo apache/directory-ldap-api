@@ -54,6 +54,8 @@ public enum SyncInfoValueTags
 
 
     /**
+     * Get the ASN 1 value
+     * 
      * @return The ASN.1 BER value for this tag.
      */
     public int getValue()

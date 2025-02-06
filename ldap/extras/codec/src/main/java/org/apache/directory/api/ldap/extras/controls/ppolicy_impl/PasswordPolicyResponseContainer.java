@@ -52,6 +52,8 @@ public class PasswordPolicyResponseContainer extends AbstractContainer implement
 
 
     /**
+     * Get the PasswordPolicyResponseControlCodec object
+     * 
      * @return the PasswordPolicyResponseControlCodec object
      */
     public PasswordPolicyResponse getPasswordPolicyResponse()

@@ -52,7 +52,9 @@ public class StoredProcedureRequestContainer extends AbstractContainer
 
 
     /**
-     * @return Returns the ldapMessage.
+     * Get the StoredProcedureRequest
+     * 
+     * @return Returns the StoredProcedureRequest.
      */
     public StoredProcedureRequest getStoredProcedure()
     {
@@ -73,6 +75,8 @@ public class StoredProcedureRequestContainer extends AbstractContainer
 
 
     /**
+     * Get the current parameter
+     * 
      * @return The current parameter
      */
     public StoredProcedureParameter getCurrentParameter()
