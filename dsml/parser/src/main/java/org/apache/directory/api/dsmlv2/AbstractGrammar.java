@@ -47,6 +47,14 @@ public abstract class AbstractGrammar implements Grammar
     /** The grammar name */
     protected String name;
 
+    /**
+     * Default constructor
+     */
+    public AbstractGrammar() 
+    {
+        // Nothing to do
+    }
+
 
     /**
      * Returns the grammar's name

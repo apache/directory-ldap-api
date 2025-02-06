@@ -122,6 +122,7 @@ public class Dsmlv2Engine
     /** The batch response. */
     protected BatchResponseDsml batchResponse = new BatchResponseDsml();
 
+    /** The DSML v2 grammar */
     protected Dsmlv2Grammar grammar = new Dsmlv2Grammar();
 
     /** flag to indicate to generate the response in a SOAP envelope */
@@ -130,6 +131,7 @@ public class Dsmlv2Engine
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Dsmlv2Engine.class );
     
+    /** The body envelope */
     private static final String BODY_ENVELOPE = "</Body></Envelope>";
 
 
@@ -546,6 +548,7 @@ public class Dsmlv2Engine
 
 
     /**
+     * Get the generate Soap Response
      * @return the generateSoapResp
      */
     public boolean isGenerateSoapResp()
@@ -555,6 +558,7 @@ public class Dsmlv2Engine
 
 
     /**
+     * Set the generate Soa pResponse
      * @param generateSoapResp the generateSoapResp to set
      */
     public void setGenerateSoapResp( boolean generateSoapResp )
@@ -564,6 +568,8 @@ public class Dsmlv2Engine
 
 
     /**
+     * Get the BatchResponse 
+     * 
      * @return the batchResponse
      */
     public BatchResponseDsml getBatchResponse()
@@ -573,6 +579,8 @@ public class Dsmlv2Engine
 
 
     /**
+     * Get the LdapConnection
+     * 
      * @return the connection
      */
     public LdapConnection getConnection()

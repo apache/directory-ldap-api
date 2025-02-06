@@ -3176,6 +3176,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
 
     /**
+     * Get the LdapApiService instance
+     * 
      * @return The LDAP codec service.
      */
     public LdapApiService getLdapCodecService()

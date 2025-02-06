@@ -77,7 +77,9 @@ public class SearchResultEntryDsml
 
 
     /**
-     * @return The current ATtributeType
+     * Get the current attributeType
+     * 
+     * @return The current AttributeType
      */
     public Attribute getCurrentAttribute()
     {

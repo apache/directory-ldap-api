@@ -31,6 +31,15 @@ import java.util.List;
 public class AndFilter extends ConnectorFilter
 {
     /**
+     * Default constructor
+     */
+    public AndFilter() 
+    {
+        super();
+    }
+
+
+    /**
      * Get the AndFilter.
      * 
      * @return Returns the andFilter.

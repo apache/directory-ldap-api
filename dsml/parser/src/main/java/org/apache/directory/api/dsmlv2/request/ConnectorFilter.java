@@ -37,6 +37,14 @@ public abstract class ConnectorFilter extends Filter
     /** The set of filters used by And/Or filters */
     protected List<Filter> filterSet;
 
+    /**
+     * Default constructor
+     */
+    public ConnectorFilter() 
+    {
+        super();
+    }
+
 
     /**
      * Add a new Filter to the list.

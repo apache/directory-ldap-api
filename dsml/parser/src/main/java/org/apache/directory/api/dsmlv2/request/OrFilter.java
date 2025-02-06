@@ -31,6 +31,15 @@ import java.util.List;
 public class OrFilter extends ConnectorFilter
 {
     /**
+     * Default constructor
+     */
+    public OrFilter() 
+    {
+        super();
+    }
+
+
+    /**
      * Get the OrFilter
      * 
      * @return Returns the orFilter.

@@ -60,6 +60,8 @@ public interface Container
 
 
     /**
+     * Get the states
+     * 
      * @return Returns the states.
      */
     Enum<Dsmlv2StatesEnum>[] getStates();

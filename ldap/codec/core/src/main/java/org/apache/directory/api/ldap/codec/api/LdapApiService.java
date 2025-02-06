@@ -142,6 +142,8 @@ public interface LdapApiService
 
 
     /**
+     * Get the request control factories
+     * 
      * @return the request controlFactories
      */
     Map<String, ControlFactory<? extends Control>> getRequestControlFactories();

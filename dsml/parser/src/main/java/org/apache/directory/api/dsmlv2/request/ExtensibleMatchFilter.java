@@ -40,6 +40,14 @@ public class ExtensibleMatchFilter extends Filter
     /** The dnAttributes flag */
     private boolean dnAttributes = false;
 
+    /**
+     * Default constructor
+     */
+    public ExtensibleMatchFilter() 
+    {
+        super();
+    }
+
 
     /**
      * Get the dnAttributes flag

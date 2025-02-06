@@ -32,6 +32,14 @@ public class Filter
     /** The parent Filter */
     protected Filter parent;
 
+    /**
+     * Default constructor
+     */
+    public Filter() 
+    {
+        // Nothing to do
+    }
+
 
     /**
      * Get the parent

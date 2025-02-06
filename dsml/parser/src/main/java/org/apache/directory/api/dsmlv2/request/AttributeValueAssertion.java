@@ -42,18 +42,22 @@ import org.apache.directory.api.util.Strings;
  */
 public class AttributeValueAssertion
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The attribute description */
     private String attributeDesc;
 
     /** The assertion value */
     private Value assertionValue;
 
+    /**
+     * Default constructor
+     */
+    public AttributeValueAssertion()
+    {
+        // Nothing to do
+    }
+    
 
     /**
-     *
      * Helper method to render an object which can be a String or a byte[]
      *
      * @param object The Value to dump

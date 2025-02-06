@@ -54,6 +54,14 @@ public class SubstringFilter extends Filter
     /** The final filter */
     private String finalSubstrings;
 
+    /**
+     * Default constructor
+     */
+    public SubstringFilter() 
+    {
+        super();
+    }
+    
 
     /**
      * Get the internal substrings

@@ -141,6 +141,7 @@ public interface EntityFactory
 
 
     /**
+     * Retrieve and load an ObjectClass  from the DIT
      * 
      * @param schemaManager The Schema Manager
      * @param entry The entry containing all the informations to build an ObjectClass
@@ -154,6 +155,7 @@ public interface EntityFactory
 
 
     /**
+     * Retrieve and load an LdapSyntax  from the DIT
      * 
      * @param schemaManager The Schema Manager
      * @param entry The entry containing all the informations to build a LdapSyntax

@@ -59,6 +59,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the context name
+         * 
          * @return The context name
          */
         public Dn getCtxName()
@@ -93,6 +95,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the generic Operation Principal instance
+         * 
          * @return The generic Operation Principal instance
          */
         public static StoredProcedureParameter instance()
@@ -101,9 +105,15 @@ public abstract class StoredProcedureParameter
         }
     }
 
+    /** The stored procedure name */ 
     protected final String name;
 
 
+    /**
+     * Store the StoredProcedure name
+     * 
+     * @param name The StoredProcedure nale
+     */
     protected StoredProcedureParameter( String name )
     {
         this.name = name;
@@ -111,6 +121,8 @@ public abstract class StoredProcedureParameter
 
 
     /**
+     * Get the StoredProcedure name
+     * 
      * @return the name of this Stored Procedure Parameter.
      */
     public String getName()
@@ -130,8 +142,7 @@ public abstract class StoredProcedureParameter
 
 
     /**
-     * @see java.lang.Object#hashCode()
-     * @return the instance's hash code 
+     * {@inheritDoc}
      */
     @Override
     public int hashCode()
@@ -145,7 +156,7 @@ public abstract class StoredProcedureParameter
 
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public boolean equals( Object obj )
@@ -190,7 +201,11 @@ public abstract class StoredProcedureParameter
     {
         private static Modify_OBJECT instance = new Modify_OBJECT( "$object" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Modify_OBJECT( String identifier )
         {
             super( identifier );
@@ -198,6 +213,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify Object instance
+         * 
          * @return The Modify Object instance
          */
         public static StoredProcedureParameter instance()
@@ -214,7 +231,11 @@ public abstract class StoredProcedureParameter
     {
         private static Modify_MODIFICATION instance = new Modify_MODIFICATION( "$modification" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Modify_MODIFICATION( String identifier )
         {
             super( identifier );
@@ -222,6 +243,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify Modification instance
+         * 
          * @return The Modify Modification instance
          */
         public static StoredProcedureParameter instance()
@@ -238,7 +261,11 @@ public abstract class StoredProcedureParameter
     {
         private static Modify_OLD_ENTRY instance = new Modify_OLD_ENTRY( "$oldEntry" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Modify_OLD_ENTRY( String identifier )
         {
             super( identifier );
@@ -246,6 +273,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify Old Entry instance
+         * 
          * @return The Modify Old Entry instance
          */
         public static StoredProcedureParameter instance()
@@ -262,7 +291,11 @@ public abstract class StoredProcedureParameter
     {
         private static Modify_NEW_ENTRY instance = new Modify_NEW_ENTRY( "$newEntry" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Modify_NEW_ENTRY( String identifier )
         {
             super( identifier );
@@ -270,6 +303,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify New Entry instance
+         * 
          * @return The Modify New Entry instance
          */
         public static StoredProcedureParameter instance()
@@ -286,7 +321,11 @@ public abstract class StoredProcedureParameter
     {
         private static Add_ENTRY instance = new Add_ENTRY( "$entry" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Add_ENTRY( String identifier )
         {
             super( identifier );
@@ -294,6 +333,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Add Entry instance
+         * 
          * @return The Add Entry instance
          */
         public static StoredProcedureParameter instance()
@@ -310,7 +351,11 @@ public abstract class StoredProcedureParameter
     {
         private static Add_ATTRIBUTES instance = new Add_ATTRIBUTES( "$attributes" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Add_ATTRIBUTES( String identifier )
         {
             super( identifier );
@@ -318,6 +363,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Add Attributes instance
+         * 
          * @return The Add Attributes instance
          */
         public static StoredProcedureParameter instance()
@@ -334,7 +381,11 @@ public abstract class StoredProcedureParameter
     {
         private static Delete_NAME instance = new Delete_NAME( "$name" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Delete_NAME( String identifier )
         {
             super( identifier );
@@ -342,6 +393,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Delete Name instance
+         * 
          * @return The Delete Name instance
          */
         public static StoredProcedureParameter instance()
@@ -358,7 +411,11 @@ public abstract class StoredProcedureParameter
     {
         private static Delete_DELETED_ENTRY instance = new Delete_DELETED_ENTRY( "$deletedEntry" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private Delete_DELETED_ENTRY( String identifier )
         {
             super( identifier );
@@ -366,6 +423,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Delete Deleted instance
+         * 
          * @return The Delete Deleted instance
          */
         public static StoredProcedureParameter instance()
@@ -382,7 +441,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_ENTRY instance = new ModifyDN_ENTRY( "$entry" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private ModifyDN_ENTRY( String identifier )
         {
             super( identifier );
@@ -390,6 +453,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify DN Entry instance
+         * 
          * @return The Modify DN Entry instance
          */
         public static StoredProcedureParameter instance()
@@ -406,7 +471,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_NEW_RDN instance = new ModifyDN_NEW_RDN( "$newrdn" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private ModifyDN_NEW_RDN( String identifier )
         {
             super( identifier );
@@ -414,6 +483,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify New Rdn instance
+         * 
          * @return The Modify New Rdn instance
          */
         public static StoredProcedureParameter instance()
@@ -430,7 +501,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_DELETE_OLD_RDN instance = new ModifyDN_DELETE_OLD_RDN( "$deleteoldrdn" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private ModifyDN_DELETE_OLD_RDN( String identifier )
         {
             super( identifier );
@@ -438,6 +513,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify DN Delete Old RDN instance
+         * 
          * @return The Modify DN Delete Old RDN instance
          */
         public static StoredProcedureParameter instance()
@@ -454,7 +531,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_NEW_SUPERIOR instance = new ModifyDN_NEW_SUPERIOR( "$newSuperior" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private ModifyDN_NEW_SUPERIOR( String identifier )
         {
             super( identifier );
@@ -462,6 +543,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify DN New Superior instance
+         * 
          * @return The Modify DN New Superior instance
          */
         public static StoredProcedureParameter instance()
@@ -478,7 +561,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_OLD_RDN instance = new ModifyDN_OLD_RDN( "$oldRDN" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private ModifyDN_OLD_RDN( String identifier )
         {
             super( identifier );
@@ -486,6 +573,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify DN Old RDN instance
+         * 
          * @return The Modify DN Old RDN instance
          */
         public static StoredProcedureParameter instance()
@@ -502,7 +591,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_OLD_SUPERIOR_DN instance = new ModifyDN_OLD_SUPERIOR_DN( "$oldRDN" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier 
+         */
         private ModifyDN_OLD_SUPERIOR_DN( String identifier )
         {
             super( identifier );
@@ -510,6 +603,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify DN Old Superior DN instance
+         * 
          * @return The Modify DN Old Superior DN instance
          */
         public static StoredProcedureParameter instance()
@@ -526,7 +621,11 @@ public abstract class StoredProcedureParameter
     {
         private static ModifyDN_NEW_DN instance = new ModifyDN_NEW_DN( "$oldRDN" );
 
-
+        /**
+         * A private constructor
+         * 
+         * @param identifier The ProcedureStored name
+         */
         private ModifyDN_NEW_DN( String identifier )
         {
             super( identifier );
@@ -534,6 +633,8 @@ public abstract class StoredProcedureParameter
 
 
         /**
+         * Get the Modify DN New DN instance
+         * 
          * @return The Modify DN New DN instance
          */
         public static StoredProcedureParameter instance()

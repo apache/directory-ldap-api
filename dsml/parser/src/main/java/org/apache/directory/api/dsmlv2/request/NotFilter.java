@@ -32,6 +32,15 @@ import org.apache.directory.api.i18n.I18n;
 public class NotFilter extends ConnectorFilter
 {
     /**
+     * Default constructor
+     */
+    public NotFilter() 
+    {
+        super();
+    }
+
+
+    /**
      * Subclass the addFilterMethod, as this is specific for a NotFilter (we
      * cannot have more than one elements).
      * 

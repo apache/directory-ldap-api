@@ -353,9 +353,15 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <show>private</show>
+          <!--show>private</show-->
           <nohelp>true</nohelp>
           <!--doclint>none</doclint-->
+          <additionalJOptions>
+            <additionalJOption>-Xmaxerrs</additionalJOption>
+            <additionalJOption>65536</additionalJOption>
+            <additionalJOption>-Xmaxwarns</additionalJOption>
+            <additionalJOption>65536</additionalJOption>
+          </additionalJOptions>
         </configuration>
       </plugin>
 

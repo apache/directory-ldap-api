@@ -280,6 +280,13 @@ public class DefaultSchemaManager implements SchemaManager
     }
 
 
+    /**
+     * Add all schema's SchemaObject into the registries
+     * 
+     * @param schema The schema to inject
+     * @param registries The registries that will be updated
+     * @throws LdapException If the injection failed
+     */
     protected void addSchemaObjects( Schema schema, Registries registries ) throws LdapException
     {
         // Create a content container for this schema
@@ -2485,13 +2492,22 @@ public class DefaultSchemaManager implements SchemaManager
         isRelaxed = STRICT;
     }
 
-
+    /**
+     * Get the Errors' handler
+     * 
+     * @return The Errors' handler
+     */
     public SchemaErrorHandler getErrorHandler()
     {
         return errorHandler;
     }
 
 
+    /**
+     * Set the Errors' handler
+     * 
+     * @param errorHandler The Errors' handler to set
+     */
     public void setErrorHandler( SchemaErrorHandler errorHandler )
     {
         this.errorHandler = errorHandler;

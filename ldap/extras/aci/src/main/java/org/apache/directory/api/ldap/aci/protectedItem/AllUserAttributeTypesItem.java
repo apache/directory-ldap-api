@@ -34,7 +34,7 @@ public class AllUserAttributeTypesItem extends ProtectedItem
     /**
      * Default constructor
      */
-    public AllUserAttributeTypesItem
+    public AllUserAttributeTypesItem()
     {
         super();
     }

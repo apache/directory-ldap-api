@@ -85,6 +85,8 @@ public class ModifyRequestDsml
 
 
     /**
+     * Get the cirrent attribute's type
+     * 
      * @return the current attribute's type
      */
     public String getCurrentAttributeType()

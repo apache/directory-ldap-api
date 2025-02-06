@@ -315,7 +315,9 @@ public class BatchRequestDsml
 
 
     /**
-     * @return true if the request objects are stored, false otherwise
+     * Tells if the request objects are stored
+     * 
+     * @return <code>true</code> if the request objects are stored, <code>false</code> otherwise
      */
     public boolean isStoringRequests()
     {

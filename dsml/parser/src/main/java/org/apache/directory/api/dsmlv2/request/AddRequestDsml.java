@@ -99,6 +99,8 @@ public class AddRequestDsml
 
 
     /**
+     * Get the current attributeType
+     * 
      * @return Returns the currentAttribute type.
      */
     public String getCurrentAttributeType()

@@ -65,6 +65,8 @@ public enum LdapOperation
 
 
     /**
+     * Get the Ldap Operation name
+     * 
      * @return the name of this LDAP operation
      */
     public String getName()

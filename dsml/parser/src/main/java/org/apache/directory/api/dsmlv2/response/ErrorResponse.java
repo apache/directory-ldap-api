@@ -278,6 +278,8 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
 
 
     /**
+     * Get the LdapApiService instance
+     * 
      * @return The LdapApiService instance
      */
     public LdapApiService getCodecService()

@@ -30,6 +30,14 @@ public class PresentFilter extends Filter
     /** The attribute description. */
     private String attributeDescription;
 
+    /**
+     * Default constructor
+     */
+    public PresentFilter() 
+    {
+        super();
+    }
+
 
     /**
      * Get the attribute

@@ -57,6 +57,8 @@ public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
 
 
     /**
+     * Get the LdapApiService instance
+     * 
      * @return The LDAP codec service.
      */
     public LdapApiService getCodecService()
