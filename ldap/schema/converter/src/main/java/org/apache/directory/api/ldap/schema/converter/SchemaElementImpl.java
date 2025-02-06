@@ -58,6 +58,14 @@ public abstract class SchemaElementImpl implements SchemaElement
     /** The optional list of extensions */
     protected Map<String, List<String>> extensions = new HashMap<>();
 
+    /**
+     * Default constructor
+     */
+    public SchemaElementImpl()
+    {
+        // Nothing to do
+    }
+
 
     /**
      * {@inheritDoc}

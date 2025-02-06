@@ -45,11 +45,11 @@ import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 }
 
 
-class antlrSchemaConverterLexer extends Lexer ;
+class AntlrSchemaConverterLexer extends Lexer ;
 
 options    {
     k = 7 ;
-    exportVocab=antlrSchema ;
+    exportVocab=AntlrSchema ;
     charVocabulary = '\3'..'\377' ;
     caseSensitive = false ;
     defaultErrorHandler = false ;
@@ -109,7 +109,7 @@ SYNTAX
         "syntax" WS NUMERICOID ( OPEN_BRACKET ( DIGIT )+ CLOSE_BRACKET )?
     ;
 
-class antlrSchemaConverterParser extends Parser ;
+class AntlrSchemaConverterParser extends Parser ;
 
 options    {
     k = 5 ;

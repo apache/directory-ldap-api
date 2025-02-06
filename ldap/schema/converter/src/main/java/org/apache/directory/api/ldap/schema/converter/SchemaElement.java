@@ -51,12 +51,16 @@ public interface SchemaElement
 
 
     /**
+     * Get the Schema Element OID
+     * 
      * @return the schema element's OID
      */
     String getOid();
 
 
     /**
+     * Get the dschema element description
+     * 
      * @return Return the schema element description
      */
     String getDescription();
@@ -64,12 +68,15 @@ public interface SchemaElement
 
     /**
      * Set the schema element's description
+     * 
      * @param description The schema element's description
      */
     void setDescription( String description );
 
 
     /**
+     * Get the list of possible names
+     * 
      * @return The list of names for the schemaElement
      */
     List<String> getNames();
@@ -77,18 +84,23 @@ public interface SchemaElement
 
     /**
      * Set a list of names for a schemaElement
+     * 
      * @param names The list of names of this schemaElement
      */
     void setNames( List<String> names );
 
 
     /**
+     * Get the list of extensions
+     * 
      * @return The list of extensions for the schemaElement
      */
     Map<String, List<String>> getExtensions();
 
 
     /**
+     * Get the extension associated to a key
+     * 
      * @param key the Extension key
      * @return The list of a values for a given extension
      */
@@ -97,6 +109,7 @@ public interface SchemaElement
 
     /**
      * Set a list of extensions for a schemaElement
+     * 
      * @param extensions The list of extensions of this schemaElement
      */
     void setExtensions( Map<String, List<String>> extensions );
@@ -105,6 +118,7 @@ public interface SchemaElement
     /**
      * Generate a String representation of this schemaElement, formated
      * as a ldif string 
+     * 
      * @param schemaName The schema from which is extracted this schemaElement
      * @return A string representing the schemaElement as a Ldif formated  String 
      * @throws org.apache.directory.api.ldap.model.exception.LdapException If any error occurs.

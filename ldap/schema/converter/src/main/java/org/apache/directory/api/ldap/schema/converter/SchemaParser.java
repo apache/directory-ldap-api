@@ -47,7 +47,7 @@ import antlr.TokenStreamException;
 public class SchemaParser
 {
     /** The antlr generated parser */
-    private antlrSchemaConverterParser parser = null;
+    private AntlrSchemaConverterParser parser = null;
 
     /** A pipe into the parser */
     private PipedOutputStream parserIn = null;
@@ -83,8 +83,8 @@ public class SchemaParser
         parserIn = new PipedOutputStream();
         PipedInputStream in = new PipedInputStream();
         parserIn.connect( in );
-        antlrSchemaConverterLexer lexer = new antlrSchemaConverterLexer( in );
-        parser = new antlrSchemaConverterParser( lexer );
+        AntlrSchemaConverterLexer lexer = new AntlrSchemaConverterLexer( in );
+        parser = new AntlrSchemaConverterParser( lexer );
     }
 
 

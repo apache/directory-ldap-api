@@ -66,6 +66,7 @@ public class ObjectClassHolder extends SchemaElementImpl
 
     /**
      * Get the list of superior for this objectClass
+     * 
      * @return A list of all inherited objectClasses 
      */
     public List<String> getSuperiors()
@@ -76,6 +77,7 @@ public class ObjectClassHolder extends SchemaElementImpl
 
     /**
      * Set the list of inherited objectClasses
+     * 
      * @param superiors The list of inherited objectClasses
      */
     public void setSuperiors( List<String> superiors )
@@ -85,6 +87,8 @@ public class ObjectClassHolder extends SchemaElementImpl
 
 
     /**
+     * Get the list of ObjectClass MUST attributes
+     * 
      * @return The list of mandatory attributes
      */
     public List<String> getMust()
@@ -95,6 +99,7 @@ public class ObjectClassHolder extends SchemaElementImpl
 
     /**
      * Set the list of mandatory attributes
+     * 
      * @param must The list of mandatory attributes
      */
     public void setMust( List<String> must )
@@ -104,6 +109,8 @@ public class ObjectClassHolder extends SchemaElementImpl
 
 
     /**
+     * Get the list of optional attributes
+     * 
      * @return The list of optional attributes
      */
     public List<String> getMay()
@@ -114,6 +121,7 @@ public class ObjectClassHolder extends SchemaElementImpl
 
     /**
      * Set the list of optional attributes
+     * 
      * @param may The list of optional attributes
      */
     public void setMay( List<String> may )
@@ -123,6 +131,8 @@ public class ObjectClassHolder extends SchemaElementImpl
 
 
     /**
+     * Get th eObjectClass type
+     * 
      * @return The objectClass type
      */
     public ObjectClassTypeEnum getClassType()
@@ -133,6 +143,7 @@ public class ObjectClassHolder extends SchemaElementImpl
 
     /**
      * Set the objectClass type. 
+     * 
      * @param classType The objectClass type. 
      */
     public void setClassType( ObjectClassTypeEnum classType )

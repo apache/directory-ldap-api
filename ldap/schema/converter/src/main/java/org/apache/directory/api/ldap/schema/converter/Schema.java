@@ -42,7 +42,15 @@ public class Schema
     /** The writer where we dump the ldif lines */
     private Writer out;
 
-
+    /**
+     * Default construtor
+     */
+    public Schema()
+    {
+        // Nothing to do
+    }
+    
+    
     /**
      * Set the schema name to parse. This name is the prefix of the
      * schema file, which postfix is '.schema'.
@@ -58,6 +66,8 @@ public class Schema
 
 
     /**
+     * Get the schema name
+     * 
      * @return The schema name.
      */
     public String getName()
@@ -68,6 +78,7 @@ public class Schema
 
     /**
      * Set the inputStream mapped on the schema file
+     * 
      * @param in The InputStream mapped on the schema file
      */
     public void setInput( InputStream in )
@@ -77,6 +88,8 @@ public class Schema
 
 
     /**
+     * Get the inputSteam mapped on the schema file
+     * 
      * @return The InputStream mapped on the schema file
      */
     public InputStream getInput()
@@ -86,6 +99,8 @@ public class Schema
 
 
     /**
+     * Get the writer in which the ldif lines will be dumped
+     * 
      * @return The writer in which the ldif lines will be dumped
      */
     public Writer getOutput()
@@ -96,6 +111,7 @@ public class Schema
 
     /**
      * Set a writer to dump the ldif files
+     * 
      * @param out The writer 
      */
     public void setOutput( Writer out )

@@ -1073,6 +1073,8 @@ public class DnNode<N>
 
 
     /**
+     * Get the Dn
+     * 
      * @return the dn
      */
     public synchronized Dn getDn()
