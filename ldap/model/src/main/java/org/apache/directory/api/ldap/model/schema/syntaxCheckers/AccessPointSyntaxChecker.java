@@ -76,6 +76,8 @@ public final class AccessPointSyntaxChecker extends SyntaxChecker
 
 
     /**
+     * Get an instance of the Builder for this class
+     * 
      * @return An instance of the Builder for this class
      */
     public static Builder builder()

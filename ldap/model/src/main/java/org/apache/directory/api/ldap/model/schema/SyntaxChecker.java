@@ -72,6 +72,11 @@ public abstract class SyntaxChecker extends LoadableSchemaObject
             return this;
         }
         
+        /**
+         * Build a SyntaxChecker
+         * 
+         * @return The built SyntaxChecker
+         */
         public abstract SC build();
     }
 

@@ -82,6 +82,8 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
 
 
     /**
+     * Get the currentAttribute type.
+     * 
      * @return Returns the currentAttribute type.
      */
     public String getCurrentAttributeType()

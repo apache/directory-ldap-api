@@ -70,6 +70,8 @@ public enum AliasDerefMode
 
 
     /**
+     * Get the value
+     * 
      * @return The value associated with the current element.
      */
     public int getValue()
@@ -251,6 +253,8 @@ public enum AliasDerefMode
 
 
     /**
+     * Get the JNDI value
+     * 
      * @return The JNDI value
      */
     public String getJndiValue()

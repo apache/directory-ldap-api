@@ -73,6 +73,8 @@ public enum AdministrativeRole
 
 
     /**
+     * Get the AdministrativeRole
+     * 
      * @return The AdministrativeRole as a String
      */
     public String getRole()
