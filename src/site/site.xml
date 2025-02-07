@@ -18,11 +18,10 @@
 <!--
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
-<project name="${project.name}">
-  <bannerLeft>
-    <src>images/server-icon_128x128.png</src>
-    <href>https://directory.apache.org/</href>
-    <name>${project.name}</name>
+<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd" name="${project.name}">
+  <bannerLeft name="${project.name}" href="https://directory.apache.org/">
+    <image src="/server-icon_128x128.png"/>
   </bannerLeft>
   <skin>
     <groupId>org.apache.directory.skins</groupId>
@@ -49,4 +48,4 @@
     <menu ref="reports"/>
     <menu ref="modules"/>
   </body>
-</project>
+</site>
