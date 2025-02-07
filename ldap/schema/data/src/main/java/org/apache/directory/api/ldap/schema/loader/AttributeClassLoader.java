@@ -148,7 +148,7 @@ public class AttributeClassLoader extends ClassLoader
      * {@inheritDoc}
      */
     @Override
-    public Class<?> findClass( String name ) throws ClassNotFoundException
+    protected Class<?> findClass( String name ) throws ClassNotFoundException
     {
         byte[] classBytes;
 

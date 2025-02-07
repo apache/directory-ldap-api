@@ -169,7 +169,9 @@ public class SaslGssApiRequest extends AbstractSaslRequest
 
 
     /**
-     * {@inheritDoc}
+     * Sets the realm name.
+     * 
+     * @param realmName The realm name
      */
     // Overriding the visibility of the method to public
     @Override

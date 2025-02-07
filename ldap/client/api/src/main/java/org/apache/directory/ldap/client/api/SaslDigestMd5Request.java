@@ -41,7 +41,9 @@ public class SaslDigestMd5Request extends AbstractSaslRequest
 
 
     /**
-     * {@inheritDoc}
+     * Sets the realm name.
+     * 
+     * @param realmName The realm name
      */
     // Overriding the visibility of the method to public
     @Override

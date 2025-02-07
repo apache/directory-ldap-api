@@ -48,6 +48,8 @@ public class AndRefinement implements Refinement
 
 
     /**
+     * Get the set of refinements
+     * 
      * @return Gets the set of refinements
      */
     public List<Refinement> getRefinements()
