@@ -52,6 +52,8 @@
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/</distMgmtSiteUrl>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+    <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
     
     <!-- Activate reproductible builds -->
     <project.build.outputTimestamp>1722609791</project.build.outputTimestamp>
@@ -66,7 +68,7 @@
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
     <caffeine.version>2.9.3</caffeine.version>
-    <commons.codec.version>1.17.2</commons.codec.version>
+    <commons.codec.version>1.18.0</commons.codec.version>
     <commons.collections.version>4.5.0-M3</commons.collections.version>
     <commons.lang.version>3.17.0</commons.lang.version>
     <commons.pool.version>2.12.1</commons.pool.version>
@@ -74,7 +76,7 @@
     <dom4j.version>2.1.4</dom4j.version>
     <forbiddenapis.version>3.8</forbiddenapis.version>
     <hamcrest.version>3.0</hamcrest.version>
-    <junit.engine.version>5.11.4</junit.engine.version>
+    <junit.engine.version>5.12.0-M1</junit.engine.version>
     <junit.platform.version>1.11.4</junit.platform.version>
     <mina.core.version>2.2.4</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
@@ -710,7 +712,7 @@
           </reportSet>
         </reportSets>
       </plugin>
-     
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
