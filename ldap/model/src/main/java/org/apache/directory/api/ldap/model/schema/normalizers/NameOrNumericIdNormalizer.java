@@ -52,7 +52,7 @@ public class NameOrNumericIdNormalizer extends Normalizer
 
 
     /**
-     * Creates a new instance of GeneralizedTimeNormalizer.
+     * Creates a new instance of NameOrNumericIdNormalizer.
      */
     public NameOrNumericIdNormalizer()
     {
