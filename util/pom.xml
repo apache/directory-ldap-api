@@ -33,6 +33,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-library</artifactId>
       <scope>test</scope>
@@ -89,6 +94,7 @@
               org.apache.directory.api.util.exception;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
+              org.apache.commons.text;version=${commons.text.version},
               org.apache.directory.api.i18n;version=${project.version},
               org.slf4j;version=${slf4j.api.bundleversion},
               javax.naming
