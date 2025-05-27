@@ -69,7 +69,7 @@
     <antlr.version>2.7.7</antlr.version>
     <caffeine.version>2.9.3</caffeine.version>
     <commons.codec.version>1.18.0</commons.codec.version>
-    <commons.collections.version>4.5.0-M3</commons.collections.version>
+    <commons.collections.version>4.5.0</commons.collections.version>
     <commons.lang.version>3.17.0</commons.lang.version>
     <commons.pool.version>2.12.1</commons.pool.version>
     <commons.text.version>1.13.0</commons.text.version>
