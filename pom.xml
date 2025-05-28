@@ -72,7 +72,7 @@
     <commons.collections.version>4.5.0</commons.collections.version>
     <commons.lang.version>3.17.0</commons.lang.version>
     <commons.pool.version>2.12.1</commons.pool.version>
-    <commons.text.version>1.13.0</commons.text.version>
+    <commons.text.version>1.13.1</commons.text.version>
     <dom4j.version>2.1.4</dom4j.version>
     <forbiddenapis.version>3.8</forbiddenapis.version>
     <hamcrest.version>3.0</hamcrest.version>
