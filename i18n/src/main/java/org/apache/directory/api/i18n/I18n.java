@@ -1609,7 +1609,7 @@ public enum I18n
         sb.append( msg ).append( ' ' );
         try
         {
-            return sb.append( format( ERR_BUNDLE.getString( msg.getErrorCode() ), args ) ).toString();
+            return sb.append( format( MSG_BUNDLE.getString( msg.getErrorCode() ), args ) ).toString();
         }
         catch ( Exception e )
         {
