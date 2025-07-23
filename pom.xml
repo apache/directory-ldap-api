@@ -77,7 +77,7 @@
     <forbiddenapis.version>3.9</forbiddenapis.version>
     <hamcrest.version>3.0</hamcrest.version>
     <junit.engine.version>5.13.0</junit.engine.version>
-    <junit.platform.version>1.12.2</junit.platform.version>
+    <junit.platform.version>1.13.4</junit.platform.version>
     <mina.core.version>2.2.4</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>7.0.5</org.apache.felix.version>
