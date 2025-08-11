@@ -5102,6 +5102,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             {
                 sslFilter.setEnabledCipherSuites( enabledCipherSuite );
             }
+            
+            //sslFilter.setUseNonBlockingPipeline( true );
 
             // Be sure we disable SSLV3
             String[] enabledProtocols = config.getEnabledProtocols();
