@@ -649,7 +649,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // Add the X-SCHEMA extension
         if ( schemaName != null )
         {
-            addExtension(MetaSchemaConstants.X_SCHEMA_AT, schemaName);
+            addExtension( MetaSchemaConstants.X_SCHEMA_AT, schemaName );
         }
         else if ( hasExtension( MetaSchemaConstants.X_SCHEMA_AT ) )
         {
