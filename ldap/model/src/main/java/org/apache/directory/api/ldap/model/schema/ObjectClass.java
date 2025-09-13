@@ -110,6 +110,8 @@ public class ObjectClass extends AbstractSchemaObject
         mustAttributeTypes = new ArrayList<>();
         superiors = new ArrayList<>();
         objectClassType = ObjectClassTypeEnum.STRUCTURAL;
+        
+        rehash();
     }
 
 
@@ -147,6 +149,8 @@ public class ObjectClass extends AbstractSchemaObject
         {
             mayAttributeTypeOids.add( oid );
         }
+        
+        rehash();
     }
 
 
@@ -170,6 +174,8 @@ public class ObjectClass extends AbstractSchemaObject
                 mayAttributeTypeOids.add( attributeType.getOid() );
             }
         }
+
+        rehash();
     }
 
 
@@ -184,6 +190,8 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         this.mayAttributeTypeOids = mayAttributeTypeOids;
+
+        rehash();
     }
 
 
@@ -208,6 +216,8 @@ public class ObjectClass extends AbstractSchemaObject
         {
             mayAttributeTypeOids.add( may.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -245,6 +255,8 @@ public class ObjectClass extends AbstractSchemaObject
         {
             mustAttributeTypeOids.add( oid );
         }
+
+        rehash();
     }
 
 
@@ -268,6 +280,8 @@ public class ObjectClass extends AbstractSchemaObject
                 mustAttributeTypeOids.add( attributeType.getOid() );
             }
         }
+
+        rehash();
     }
 
 
@@ -282,6 +296,8 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         this.mustAttributeTypeOids = mustAttributeTypeOids;
+
+        rehash();
     }
 
 
@@ -306,6 +322,8 @@ public class ObjectClass extends AbstractSchemaObject
         {
             mustAttributeTypeOids.add( may.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -350,6 +368,8 @@ public class ObjectClass extends AbstractSchemaObject
                 superiorOids.add( oid );
             }
         }
+
+        rehash();
     }
 
 
@@ -373,6 +393,8 @@ public class ObjectClass extends AbstractSchemaObject
                 superiors.add( objectClass );
             }
         }
+
+        rehash();
     }
 
 
@@ -397,6 +419,8 @@ public class ObjectClass extends AbstractSchemaObject
         {
             superiorOids.add( oc.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -413,6 +437,8 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         this.superiorOids = superiorOids;
+
+        rehash();
     }
 
 
@@ -440,6 +466,8 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         this.objectClassType = objectClassType;
+
+        rehash();
     }
 
 
@@ -533,6 +561,8 @@ public class ObjectClass extends AbstractSchemaObject
         // Copy the MUST AttributeTypes ( will be empty )
         copy.mustAttributeTypes = new ArrayList<>();
 
+        copy.rehash();
+        
         return copy;
     }
 
@@ -541,8 +571,10 @@ public class ObjectClass extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    protected void rehash()
     {
+        super.rehash();
+        
         int hash = h;
         
         hash = hash * 17 + objectClassType.getValue();
@@ -576,7 +608,7 @@ public class ObjectClass extends AbstractSchemaObject
      
         hash = hash * 17 + tempHash;
 
-        return hash;
+        h = hash;
     }
     
 
@@ -768,5 +800,7 @@ public class ObjectClass extends AbstractSchemaObject
         mustAttributeTypeOids.clear();
         superiors.clear();
         superiorOids.clear();
+
+        rehash();
     }
 }

@@ -30,6 +30,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.parsers.AbstractSchemaParser;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
@@ -864,31 +865,47 @@ public class SchemaParserTestUtils
         // no extension
         value = "( " + oid + " " + required + " )";
         asd = parser.parse( value );
-        assertEquals( 0, asd.getExtensions().size() );
+        assertEquals( 1, asd.getExtensions().size() );
+        
+        // Check the schema
+        assertNotNull( asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, asd.getExtension( "X-SCHEMA" ).get(0) );
+
 
         // single extension with one value
         value = "( " + oid + " " + required + " X-TEST 'test' )";
         asd = parser.parse( value );
-        assertEquals( 1, asd.getExtensions().size() );
+        assertEquals( 2, asd.getExtensions().size() );
         assertNotNull( asd.getExtension( "X-TEST" ) );
         assertEquals( 1, asd.getExtension( "X-TEST" ).size() );
         assertEquals( "test", asd.getExtension( "X-TEST" ).get( 0 ) );
+        
+        // Check the schema
+        assertNotNull( asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, asd.getExtension( "X-SCHEMA" ).get(0) );
 
         // single extension with multiple values
         value = "( " + oid + " " + required
             + " X-TEST-ABC ('test1' 'test \u00E4\u00F6\u00FC\u00DF'       'test \u90E8\u9577' ) )";
         asd = parser.parse( value );
-        assertEquals( 1, asd.getExtensions().size() );
+        assertEquals( 2, asd.getExtensions().size() );
         assertNotNull( asd.getExtension( "X-TEST-ABC" ) );
         assertEquals( 3, asd.getExtension( "X-TEST-ABC" ).size() );
         assertEquals( "test1", asd.getExtension( "X-TEST-ABC" ).get( 0 ) );
         assertEquals( "test \u00E4\u00F6\u00FC\u00DF", asd.getExtension( "X-TEST-ABC" ).get( 1 ) );
         assertEquals( "test \u90E8\u9577", asd.getExtension( "X-TEST-ABC" ).get( 2 ) );
 
+        // Check the schema
+        assertNotNull( asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, asd.getExtension( "X-SCHEMA" ).get(0) );
+
         // multiple extensions
         value = "(" + oid + " " + required + " X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2'))";
         asd = parser.parse( value );
-        assertEquals( 2, asd.getExtensions().size() );
+        assertEquals( 3, asd.getExtensions().size() );
         assertNotNull( asd.getExtension( "X-TEST-a" ) );
         assertEquals( 2, asd.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", asd.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -897,6 +914,11 @@ public class SchemaParserTestUtils
         assertEquals( 2, asd.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", asd.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", asd.getExtension( "X-TEST-b" ).get( 1 ) );
+        
+        // Check the schema
+        assertNotNull( asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, asd.getExtension( "X-SCHEMA" ).get(0) );
 
         // multiple extensions, no spaces
         value = "(" + oid + " " + required + " X-TEST-a('test1-1''test1-2')X-TEST-b('test2-1''test2-2'))";
@@ -915,7 +937,7 @@ public class SchemaParserTestUtils
         value = "(" + oid + "\n#comment\n" + required
             + "\nX-TEST-a\n(\t'test1-1'\t\n'test1-2'\n\r)\tX-TEST-b\n(\n'test2-1'\t'test2-2'\t)\r)";
         asd = parser.parse( value );
-        assertEquals( 2, asd.getExtensions().size() );
+        assertEquals( 3, asd.getExtensions().size() );
         assertNotNull( asd.getExtension( "X-TEST-a" ) );
         assertEquals( 2, asd.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", asd.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -924,17 +946,27 @@ public class SchemaParserTestUtils
         assertEquals( 2, asd.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", asd.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", asd.getExtension( "X-TEST-b" ).get( 1 ) );
+        
+        // Check the schema
+        assertNotNull( asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, asd.getExtension( "X-SCHEMA" ).get(0) );
 
         // some more complicated
         value = "(" + oid + " " + required
             + " X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ('\\5C\\27\\5c'))";
         asd = parser.parse( value );
-        assertEquals( 1, asd.getExtensions().size() );
+        assertEquals( 2, asd.getExtensions().size() );
         assertNotNull( asd.getExtension( "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ) );
         assertEquals( 1, asd.getExtension( "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" )
             .size() );
         assertEquals( "\\'\\", asd.getExtension(
             "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ).get( 0 ) );
+
+        // Check the schema
+        assertNotNull( asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, asd.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, asd.getExtension( "X-SCHEMA" ).get(0) );
 
         // invalid extension, no number allowed
         value = "( " + oid + " " + required + " X-TEST1 'test' )";

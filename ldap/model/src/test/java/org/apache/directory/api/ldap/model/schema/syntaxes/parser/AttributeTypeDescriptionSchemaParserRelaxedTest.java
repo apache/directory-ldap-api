@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -792,7 +793,20 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         String value = null;
         AttributeType attributeType = null;
 
-        value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Description \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SUP abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 EQUALITY 2.3.4.5.6.7.8.9.0.1 ORDERING 2.3.4.5.6.7.8.9.0.1.2 SUBSTR 2.3.4.5.6.7.8.9.0.1.2.3 SYNTAX 2.3.4.5.6.7.8.9.0.1.2.3.4{1234567890} SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
+        value = "( 1.2.3.4.5.6.7.8.9.0 "
+                + "NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) "
+                + "DESC 'Description \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' "
+                + "OBSOLETE "
+                + "SUP abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 "
+                + "EQUALITY 2.3.4.5.6.7.8.9.0.1 "
+                + "ORDERING 2.3.4.5.6.7.8.9.0.1.2 "
+                + "SUBSTR 2.3.4.5.6.7.8.9.0.1.2.3 "
+                + "SYNTAX 2.3.4.5.6.7.8.9.0.1.2.3.4{1234567890} "
+                + "SINGLE-VALUE "
+                + "NO-USER-MODIFICATION "
+                + "USAGE dSAOperation "
+                + "X-TEST-a ('test1-1' 'test1-2') "
+                + "X-TEST-b ('test2-1' 'test2-2') )";
         attributeType = parser.parse( value );
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", attributeType.getOid() );
@@ -815,7 +829,7 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         assertFalse( attributeType.isUserModifiable() );
         assertEquals( UsageEnum.DSA_OPERATION, attributeType.getUsage() );
 
-        assertEquals( 2, attributeType.getExtensions().size() );
+        assertEquals( 3, attributeType.getExtensions().size() );
         assertNotNull( attributeType.getExtension( "X-TEST-a" ) );
         assertEquals( 2, attributeType.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", attributeType.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -824,6 +838,11 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         assertEquals( 2, attributeType.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", attributeType.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", attributeType.getExtension( "X-TEST-b" ).get( 1 ) );
+        
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -987,7 +1006,12 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         assertEquals( "caseIgnoreSubstringsMatch", attributeType.getSubstringOid() );
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", attributeType.getSyntaxOid() );
         assertEquals( UsageEnum.USER_APPLICATIONS, attributeType.getUsage() );
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+        
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -1020,7 +1044,13 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         assertFalse( attributeType.isSingleValued() );
         assertTrue( attributeType.isUserModifiable() );
 
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+        
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
+
     }
 
 
@@ -1190,7 +1220,12 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         assertNull( attributeType.getEqualityOid() );
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.8", attributeType.getSyntaxOid() );
         assertEquals( UsageEnum.USER_APPLICATIONS, attributeType.getUsage() );
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+        
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -1215,6 +1250,12 @@ public class AttributeTypeDescriptionSchemaParserRelaxedTest
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", attributeType.getSyntaxOid() );
         assertEquals( UsageEnum.USER_APPLICATIONS, attributeType.getUsage() );
         assertTrue( attributeType.isSingleValued() );
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+        
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
+        
     }
 }

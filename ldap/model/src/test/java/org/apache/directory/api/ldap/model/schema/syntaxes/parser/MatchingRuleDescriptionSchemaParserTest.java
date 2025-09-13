@@ -31,6 +31,7 @@ import java.text.ParseException;
 
 import javax.naming.NamingException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
 import org.junit.jupiter.api.AfterEach;
@@ -245,7 +246,7 @@ public class MatchingRuleDescriptionSchemaParserTest
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", matchingRule.getDescription() );
         assertTrue( matchingRule.isObsolete() );
         assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
-        assertEquals( 2, matchingRule.getExtensions().size() );
+        assertEquals( 3, matchingRule.getExtensions().size() );
         assertNotNull( matchingRule.getExtension( "X-TEST-a" ) );
         assertEquals( 2, matchingRule.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", matchingRule.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -254,6 +255,11 @@ public class MatchingRuleDescriptionSchemaParserTest
         assertEquals( 2, matchingRule.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", matchingRule.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", matchingRule.getExtension( "X-TEST-b" ).get( 1 ) );
+
+        // Check the schema
+        assertNotNull( matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, matchingRule.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -318,7 +324,12 @@ public class MatchingRuleDescriptionSchemaParserTest
         assertNull( matchingRule.getDescription() );
         assertFalse( matchingRule.isObsolete() );
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", matchingRule.getSyntaxOid() );
-        assertEquals( 0, matchingRule.getExtensions().size() );
+        assertEquals( 1, matchingRule.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, matchingRule.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -334,7 +345,12 @@ public class MatchingRuleDescriptionSchemaParserTest
         assertEquals( "Case Exact Matching on Directory String [defined in X.520]", matchingRule.getDescription() );
         assertFalse( matchingRule.isObsolete() );
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", matchingRule.getSyntaxOid() );
-        assertEquals( 0, matchingRule.getExtensions().size() );
+        assertEquals( 1, matchingRule.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, matchingRule.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -369,7 +385,12 @@ public class MatchingRuleDescriptionSchemaParserTest
             assertEquals( "en", matchingRule.getDescription() );
             assertFalse( matchingRule.isObsolete() );
             assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", matchingRule.getSyntaxOid() );
-            assertEquals( 0, matchingRule.getExtensions().size() );
+            assertEquals( 1, matchingRule.getExtensions().size() );
+
+            // Check the schema
+            assertNotNull( matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+            assertEquals( 1, matchingRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+            assertEquals( MetaSchemaConstants.SCHEMA_OTHER, matchingRule.getExtension( "X-SCHEMA" ).get(0) );
         }
     }
 

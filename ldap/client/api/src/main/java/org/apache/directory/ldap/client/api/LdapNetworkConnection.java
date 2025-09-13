@@ -1969,6 +1969,78 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * Bind to the server using a PlainRequest object.
+     *
+     * @param request The PlainRequest POJO containing all the needed parameters
+     * @return A LdapResponse containing the result
+     * @throws LdapException if some error occurred
+     */
+    public BindResponse bind( SaslPlainRequest request ) throws LdapException
+    {
+        if ( request == null )
+        {
+            String msg = I18n.msg( I18n.MSG_04103_NULL_REQUEST );
+
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( msg );
+            }
+            
+            throw new IllegalArgumentException( msg );
+        }
+
+        BindFuture bindFuture = bindAsync( request );
+
+        // Get the result from the future
+        try
+        {
+            // Read the response, waiting for it if not available immediately
+            // Get the response, blocking
+            BindResponse bindResponse = bindFuture.get( connectTimeout, TimeUnit.MILLISECONDS );
+
+            if ( bindResponse == null )
+            {
+                // We didn't received anything : this is an error
+                if ( LOG.isErrorEnabled() )
+                { 
+                    LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
+                }
+                
+                throw new LdapException( TIME_OUT_ERROR );
+            }
+
+            if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                authenticated.set( true );
+
+                // Everything is fine, return the response
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_04101_BIND_SUCCESSFUL, bindResponse ) );
+                }
+            }
+            else
+            {
+                // We have had an error
+                if ( LOG.isDebugEnabled() )
+                { 
+                    LOG.debug( I18n.msg( I18n.MSG_04100_BIND_FAIL, bindResponse ) );
+                }
+            }
+
+            return bindResponse;
+        }
+        catch ( Exception ie )
+        {
+            // Catch all other exceptions
+            LOG.error( NO_RESPONSE_ERROR, ie );
+
+            throw new LdapException( NO_RESPONSE_ERROR, ie );
+        }
+    }
+
+
+    /**
      * Do an asynchronous bind, based on a SaslPlainRequest.
      *
      * @param request The SaslPlainRequest POJO containing all the needed parameters

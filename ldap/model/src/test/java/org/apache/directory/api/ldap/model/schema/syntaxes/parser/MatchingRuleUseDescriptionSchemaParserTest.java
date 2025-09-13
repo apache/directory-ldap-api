@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.junit.jupiter.api.AfterEach;
@@ -316,7 +317,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", matchingRuleUse
             .getApplicableAttributeOids().get( 1 ) );
-        assertEquals( 2, matchingRuleUse.getExtensions().size() );
+        assertEquals( 3, matchingRuleUse.getExtensions().size() );
         assertNotNull( matchingRuleUse.getExtension( "X-TEST-a" ) );
         assertEquals( 2, matchingRuleUse.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", matchingRuleUse.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -325,6 +326,11 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         assertEquals( 2, matchingRuleUse.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", matchingRuleUse.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", matchingRuleUse.getExtension( "X-TEST-b" ).get( 1 ) );
+
+        // Check the schema
+        assertNotNull( matchingRuleUse.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, matchingRuleUse.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, matchingRuleUse.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -391,7 +397,12 @@ public class MatchingRuleUseDescriptionSchemaParserTest
         assertEquals( 2, matchingRuleUse.getApplicableAttributeOids().size() );
         assertEquals( "javaSerializedData", matchingRuleUse.getApplicableAttributeOids().get( 0 ) );
         assertEquals( "userPassword", matchingRuleUse.getApplicableAttributeOids().get( 1 ) );
-        assertEquals( 0, matchingRuleUse.getExtensions().size() );
+        assertEquals( 1, matchingRuleUse.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( matchingRuleUse.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, matchingRuleUse.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, matchingRuleUse.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 

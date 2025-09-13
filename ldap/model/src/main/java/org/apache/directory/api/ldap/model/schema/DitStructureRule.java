@@ -251,7 +251,7 @@ public class DitStructureRule extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    public void rehash()
     {
         int hash = h;
         
@@ -274,7 +274,7 @@ public class DitStructureRule extends AbstractSchemaObject
             hash = hash * 17 + tempHash;
         }
         
-        return hash;
+        h = hash;
     }
 
 

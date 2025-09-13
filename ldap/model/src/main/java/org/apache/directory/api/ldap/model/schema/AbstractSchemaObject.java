@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.util.Strings;
 
 
@@ -111,7 +112,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     protected volatile boolean locked;
 
     /** The hashcode for this schemaObject */
-    protected volatile int h = 0;
+    protected volatile int h = 37;
 
 
     /**
@@ -127,7 +128,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         this.oid = oid;
         extensions = new HashMap<>();
         names = new ArrayList<>();
-        computeHashCode();
+        rehashBase();
     }
 
 
@@ -142,6 +143,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         this.objectType = objectType;
         extensions = new HashMap<>();
         names = new ArrayList<>();
+        rehashBase();
     }
 
 
@@ -177,7 +179,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         this.oid = oid;
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -259,7 +261,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             }
         }
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -292,7 +294,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             }
         }
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -324,7 +326,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             }
         }
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -355,7 +357,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         this.description = description;
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -386,7 +388,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         this.specification = specification;
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -430,7 +432,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         isEnabled = enabled;
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -464,7 +466,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         this.isObsolete = obsolete;
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -535,7 +537,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         extensions.put( Strings.toUpperCaseAscii( key ), valueList );
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -554,7 +556,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         extensions.put( Strings.toUpperCaseAscii( key ), values );
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -587,7 +589,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
                 this.extensions.put( Strings.toUpperCaseAscii( entry.getKey() ), values );
             }
 
-            computeHashCode();
+            rehash();
         }
     }
 
@@ -644,7 +646,18 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         this.schemaName = schemaName;
         
-        computeHashCode();
+        // Add the X-SCHEMA extension
+        if ( schemaName != null )
+        {
+            addExtension(MetaSchemaConstants.X_SCHEMA_AT, schemaName);
+        }
+        else if ( hasExtension( MetaSchemaConstants.X_SCHEMA_AT ) )
+        {
+            // Remove it if set
+            extensions.remove( MetaSchemaConstants.X_SCHEMA_AT );
+        }
+        
+        rehash();
     }
 
 
@@ -884,7 +897,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // Clear the names
         names.clear();
         
-        computeHashCode();
+        rehash();
     }
 
 
@@ -910,7 +923,18 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * Compute the hashcode, and store it in the 'h' variable
      */
-    protected void computeHashCode()
+    protected void rehash()
+    {
+        // Nothing to do here butb to call the abstract class
+        // rehashBase to avoid calling the inherited rehash mdethod
+        rehashBase();
+    }
+    
+    
+    /**
+     * Compute the hashcode, and store it in the 'h' variable
+     */
+    protected void rehashBase()
     {
         int hash = 37;
 
@@ -958,7 +982,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // we have to be careful when computing the hashcode so that it does
         // not depend on the extensions/values order
         int tempHash = 0;
-        
+
         for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
             String key = entry.getKey();
@@ -980,6 +1004,11 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         }
         
         hash = hash * 17 + tempHash;
+        
+        if ( isObsolete )
+        {
+            hash += hash * 17 + ( isObsolete ? 1 : 0 );
+        }
         
         h = hash;
     }

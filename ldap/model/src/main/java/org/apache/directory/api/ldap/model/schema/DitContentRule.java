@@ -599,13 +599,13 @@ public class DitContentRule extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    public void rehash()
     {
         int hash = h;
         
         // TODO: complete this method
      
-        return hash;
+        h = hash;
     }
 
 

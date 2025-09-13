@@ -30,6 +30,7 @@ import java.text.ParseException;
 
 import javax.naming.NamingException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
@@ -444,7 +445,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass
             .getMayAttributeTypeOids()
             .get( 1 ) );
-        assertEquals( 2, objectClass.getExtensions().size() );
+        assertEquals( 3, objectClass.getExtensions().size() );
         assertNotNull( objectClass.getExtension( "X-TEST-a" ) );
         assertEquals( 2, objectClass.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", objectClass.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -453,6 +454,11 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( 2, objectClass.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", objectClass.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", objectClass.getExtension( "X-TEST-b" ).get( 1 ) );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -497,8 +503,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "telephoneNumber", objectClass.getMayAttributeTypeOids().get( 1 ) );
         assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get( 2 ) );
         assertEquals( "description", objectClass.getMayAttributeTypeOids().get( 3 ) );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
 
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -521,7 +531,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( 1, objectClass.getMustAttributeTypeOids().size() );
         assertEquals( "objectClass", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -546,7 +561,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "telephoneNumber", objectClass.getMayAttributeTypeOids().get( 1 ) );
         assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get( 2 ) );
         assertEquals( "description", objectClass.getMayAttributeTypeOids().get( 3 ) );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -566,7 +586,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( 1, objectClass.getMustAttributeTypeOids().size() );
         assertEquals( "userPassword", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -587,10 +612,15 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "aliasedObjectName", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
 
-        assertEquals( 1, objectClass.getExtensions().size() );
+        assertEquals( 2, objectClass.getExtensions().size() );
         assertNotNull( objectClass.getExtension( "X-ORIGIN" ) );
         assertEquals( 1, objectClass.getExtension( "X-ORIGIN" ).size() );
         assertEquals( "RFC 2256", objectClass.getExtension( "X-ORIGIN" ).get( 0 ) );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -610,7 +640,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "dc", objectClass.getMustAttributeTypeOids().get( 0 ) );
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
 
-        assertEquals( 3, objectClass.getExtensions().size() );
+        assertEquals( 4, objectClass.getExtensions().size() );
         assertNotNull( objectClass.getExtension( "X-NDS_NAMING" ) );
         assertEquals( 1, objectClass.getExtension( "X-NDS_NAMING" ).size() );
         assertEquals( "dc", objectClass.getExtension( "X-NDS_NAMING" ).get( 0 ) );
@@ -620,6 +650,11 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertNotNull( objectClass.getExtension( "X-NDS_NONREMOVABLE" ) );
         assertEquals( 1, objectClass.getExtension( "X-NDS_NONREMOVABLE" ).size() );
         assertEquals( "1", objectClass.getExtension( "X-NDS_NONREMOVABLE" ).get( 0 ) );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -642,7 +677,7 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "description", objectClass.getMayAttributeTypeOids().get( 0 ) );
         assertEquals( "fullName", objectClass.getMayAttributeTypeOids().get( 10 ) );
 
-        assertEquals( 5, objectClass.getExtensions().size() );
+        assertEquals( 6, objectClass.getExtensions().size() );
         assertNotNull( objectClass.getExtension( "X-NDS_NAMING" ) );
         assertEquals( 1, objectClass.getExtension( "X-NDS_NAMING" ).size() );
         assertEquals( "cn", objectClass.getExtension( "X-NDS_NAMING" ).get( 0 ) );
@@ -667,6 +702,11 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( 1, objectClass.getExtension( "X-NDS_ACL_TEMPLATES" ).size() );
         assertEquals( "2#entry#[Root Template]#member", objectClass.getExtension( "X-NDS_ACL_TEMPLATES" )
             .get( 0 ) );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -690,7 +730,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "street", objectClass.getMayAttributeTypeOids().get( 1 ) );
         assertEquals( "searchGuide", objectClass.getMayAttributeTypeOids().get( 2 ) );
         assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get( 3 ) );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -712,7 +757,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( "msieee80211-Data", objectClass.getMayAttributeTypeOids().get( 0 ) );
         assertEquals( "msieee80211-DataType", objectClass.getMayAttributeTypeOids().get( 1 ) );
         assertEquals( "msieee80211-ID", objectClass.getMayAttributeTypeOids().get( 2 ) );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -732,7 +782,12 @@ public class ObjectClassDescriptionSchemaParserRelaxedTest
         assertEquals( 7, objectClass.getMayAttributeTypeOids().size() );
         assertEquals( "dITStructureRules", objectClass.getMayAttributeTypeOids().get( 0 ) );
         assertEquals( "matchingRuleUse", objectClass.getMayAttributeTypeOids().get( 6 ) );
-        assertEquals( 0, objectClass.getExtensions().size() );
+        assertEquals( 1, objectClass.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, objectClass.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, objectClass.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 

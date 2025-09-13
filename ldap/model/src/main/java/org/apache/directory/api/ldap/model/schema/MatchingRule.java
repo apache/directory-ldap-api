@@ -123,6 +123,8 @@ public class MatchingRule extends AbstractSchemaObject
 
         this.ldapSyntax = ldapSyntax;
         this.ldapSyntaxOid = ldapSyntax.getOid();
+
+        rehash();
     }
 
 
@@ -150,6 +152,8 @@ public class MatchingRule extends AbstractSchemaObject
         }
 
         this.ldapSyntaxOid = oid;
+
+        rehash();
     }
 
 
@@ -178,6 +182,8 @@ public class MatchingRule extends AbstractSchemaObject
         }
 
         this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+
+        rehash();
     }
 
 
@@ -207,6 +213,8 @@ public class MatchingRule extends AbstractSchemaObject
         }
 
         this.normalizer = normalizer;
+
+        rehash();
     }
 
 
@@ -239,6 +247,8 @@ public class MatchingRule extends AbstractSchemaObject
         // Copy the syntax OID
         copy.ldapSyntaxOid = ldapSyntaxOid;
 
+        copy.rehash();
+        
         return copy;
     }
 
@@ -247,7 +257,7 @@ public class MatchingRule extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    public void rehash()
     {
         int hash = h;
         
@@ -267,8 +277,7 @@ public class MatchingRule extends AbstractSchemaObject
         }
         
 
-        
-        return hash;
+        h = hash;
     }
 
     /**
@@ -360,5 +369,7 @@ public class MatchingRule extends AbstractSchemaObject
         ldapComparator = null;
         ldapSyntax = null;
         normalizer = null;
+
+        rehash();
     }
 }

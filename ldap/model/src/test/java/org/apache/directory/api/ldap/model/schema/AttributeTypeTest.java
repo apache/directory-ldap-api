@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.schema;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,5 +68,19 @@ public class AttributeTypeTest
         assertTrue( string.contains( "\n\tDESC " ) );
         assertTrue( string.contains( "\n\tSUP " ) );
         assertTrue( string.contains( "\n\tUSAGE" ) );
+    }
+    
+    
+    @Test
+    public void testHash()
+    {
+        AttributeType same = new AttributeType( "1.2.3.4" );
+        same.setNames( "name2", "name1" );
+        same.setDescription( "description" );
+        same.setObsolete( false );
+        same.setEqualityOid( "caseIgnoreMatch" );
+        same.setSuperiorOid( "2.3.4.5" );
+        
+        assertEquals( attributeType, same );
     }
 }
