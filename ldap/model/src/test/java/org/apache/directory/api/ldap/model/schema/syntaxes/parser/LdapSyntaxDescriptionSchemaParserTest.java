@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
 import org.junit.jupiter.api.AfterEach;
@@ -112,7 +113,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", ldapSyntax.getOid() );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", ldapSyntax.getDescription() );
-        assertEquals( 2, ldapSyntax.getExtensions().size() );
+        assertEquals( 3, ldapSyntax.getExtensions().size() );
         assertNotNull( ldapSyntax.getExtension( "X-TEST-a" ) );
         assertEquals( 2, ldapSyntax.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", ldapSyntax.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -122,6 +123,11 @@ public class LdapSyntaxDescriptionSchemaParserTest
         assertEquals( "test2-1", ldapSyntax.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", ldapSyntax.getExtension( "X-TEST-b" ).get( 1 ) );
         assertEquals( value, ldapSyntax.getSpecification() );
+
+        // Check the schema
+        assertNotNull( ldapSyntax.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, ldapSyntax.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, ldapSyntax.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -149,11 +155,16 @@ public class LdapSyntaxDescriptionSchemaParserTest
 
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.5", ldapSyntax.getOid() );
         assertEquals( "Binary", ldapSyntax.getDescription() );
-        assertEquals( 1, ldapSyntax.getExtensions().size() );
+        assertEquals( 2, ldapSyntax.getExtensions().size() );
         assertNotNull( ldapSyntax.getExtension( "X-NOT-HUMAN-READABLE" ) );
         assertEquals( 1, ldapSyntax.getExtension( "X-NOT-HUMAN-READABLE" ).size() );
         assertEquals( "TRUE", ldapSyntax.getExtension( "X-NOT-HUMAN-READABLE" ).get( 0 ) );
         assertEquals( value, ldapSyntax.getSpecification() );
+
+        // Check the schema
+        assertNotNull( ldapSyntax.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, ldapSyntax.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, ldapSyntax.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 

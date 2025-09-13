@@ -137,6 +137,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
         }
 
         this.applicableAttributeOids = applicableAttributeOids;
+
+        rehash();
     }
 
 
@@ -161,6 +163,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             applicableAttributeOids.add( at.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -236,6 +240,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
         // Copy the APPLIES list (will be empty)
         copy.applicableAttributes = new ArrayList<>();
 
+        copy.rehash();
+            
         return copy;
     }
 
@@ -244,7 +250,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    public void rehash()
     {
         int hash = h;
      
@@ -272,7 +278,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
             hash = hash * 17 + tempHash;
         }
 
-        return hash;
+        h = hash;
     }
 
     /**
@@ -311,5 +317,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         // Clear the references
         applicableAttributes.clear();
         applicableAttributeOids.clear();
+
+        rehash();
     }
 }

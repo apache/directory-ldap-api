@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.DitContentRule;
 import org.apache.directory.api.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.junit.jupiter.api.AfterEach;
@@ -406,7 +407,7 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
         assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule
             .getNotAttributeTypeOids()
             .get( 1 ) );
-        assertEquals( 2, ditContentRule.getExtensions().size() );
+        assertEquals( 3, ditContentRule.getExtensions().size() );
         assertNotNull( ditContentRule.getExtension( "X-TEST-a" ) );
         assertEquals( 2, ditContentRule.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", ditContentRule.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -415,6 +416,11 @@ public class DitContentRuleDescriptionSchemaParserRelaxedTest
         assertEquals( 2, ditContentRule.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", ditContentRule.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", ditContentRule.getExtension( "X-TEST-b" ).get( 1 ) );
+
+        // Check the schema
+        assertNotNull( ditContentRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, ditContentRule.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, ditContentRule.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 

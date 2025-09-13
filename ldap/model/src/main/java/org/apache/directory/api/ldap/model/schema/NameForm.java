@@ -127,6 +127,8 @@ public class NameForm extends AbstractSchemaObject
 
         mustAttributeTypes = new ArrayList<>();
         mayAttributeTypes = new ArrayList<>();
+
+        rehash();
     }
 
 
@@ -167,6 +169,8 @@ public class NameForm extends AbstractSchemaObject
         }
 
         this.structuralObjectClassOid = structuralObjectClassOid;
+
+        rehash();
     }
 
 
@@ -184,6 +188,8 @@ public class NameForm extends AbstractSchemaObject
 
         this.structuralObjectClass = structuralObjectClass;
         this.structuralObjectClassOid = structuralObjectClass.getOid();
+
+        rehash();
     }
 
 
@@ -226,6 +232,8 @@ public class NameForm extends AbstractSchemaObject
         }
 
         this.mustAttributeTypeOids = mustAttributeTypeOids;
+
+        rehash();
     }
 
 
@@ -250,6 +258,8 @@ public class NameForm extends AbstractSchemaObject
         {
             mustAttributeTypeOids.add( may.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -266,6 +276,8 @@ public class NameForm extends AbstractSchemaObject
         }
 
         mustAttributeTypeOids.add( oid );
+
+        rehash();
     }
 
 
@@ -286,6 +298,8 @@ public class NameForm extends AbstractSchemaObject
             mustAttributeTypes.add( attributeType );
             mustAttributeTypeOids.add( attributeType.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -328,6 +342,8 @@ public class NameForm extends AbstractSchemaObject
         }
 
         this.mayAttributeTypeOids = mayAttributeTypeOids;
+
+        rehash();
     }
 
 
@@ -352,6 +368,8 @@ public class NameForm extends AbstractSchemaObject
         {
             mayAttributeTypeOids.add( may.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -368,6 +386,8 @@ public class NameForm extends AbstractSchemaObject
         }
 
         mayAttributeTypeOids.add( oid );
+
+        rehash();
     }
 
 
@@ -388,6 +408,8 @@ public class NameForm extends AbstractSchemaObject
             mayAttributeTypes.add( attributeType );
             mayAttributeTypeOids.add( attributeType.getOid() );
         }
+
+        rehash();
     }
 
 
@@ -439,6 +461,8 @@ public class NameForm extends AbstractSchemaObject
 
         // All the references to other Registries object are set to null.
         copy.structuralObjectClass = null;
+        
+        copy.rehash();
 
         return copy;
     }
@@ -448,13 +472,13 @@ public class NameForm extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    public void rehash()
     {
         int hash = h;
         
         // TODO: complete this method
      
-        return hash;
+        h = hash;
     }
 
     /**
@@ -496,5 +520,7 @@ public class NameForm extends AbstractSchemaObject
         mustAttributeTypes.clear();
         mustAttributeTypeOids.clear();
         structuralObjectClass = null;
+
+        rehash();
     }
 }

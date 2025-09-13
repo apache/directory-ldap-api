@@ -103,7 +103,7 @@ public class LdapSyntax extends AbstractSchemaObject
         super( SchemaObjectType.LDAP_SYNTAX, oid );
         this.description = description;
         this.hasHumanReadableFlag = false;
-        computeHashCode();
+        rehash();
     }
 
 
@@ -120,7 +120,7 @@ public class LdapSyntax extends AbstractSchemaObject
         this.description = description;
         this.isHumanReadable = isHumanReadable;
         this.hasHumanReadableFlag = true;
-        computeHashCode();
+        rehash();
     }
 
 
@@ -178,6 +178,7 @@ public class LdapSyntax extends AbstractSchemaObject
 
         this.isHumanReadable = humanReadable;
         this.hasHumanReadableFlag = true;
+        rehash();
     }
 
 
@@ -206,6 +207,7 @@ public class LdapSyntax extends AbstractSchemaObject
         }
 
         this.syntaxChecker = syntaxChecker;
+        rehash();
     }
 
 
@@ -222,6 +224,7 @@ public class LdapSyntax extends AbstractSchemaObject
         }
 
         this.syntaxChecker = newSyntaxChecker;
+        rehash();
     }
 
 
@@ -254,6 +257,8 @@ public class LdapSyntax extends AbstractSchemaObject
 
         // All the references to other Registries object are set to null.
         copy.syntaxChecker = null;
+        
+        copy.rehash();
 
         return copy;
     }
@@ -263,7 +268,7 @@ public class LdapSyntax extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    public int hashCode()
+    public void rehash()
     {
         int hash = h;
         
@@ -274,7 +279,7 @@ public class LdapSyntax extends AbstractSchemaObject
             hash = hash * 17 + syntaxChecker.hashCode();
         }
         
-        return hash;
+        h = hash;
     }
     
 
@@ -330,5 +335,6 @@ public class LdapSyntax extends AbstractSchemaObject
 
         // Clear the references
         syntaxChecker = null;
+        rehash();
     }
 }

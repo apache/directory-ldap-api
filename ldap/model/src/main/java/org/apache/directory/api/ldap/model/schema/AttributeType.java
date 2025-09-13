@@ -178,7 +178,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     /** A flag set when the SchemaManager is in relaxed mode */
     private boolean isRelaxed = false;
 
-
     /**
      * Creates a AttributeType object using a unique OID.
      *
@@ -187,6 +186,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public AttributeType( String oid )
     {
         super( SchemaObjectType.ATTRIBUTE_TYPE, oid );
+        
+        rehash();
     }
 
 
@@ -215,6 +216,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.isSingleValued = singleValued;
+        rehash();
     }
 
 
@@ -242,6 +244,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.canUserModify = userModifiable;
+        rehash();
     }
 
 
@@ -269,6 +272,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.isCollective = collective;
+        rehash();
     }
 
 
@@ -289,6 +293,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public void setRelaxed( boolean isRelaxed )
     {
         this.isRelaxed = isRelaxed;
+        rehash();
     }
 
 
@@ -323,6 +328,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.usage = usage;
+        rehash();
     }
 
 
@@ -351,6 +357,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.syntaxLength = length;
+        rehash();
     }
 
 
@@ -390,6 +397,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         this.superior = superior;
         this.superiorOid = superior.getOid();
+        rehash();
     }
 
 
@@ -406,6 +414,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.superiorOid = newSuperiorOid;
+        rehash();
     }
 
 
@@ -422,6 +431,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.superiorOid = superiorOid;
+        rehash();
     }
 
 
@@ -468,6 +478,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         this.syntax = syntax;
         this.syntaxOid = syntax.getOid();
+        rehash();
     }
 
 
@@ -513,6 +524,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.syntaxOid = syntaxOid;
+        rehash();
     }
 
 
@@ -541,6 +553,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         this.equality = equality;
         this.equalityOid = equality.getOid();
+        rehash();
     }
 
 
@@ -568,6 +581,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.equalityOid = equalityOid;
+        rehash();
     }
 
 
@@ -614,6 +628,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         this.ordering = ordering;
         this.orderingOid = ordering.getOid();
+        rehash();
     }
 
 
@@ -659,6 +674,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.orderingOid = orderingOid;
+        rehash();
     }
 
 
@@ -687,6 +703,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
         this.substring = substring;
         this.substringOid = substring.getOid();
+        rehash();
     }
 
 
@@ -732,6 +749,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         this.substringOid = substrOid;
+        rehash();
     }
 
 
@@ -885,18 +903,21 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         
         // The relaxed flag
         copy.setRelaxed( isRelaxed );
+        
+        copy.rehash();
 
         return copy;
     }
-    
-    
+        
+        
     /**
      * {@inheritDoc}
      */
-    @Override
-    public int hashCode()
+    protected void rehash()
     {
-        int ath = super.hashCode();
+        super.rehash();
+        
+        int ath = h;
         
         // USER_MODIFY
         ath += ath * 17 + ( canUserModify ? 1 : 0 );
@@ -907,40 +928,63 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         // MULTI_VALUED
         ath += ath * 17 + ( isSingleValued ? 1 : 0 );
         
-        // The syntax
+        // The syntax OID
         if ( syntax != null )
         {
-            ath += ath * 17 + syntax.hashCode();
+            ath += ath * 17 + syntax.getOid().hashCode();
         }
+        else if ( syntaxOid != null )
+        {
+            ath += ath * 17 + syntaxOid.hashCode();
+        }
+        
+        // The suntax length
+        ath += ath * 17 + syntaxLength;
 
         // The equality matching rule if any
         if ( equality != null )
         {
-            ath += ath * 17 + equality.hashCode();
+            ath += ath * 17 + equality.getOid().hashCode();
+        }
+        else if ( equalityOid != null )
+        {
+            ath += ath * 17 + equalityOid.hashCode();
         }
 
         // The substring matching rule if any
         if ( substring != null )
         {
-            ath += ath * 17 + substring.hashCode();
+            ath += ath * 17 + substring.getOid().hashCode();
+        }
+        else if ( substringOid != null )
+        {
+            ath += ath * 17 + substringOid.hashCode();
         }
         
         // The superior if any
         if ( superior != null )
         {
-            ath += ath * 17 + superior.hashCode();
+            ath += ath * 17 + superior.getOid().hashCode();
+        }
+        else if ( superiorOid != null )
+        {
+            ath += ath * 17 + superiorOid.hashCode();
         }
         
         // The ordering if any
         if ( ordering != null )
         {
-            ath += ath * 17 + ordering.hashCode();
+            ath += ath * 17 + ordering.getOid().hashCode();
+        }
+        else if ( orderingOid != null )
+        {
+            ath += ath * 17 + orderingOid.hashCode();
         }
         
         // Last, not least, the usage
         ath += ath * 17 + usage.getValue();
         
-        return ath;
+        h = ath;
     }
     
     
@@ -966,6 +1010,12 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         }
 
         AttributeType that = ( AttributeType ) o;
+        
+        // Check the hashcode first
+        if ( h != that.hashCode() ) 
+        {
+            return false;
+        }
 
         // The COLLECTIVE
         if ( isCollective != that.isCollective )
@@ -1117,5 +1167,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         substring = null;
         superior = null;
         syntax = null;
+        rehash();
     }
 }

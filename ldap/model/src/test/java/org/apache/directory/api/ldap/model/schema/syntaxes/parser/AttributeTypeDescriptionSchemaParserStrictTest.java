@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -879,7 +880,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
         assertFalse( attributeType.isUserModifiable() );
         assertEquals( UsageEnum.DSA_OPERATION, attributeType.getUsage() );
 
-        assertEquals( 2, attributeType.getExtensions().size() );
+        assertEquals( 3, attributeType.getExtensions().size() );
         assertNotNull( attributeType.getExtension( "X-TEST-a" ) );
         assertEquals( 2, attributeType.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", attributeType.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -888,6 +889,11 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
         assertEquals( 2, attributeType.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", attributeType.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", attributeType.getExtension( "X-TEST-b" ).get( 1 ) );
+
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -1086,7 +1092,12 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
         assertEquals( "caseIgnoreSubstringsMatch", attributeType.getSubstringOid() );
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", attributeType.getSyntaxOid() );
         assertEquals( UsageEnum.USER_APPLICATIONS, attributeType.getUsage() );
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -1119,7 +1130,12 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
         assertFalse( attributeType.isSingleValued() );
         assertTrue( attributeType.isUserModifiable() );
 
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -1202,7 +1218,12 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
         assertNull( attributeType.getEqualityOid() );
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.8", attributeType.getSyntaxOid() );
         assertEquals( UsageEnum.USER_APPLICATIONS, attributeType.getUsage() );
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
@@ -1227,6 +1248,11 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.15", attributeType.getSyntaxOid() );
         assertEquals( UsageEnum.USER_APPLICATIONS, attributeType.getUsage() );
         assertTrue( attributeType.isSingleValued() );
-        assertEquals( 0, attributeType.getExtensions().size() );
+        assertEquals( 1, attributeType.getExtensions().size() );
+
+        // Check the schema
+        assertNotNull( attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, attributeType.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, attributeType.getExtension( "X-SCHEMA" ).get(0) );
     }
 }

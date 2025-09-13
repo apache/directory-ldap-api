@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.parsers.NameFormDescriptionSchemaParser;
@@ -438,7 +439,7 @@ public class NameFormDescriptionSchemaParserTest
         assertEquals( "2.3.4.5.6.7.8.9.0.1.2.3", nf.getMayAttributeTypeOids().get( 0 ) );
         assertEquals( "defghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789abc", nf.getMayAttributeTypeOids()
             .get( 1 ) );
-        assertEquals( 2, nf.getExtensions().size() );
+        assertEquals( 3, nf.getExtensions().size() );
         assertNotNull( nf.getExtension( "X-TEST-a" ) );
         assertEquals( 2, nf.getExtension( "X-TEST-a" ).size() );
         assertEquals( "test1-1", nf.getExtension( "X-TEST-a" ).get( 0 ) );
@@ -447,6 +448,11 @@ public class NameFormDescriptionSchemaParserTest
         assertEquals( 2, nf.getExtension( "X-TEST-b" ).size() );
         assertEquals( "test2-1", nf.getExtension( "X-TEST-b" ).get( 0 ) );
         assertEquals( "test2-2", nf.getExtension( "X-TEST-b" ).get( 1 ) );
+
+        // Check the schema
+        assertNotNull( nf.getExtension( MetaSchemaConstants.X_SCHEMA_AT ) );
+        assertEquals( 1, nf.getExtension( MetaSchemaConstants.X_SCHEMA_AT ).size() );
+        assertEquals( MetaSchemaConstants.SCHEMA_OTHER, nf.getExtension( "X-SCHEMA" ).get(0) );
     }
 
 
