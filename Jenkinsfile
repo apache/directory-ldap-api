@@ -51,29 +51,6 @@ pipeline {
     }
     stage ('Build and Test') {
       parallel {
-        stage ('Linux Java 11') {
-          options {
-            timeout(time: 4, unit: 'HOURS')
-            retry(2)
-          }
-          agent {
-            docker {
-              label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-11'
-              alwaysPull true
-              args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
-          }
-          steps {
-            sh 'mvn -U -V clean verify'
-          }
-          post {
-            always {
-              junit '**/target/surefire-reports/*.xml'
-              deleteDir()
-            }
-          }
-        }
         stage ('Linux Java 17') {
           options {
             timeout(time: 4, unit: 'HOURS')
@@ -118,7 +95,29 @@ pipeline {
             }
           }
         }
-        stage ('Windows Java 11') {
+        stage ('Linux Java 25') {
+          options {
+            timeout(time: 4, unit: 'HOURS')
+            retry(2)
+          }
+          agent {
+            docker {
+              label 'ubuntu'
+              image 'apachedirectory/maven-build:jdk-25'
+              alwaysPull true
+              args '-v $HOME/.m2:/home/hnelson/.m2'
+            }
+          }
+          steps {
+            sh 'mvn -U -V clean verify'
+          }
+          post {
+            always {
+              deleteDir()
+            }
+          }
+        }
+        stage ('Windows Java 17') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -128,7 +127,7 @@ pipeline {
           }
           steps {
             bat '''
-            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest11
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest17
             set MAVEN_OPTS="-Xmx512m"
             F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -U -V clean verify
             '''
@@ -139,6 +138,48 @@ pipeline {
             }
           }
         }
+        stage ('Windows Java 21') {
+          options {
+            timeout(time: 4, unit: 'HOURS')
+            retry(2)
+          }
+          agent {
+            label 'Windows'
+          }
+          steps {
+            bat '''
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest21
+            set MAVEN_OPTS="-Xmx512m"
+            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -U -V clean verify
+            '''
+          }
+          post {
+            always {
+              deleteDir()
+            }
+          }
+        }/*
+        stage ('Windows Java 25') {
+          options {
+            timeout(time: 4, unit: 'HOURS')
+            retry(2)
+          }
+          agent {
+            label 'Windows'
+          }
+          steps {
+            bat '''
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest25
+            set MAVEN_OPTS="-Xmx512m"
+            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -U -V clean verify
+            '''
+          }
+          post {
+            always {
+              deleteDir()
+            }
+          }
+        }*/
       }
     }
     stage ('Deploy') {
