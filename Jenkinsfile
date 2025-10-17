@@ -96,7 +96,6 @@ pipeline {
             }
           }
         }
-/*
         stage ('Linux Java 21') {
           options {
             timeout(time: 4, unit: 'HOURS')
@@ -119,7 +118,6 @@ pipeline {
             }
           }
         }
-*/
         stage ('Windows Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
