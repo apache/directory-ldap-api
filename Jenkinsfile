@@ -78,7 +78,7 @@ pipeline {
         sh 'mvn clean install'
       }
     }
-
+/** Suspended Java 21 and 25 build as we need to move to antlr4
     stage('Build JDK 21 Linux') {
       tools {
         jdk "jdk_21_latest"
@@ -102,5 +102,6 @@ pipeline {
         sh 'mvn clean install -Pserial -Djava.security.manager=allow'
       }
     }
+*/
   }
 }
