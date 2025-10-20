@@ -29,7 +29,6 @@ pipeline {
       timeout(time: 20, unit: 'HOURS')
       // When we have test-fails e.g. we don't need to run the remaining steps
       buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
-      disableConcurrentBuilds()
   }
 
   parameters {
@@ -68,20 +67,19 @@ pipeline {
       }
     }
 
-    stage('Parallel Stage') {
-      parallel {
-        stage('Build JDK 17 Linux') {
-          tools {
-            jdk "jdk_17_latest"
-          }
-          steps {
-            echo 'Building JDK 17 Linux'
-            sh 'java -version'
-            sh 'mvn -version'
-            sh 'mvn clean install -Pserial'
-          }
-        }
+    stage('Build JDK 17 Linux') {
+      tools {
+        jdk "jdk_17_latest"
+      }
+      steps {
+        echo 'Building JDK 17 Linux'
+        sh 'java -version'
+        sh 'mvn -version'
+        sh 'mvn clean install'
+      }
+    }
 
+<<<<<<< HEAD
         stage('Build JDK 21 Linux') {
           tools {
             jdk "jdk_21_latest"
