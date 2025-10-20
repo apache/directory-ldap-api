@@ -93,12 +93,12 @@ pipeline {
           }
         }
 
-        stage('Build JDK 17 Linux') {
+        stage('Build JDK 25 Linux') {
           tools {
-            jdk "jdk_17_latest"
+            jdk "jdk_25_latest"
           }
           steps {
-            echo 'Building JDK 17 Linux'
+            echo 'Building JDK 25 Linux'
             sh 'java -version'
             sh 'mvn -version'
             sh 'mvn clean install'
