@@ -79,30 +79,27 @@ pipeline {
       }
     }
 
-<<<<<<< HEAD
-        stage('Build JDK 21 Linux') {
-          tools {
-            jdk "jdk_21_latest"
-          }
-          steps {
-            echo 'Building JDK 21 Linux'
-            sh 'java -version'
-            sh 'mvn -version'
-            sh 'mvn clean install -Pserial -Djava.security.manager=allow'
-          }
-        }
+    stage('Build JDK 21 Linux') {
+      tools {
+        jdk "jdk_21_latest"
+      }
+      steps {
+        echo 'Building JDK 21 Linux'
+        sh 'java -version'
+        sh 'mvn -version'
+        sh 'mvn clean install -Pserial -Djava.security.manager=allow'
+      }
+    }
 
-        stage('Build JDK 25 Linux') {
-          tools {
-            jdk "jdk_25_latest"
-          }
-          steps {
-            echo 'Building JDK 25 Linux'
-            sh 'java -version'
-            sh 'mvn -version'
-            sh 'mvn clean install -Pserial -Djava.security.manager=allow'
-          }
-        }
+    stage('Build JDK 25 Linux') {
+      tools {
+        jdk "jdk_25_latest"
+      }
+      steps {
+        echo 'Building JDK 25 Linux'
+        sh 'java -version'
+        sh 'mvn -version'
+        sh 'mvn clean install -Pserial -Djava.security.manager=allow'
       }
     }
   }
