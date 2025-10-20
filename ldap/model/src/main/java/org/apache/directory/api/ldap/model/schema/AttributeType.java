@@ -938,8 +938,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
             ath += ath * 17 + syntaxOid.hashCode();
         }
         
-        // The suntax length
-        ath += ath * 17 + syntaxLength;
+        // The syntax length
+        ath += ath * 17 + Long.hashCode( syntaxLength );
 
         // The equality matching rule if any
         if ( equality != null )
