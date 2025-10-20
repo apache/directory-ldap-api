@@ -29,7 +29,6 @@ pipeline {
       timeout(time: 20, unit: 'HOURS')
       // When we have test-fails e.g. we don't need to run the remaining steps
       buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
-      disableConcurrentBuilds()
   }
 
   parameters {
@@ -78,7 +77,7 @@ pipeline {
             echo 'Building JDK 17 Linux'
             sh 'java -version'
             sh 'mvn -version'
-            sh 'mvn clean install -Pserial'
+            sh 'mvn clean install'
           }
         }
 
@@ -90,7 +89,7 @@ pipeline {
             echo 'Building JDK 21 Linux'
             sh 'java -version'
             sh 'mvn -version'
-            sh 'mvn clean install -Pserial'
+            sh 'mvn clean install'
           }
         }
 
@@ -102,7 +101,7 @@ pipeline {
             echo 'Building JDK 17 Linux'
             sh 'java -version'
             sh 'mvn -version'
-            sh 'mvn clean install -Pserial'
+            sh 'mvn clean install'
           }
         }
       }
