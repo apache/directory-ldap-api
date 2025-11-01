@@ -611,7 +611,8 @@ public class SubtreeSpecificationParser
                     // A filter
                     String filter = null;
                     
-                    try {
+                    try 
+                    {
                         FilterParser.parse( filter );
                     } 
                     catch ( ParseException e ) 

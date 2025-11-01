@@ -30,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.text.ParseException;
+
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
@@ -42,7 +44,6 @@ import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.api.ldap.schema.loader.JarLdifSchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
-import org.apache.directory.api.util.exception.ParserException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -187,7 +188,7 @@ public class SubtreeSpecificationParserTest
     @Test
     public void testInvalidSpecWithBaseAndMissingWS()
     {
-        assertThrows(ParserException.class, () -> 
+        assertThrows(ParseException.class, () -> 
             {
                 parser.parse( INVALID_SPEC_WITH_BASE_AND_MISSING_WS );
             } );
@@ -416,7 +417,7 @@ public class SubtreeSpecificationParserTest
     @Test
     public void testInvalidSillyThing()
     {
-        assertThrows(ParserException.class, () -> 
+        assertThrows(ParseException.class, () -> 
             {
                 parser.parse( INVALID_SILLY_THING );
             } );
@@ -512,7 +513,7 @@ public class SubtreeSpecificationParserTest
             {
                 result = parser.parse( specStr );
             }
-            catch ( ParserException e )
+            catch ( ParseException e )
             {
                 e.printStackTrace();
             }
