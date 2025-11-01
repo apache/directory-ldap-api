@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.model.subtree;
 
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
@@ -41,10 +41,10 @@ public class SubtreeSpecificationModifier
     private Dn base = new Dn();
 
     /** the set of subordinates entries and their subordinates to exclude */
-    private Set<Dn> chopBefore = Collections.emptySet();
+    private Set<Dn> chopBefore = new HashSet<>();
 
     /** the set of subordinates entries whose subordinates are to be excluded */
-    private Set<Dn> chopAfter = Collections.emptySet();
+    private Set<Dn> chopAfter = new HashSet<>();
 
     /** the minimum distance below base to start including entries */
     private int minBaseDistance = 0;
@@ -84,8 +84,7 @@ public class SubtreeSpecificationModifier
     /**
      * Sets the subtree base relative to the administration point.
      * 
-     * @param base
-     *            subtree base relative to the administration point
+     * @param base subtree base relative to the administration point
      */
     public void setBase( Dn base )
     {
@@ -107,6 +106,19 @@ public class SubtreeSpecificationModifier
 
 
     /**
+     * Add a subordinate entries and its subordinate to exclude.
+     * 
+     * @param chopBeforeExclusion
+     *            the subordinate entry and its subordinate to
+     *            exclude
+     */
+    public void addChopBeforeExclusions( Dn chopBeforeExclusion )
+    {
+        this.chopBefore.add( chopBeforeExclusion );
+    }
+
+
+    /**
      * Sets the set of subordinates entries whose subordinates are to be
      * excluded.
      * 
@@ -117,6 +129,19 @@ public class SubtreeSpecificationModifier
     public void setChopAfterExclusions( Set<Dn> chopAfterExclusions )
     {
         this.chopAfter = chopAfterExclusions;
+    }
+
+
+    /**
+     * Add a subordinate entries and its subordinate to exclude.
+     * 
+     * @param chopAfterExclusion
+     *            the subordinate entry and its subordinate to
+     *            exclude
+     */
+    public void addChopAfterExclusions( Dn chopAfterExclusion )
+    {
+        this.chopAfter.add( chopAfterExclusion );
     }
 
 

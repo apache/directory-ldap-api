@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fileset-config file-format-version="1.2.0" simple-config="false" sync-formatter="false">
+  <local-check-config name="maven-checkstyle-plugin validate" location="jar:file:/home/elecharny/.m2/repository/org/apache/directory/buildtools/checkstyle-configuration/2.0.2/checkstyle-configuration-2.0.2.jar!/directory-checks.xml" type="remote" description="maven-checkstyle-plugin configuration validate">
+    <property name="checkstyle.header.file" value="/home/elecharny/eclipse-workspace*$/.metadata/.plugins/org.eclipse.core.resources/.projects/api-util-2.1.8-SNAPSHOT/com.basistech.m2e.code.quality.checkstyleConfigurator/checkstyle-header-validate.txt"/>
+    <property name="checkstyle.cache.file" value="${project_loc}/target/checkstyle-cachefile"/>
+    <property name="checkstyle.suppressions.file" value="/home/elecharny/eclipse-workspace*$/.metadata/.plugins/org.eclipse.core.resources/.projects/api-util-2.1.8-SNAPSHOT/com.basistech.m2e.code.quality.checkstyleConfigurator/checkstyle-suppressions-validate.xml"/>
+  </local-check-config>
+  <fileset name="java-sources-validate" enabled="true" check-config-name="maven-checkstyle-plugin validate" local="true">
+    <file-match-pattern match-pattern="^src/main/resources.*\.properties" include-pattern="true"/>
+    <file-match-pattern match-pattern="^src/test/resources/.*\.properties" include-pattern="true"/>
+  </fileset>
+</fileset-config>

@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.exception.ParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,6 +114,7 @@ public final class SchemaToLdif
             }
             catch ( Exception e )
             {
+                e.printStackTrace();
                 throw new ParserException( I18n.err( I18n.ERR_15004_CANNOT_GENERATE_SOURCES, schema.getName(),
                     e.getMessage() ) );
             }

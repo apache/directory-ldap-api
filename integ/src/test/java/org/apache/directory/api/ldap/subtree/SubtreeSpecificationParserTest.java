@@ -25,9 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,7 @@ import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.api.ldap.schema.loader.JarLdifSchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.apache.directory.api.util.exception.ParserException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -93,6 +93,9 @@ public class SubtreeSpecificationParserTest
 
     /** A valid specification with base and an empty refinement set */
     private static final String SPEC_WITH_BASE_AND_EMPTY_REFINEMENT = "{ base \"ou=system\", specificationFilter and:{ } }";
+
+    /** A valid specification with base and an OID refinement set */
+    private static final String SPEC_WITH_BASE_AND_OID_REFINEMENT = "{ base \"ou=system\", specificationFilter item:person }";
 
     /** A valid specification with ALL IN ONE */
     private static final String SPEC_WITH_ALL_IN_ONE = "{ base    \"ou=departments\""
@@ -180,21 +183,14 @@ public class SubtreeSpecificationParserTest
     /**
      * Tests the parser with an invalid specification with missing white spaces
      * and base set.
-     * 
-     * @throws Exception If the test failed
      */
     @Test
-    public void testInvalidSpecWithBaseAndMissingWS() throws Exception
+    public void testInvalidSpecWithBaseAndMissingWS()
     {
-        try
-        {
-            parser.parse( INVALID_SPEC_WITH_BASE_AND_MISSING_WS );
-            fail( "testInvalidSpecWithBaseAndMissingWS() should never come here..." );
-        }
-        catch ( ParseException e )
-        {
-            assertNotNull( e );
-        }
+        assertThrows(ParserException.class, () -> 
+            {
+                parser.parse( INVALID_SPEC_WITH_BASE_AND_MISSING_WS );
+            } );
     }
 
 
@@ -371,6 +367,23 @@ public class SubtreeSpecificationParserTest
 
 
     /**
+     * Tests the parser with a valid specification with base and oid
+     * refinement.
+     * 
+     * @throws Exception If the test failed
+     */
+    @Test
+    public void testSpecWithBaseAndOidRefinement() throws Exception
+    {
+        SubtreeSpecification ss = parser.parse( SPEC_WITH_BASE_AND_OID_REFINEMENT );
+
+        assertEquals( "ou=system", ss.getBase().toString() );
+        assertEquals( "(objectClass=person)", ss.getRefinement().toString() );
+
+    }
+
+
+    /**
      * Tests the parser with a valid specification with all components set.
      * 
      * @throws Exception If the test failed
@@ -399,21 +412,14 @@ public class SubtreeSpecificationParserTest
 
     /**
      * Tests the parser with an invalid specification with silly things in.
-     * 
-     * @throws Exception If the test failed
      */
     @Test
-    public void testInvalidSillyThing() throws Exception
+    public void testInvalidSillyThing()
     {
-        try
-        {
-            parser.parse( INVALID_SILLY_THING );
-            fail( "testInvalidSillyThing() should never come here..." );
-        }
-        catch ( ParseException e )
-        {
-            assertNotNull( e );
-        }
+        assertThrows(ParserException.class, () -> 
+            {
+                parser.parse( INVALID_SILLY_THING );
+            } );
     }
 
 
@@ -506,7 +512,7 @@ public class SubtreeSpecificationParserTest
             {
                 result = parser.parse( specStr );
             }
-            catch ( ParseException e )
+            catch ( ParserException e )
             {
                 e.printStackTrace();
             }

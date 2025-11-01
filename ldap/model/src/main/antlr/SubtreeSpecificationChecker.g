@@ -71,7 +71,7 @@ options
 // ----------------------------------------------------------------------------
 
 {
-    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationCheckerLexer.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationChecker.class );
     
     private ComponentsMonitor subtreeSpecificationComponentsMonitor = null;
     
@@ -398,7 +398,7 @@ tokens
 //----------------------------------------------------------------------------
 
 {
-    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationLexer.class );
+    private static final Logger LOG = LoggerFactory.getLogger( AntlrSubtreeSpecificationCheckerLexer.class );
 }
 
 

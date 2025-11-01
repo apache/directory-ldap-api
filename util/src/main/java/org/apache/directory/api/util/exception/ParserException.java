@@ -17,11 +17,12 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.schema.converter;
+package org.apache.directory.api.util.exception;
 
 
 /**
- * An exception thrown if we have an error while parsing a schema file.
+ * An exception thrown if we have an error while processing some parsing.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ParserException extends Exception
@@ -31,7 +32,7 @@ public class ParserException extends Exception
 
 
     /**
-     * A strandard constuctor
+     * A standard constuctor
      */
     public ParserException()
     {
@@ -41,7 +42,7 @@ public class ParserException extends Exception
 
     /**
      * A constructor with a message
-     * @param msg The message containg the error's cause
+     * @param msg The message contains the error's cause
      */
     public ParserException( String msg )
     {

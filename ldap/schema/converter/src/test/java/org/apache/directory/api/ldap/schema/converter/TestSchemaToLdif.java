@@ -29,6 +29,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.util.exception.ParserException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -432,6 +434,32 @@ public class TestSchemaToLdif
                 "m-supObjectClass: metaTop\n\n";
 
         assertEquals( expected, transform( "testOCSupMany" ) );
+    }
+    
+    
+    @Disabled("Not yet supported")
+    @Test
+    public void testConvertOCWithOneExtention() throws ParserException, IOException
+    {
+        String expected =
+            HEADER +
+                "dn: m-oid=1.3.6.1.4.1.18060.0.4.2.3.14, ou=objectclasses, cn=testOC, ou=schema\n" +
+                "objectclass: metaObjectClass\n" +
+                "objectclass: metaTop\n" +
+                "objectclass: top\n" +
+                "m-oid: 1.3.6.1.4.1.18060.0.4.2.3.14\n" +
+                "m-name: objectClass\n" +
+                "m-description: An objectClass\n" +
+                "m-obsolete: TRUE\n" +
+                "m-supObjectClass: top\n" +
+                "m-typeObjectClass: ABSTRACT\n" +
+                "m-must: attr1\n" +
+                "m-must: attr2\n" +
+                "m-may: attr3\n" +
+                "m-may: attr4\n\n" +
+                "m-extensionObjectClass:: T25lIGV4dGVuc2lvbiB3aXRoIFVURi04IGNoYXJzIGxpa2Ugw6k=";
+
+        assertEquals( expected, transform( "testOCWithExtension" ) );
     }
 
 
@@ -884,7 +912,7 @@ public class TestSchemaToLdif
 
         assertEquals( expected, transform( "testMozillaATWithOidLen" ) );
     }
-
+    
 
     @Test
     public void testConvertWrongLdif() throws ParserException, IOException
