@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
 import org.apache.directory.api.ldap.model.filter.EqualityNode;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
-import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.filter.NotNode;
 import org.apache.directory.api.ldap.model.filter.OrNode;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -55,7 +54,6 @@ import java.text.ParseException;
 import static org.apache.directory.api.util.ParserUtil.COLON;
 import static org.apache.directory.api.util.ParserUtil.END;
 import static org.apache.directory.api.util.ParserUtil.LCURLY;
-import static org.apache.directory.api.util.ParserUtil.LPAREN;
 import static org.apache.directory.api.util.ParserUtil.RCURLY;
 import static org.apache.directory.api.util.ParserUtil.SEP;
 import static org.apache.directory.api.util.ParserUtil.ONE_N;
@@ -65,8 +63,7 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
 /**
  * A reusable wrapper around the antlr generated parser for an LDAP subtree
  * specification as defined by <a href="http://www.faqs.org/rfcs/rfc3672.html">
- * RFC 3672</a>. This class enables the reuse of the antlr parser/lexer pair
- * without having to recreate the pair every time.
+ * RFC 3672</a>. 
  * 
  * The parsed grammar is:
  * 
@@ -89,7 +86,7 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
  * chopAfter = ID_chopAfter ( SP )* COLON ( SP )* distinguishedName
  * ss_minimum = ID_minimum ( SP )+ INTEGER
  * ss_maximum = ID_maximum ( SP )+ INTEGER
- * ss_specificationFilter = ID_specificationFilter ( SP )+ ( refinement | FILTER )
+ * ss_specificationFilter = ID_specificationFilter ( SP )+ ( refinement [| FILTER] )
  * refinements = OPEN_CURLY ( SP )*
  *                 (
  *                   refinement ( SP )* ( SEP ( SP )* refinement ( SP )* )*
@@ -100,9 +97,11 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
  * and = ID_and ( SP )* COLON ( SP )* refinements
  * or = ID_or ( SP )* COLON ( SP )* refinements
  * not = ID_not ( SP )* COLON ( SP )* refinement
- * FILTER = '(' ( '&' (SP)* FILTER+ | '|' (SP)* FILTER+ | '!' (SP)* FILTER | FILTER_VALUE ) ')' (SP)*
- * FILTER_VALUE = every char but '(', ')', '&', '|', '!'
+ * [FILTER = '(' ( '&' (SP)* FILTER+ | '|' (SP)* FILTER+ | '!' (SP)* FILTER | FILTER_VALUE ) ')' (SP)*
+ * FILTER_VALUE = every char but '(', ')', '&', '|', '!']
  * </pre>
+ * 
+ * Note: the 'filter' part is not present in RFC 3672
  * 
  * @see <a href="http://www.faqs.org/rfcs/rfc3672.html">RFC 3672</a>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -510,7 +509,33 @@ public class SubtreeSpecificationParser
                 return null;
         }
     }
+
     
+    /**
+     * Parse a filter, following this grammar:
+     * <pre>
+     * FILTER = '(' ( '&' (SP)* FILTER+ | '|' (SP)* FILTER+ | '!' (SP)* FILTER | FILTER_VALUE ) ')' (SP)*
+     * FILTER_VALUE = every char but '(', ')', '&', '|', '!'
+     * </pre>
+     * 
+     * @param spec The subtreeSpecification string to parse
+     * @param pos The position in the string
+     * @return the parsed filter
+     * @ParseException If the input was incorrect
+     */
+    private String parseFilter( String spec, Position pos ) throws ParseException
+    {
+        int start = pos.start;
+        
+        /*
+        while ( true )
+        {
+            char c = spec.charAt( pos.start );
+        }
+        */
+        
+        return spec.substring( start, pos.start );
+    }
     
     /**
      * Parse the specification filter, following this grammar:
@@ -606,10 +631,12 @@ public class SubtreeSpecificationParser
                 return;
                 
             default:
-                if ( isMatchChar( spec, LPAREN, pos ) )
+                // The filter part is not implemented. It's not either 
+                // part of the RFC 3672
+                /*if ( isMatchChar( spec, LPAREN, pos ) )
                 {
                     // A filter
-                    String filter = null;
+                    String filter = parseFilter( spec, pos );
                     
                     try 
                     {
@@ -626,7 +653,9 @@ public class SubtreeSpecificationParser
                 {
                     // The specification filter end
                     return;
-                }
+                }*/
+                
+                return;
         }
     }
 
