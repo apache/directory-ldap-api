@@ -823,7 +823,7 @@ public class SubtreeSpecificationParser
      * 
      * @return true if it normalizes false otherwise
      */
-    public boolean isNormizing()
+    public boolean isNormilizing()
     {
         return this.isNormalizing;
     }
