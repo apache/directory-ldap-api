@@ -29,6 +29,7 @@ import org.apache.directory.api.ldap.model.schema.syntaxCheckers.SubtreeSpecific
 import org.apache.directory.api.ldap.schema.loader.JarLdifSchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -118,7 +119,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
 
     /** A valid specification with refinement set */
     private static final String SPEC_WITH_REFINEMENT = "{ base \"ou=system\", specificationFilter and:{ and:{ item:1.2.3"
-        + ", or:{ item:4.5.6, item:person-7 } }, not: item:10.11.12 } }";
+        + ", or:{ item:2.5.6, item:person-7 } }, not: item:2.11.12 } }";
 
     /** A valid specification with base and an empty refinement set */
     private static final String SPEC_WITH_BASE_AND_EMPTY_REFINEMENT = "{ base \"ou=system\", specificationFilter and:{ } }";
@@ -127,7 +128,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
     private static final String SPEC_WITH_ALL_IN_ONE = "{ base    \"ou=departments\""
         + ", specificExclusions { chopBefore:\"x=y\", chopAfter:\"k=l\", chopBefore:\"y=z\", chopAfter:\"l=m\" }"
         + ", minimum 7, maximum   77"
-        + ", specificationFilter     and:{ and:{ item:1.2.3, or:{ item:4.5.6, item:7.8.9 } }, not: item:10.11.12 } }";
+        + ", specificationFilter     and:{ and:{ item:1.2.3, or:{ item:2.5.6, item:2.8.9 } }, not: item:2.11.12 } }";
 
     /** An valid specification with unordinary component order */
     private static final String SPEC_ORDER_OF_COMPONENTS_DOES_NOT_MATTER = "{ base \"ou=system\", minimum 3, specificExclusions { chopBefore:\"x=y\" } }";
@@ -280,7 +281,6 @@ public class SubtreeSpecificationSyntaxCheckerTest
     public void testSpecWithAllInOne() throws Exception
     {
         assertTrue( checker.isValidSyntax( SPEC_WITH_ALL_IN_ONE ) );
-
     }
 
 
@@ -316,6 +316,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
      * @throws Exception If the test failed
      */
     @Test
+    @Disabled( "Filters are not part of RFC 3672" )
     public void testSpecWithFilter() throws Exception
     {
         assertTrue( checker.isValidSyntax( SPEC_WITH_FILTER ) );

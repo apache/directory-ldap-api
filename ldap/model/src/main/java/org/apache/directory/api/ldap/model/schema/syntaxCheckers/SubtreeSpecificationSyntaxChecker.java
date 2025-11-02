@@ -20,13 +20,11 @@
 package org.apache.directory.api.ldap.model.schema.syntaxCheckers;
 
 
-import java.text.ParseException;
-
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationChecker;
+import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationParser;
 import org.apache.directory.api.util.Strings;
 
 
@@ -41,7 +39,7 @@ import org.apache.directory.api.util.Strings;
 public final class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
 {
     /** The associated checker */
-    private transient SubtreeSpecificationChecker subtreeSpecificationChecker;
+    private transient SubtreeSpecificationParser subtreeSpecificationChecker;
     
     /**
      * A static instance of SubtreeSpecificationSyntaxChecker
@@ -94,7 +92,7 @@ public final class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
     private SubtreeSpecificationSyntaxChecker( String oid, SchemaManager schemaManager )
     {
         super( oid );
-        subtreeSpecificationChecker = new SubtreeSpecificationChecker( schemaManager );
+        subtreeSpecificationChecker = new SubtreeSpecificationParser( schemaManager );
     }
 
     
@@ -148,21 +146,18 @@ public final class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        try
-        {
-            synchronized ( subtreeSpecificationChecker )
-            {
-                subtreeSpecificationChecker.parse( strValue );
-            }
+        boolean isValid = subtreeSpecificationChecker.check( strValue );
 
+        if ( isValid )
+        {
             if ( LOG.isDebugEnabled() )
             {
                 LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, value ) );
             }
-            
+        
             return true;
         }
-        catch ( ParseException pe )
+        else
         {
             if ( LOG.isDebugEnabled() )
             {

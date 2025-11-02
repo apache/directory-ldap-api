@@ -125,6 +125,10 @@ public class SubtreeSpecificationParser
     private static final String ID_AND = "and";
     private static final String ID_OR = "or";
     private static final String ID_NOT = "not";
+    
+    /** Flags to use t differentiate a parsing from a checking */
+    private static final boolean PARSE = true;
+    private static final boolean VALIDATE = false;
 
     /** The ObjectClass AT */
     private static AttributeType objectClassAt;
@@ -209,11 +213,12 @@ public class SubtreeSpecificationParser
      *   chopAfter = ID_chopAfter ( SP )* COLON ( SP )* distinguishedName
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @ParseException If the input was incorrect
      */
-    private void parseSpecificExclusion( String spec, Position pos,
+    private void parseSpecificExclusion( boolean action, String spec, Position pos,
             SubtreeSpecificationModifier ssModifier ) throws ParseException
     {
         String token = getToken( spec, pos );
@@ -244,20 +249,23 @@ public class SubtreeSpecificationParser
             throw new ParseException( I18n.err( I18n.ERR_13908_SS_INVALID_DN, dnStr ), pos.start );
         }
         
-        switch ( token )
+        if ( action == PARSE )
         {
-            case ID_CHOP_BEFORE:
-                ssModifier.addChopBeforeExclusions( dn );
-                return;
-
-            case ID_CHOP_AFTER:
-                
-                ssModifier.addChopAfterExclusions( dn );
-                return;
-
-            default:
-                // We are done
-                return;
+            switch ( token )
+            {
+                case ID_CHOP_BEFORE:
+                    ssModifier.addChopBeforeExclusions( dn );
+                    return;
+    
+                case ID_CHOP_AFTER:
+                    
+                    ssModifier.addChopAfterExclusions( dn );
+                    return;
+    
+                default:
+                    // We are done
+                    return;
+            }
         }
     }
     
@@ -272,11 +280,12 @@ public class SubtreeSpecificationParser
      *     CLOSE_CURLY
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @ParseException If the input was incorrect
      */
-    private void parseSpecificExclusions( String spec, Position pos,
+    private void parseSpecificExclusions( boolean action, String spec, Position pos,
             SubtreeSpecificationModifier ssModifier ) throws ParseException
     {
         // Skip mandatory spaces
@@ -312,7 +321,7 @@ public class SubtreeSpecificationParser
                 skipSpaces( spec, pos, ZERO_N );
             }
             
-            parseSpecificExclusion( spec, pos, ssModifier );
+            parseSpecificExclusion( action, spec, pos, ssModifier );
         }
 
         // Skip ending spaces
@@ -329,11 +338,12 @@ public class SubtreeSpecificationParser
      *   item = ID_item ( SP )* COLON ( SP )* oid
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @ParseException If the input was incorrect
      */
-    private ExprNode parseItem( String spec, Position pos ) throws ParseException
+    private ExprNode parseItem( boolean action, String spec, Position pos ) throws ParseException
     {
         // item = ID_item ( SP )* COLON ( SP )* oid
         skipSpaces( spec, pos, ZERO_N );
@@ -357,7 +367,12 @@ public class SubtreeSpecificationParser
             throw new ParseException( I18n.err( I18n.ERR_13906_SS_INVALID_ITEM, oid ), pos.start );
         }
 
-        ExprNode item = new EqualityNode( objectClassAt, new Value( oid ) );
+        ExprNode item = null;
+        
+        if ( action == PARSE )
+        {
+            item = new EqualityNode( objectClassAt, new Value( oid ) );
+        }
 
         return item;
     }
@@ -369,19 +384,20 @@ public class SubtreeSpecificationParser
      *   (ID_and | ID_or) ( SP )* COLON ( SP )* refinements
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @return The parsed node
      * @ParseException If the input was incorrect
      */
-    private void parseAndOr( String spec, Position pos, BranchNode node ) throws ParseException
+    private void parseAndOr( boolean action, String spec, Position pos, BranchNode node ) throws ParseException
     {
         // The 'and'/'or' token has already been parsed
         skipSpaces( spec, pos, ZERO_N );
         
         matchChar( spec, COLON, pos );
         
-        parseRefinements( spec, pos, node );
+        parseRefinements( action, spec, pos, node );
     }
     
     
@@ -391,19 +407,25 @@ public class SubtreeSpecificationParser
      *   ID_not ( SP )* COLON ( SP )* refinement
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @return The parsed node
      * @ParseException If the input was incorrect
      */
-    private void parseNot( String spec, Position pos, BranchNode node ) throws ParseException
+    private void parseNot( boolean action, String spec, Position pos, BranchNode node ) throws ParseException
     {
         // The 'and'/'or' token has already been parsed
         skipSpaces( spec, pos, ZERO_N );
         
         matchChar( spec, COLON, pos );
         
-        node.addNode( parseRefinement( spec, pos ) );
+        ExprNode refinement = parseRefinement( action, spec, pos );
+        
+        if ( action == PARSE )
+        {
+            node.addNode( refinement );
+        }
     }
 
     
@@ -422,7 +444,7 @@ public class SubtreeSpecificationParser
      * @return the parsed nodes
      * @ParseException If the input was incorrect
      */
-    private void parseRefinements( String spec, Position pos, BranchNode node ) throws ParseException
+    private void parseRefinements( boolean  action, String spec, Position pos, BranchNode node ) throws ParseException
     {
         matchChar( spec, LCURLY, pos );
         
@@ -451,9 +473,12 @@ public class SubtreeSpecificationParser
             
             skipSpaces( spec, pos, ZERO_N );
             
-            ExprNode refinement = parseRefinement( spec, pos );
+            ExprNode refinement = parseRefinement( action, spec, pos );
             
-            node.addNode( refinement );
+            if ( action == PARSE )
+            {
+                node.addNode( refinement );
+            }
         }
     }
 
@@ -468,12 +493,13 @@ public class SubtreeSpecificationParser
      *   not = ID_not ( SP )* COLON ( SP )* refinement
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @return the parsed refinement
      * @ParseException If the input was incorrect
      */
-    private ExprNode parseRefinement( String spec, Position pos ) throws ParseException
+    private ExprNode parseRefinement( boolean action, String spec, Position pos ) throws ParseException
     {
         // Skip optional spaces
         skipSpaces( spec, pos, ONE_N );
@@ -484,23 +510,41 @@ public class SubtreeSpecificationParser
         switch ( token )
         {
             case ID_ITEM:
-                return parseItem( spec, pos );
+                return parseItem( action, spec, pos );
                 
             case ID_AND:
-                AndNode andNode = new AndNode();
-                parseAndOr( spec, pos, andNode );
+                AndNode andNode = null;
+                
+                if ( action  == PARSE )
+                {
+                    andNode = new AndNode();
+                }
+                
+                parseAndOr( action, spec, pos, andNode );
                 
                 return andNode;
                 
             case ID_OR:
-                OrNode orNode = new OrNode();
-                parseAndOr( spec, pos, orNode );
+                OrNode orNode = null;
+                
+                if ( action == PARSE )
+                {
+                    orNode = new OrNode();
+                }
+                
+                parseAndOr( action, spec, pos, orNode );
                 
                 return orNode;
                 
             case ID_NOT:
-                NotNode notNode = new NotNode();
-                parseNot( spec, pos, notNode );
+                NotNode notNode = null;
+                
+                if ( action == PARSE )
+                {
+                    notNode = new NotNode();
+                }
+                
+                parseNot( action, spec, pos, notNode );
                 
                 return notNode;
                 
@@ -518,12 +562,13 @@ public class SubtreeSpecificationParser
      * FILTER_VALUE = every char but '(', ')', '&', '|', '!'
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @return the parsed filter
      * @ParseException If the input was incorrect
      */
-    private String parseFilter( String spec, Position pos ) throws ParseException
+    private String parseFilter( boolean action, String spec, Position pos ) throws ParseException
     {
         int start = pos.start;
         
@@ -534,7 +579,14 @@ public class SubtreeSpecificationParser
         }
         */
         
-        return spec.substring( start, pos.start );
+        if ( action == PARSE )
+        {
+            return spec.substring( start, pos.start );
+        }
+        else
+        {
+            return null;
+        }
     }
     
     /**
@@ -557,12 +609,13 @@ public class SubtreeSpecificationParser
      *   FILTER_VALUE : ( ')' | '(' | '&' | '|' | '!' ) ( ~(')') )*
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @param ssModifier The SubtreeSpecification modifier instance
      * @ParseException If the input was incorrect
      */
-    private void parseSpecificationFilter( String spec, Position pos,
+    private void parseSpecificationFilter( boolean action, String spec, Position pos,
             SubtreeSpecificationModifier ssModifier ) throws ParseException
     {
         // Skip mandatory spaces
@@ -600,33 +653,63 @@ public class SubtreeSpecificationParser
                     throw new ParseException( I18n.err( I18n.ERR_13906_SS_INVALID_ITEM, oid ), pos.start );
                 }
 
-                ExprNode node = new EqualityNode( objectClassAt, new Value( oid ) );
+                if ( action == PARSE )
+                {
+                    ExprNode node = new EqualityNode( objectClassAt, new Value( oid ) );
 
-                ssModifier.setRefinement( node );
+                    ssModifier.setRefinement( node );
+                }
                 
                 return;
                 
             case ID_AND:
-                AndNode andNode = new AndNode();
-                parseAndOr( spec, pos, andNode );
+                AndNode andNode = null;
                 
-                ssModifier.setRefinement( andNode );
+                if ( action == PARSE )
+                {
+                    andNode = new AndNode();
+                }
+                
+                parseAndOr( action, spec, pos, andNode );
+                
+                if ( action == PARSE )
+                {
+                    ssModifier.setRefinement( andNode );
+                }
 
                 return;
 
             case ID_OR:
-                OrNode orNode = new OrNode();
-                parseAndOr( spec, pos, orNode );
+                OrNode orNode = null;
                 
-                ssModifier.setRefinement( orNode );
+                if ( action == PARSE )
+                {
+                    orNode = new OrNode();
+                }
+                
+                parseAndOr( action, spec, pos, orNode );
+                
+                if ( action == PARSE )
+                {
+                    ssModifier.setRefinement( orNode );
+                }
 
                 return;
 
             case ID_NOT:
-                NotNode notNode = new NotNode();
-                parseNot( spec, pos, notNode );
+                NotNode notNode = null;
                 
-                ssModifier.setRefinement( notNode );
+                if ( action == PARSE )
+                {
+                    new NotNode();
+                }
+                
+                parseNot( action, spec, pos, notNode );
+                
+                if ( action == PARSE )
+                {
+                    ssModifier.setRefinement( notNode );
+                }
 
                 return;
                 
@@ -668,12 +751,13 @@ public class SubtreeSpecificationParser
      *   ss_base | ss_specificExclusions | ss_minimum | ss_maximum | ss_specificationFilter
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @param ssModifier The SubtreeSpecification modifier instance
      * @ParseException If the input was incorrect
      */
-    private void parseSubtreeSpecificationComponent( String spec, Position pos, 
+    private void parseSubtreeSpecificationComponent( boolean action, String spec, Position pos, 
             SubtreeSpecificationModifier ssModifier ) throws ParseException
     {
         String token = getToken( spec, pos );
@@ -683,13 +767,16 @@ public class SubtreeSpecificationParser
             case ID_BASE:
                 Dn base = parseBase( spec, pos );
                 
-                ssModifier.setBase( base );
+                if ( action == PARSE )
+                {
+                    ssModifier.setBase( base );
+                }
                 
                 return;
                 
             case ID_SPECIFIC_EXCLUSIONS:
                 // Parse the exclusions
-                parseSpecificExclusions( spec, pos, ssModifier );
+                parseSpecificExclusions( action, spec, pos, ssModifier );
                 
                 return;
 
@@ -702,7 +789,10 @@ public class SubtreeSpecificationParser
                 // Now parse an integer
                 int minimum = parseInteger( spec, pos );
                 
-                ssModifier.setMinBaseDistance( minimum );
+                if ( action == PARSE )
+                {
+                    ssModifier.setMinBaseDistance( minimum );
+                }
                 
                 return;
                 
@@ -715,12 +805,15 @@ public class SubtreeSpecificationParser
                 // Now parse an integer
                 int maximum = parseInteger( spec, pos );
                 
-                ssModifier.setMaxBaseDistance( maximum );
+                if ( action == PARSE )
+                {
+                    ssModifier.setMaxBaseDistance( maximum );
+                }
                 
                 return;
                 
             case ID_SPECIFICATION_FILTER:
-                parseSpecificationFilter( spec, pos, ssModifier );
+                parseSpecificationFilter( action, spec, pos, ssModifier );
                 
                 return;
 
@@ -743,12 +836,13 @@ public class SubtreeSpecificationParser
      *   ( SP )*
      * </pre>
      * 
+     * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
      * @param pos The position in the string
      * @return A SubtreeSpecification instance
      * @ParseException If the input was incorrect
      */
-    private SubtreeSpecification parse( String spec, Position pos ) throws ParseException
+    private SubtreeSpecification parse( boolean action, String spec, Position pos ) throws ParseException
     {
         // Get rid of spaces 
         spec = Strings.trim( spec );
@@ -758,7 +852,13 @@ public class SubtreeSpecificationParser
             return null;
         }
         
-        SubtreeSpecificationModifier ssModifier = new SubtreeSpecificationModifier();
+        
+        SubtreeSpecificationModifier ssModifier = null;
+        
+        if ( action == PARSE )
+        {
+            ssModifier = new SubtreeSpecificationModifier();
+        }
 
         // Must have an opening {
         matchChar( spec, LCURLY, pos );
@@ -787,18 +887,25 @@ public class SubtreeSpecificationParser
                 skipSpaces( spec, pos, ZERO_N );
             }
             
-            parseSubtreeSpecificationComponent( spec, pos, ssModifier );
+            parseSubtreeSpecificationComponent( action, spec, pos, ssModifier );
         }
 
         // Must have an closing }
         matchChar( spec, RCURLY, pos );
     
-        return ssModifier.getSubtreeSpecification();
+        if ( action == PARSE )
+        {
+            return ssModifier.getSubtreeSpecification();
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
     /**
-     * Parses a subtree specification without exhausting the parser.
+     * Parses a subtree specification
      * 
      * @param spec the specification to be parsed
      * @return the specification bean
@@ -814,7 +921,36 @@ public class SubtreeSpecificationParser
         Position pos = new Position();
         pos.length = spec.length();
         
-        return parse( spec, pos );
+        return parse( PARSE, spec, pos );
+    }
+
+
+    /**
+     * Check a subtree specification
+     * 
+     * @param spec the specification to be checked
+     * @return <code>true</code> if the subtree specification is valid, <code>false</code> otherwise
+     **/
+    public boolean check( String spec )
+    {
+        if ( spec == null )
+        {
+            return true;
+        }
+        
+        Position pos = new Position();
+        pos.length = spec.length();
+        
+        try
+        {
+            parse( VALIDATE, spec, pos );
+            
+            return true;
+        }
+        catch ( ParseException pe )
+        {
+            return false;
+        }
     }
 
 
