@@ -31,12 +31,15 @@ import java.util.Set;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.cursor.CursorException;
+import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.AttributesFactory;
@@ -297,7 +300,9 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         // Load all the elements from the SubschemaSubentry
-        Entry subschemaSubentry = connection.lookup( subschemaSubentryDn,
+        EntryCursor subschemaSubentryCursor = connection.search( subschemaSubentryDn,
+            "(objectClass=subschema)",
+            SearchScope.OBJECT,
             SchemaConstants.ATTRIBUTE_TYPES_AT,
             SchemaConstants.COMPARATORS_AT,
             SchemaConstants.DIT_CONTENT_RULES_AT,
@@ -311,49 +316,59 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             SchemaConstants.SYNTAX_CHECKERS_AT
             );
 
-        // Load all the AT
-        Attribute attributeTypes = subschemaSubentry.get( SchemaConstants.ATTRIBUTE_TYPES_AT );
-        loadAttributeTypes( attributeTypes );
+        try 
+        {
+            Entry subschemaSubentry = subschemaSubentryCursor.get();
 
-        // Load all the C
-        Attribute comparators = subschemaSubentry.get( SchemaConstants.COMPARATORS_AT );
-        loadComparators( comparators );
+            // Load all the AT
+            Attribute attributeTypes = subschemaSubentry.get( SchemaConstants.ATTRIBUTE_TYPES_AT );
+            loadAttributeTypes( attributeTypes );
 
-        // Load all the DCR
-        Attribute ditContentRules = subschemaSubentry.get( SchemaConstants.DIT_CONTENT_RULES_AT );
-        loadDitContentRules( ditContentRules );
+            // Load all the C
+            Attribute comparators = subschemaSubentry.get( SchemaConstants.COMPARATORS_AT );
+            loadComparators( comparators );
 
-        // Load all the DSR
-        Attribute ditStructureRules = subschemaSubentry.get( SchemaConstants.DIT_STRUCTURE_RULES_AT );
-        loadDitStructureRules( ditStructureRules );
+            // Load all the DCR
+            Attribute ditContentRules = subschemaSubentry.get( SchemaConstants.DIT_CONTENT_RULES_AT );
+            loadDitContentRules( ditContentRules );
 
-        // Load all the LS
-        Attribute ldapSytaxes = subschemaSubentry.get( SchemaConstants.LDAP_SYNTAXES_AT );
-        loadLdapSyntaxes( ldapSytaxes );
+            // Load all the DSR
+            Attribute ditStructureRules = subschemaSubentry.get( SchemaConstants.DIT_STRUCTURE_RULES_AT );
+            loadDitStructureRules( ditStructureRules );
 
-        // Load all the MR
-        Attribute matchingRules = subschemaSubentry.get( SchemaConstants.MATCHING_RULES_AT );
-        loadMatchingRules( matchingRules );
+            // Load all the LS
+            Attribute ldapSytaxes = subschemaSubentry.get( SchemaConstants.LDAP_SYNTAXES_AT );
+            loadLdapSyntaxes( ldapSytaxes );
 
-        // Load all the MRU
-        Attribute matchingRuleUse = subschemaSubentry.get( SchemaConstants.MATCHING_RULE_USE_AT );
-        loadMatchingRuleUses( matchingRuleUse );
+            // Load all the MR
+            Attribute matchingRules = subschemaSubentry.get( SchemaConstants.MATCHING_RULES_AT );
+            loadMatchingRules( matchingRules );
 
-        // Load all the N
-        Attribute normalizers = subschemaSubentry.get( SchemaConstants.NORMALIZERS_AT );
-        loadNormalizers( normalizers );
+            // Load all the MRU
+            Attribute matchingRuleUse = subschemaSubentry.get( SchemaConstants.MATCHING_RULE_USE_AT );
+            loadMatchingRuleUses( matchingRuleUse );
 
-        // Load all the NF
-        Attribute nameForms = subschemaSubentry.get( SchemaConstants.NAME_FORMS_AT );
-        loadNameForms( nameForms );
+            // Load all the N
+            Attribute normalizers = subschemaSubentry.get( SchemaConstants.NORMALIZERS_AT );
+            loadNormalizers( normalizers );
 
-        // Load all the OC
-        Attribute objectClasses = subschemaSubentry.get( SchemaConstants.OBJECT_CLASSES_AT );
-        loadObjectClasses( objectClasses );
+            // Load all the NF
+            Attribute nameForms = subschemaSubentry.get( SchemaConstants.NAME_FORMS_AT );
+            loadNameForms( nameForms );
 
-        // Load all the SC
-        Attribute syntaxCheckers = subschemaSubentry.get( SchemaConstants.SYNTAX_CHECKERS_AT );
-        loadSyntaxCheckers( syntaxCheckers );
+            // Load all the OC
+            Attribute objectClasses = subschemaSubentry.get( SchemaConstants.OBJECT_CLASSES_AT );
+            loadObjectClasses( objectClasses );
+
+            // Load all the SC
+            Attribute syntaxCheckers = subschemaSubentry.get( SchemaConstants.SYNTAX_CHECKERS_AT );
+            loadSyntaxCheckers( syntaxCheckers );
+        }
+        catch ( CursorException e )
+        {
+            throw new LdapException( e.getMessage(), e );
+        }
+       
     }
 
 
