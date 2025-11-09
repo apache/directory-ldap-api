@@ -37,6 +37,7 @@ public final class ParserUtil
 
     /** The various found characters */
     public static final char COLON      = ':';
+    public static final char DOLLAR     = '$';
     public static final char DOT        = '.';
     public static final char DQUOTE     = '"';
     public static final char HYPHEN     = '-';
@@ -44,6 +45,7 @@ public final class ParserUtil
     public static final char LPAREN     = '(';
     public static final char RCURLY     = '}';
     public static final char RPAREN     = ')';
+    public static final char SEMI_COLON = ';';
     public static final char SEP        = ',';
     public static final char USCORE     = '_';
     public static final char ZERO       = '0';
@@ -276,7 +278,52 @@ public final class ParserUtil
         
         return oid;
     }
- 
+
+    
+    /**
+     * Get a token (which is a suite of alphabetic or dash characters
+     * prefixed with a '$'
+     * 
+     * @param str The string to parse
+     * @param pos The current position in the string
+     * @return The found token
+     */
+    public static String getDollarToken( String str, Position pos )
+    {
+        int start = pos.start;
+        
+        if ( hasMoreChars( pos ) && ( str.charAt( pos.start ) == DOLLAR ) )
+        {
+            pos.start++;
+        }
+        else
+        {
+            return "";
+        }
+        
+        while ( hasMoreChars( pos ) )
+        {
+            char c = str.charAt( pos.start );
+            
+            if ( Chars.isAlpha( c ) || ( c == HYPHEN ) || ( c == USCORE ) )
+            {
+                pos.start++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        if ( start == pos.start )
+        {
+            // Nothing to read: the end
+            return END;
+        }
+        
+        return str.substring( start, pos.start );
+    }
+
     
     /**
      * Get a token (which is a suite of alphabetic or dash characters
@@ -436,7 +483,7 @@ public final class ParserUtil
      * @return The found DN string
      * @throws ParseException If there is a missing starting or ending dquote, or if the DN is incorrect
      **/
-    public static String parseDn( String str, Position pos ) throws ParseException
+    public static String parseQuotedSafeUtf8( String str, Position pos ) throws ParseException
     {
         // We get the DN, which is double quoted. 
         matchChar( str, DQUOTE, pos );
