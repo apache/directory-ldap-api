@@ -318,6 +318,10 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
         try 
         {
+            if ( !subschemaSubentryCursor.next() )
+            {
+                throw new LdapException( "Unable to read schema at: " + subschemaSubentryDn );
+            }
             Entry subschemaSubentry = subschemaSubentryCursor.get();
 
             // Load all the AT

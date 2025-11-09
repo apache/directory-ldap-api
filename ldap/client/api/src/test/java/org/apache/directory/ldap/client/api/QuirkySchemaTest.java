@@ -207,6 +207,7 @@ public class QuirkySchemaTest
                         EntryCursor mockCursor = mock ( EntryCursor.class );
                         
                         Entry entry = loadSchemaEntry( schemaFileName );
+                        when( mockCursor.next() ).thenReturn ( true );
                         when( mockCursor.get() ).thenReturn( entry );
 
                         return mockCursor;
