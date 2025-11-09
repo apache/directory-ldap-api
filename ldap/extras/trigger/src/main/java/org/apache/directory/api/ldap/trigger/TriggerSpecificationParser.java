@@ -42,14 +42,14 @@ import static org.apache.directory.api.util.ParserUtil.matchChar;
 import static org.apache.directory.api.util.ParserUtil.parseQuotedSafeUtf8;
 import static org.apache.directory.api.util.ParserUtil.skipSpaces;
 
-import static org.apache.directory.api.util.ParserUtil.SEP;
 import static org.apache.directory.api.util.ParserUtil.DOT;
 import static org.apache.directory.api.util.ParserUtil.LCURLY;
 import static org.apache.directory.api.util.ParserUtil.LPAREN;
+import static org.apache.directory.api.util.ParserUtil.ONE_N;
 import static org.apache.directory.api.util.ParserUtil.RCURLY;
 import static org.apache.directory.api.util.ParserUtil.RPAREN;
 import static org.apache.directory.api.util.ParserUtil.SEMI_COLON;
-import static org.apache.directory.api.util.ParserUtil.ONE_N;
+import static org.apache.directory.api.util.ParserUtil.SEP;
 import static org.apache.directory.api.util.ParserUtil.ZERO_N;
 
 
@@ -179,10 +179,6 @@ public class TriggerSpecificationParser
     /** The schema manager instance */
     private SchemaManager schemaManager;
 
-    /** Flags to use to differentiate a parsing from a checking */
-    private static final boolean PARSE = true;
-    private static final boolean VALIDATE = false;
-
     /** The TriggerSpecification tokens */
     private static final String ID_ADD = "add";
     private static final String ID_AFTER = "after";
@@ -268,13 +264,12 @@ public class TriggerSpecificationParser
      *     )
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param spSPecModifier The parsed Stored Procedure specification instance
      * @throws ParseException If the input was incorrect
      */
-    private void parseGenericOption( boolean action, String spec, Position pos, SPSpecModifier spSPecModifier )
+    private void parseGenericOption( String spec, Position pos, SPSpecModifier spSPecModifier )
             throws ParseException
     {
         String token = getToken( spec, pos );
@@ -285,12 +280,9 @@ public class TriggerSpecificationParser
                 skipSpaces( spec, pos, ONE_N );
                 String language = parseQuotedSafeUtf8( spec, pos );
                 
-                if ( action == PARSE )
-                {
-                    StoredProcedureOption spOption = new StoredProcedureLanguageSchemeOption( language );
-                    
-                    spSPecModifier.addOption( spOption );
-                }
+                StoredProcedureOption spOption = new StoredProcedureLanguageSchemeOption( language );
+                
+                spSPecModifier.addOption( spOption );
                 
                 return;
                 
@@ -311,26 +303,17 @@ public class TriggerSpecificationParser
                         switch ( Strings.toLowerCaseAscii( scopeValue ) )
                         {
                             case ID_BASE:
-                                if ( action == PARSE )
-                                {
-                                    searchScope = SearchScope.OBJECT;
-                                }
+                                searchScope = SearchScope.OBJECT;
                                 
                                 break;
                                 
                             case ID_ONE:
-                                if ( action == PARSE )
-                                {
-                                    searchScope = SearchScope.ONELEVEL;
-                                }
+                                searchScope = SearchScope.ONELEVEL;
                                 
                                 break;
                                 
                             case ID_SUBTREE:
-                                if ( action == PARSE )
-                                {
-                                    searchScope = SearchScope.SUBTREE;
-                                }
+                                searchScope = SearchScope.SUBTREE;
                                 
                                 skipSpaces( spec, pos, ZERO_N );
                                 
@@ -354,24 +337,21 @@ public class TriggerSpecificationParser
                 // We expect a DN
                 String dnStr = parseQuotedSafeUtf8( spec, pos );
                 
-                if ( action == PARSE )
+                Dn dn = null;
+                
+                try
                 {
-                    Dn dn = null;
-                    
-                    try
-                    {
-                        dn = new Dn( schemaManager, dnStr );
-                    }
-                    catch ( LdapInvalidDnException ldie )
-                    {
-                        // 
-                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                    }
-
-                    StoredProcedureOption spOption = new StoredProcedureSearchContextOption( dn, searchScope );
-                    
-                    spSPecModifier.addOption( spOption );
+                    dn = new Dn( schemaManager, dnStr );
                 }
+                catch ( LdapInvalidDnException ldie )
+                {
+                    // 
+                    throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
+                }
+
+                spOption = new StoredProcedureSearchContextOption( dn, searchScope );
+                
+                spSPecModifier.addOption( spOption );
       
                 return;
                 
@@ -398,13 +378,12 @@ public class TriggerSpecificationParser
      *     )?
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @return The parsed Stored Procedure specification instance
      * @throws ParseException If the input was incorrect
      */
-    private SPSpecModifier parseCallNameOptionList( boolean action, String spec, Position pos )
+    private SPSpecModifier parseCallNameOptionList( String spec, Position pos )
             throws ParseException
     {
         // The 'call' token must be present
@@ -427,11 +406,8 @@ public class TriggerSpecificationParser
         
         SPSpecModifier spSpecModifier = null;
         
-        if ( action == PARSE )
-        {
-            spSpecModifier = new SPSpecModifier();
-            spSpecModifier.setName( procedureName );
-        }
+        spSpecModifier = new SPSpecModifier();
+        spSpecModifier.setName( procedureName );
 
         // Check if we have options, if so we have an opening '{'
         if ( isMatchChar( spec, LCURLY, pos ) )
@@ -452,7 +428,7 @@ public class TriggerSpecificationParser
                 
                 skipSpaces( spec, pos, ZERO_N );
                 
-                parseGenericOption( action, spec, pos, spSpecModifier );
+                parseGenericOption( spec, pos, spSpecModifier );
                 
                 skipSpaces( spec, pos, ZERO_N );
             }
@@ -475,14 +451,13 @@ public class TriggerSpecificationParser
      *     “$entry” | "$attributes" |  "$ldapcontext" ( SP )+ DN | "$operationprincipal"
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param spSpecModifier The SPSpec modifier
      * @throws ParseException If the input was incorrect
      */
     private void parseAddParamList( 
-            boolean action, String spec, Position pos, SPSpecModifier spSpecModifier )
+            String spec, Position pos, SPSpecModifier spSpecModifier )
             throws ParseException
     {
         boolean isFirst = true;
@@ -505,18 +480,12 @@ public class TriggerSpecificationParser
             switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_ENTRY:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Add_ENTRY.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Add_ENTRY.instance() );
 
                     break;
                     
                 case ID_ATTRIBUTES:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Add_ATTRIBUTES.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Add_ATTRIBUTES.instance() );
                     
                     break;
                     
@@ -525,32 +494,26 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( token, pos );
                     
-                    if ( action == PARSE )
+                    Dn ldapContext = null;
+                
+                    try
                     {
-                        Dn ldapContext = null;
-                    
-                        try
-                        {
-                            ldapContext = new Dn( schemaManager, dnStr );
-                        }
-                        catch ( LdapInvalidDnException ldie )
-                        {
-                            // 
-                            throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                        }
-
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
+                        ldapContext = new Dn( schemaManager, dnStr );
                     }
+                    catch ( LdapInvalidDnException ldie )
+                    {
+                        // 
+                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
+                    }
+
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
                     
                     break;
                     
                 case ID_OPERATION_PRINCIPAL:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
-                    }
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
                     
                     break;
                     
@@ -575,14 +538,12 @@ public class TriggerSpecificationParser
      *    "$name" | "$deletedentry" | "$ldapcontext" ( SP )+ DN | "$operationprincipal"
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param spSpecModifier The SPSpec modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseDeleteParamList( 
-            boolean action, String spec, Position pos, SPSpecModifier spSpecModifier )
+    private void parseDeleteParamList( String spec, Position pos, SPSpecModifier spSpecModifier )
             throws ParseException
     {
         boolean isFirst = true;
@@ -605,18 +566,12 @@ public class TriggerSpecificationParser
             switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_NAME:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Delete_NAME.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Delete_NAME.instance() );
 
                     break;
                     
                 case ID_DELETED_ENTRY:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Delete_DELETED_ENTRY.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Delete_DELETED_ENTRY.instance() );
                     
                     break;
                     
@@ -625,32 +580,25 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
-                    if ( action == PARSE )
+                    Dn ldapContext = null;
+                
+                    try
                     {
-                        Dn ldapContext = null;
-                    
-                        try
-                        {
-                            ldapContext = new Dn( schemaManager, dnStr );
-                        }
-                        catch ( LdapInvalidDnException ldie )
-                        {
-                            // 
-                            throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                        }
-
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
+                        ldapContext = new Dn( schemaManager, dnStr );
                     }
+                    catch ( LdapInvalidDnException ldie )
+                    {
+                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
+                    }
+
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
                     
                     break;
                     
                 case ID_OPERATION_PRINCIPAL:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
-                    }
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
                     
                     break;
                     
@@ -675,14 +623,12 @@ public class TriggerSpecificationParser
      *    "$object" | "$modification"| "$oldentry"  | "$newentry" | "$ldapcontext" ( SP )+ DN | "$operationprincipal"
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param spSpecModifier The SPSpec modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseModifyParamList( 
-            boolean action, String spec, Position pos, SPSpecModifier spSpecModifier )
+    private void parseModifyParamList( String spec, Position pos, SPSpecModifier spSpecModifier )
             throws ParseException
     {
         boolean isFirst = true;
@@ -705,36 +651,24 @@ public class TriggerSpecificationParser
             switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_OBJECT:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Modify_OBJECT.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Modify_OBJECT.instance() );
 
                     break;
                     
                 case ID_MODIFICATION:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Modify_MODIFICATION.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Modify_MODIFICATION.instance() );
                     
                     break;
                     
                     
                 case ID_OLD_ENTRY:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Modify_OLD_ENTRY.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Modify_OLD_ENTRY.instance() );
                     
                     break;
                     
                     
                 case ID_NEW_ENTRY:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.Modify_NEW_ENTRY.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.Modify_NEW_ENTRY.instance() );
                     
                     break;
                     
@@ -743,32 +677,26 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
-                    if ( action == PARSE )
+                    Dn ldapContext = null;
+                
+                    try
                     {
-                        Dn ldapContext = null;
-                    
-                        try
-                        {
-                            ldapContext = new Dn( schemaManager, dnStr );
-                        }
-                        catch ( LdapInvalidDnException ldie )
-                        {
-                            // 
-                            throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                        }
-
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
+                        ldapContext = new Dn( schemaManager, dnStr );
                     }
+                    catch ( LdapInvalidDnException ldie )
+                    {
+                        // 
+                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
+                    }
+
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
                     
                     break;
                     
                 case ID_OPERATION_PRINCIPAL:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
-                    }
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
                     
                     break;
                     
@@ -795,14 +723,12 @@ public class TriggerSpecificationParser
      *    "$oldSuperiorDn" | "$newDn"  | "$ldapcontext" ( SP )+ DN | "$operationprincipal"
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec trigger specification string to parse
      * @param pos The position in the string
      * @param spSpecModifier The SPSpec modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseModifyDNParamList( 
-            boolean action, String spec, Position pos, SPSpecModifier spSpecModifier )
+    private void parseModifyDNParamList( String spec, Position pos, SPSpecModifier spSpecModifier )
             throws ParseException
     {
         boolean isFirst = true;
@@ -825,60 +751,39 @@ public class TriggerSpecificationParser
             switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_ENTRY:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_ENTRY.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_ENTRY.instance() );
 
                     break;
                     
                 case ID_NEW_RDN:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_NEW_RDN.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_NEW_RDN.instance() );
                     
                     break;
                     
                     
                 case ID_DELETE_OLD_RDN:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_DELETE_OLD_RDN.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_DELETE_OLD_RDN.instance() );
                     
                     break;
                     
                     
                 case ID_NEW_SUPERIOR:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_NEW_SUPERIOR.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_NEW_SUPERIOR.instance() );
                     
                     break;
                     
                 case ID_OLD_RDN:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_OLD_RDN.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_OLD_RDN.instance() );
                     
                     break;
                     
                 case ID_OLD_SUPERIOR_DN:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_OLD_SUPERIOR_DN.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_OLD_SUPERIOR_DN.instance() );
                     
                     break;
                     
                 case ID_NEW_DN:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_NEW_DN.instance() );
-                    }
+                    spSpecModifier.addParameter( StoredProcedureParameter.ModifyDN_NEW_DN.instance() );
                     
                     break;
                     
@@ -887,32 +792,26 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
-                    if ( action == PARSE )
+                    Dn ldapContext = null;
+                
+                    try
                     {
-                        Dn ldapContext = null;
-                    
-                        try
-                        {
-                            ldapContext = new Dn( schemaManager, dnStr );
-                        }
-                        catch ( LdapInvalidDnException ldie )
-                        {
-                            // 
-                            throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                        }
-
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
+                        ldapContext = new Dn( schemaManager, dnStr );
                     }
+                    catch ( LdapInvalidDnException ldie )
+                    {
+                        // 
+                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
+                    }
+
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
                     
                     break;
                     
                 case ID_OPERATION_PRINCIPAL:
-                    if ( action == PARSE )
-                    {
-                        spSpecModifier.addParameter( 
-                                StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
-                    }
+                    spSpecModifier.addParameter( 
+                            StoredProcedureParameter.Generic_OPERATION_PRINCIPAL.instance() );
                     
                     break;
                     
@@ -939,14 +838,12 @@ public class TriggerSpecificationParser
      *    )+
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param tsModifier The TriggerSpecification modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseAddOperationCalls( 
-            boolean action, String spec, Position pos, TriggerSpecificationModifier tsModifier )
+    private void parseAddOperationCalls( String spec, Position pos, TriggerSpecificationModifier tsModifier )
             throws ParseException
     {
         // The "add" token has already been parsed,
@@ -960,18 +857,15 @@ public class TriggerSpecificationParser
         // Loop until the end
         while ( hasMoreChars( pos ) )
         {
-            SPSpecModifier spSpecModifier = parseCallNameOptionList( action, spec, pos );
+            SPSpecModifier spSpecModifier = parseCallNameOptionList( spec, pos );
 
             // The opening '('
             matchChar( spec, LPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             
-            parseAddParamList( action, spec, pos, spSpecModifier );
+            parseAddParamList( spec, pos, spSpecModifier );
             
-            if ( action == PARSE )
-            {
-                tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
-            }
+            tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
             // The closing ')'
             matchChar( spec, RPAREN, pos );
@@ -998,14 +892,12 @@ public class TriggerSpecificationParser
      *    )+
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param tsModifier The TriggerSpecification modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseDeleteOperationCalls( 
-            boolean action, String spec, Position pos, TriggerSpecificationModifier tsModifier )
+    private void parseDeleteOperationCalls( String spec, Position pos, TriggerSpecificationModifier tsModifier )
             throws ParseException
     {
         // The "add" token has already been parsed,
@@ -1019,18 +911,15 @@ public class TriggerSpecificationParser
         // Loop until the end
         while ( hasMoreChars( pos ) )
         {
-            SPSpecModifier spSpecModifier = parseCallNameOptionList( action, spec, pos );
+            SPSpecModifier spSpecModifier = parseCallNameOptionList( spec, pos );
 
             // The opening '('
             matchChar( spec, LPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             
-            parseDeleteParamList( action, spec, pos, spSpecModifier );
+            parseDeleteParamList( spec, pos, spSpecModifier );
             
-            if ( action == PARSE )
-            {
-                tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
-            }
+            tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
             // The closing ')'
             matchChar( spec, RPAREN, pos );
@@ -1057,14 +946,12 @@ public class TriggerSpecificationParser
      *    )+
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param tsModifier The TriggerSpecification modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseModifyOperationCalls( 
-            boolean action, String spec, Position pos, TriggerSpecificationModifier tsModifier )
+    private void parseModifyOperationCalls( String spec, Position pos, TriggerSpecificationModifier tsModifier )
             throws ParseException
     {
         // The "add" token has already been parsed,
@@ -1078,18 +965,15 @@ public class TriggerSpecificationParser
         // Loop until the end
         while ( hasMoreChars( pos ) )
         {
-            SPSpecModifier spSpecModifier = parseCallNameOptionList( action, spec, pos );
+            SPSpecModifier spSpecModifier = parseCallNameOptionList( spec, pos );
 
             // The opening '('
             matchChar( spec, LPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             
-            parseModifyParamList( action, spec, pos, spSpecModifier );
+            parseModifyParamList( spec, pos, spSpecModifier );
             
-            if ( action == PARSE )
-            {
-                tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
-            }
+            tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
             // The closing ')'
             matchChar( spec, RPAREN, pos );
@@ -1114,14 +998,12 @@ public class TriggerSpecificationParser
      *    )+
      * </pre>
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param tsModifier The TriggerSpecification modifier
      * @throws ParseException If the input was incorrect
      */
-    private void parseModifyDNOperationCalls( 
-            boolean action, String spec, Position pos, TriggerSpecificationModifier tsModifier )
+    private void parseModifyDNOperationCalls( String spec, Position pos, TriggerSpecificationModifier tsModifier )
             throws ParseException
     {
         String token = getToken( spec, pos );
@@ -1129,26 +1011,17 @@ public class TriggerSpecificationParser
         switch ( Strings.toLowerCaseAscii( token ) )
         {
             case ID_MODIFY_DN_EXPORT:
-                if ( action == PARSE )
-                {
-                    tsModifier.setLdapOperation( LdapOperation.MODIFYDN_EXPORT );
-                }
+                tsModifier.setLdapOperation( LdapOperation.MODIFYDN_EXPORT );
                 
                 break;
                 
             case ID_MODIFY_DN_IMPORT:
-                if ( action == PARSE )
-                {
-                    tsModifier.setLdapOperation( LdapOperation.MODIFYDN_IMPORT );
-                }
+                tsModifier.setLdapOperation( LdapOperation.MODIFYDN_IMPORT );
                 
                 break;
                 
             case ID_MODIFY_DN_RENAME:
-                if ( action == PARSE )
-                {
-                    tsModifier.setLdapOperation( LdapOperation.MODIFYDN_RENAME );
-                }
+                tsModifier.setLdapOperation( LdapOperation.MODIFYDN_RENAME );
                 
                 break;
             
@@ -1167,18 +1040,15 @@ public class TriggerSpecificationParser
         // Loop until the end
         while ( hasMoreChars( pos ) )
         {
-            SPSpecModifier spSpecModifier = parseCallNameOptionList( action, spec, pos );
+            SPSpecModifier spSpecModifier = parseCallNameOptionList( spec, pos );
 
             // The opening '('
             matchChar( spec, LPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             
-            parseModifyDNParamList( action, spec, pos, spSpecModifier );
+            parseModifyDNParamList( spec, pos, spSpecModifier );
             
-            if ( action == PARSE )
-            {
-                tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
-            }
+            tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
             // The closing ')'
             matchChar( spec, RPAREN, pos );
@@ -1200,15 +1070,13 @@ public class TriggerSpecificationParser
      *              modifyDNOperationCalls
      * </pre
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
      * @param tsModifier The TriggerSpecification modifier to feed
      * @return The parsed TriggerSpecification
      * @throws ParseException If the input was incorrect
      */
-    private TriggerSpecification parseLdapOperationCalls( 
-            boolean action, String spec, Position pos, TriggerSpecificationModifier tsModifier )
+    private TriggerSpecification parseLdapOperationCalls( String spec, Position pos, TriggerSpecificationModifier tsModifier )
             throws ParseException
     {
         String token = getToken( spec, pos );
@@ -1216,32 +1084,23 @@ public class TriggerSpecificationParser
         switch ( Strings.toLowerCaseAscii( token ) )
         {
             case ID_ADD:
-                if ( action == PARSE )
-                {
-                    tsModifier.setLdapOperation( LdapOperation.ADD );
-                }
+                tsModifier.setLdapOperation( LdapOperation.ADD );
                 
-                parseAddOperationCalls( action, spec, pos, tsModifier );
+                parseAddOperationCalls( spec, pos, tsModifier );
                 
                 break;
                 
             case ID_DELETE:
-                if ( action == PARSE )
-                {
-                    tsModifier.setLdapOperation( LdapOperation.DELETE );
-                }
+                tsModifier.setLdapOperation( LdapOperation.DELETE );
                 
-                parseDeleteOperationCalls( action, spec, pos, tsModifier );
+                parseDeleteOperationCalls( spec, pos, tsModifier );
                 
                 break;
 
             case ID_MODIFY:
-                if ( action == PARSE )
-                {
-                    tsModifier.setLdapOperation( LdapOperation.MODIFY );
-                }
+                tsModifier.setLdapOperation( LdapOperation.MODIFY );
                 
-                parseModifyOperationCalls( action, spec, pos, tsModifier );
+                parseModifyOperationCalls( spec, pos, tsModifier );
                 
                 break;
 
@@ -1249,7 +1108,7 @@ public class TriggerSpecificationParser
                 // The "modifyDN" token has already been parsed, we need a DOT
                 matchChar( spec, DOT, pos );
 
-                parseModifyDNOperationCalls( action, spec, pos, tsModifier );
+                parseModifyDNOperationCalls( spec, pos, tsModifier );
                 
                 break;
 
@@ -1269,13 +1128,12 @@ public class TriggerSpecificationParser
      *   triggerSpecification = ( SP )* "after" ( SP )+ ldapOperationCalls
      * </pre
      * 
-     * @action Tells if we parse or validate the spec
      * @param spec The Trigger specification string to parse
      * @param pos The position in the string
      * @return The parsed TriggerSpecification
      * @throws ParseException If the input was incorrect
      */
-    private TriggerSpecification parse( boolean action, String spec, Position pos ) throws ParseException
+    private TriggerSpecification parse( String spec, Position pos ) throws ParseException
     {
         // SKip the leading spaces
         skipSpaces( spec, pos, ZERO_N );
@@ -1289,13 +1147,8 @@ public class TriggerSpecificationParser
             throw new ParseException( I18n.err( I18n.ERR_11009_MISSING_AFTER, token ), pos.start );
         }
         
-        TriggerSpecificationModifier tsModifier = null;
-        
-        if ( action == PARSE )
-        {
-            tsModifier = new TriggerSpecificationModifier();
-            tsModifier.setActionTime( ActionTime.AFTER );
-        }
+        TriggerSpecificationModifier tsModifier = new TriggerSpecificationModifier();
+        tsModifier.setActionTime( ActionTime.AFTER );
         
         // Some mandatory spaces now
         if ( !skipSpaces( spec, pos, ONE_N ) )
@@ -1305,7 +1158,7 @@ public class TriggerSpecificationParser
         }
 
         // and the following LDAP operations and stored procedure calls
-        return parseLdapOperationCalls( action, spec, pos, tsModifier );
+        return parseLdapOperationCalls( spec, pos, tsModifier );
     }
 
 
@@ -1326,38 +1179,9 @@ public class TriggerSpecificationParser
         Position pos = new Position();
         pos.length = spec.length();
 
-        TriggerSpecification triggerSpecification = parse( PARSE, spec, pos );
+        TriggerSpecification triggerSpecification = parse( spec, pos );
 
         return triggerSpecification;
-    }
-
-
-    /**
-     * Checks an TriggerSpecification to see if it's valid.
-     * 
-     * @param spec the specification to be checked
-     * @return <code>true</code> if the TriggerSpecification is valid, <code>false</code> otherwise
-     */
-    public boolean check( String spec )
-    {
-        if ( Strings.isEmpty( spec ) )
-        {
-            return true;
-        }
-        
-        Position pos = new Position();
-        pos.length = spec.length();
-
-        try
-        {
-            parse( VALIDATE, spec, pos );
-            
-            return true;
-        }
-        catch ( ParseException pe )
-        {
-            return false;
-        }
     }
 
 
