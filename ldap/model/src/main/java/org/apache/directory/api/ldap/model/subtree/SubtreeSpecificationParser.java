@@ -44,7 +44,7 @@ import org.apache.directory.api.util.Strings;
 import static org.apache.directory.api.util.ParserUtil.getToken;
 import static org.apache.directory.api.util.ParserUtil.isMatchChar;
 import static org.apache.directory.api.util.ParserUtil.matchChar;
-import static org.apache.directory.api.util.ParserUtil.parseDn;
+import static org.apache.directory.api.util.ParserUtil.parseQuotedSafeUtf8;
 import static org.apache.directory.api.util.ParserUtil.parseInteger;
 import static org.apache.directory.api.util.ParserUtil.parseOid;
 import static org.apache.directory.api.util.ParserUtil.skipSpaces;
@@ -126,7 +126,7 @@ public class SubtreeSpecificationParser
     private static final String ID_OR = "or";
     private static final String ID_NOT = "not";
     
-    /** Flags to use t differentiate a parsing from a checking */
+    /** Flags to use to differentiate a parsing from a checking */
     private static final boolean PARSE = true;
     private static final boolean VALIDATE = false;
 
@@ -188,7 +188,7 @@ public class SubtreeSpecificationParser
         }
         
         // Parse the DN
-        String dnStr = parseDn( spec, pos );
+        String dnStr = parseQuotedSafeUtf8( spec, pos );
         
         // Check the DN
         try
@@ -235,7 +235,7 @@ public class SubtreeSpecificationParser
         skipSpaces( spec, pos, ZERO_N );
 
         // Get the DN
-        String dnStr = parseDn( spec, pos );
+        String dnStr = parseQuotedSafeUtf8( spec, pos );
         
         // Check the DN and store 
         Dn dn;

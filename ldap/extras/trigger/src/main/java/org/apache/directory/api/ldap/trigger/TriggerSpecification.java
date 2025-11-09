@@ -27,17 +27,21 @@ import org.apache.directory.api.i18n.I18n;
 
 
 /**
- * The Trigger Specification Bean.
+ * The Trigger Specification class. 
+ * It's an immutable class, use the TriggerSpecificationFactory to create an
+ * instance in which elements can be added later one.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class TriggerSpecification
 {
-
+    /** The LDAP operation that triggered the action */
     private LdapOperation ldapOperation;
 
+    /** The time at which the action is executed */
     private ActionTime actionTime;
 
+    /** The list of stored procedure to execute */
     private List<SPSpec> spSpecs;
 
 

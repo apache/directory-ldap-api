@@ -29,13 +29,6 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.ldap.trigger.ActionTime;
-import org.apache.directory.api.ldap.trigger.LdapOperation;
-import org.apache.directory.api.ldap.trigger.StoredProcedureLanguageSchemeOption;
-import org.apache.directory.api.ldap.trigger.StoredProcedureParameter;
-import org.apache.directory.api.ldap.trigger.StoredProcedureSearchContextOption;
-import org.apache.directory.api.ldap.trigger.TriggerSpecification;
-import org.apache.directory.api.ldap.trigger.TriggerSpecificationParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -50,7 +43,6 @@ import org.apache.directory.api.ldap.trigger.TriggerSpecification.SPSpec;
 @Execution( ExecutionMode.CONCURRENT )
 public class TriggerSpecificationParserTest
 {
-
     /** The Trigger Specification parser */
     TriggerSpecificationParser parser;
 
@@ -124,13 +116,13 @@ public class TriggerSpecificationParserTest
     {
         TriggerSpecification triggerSpecification = null;
 
-        String spec = "AFTER Modify CALL \"Logger.logModifyOperation\" {languageScheme \"Java\"}();";
+        String spec = "AFTER Add CALL \"Logger.logModifyOperation\" {languageScheme \"Java\"}();";
 
         triggerSpecification = parser.parse( spec );
 
         assertNotNull( triggerSpecification );
         assertEquals( triggerSpecification.getActionTime(), ActionTime.AFTER );
-        assertEquals( triggerSpecification.getLdapOperation(), LdapOperation.MODIFY );
+        assertEquals( triggerSpecification.getLdapOperation(), LdapOperation.ADD );
         List<SPSpec> spSpecs = triggerSpecification.getSPSpecs();
         assertTrue( spSpecs != null );
         assertTrue( spSpecs.size() == 1 );
@@ -150,7 +142,7 @@ public class TriggerSpecificationParserTest
 
         String spec = "AFTER ModifyDN.Rename CALL \"Logger.logModifyDNRenameOperation\" \n" +
             "{ searchContext { scope one } \"cn=Logger,ou=Stored Procedures,ou=system\" } \n" +
-            "($entry, $newrdn);  # Stored Procedure Parameter(s)";
+            "($entry, $newrdn);";
 
         triggerSpecification = parser.parse( spec );
 

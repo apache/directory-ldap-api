@@ -78,21 +78,6 @@
           </sourceFileExcludes>
         </configuration>
       </plugin>
-      
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>antlr-maven-plugin</artifactId>
-        <configuration>
-          <grammars>*.g</grammars>
-        </configuration>
-        <executions>
-           <execution>
-              <goals>
-                 <goal>generate</goal>
-              </goals>
-           </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -107,14 +92,13 @@
               org.apache.directory.api.ldap.trigger;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-              antlr;version=${antlr.version},
-              antlr.collections.impl;version=${antlr.version},
               javax.naming,
               javax.naming.directory,
               javax.naming.ldap,
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.ldap.model.constants;version=${project.version},
               org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
               org.apache.directory.api.ldap.model.message;version=${project.version},
               org.apache.directory.api.ldap.model.name;version=${project.version},
               org.apache.directory.api.ldap.model.schema;version=${project.version},
