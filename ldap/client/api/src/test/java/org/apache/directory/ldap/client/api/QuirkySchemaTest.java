@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +38,7 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
@@ -194,6 +198,26 @@ public class QuirkySchemaTest
             public EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
                 throws LdapException
             {
+                if ( baseDn.equals( SCHEMA_DN ) &&
+                     scope.equals(SearchScope.OBJECT) &&
+                     filter.equals("(objectClass=subschema)") )
+                {
+                    try 
+                    {
+                        EntryCursor mockCursor = mock ( EntryCursor.class );
+                        
+                        Entry entry = loadSchemaEntry( schemaFileName );
+                        when( mockCursor.next() ).thenReturn ( true );
+                        when( mockCursor.get() ).thenReturn( entry );
+
+                        return mockCursor;
+                    }
+                    catch (CursorException e)
+                    {
+                        throw new LdapException( e.getMessage(), e );
+                    }
+                }
+
                 return null;
             }
             
@@ -201,7 +225,7 @@ public class QuirkySchemaTest
             @Override
             public EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes ) throws LdapException
             {
-                return null;
+                return search(baseDn.toString(), filter, scope, attributes);
             }
             
             
@@ -341,13 +365,7 @@ public class QuirkySchemaTest
                     entry.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT, SCHEMA_DN );
                     
                     return entry;
-                } 
-                else if ( dn.toString().equals( SCHEMA_DN ) ) 
-                {
-                    Entry entry = loadSchemaEntry( schemaFileName );
-
-                    return entry;
-                } 
+                }
                 else 
                 {
                     throw new UnsupportedOperationException( "Unexpected DN " + dn );
