@@ -68,7 +68,7 @@
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
     <caffeine.version>2.9.3</caffeine.version>
-    <commons.codec.version>1.20.0</commons.codec.version>
+    <commons.codec.version>1.21.0</commons.codec.version>
     <commons.collections.version>4.5.0</commons.collections.version>
     <commons.lang.version>3.20.0</commons.lang.version>
     <commons.pool.version>2.13.1</commons.pool.version>
