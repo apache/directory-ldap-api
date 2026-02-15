@@ -30,7 +30,7 @@ import java.util.Map;
  * We have 11 types of SchemaObjects :
  * <ul>
  *   <li> AttributeType </li>
- *   <li> DitCOntentRule </li>
+ *   <li> DitContentRule </li>
  *   <li> DitStructureRule </li>
  *   <li> LdapComparator (specific to ADS) </li>
  *   <li> LdapSyntaxe </li>

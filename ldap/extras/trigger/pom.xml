@@ -51,20 +51,6 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-model</artifactId>
     </dependency>
-
-  <!-- The original antlr artifact is needed by the antlr-maven-plugin which 
-    checks for its existence within the classpath. Use scope provided to avoid 
-    propagation to dependent projects. Choosen artifact is a valid OSGi bundle 
-    repackaged by ServiceMix team, kudos to them. -->
-    <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
@@ -72,11 +58,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <sourceFileExcludes>
-            <sourceFileExclude>**/Antlr*</sourceFileExclude>
-          </sourceFileExcludes>
-        </configuration>
       </plugin>
 
       <plugin>

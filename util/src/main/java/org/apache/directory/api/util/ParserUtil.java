@@ -40,6 +40,7 @@ public final class ParserUtil
     public static final char DOLLAR     = '$';
     public static final char DOT        = '.';
     public static final char DQUOTE     = '"';
+    public static final char EQUAL      = '=';
     public static final char HYPHEN     = '-';
     public static final char LCURLY     = '{';
     public static final char LPAREN     = '(';
@@ -125,8 +126,6 @@ public final class ParserUtil
         if ( isMatchChar( str, ZERO, pos ) )
         {
             // This is only allowed if we have one single digit
-            pos.start++;
-            
             if ( hasMoreChars( pos ) && !Chars.isDigit( str.charAt( pos.start ) ) )
             {
                 // Ok, the next char is not a digit
@@ -459,7 +458,7 @@ public final class ParserUtil
         {
             // This is a descr
             String descr = parseDescr( str, pos );
-                        
+
             return descr;
         }
     }
@@ -559,7 +558,7 @@ public final class ParserUtil
         
         if ( pos.start == start )
         {
-            // We havn't get a final "
+            // We haven't get a final "
             throw new ParseException( 
                     I18n.err( I18n.ERR_17077_MISSING_CLOSING_DQUOTE ), pos.start );
         }

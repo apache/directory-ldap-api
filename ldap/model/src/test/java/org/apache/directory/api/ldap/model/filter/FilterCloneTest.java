@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.util.Position;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -536,5 +537,28 @@ public class FilterCloneTest
         ExprNode node = node1.clone();
         assertTrue( node instanceof AndNode );
         //TODO test full structure
+    }
+
+
+    @Test
+    public void testIncludedFilter() throws ParseException
+    {
+        Position pos = new Position();
+        pos.start = 0;
+        pos.end = 0;
+        pos.length = 1000;
+        String filter = "(&(|(2.5.4.3=h*)(2.5.4.4=h*)(2.16.840.1.113730.3.1.241=h*)" +
+                "(2.5.4.42=h*))(!(objectClass=computer))(|(objectClass=person)" +
+                "(objectClass=group)(objectClass=organizationalUnit)(objectClass=domain))" + 
+                "(!(&(userAccountControl:1.2.840.113556.1.4.803:=2)))) ) abcd";
+            
+        ExprNode node1 = FilterParser
+            .parse(
+                null,
+                filter, 
+                pos);
+        // just check that it doesn't throw for now
+        ExprNode node = node1.clone();
+        assertTrue( node instanceof AndNode );
     }
 }

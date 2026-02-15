@@ -247,6 +247,33 @@ public class TriggerSpecificationParser
     
     
     /**
+     * Parse a DN.
+     * 
+     * @param scpec The string to parse
+     * @param pos The position in the string
+     * @return The parsed DN
+     * @throws ParseException If the DN is invalid
+     */
+    private Dn parseDn( String spec, Position pos ) throws ParseException
+    {
+        String dnStr = parseQuotedSafeUtf8( spec, pos );
+        Dn dn = null;
+
+        try
+        {
+            dn = new Dn( schemaManager, dnStr );
+        }
+        catch ( LdapInvalidDnException ldie )
+        {
+            // error
+            throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
+        }
+
+        return dn;
+    }
+
+    
+    /**
      * Parse an SP call, following this grammar:
      * 
      * <pre>
@@ -335,19 +362,7 @@ public class TriggerSpecificationParser
                 skipSpaces( spec, pos, ZERO_N );
 
                 // We expect a DN
-                String dnStr = parseQuotedSafeUtf8( spec, pos );
-                
-                Dn dn = null;
-                
-                try
-                {
-                    dn = new Dn( schemaManager, dnStr );
-                }
-                catch ( LdapInvalidDnException ldie )
-                {
-                    // 
-                    throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                }
+                Dn dn = parseDn( spec, pos );
 
                 spOption = new StoredProcedureSearchContextOption( dn, searchScope );
                 
@@ -463,8 +478,14 @@ public class TriggerSpecificationParser
         boolean isFirst = true;
         
         // The list of parameters is followed by a closing ')'
-        while ( hasMoreChars( pos ) && ( spec.charAt( pos.start ) != RPAREN ) )
+        while ( hasMoreChars( pos ) )
         {
+            if ( isMatchChar( spec, RPAREN, pos ) )
+            {
+                // The end
+                return;
+            }
+            
             if ( isFirst )
             { 
                 isFirst = false;
@@ -494,17 +515,7 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( token, pos );
                     
-                    Dn ldapContext = null;
-                
-                    try
-                    {
-                        ldapContext = new Dn( schemaManager, dnStr );
-                    }
-                    catch ( LdapInvalidDnException ldie )
-                    {
-                        // 
-                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                    }
+                    Dn ldapContext = parseDn( spec, pos );
 
                     spSpecModifier.addParameter( 
                             StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
@@ -549,8 +560,14 @@ public class TriggerSpecificationParser
         boolean isFirst = true;
         
         // The list of parameters is followed by a closing ')'
-        while ( hasMoreChars( pos ) && ( spec.charAt( pos.start ) != RPAREN ) )
+        while ( hasMoreChars( pos ) )
         {
+            if ( isMatchChar( spec, RPAREN, pos ) )
+            {
+                // The end
+                return;
+            }
+
             if ( isFirst )
             { 
                 isFirst = false;
@@ -578,19 +595,9 @@ public class TriggerSpecificationParser
                 case ID_LDAP_CONTEXT:
                     // Get the DN
                     skipSpaces( spec, pos, ONE_N );
-                    String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
-                    Dn ldapContext = null;
+                    Dn ldapContext = parseDn( spec, pos );
                 
-                    try
-                    {
-                        ldapContext = new Dn( schemaManager, dnStr );
-                    }
-                    catch ( LdapInvalidDnException ldie )
-                    {
-                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                    }
-
                     spSpecModifier.addParameter( 
                             StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
                     
@@ -634,8 +641,14 @@ public class TriggerSpecificationParser
         boolean isFirst = true;
         
         // The list of parameters is followed by a closing ')'
-        while ( hasMoreChars( pos ) && ( spec.charAt( pos.start ) != RPAREN ) )
+        while ( hasMoreChars( pos ) )
         {
+            if ( isMatchChar( spec, RPAREN, pos ) )
+            {
+                // The end
+                return;
+            }
+            
             if ( isFirst )
             { 
                 isFirst = false;
@@ -677,18 +690,8 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
-                    Dn ldapContext = null;
+                    Dn ldapContext = parseDn( spec, pos );
                 
-                    try
-                    {
-                        ldapContext = new Dn( schemaManager, dnStr );
-                    }
-                    catch ( LdapInvalidDnException ldie )
-                    {
-                        // 
-                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                    }
-
                     spSpecModifier.addParameter( 
                             StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
                     
@@ -734,8 +737,14 @@ public class TriggerSpecificationParser
         boolean isFirst = true;
         
         // The list of parameters is followed by a closing ')'
-        while ( hasMoreChars( pos ) && ( spec.charAt( pos.start ) != RPAREN ) )
+        while ( hasMoreChars( pos ) )
         {
+            if ( isMatchChar( spec, RPAREN, pos ) )
+            {
+                // The end
+                return;
+            }
+            
             if ( isFirst )
             { 
                 isFirst = false;
@@ -792,17 +801,7 @@ public class TriggerSpecificationParser
                     skipSpaces( spec, pos, ONE_N );
                     String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
-                    Dn ldapContext = null;
-                
-                    try
-                    {
-                        ldapContext = new Dn( schemaManager, dnStr );
-                    }
-                    catch ( LdapInvalidDnException ldie )
-                    {
-                        // 
-                        throw new ParseException( I18n.err( I18n.ERR_11008_INVALID_DN, dnStr ), pos.start );
-                    }
+                    Dn ldapContext = parseDn( spec, pos );
 
                     spSpecModifier.addParameter( 
                             StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( ldapContext ) );
@@ -867,8 +866,6 @@ public class TriggerSpecificationParser
             
             tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
-            // The closing ')'
-            matchChar( spec, RPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             matchChar( spec, SEMI_COLON, pos );
             skipSpaces( spec, pos, ZERO_N );
@@ -921,8 +918,6 @@ public class TriggerSpecificationParser
             
             tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
-            // The closing ')'
-            matchChar( spec, RPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             matchChar( spec, SEMI_COLON, pos );
             skipSpaces( spec, pos, ZERO_N );
@@ -1050,8 +1045,6 @@ public class TriggerSpecificationParser
             
             tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
-            // The closing ')'
-            matchChar( spec, RPAREN, pos );
             skipSpaces( spec, pos, ZERO_N );
             matchChar( spec, SEMI_COLON, pos );
             skipSpaces( spec, pos, ZERO_N );

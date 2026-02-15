@@ -39,7 +39,7 @@ import org.apache.directory.api.util.Strings;
 public final class ACIItemSyntaxChecker extends SyntaxChecker
 {
     /** An instance of ACI Item Checker */
-    private transient ACIItemChecker aciItemChecker;
+    private transient ACIItemParser aciItemChecker;
     
     /**
      * A static instance of ACIItemSyntaxChecker
@@ -99,7 +99,7 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
     private ACIItemSyntaxChecker( String oid, SchemaManager schemaManager )
     {
         super( oid );
-        aciItemChecker = new ACIItemChecker( schemaManager );
+        aciItemChecker = new ACIItemParser( schemaManager );
     }
 
     
@@ -155,29 +155,14 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        try
-        {
-            synchronized ( aciItemChecker )
-            {
-                aciItemChecker.parse( strValue );
-            }
+        boolean check = aciItemChecker.check( strValue );
 
-            if ( LOG.isDebugEnabled() )
-            {
-                LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, value ) );
-            }
-            
-            return true;
-        }
-        catch ( ParseException pe )
+        if ( LOG.isDebugEnabled() )
         {
-            if ( LOG.isDebugEnabled() )
-            {
-                LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
-            }
-            
-            return false;
+            LOG.debug( I18n.msg( I18n.MSG_13701_SYNTAX_VALID, strValue ) );
         }
+        
+        return check;
     }
 
 
@@ -187,6 +172,6 @@ public final class ACIItemSyntaxChecker extends SyntaxChecker
     @Override
     public void setSchemaManager( SchemaManager schemaManager )
     {
-        aciItemChecker = new ACIItemChecker( schemaManager );
+        aciItemChecker = new ACIItemParser( schemaManager );
     }
 }

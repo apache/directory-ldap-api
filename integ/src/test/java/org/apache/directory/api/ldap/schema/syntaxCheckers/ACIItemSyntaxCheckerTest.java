@@ -159,12 +159,59 @@ public class ACIItemSyntaxCheckerTest
     @Test
     public void testOrderOfUserClassesDoesNotMatter()
     {
-        String spec = "{ identificationTag \"id2\"   , precedence 14, authenticationLevel none  , "
-            + "itemOrUserFirst userFirst:  { userClasses {  name { \"ou=people,cn=ersin\" }, allUsers, "
-            + "subtree {{ base \"ou=system\" }, { base \"ou=ORGANIZATIONUNIT\","
-            + "minimum  1, maximum   2 } } }  , "
-            + "userPermissions { { protectedItems{ entry  , attributeType { cn  , ou }  , attributeValue {cn=y,sn=n,dc=l} , "
-            + "rangeOfValues (cn=ErsinEr) }  , grantsAndDenials { grantBrowse } } } }  }   ";
+        String spec = 
+            "  { "
+            + "  identificationTag \"id2\"   , "
+            + "  precedence 14, "
+            + "  authenticationLevel none  , "
+            + "  itemOrUserFirst userFirst:  "
+            + "  { "
+            + "    userClasses "
+            + "    {  "
+            + "      name "
+            + "      { "
+            + "        \"ou=people,cn=ersin\" "
+            + "      }, "
+            + "      allUsers, "
+            + "      subtree "
+            + "      {"
+            + "        { "
+            + "          base \"ou=system\" "
+            + "        }, "
+            + "        { "
+            + "          base \"ou=ORGANIZATIONUNIT\","
+            + "          minimum  1, "
+            + "          maximum   2 "
+            + "        } "
+            + "      } "
+            + "    }  , "
+            + "    userPermissions "
+            + "    { "
+            + "      { "
+            + "        protectedItems"
+            + "        { "
+            + "          entry  , "
+            + "          attributeType "
+            + "          { "
+            + "            cn  , "
+            + "            ou "
+            + "          }  , "
+            + "          attributeValue "
+            + "          {"
+            + "            cn=y,"
+            + "            sn=n,"
+            + "            dc=l"
+            + "          } , "
+            + "          rangeOfValues (cn=ErsinEr) "
+            + "        }  , "
+            + "        grantsAndDenials "
+            + "        { "
+            + "          grantBrowse "
+            + "        } "
+            + "      } "
+            + "    } "
+            + "  }  "
+            + "}   ";
 
         assertTrue( checker.isValidSyntax( spec ) );
     }
@@ -221,7 +268,7 @@ public class ACIItemSyntaxCheckerTest
             + "itemOrUserFirst userFirst:  { userClasses {  allUsers  , name { \"ou=people,cn=ersin\" }, "
             + "subtree {{ base \"ou=system\"}, { base \"ou=ORGANIZATIONUNIT\"," + "minimum  1, maximum   2 } } }  , "
             + "userPermissions { { protectedItems{ entry  , "
-            + "maxValueCount { { type 10.11.12, maxCount 10 }, { maxCount 20, type 11.12.13  } } "
+            + "maxValueCount { { type 1.11.12, maxCount 10 }, { maxCount 20, type 1.12.13  } } "
             + " }  , grantsAndDenials { grantBrowse } } } }  }   ";
 
         assertTrue( checker.isValidSyntax( spec ) );
@@ -235,7 +282,7 @@ public class ACIItemSyntaxCheckerTest
             + "itemOrUserFirst userFirst:  { userClasses {  allUsers  , name { \"ou=people,cn=ersin\" }, "
             + "subtree {{ base \"ou=system\" }, { base \"ou=ORGANIZATIONUNIT\"," + "minimum  1, maximum   2 } } }  , "
             + "userPermissions { { protectedItems{ entry  , "
-            + "restrictedBy { { type 10.11.12, valuesIn ou }, { valuesIn cn, type 11.12.13  } } "
+            + "restrictedBy { { type 1.11.12, valuesIn ou }, { valuesIn cn, type 1.12.13  } } "
             + " }  , grantsAndDenials { grantBrowse } } } }  }   ";
 
         assertTrue( checker.isValidSyntax( spec ) );

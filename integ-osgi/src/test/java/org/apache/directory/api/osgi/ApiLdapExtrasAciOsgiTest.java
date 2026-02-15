@@ -20,7 +20,6 @@
 package org.apache.directory.api.osgi;
 
 
-import org.apache.directory.api.ldap.aci.ACIItemChecker;
 import org.apache.directory.api.ldap.aci.ACIItemParser;
 import org.apache.directory.api.ldap.aci.GrantAndDenial;
 import org.apache.directory.api.ldap.aci.MicroOperation;
@@ -46,7 +45,7 @@ public class ApiLdapExtrasAciOsgiTest extends ApiOsgiTestBase
         UserClass.THIS_ENTRY.toString();
         ProtectedItem.ENTRY.toString();
 
-        new ACIItemChecker( null ).parse( "" );
+        new ACIItemParser( null ).check( "" );
         new ACIItemParser( null ).parse( "" );
 
         String spec = "{ identificationTag \"test\", precedence 14, authenticationLevel simple, "

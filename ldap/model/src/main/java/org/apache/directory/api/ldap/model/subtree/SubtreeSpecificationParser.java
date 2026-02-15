@@ -199,7 +199,7 @@ public class SubtreeSpecificationParser
         }
         catch ( LdapInvalidDnException ldie )
         {
-            // 
+            // error
             throw new ParseException( I18n.err( I18n.ERR_13908_SS_INVALID_DN, dnStr ), pos.start );
         }
     }

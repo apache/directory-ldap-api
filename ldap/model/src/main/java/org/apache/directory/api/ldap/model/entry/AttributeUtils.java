@@ -543,7 +543,8 @@ public final class AttributeUtils
         if ( Chars.isAlpha( b ) )
         {
             // A DESCR
-            while ( Chars.isAlphaDigitMinus( bytes, pos.start ) || ( relaxed && Strings.isCharASCII( bytes, pos.start, '_' ) ) )
+            while ( Chars.isAlphaDigitMinus( bytes, pos.start ) 
+                    || ( relaxed && Strings.isCharASCII( bytes, pos.start, '_' ) ) )
             {
                 pos.start++;
             }

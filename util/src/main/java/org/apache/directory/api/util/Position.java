@@ -37,12 +37,23 @@ public class Position
     /** The token end position in the string */
     public int end = 0;
     
+    /** The parsed text. It's only used by the toString function */
+    private String text;
+    
     /**
      * A public constructor
      */
     public Position()
     {
         // Nothing to do
+    }
+    
+    /**
+     * A public constructor
+     */
+    public Position( String text )
+    {
+        this.text = text;
     }
 
 
@@ -52,6 +63,15 @@ public class Position
     @Override
     public String toString()
     {
+        if ( text != null )
+        {
+            String head = text.substring( Math.max( start - 10, 0 ), start );
+            String tail = text.substring( Math.min( start + 1, length ), Math.min( start + 10, length ) );
+            
+            return "'..." + head + "'[" + text.charAt( start ) + "]'" + tail 
+                    + "...' [" + start + ", " + end + ", " + length + "]";
+        }
+        
         return "[" + start + ", " + end + ", " + length + "]";
     }
 }

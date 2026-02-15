@@ -190,7 +190,7 @@ public class SchemaAwareAttributeTest
     @BeforeEach
     public void setup() throws Exception
     {
-        atCN = schemaManager.getAttributeType( "cn" );
+        atCN = schemaManager.lookupAttributeTypeRegistry( "cn" );
         atDC = schemaManager.lookupAttributeTypeRegistry( "dc" );
         atC = schemaManager.lookupAttributeTypeRegistry( "c" );
         atSN = schemaManager.lookupAttributeTypeRegistry( "sn" );

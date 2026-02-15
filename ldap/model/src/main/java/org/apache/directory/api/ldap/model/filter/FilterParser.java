@@ -43,6 +43,9 @@ import org.apache.directory.api.util.Unicode;
  */
 public final class FilterParser
 {
+    // The default parsing mode is STRICT
+    private static final boolean STRICT = false;
+    
     private FilterParser()
     {
     }
@@ -57,7 +60,7 @@ public final class FilterParser
      */
     public static ExprNode parse( String filter ) throws ParseException
     {
-        return parse( null, filter, false );
+        return parse( null, filter, STRICT );
     }
 
 
@@ -88,7 +91,30 @@ public final class FilterParser
      */
     public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
     {
-        return parse( schemaManager, filter, false );
+        return parse( schemaManager, filter, STRICT );
+    }
+
+    
+    /**
+     * Parses a search filter from it's string representation to an expression node object,
+     * using the provided SchemaManager 
+     * 
+     * @param schemaManager The SchemaManager to use
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
+     * @throws ParseException If the filter is invalid
+     */
+    public static ExprNode parse( SchemaManager schemaManager, String filter, Position pos ) throws ParseException
+    {
+        if ( Strings.isEmpty( filter ) )
+        {
+            throw new ParseException( I18n.err(I18n.ERR_13316_EMPTY_FILTER ), 0 );
+        }
+        
+        /** Convert the filter to an array of bytes, as this is what we expect */
+        byte[] filterBytes = Strings.getBytesUtf8( filter );
+
+        return parse( schemaManager, filterBytes, pos, STRICT );
     }
     
     
@@ -123,9 +149,9 @@ public final class FilterParser
     {
         if ( Strings.isEmpty( filter ) )
         {
-            throw new ParseException( I18n.err( I18n.ERR_13316_EMPTY_FILTER ), 0 );
+            throw new ParseException( I18n.err(I18n.ERR_13316_EMPTY_FILTER ), 0 );
         }
-
+        
         /** Convert the filter to an array of bytes, as this is what we expect */
         byte[] filterBytes = Strings.getBytesUtf8( filter );
         
@@ -134,9 +160,26 @@ public final class FilterParser
         pos.end = 0;
         pos.length = filterBytes.length;
 
+        return parse( schemaManager, filterBytes, pos, relaxed );
+    }
+
+
+    /**
+     * Parses a search filter from it's string representation to an expression node object,
+     * using the provided SchemaManager 
+     * 
+     * @param schemaManager The SchemaManager to use
+     * @param filter the search filter in it's string representation
+     * @param relaxed <code>true</code> to parse the filter in relaxed mode
+     * @return the expression node object
+     * @throws ParseException If the filter is invalid
+     */
+    private static ExprNode parse( SchemaManager schemaManager, byte[] filter, Position pos, boolean relaxed ) 
+            throws ParseException
+    {
         try
         {
-            ExprNode node = parseFilterInternal( schemaManager, filterBytes, pos, relaxed );
+            ExprNode node = parseFilterInternal( schemaManager, filter, pos, relaxed );
             
             if ( node instanceof UndefinedNode )
             {
@@ -1035,7 +1078,7 @@ public final class FilterParser
             return UndefinedNode.UNDEFINED_NODE;
         }
 
-        // Now, iterate recusively though all the remaining filters, if any
+        // Now, iterate recursively though all the remaining filters, if any
         while ( ( child = parseFilterInternal( schemaManager, filterBytes, pos, relaxed ) ) != UndefinedNode.UNDEFINED_NODE )
         {
             // Add the child to the node children if not null
