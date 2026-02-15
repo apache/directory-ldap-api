@@ -68,16 +68,16 @@
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
     <caffeine.version>2.9.3</caffeine.version>
-    <commons.codec.version>1.19.0</commons.codec.version>
+    <commons.codec.version>1.21.0</commons.codec.version>
     <commons.collections.version>4.5.0</commons.collections.version>
-    <commons.lang.version>3.19.0</commons.lang.version>
-    <commons.pool.version>2.12.1</commons.pool.version>
-    <commons.text.version>1.14.0</commons.text.version>
+    <commons.lang.version>3.20.0</commons.lang.version>
+    <commons.pool.version>2.13.1</commons.pool.version>
+    <commons.text.version>1.15.0</commons.text.version>
     <dom4j.version>2.1.4</dom4j.version>
     <forbiddenapis.version>3.10</forbiddenapis.version>
     <hamcrest.version>3.0</hamcrest.version>
-    <junit.engine.version>5.13.4</junit.engine.version>
-    <junit.platform.version>1.14.1</junit.platform.version>
+    <junit.engine.version>5.14.2</junit.engine.version>
+    <junit.platform.version>1.14.2</junit.platform.version>
     <mina.core.version>2.2.5</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>7.0.5</org.apache.felix.version>

@@ -114,7 +114,6 @@ public final class SchemaToLdif
             }
             catch ( Exception e )
             {
-                e.printStackTrace();
                 throw new ParserException( I18n.err( I18n.ERR_15004_CANNOT_GENERATE_SOURCES, schema.getName(),
                     e.getMessage() ) );
             }
