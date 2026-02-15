@@ -155,9 +155,7 @@ public final class FilterParser
         /** Convert the filter to an array of bytes, as this is what we expect */
         byte[] filterBytes = Strings.getBytesUtf8( filter );
         
-        Position pos = new Position();
-        pos.start = 0;
-        pos.end = 0;
+        Position pos = new Position( filter );
         pos.length = filterBytes.length;
 
         return parse( schemaManager, filterBytes, pos, relaxed );

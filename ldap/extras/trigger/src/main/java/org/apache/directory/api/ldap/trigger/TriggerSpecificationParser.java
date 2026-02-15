@@ -1169,7 +1169,7 @@ public class TriggerSpecificationParser
             return null;
         }
         
-        Position pos = new Position();
+        Position pos = new Position( spec );
         pos.length = spec.length();
 
         TriggerSpecification triggerSpecification = parse( spec, pos );

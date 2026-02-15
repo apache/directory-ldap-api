@@ -965,8 +965,7 @@ public class SchemaParser
      */
     public List<SchemaElement> parse( String schemaStr ) throws ParseException
     {
-        Position pos = new Position();
-        pos.start = 0;
+        Position pos = new Position( schemaStr );
         pos.length = schemaStr.length();
         
         // Get rid of comments. Checkstyle does not like empty loops, so 

@@ -19,9 +19,6 @@
  */
 package org.apache.directory.api.ldap.aci;
 
-
-import java.text.ParseException;
-
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;

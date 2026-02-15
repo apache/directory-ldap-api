@@ -918,7 +918,7 @@ public class SubtreeSpecificationParser
             return null;
         }
         
-        Position pos = new Position();
+        Position pos = new Position( spec );
         pos.length = spec.length();
         
         return parse( PARSE, spec, pos );
@@ -938,7 +938,7 @@ public class SubtreeSpecificationParser
             return true;
         }
         
-        Position pos = new Position();
+        Position pos = new Position( spec );
         pos.length = spec.length();
         
         try
