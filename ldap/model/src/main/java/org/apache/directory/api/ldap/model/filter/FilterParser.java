@@ -108,7 +108,7 @@ public final class FilterParser
     {
         if ( Strings.isEmpty( filter ) )
         {
-            throw new ParseException( I18n.err(I18n.ERR_13316_EMPTY_FILTER ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_13316_EMPTY_FILTER ), 0 );
         }
         
         /** Convert the filter to an array of bytes, as this is what we expect */
@@ -149,7 +149,7 @@ public final class FilterParser
     {
         if ( Strings.isEmpty( filter ) )
         {
-            throw new ParseException( I18n.err(I18n.ERR_13316_EMPTY_FILTER ), 0 );
+            throw new ParseException( I18n.err( I18n.ERR_13316_EMPTY_FILTER ), 0 );
         }
         
         /** Convert the filter to an array of bytes, as this is what we expect */

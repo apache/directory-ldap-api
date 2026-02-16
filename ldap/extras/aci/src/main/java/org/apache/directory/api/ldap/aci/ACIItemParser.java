@@ -87,7 +87,7 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
 public class ACIItemParser
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger(ACIItemParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger( ACIItemParser.class );
     
     /** The schema manager instance */
     private SchemaManager schemaManager;
@@ -181,7 +181,10 @@ public class ACIItemParser
     private static final String ID_VALUES_IN                = "valuesin";
 
     
-    private class AciItemTuple
+    /**
+     * A internal class used to store the ACIItem creation result
+     */
+    private final class AciItemTuple
     {
         private Set<UserClass> userClasses;
         private Set<UserPermission> userPermissions;
@@ -235,7 +238,7 @@ public class ACIItemParser
     private SubtreeSpecification parseSubtreeSpecification( boolean action, String item, Position pos ) 
             throws ParseException
     {
-        LOG.debug("Parsing a subtreeSpecification: {}", pos );
+        LOG.debug( "Parsing a subtreeSpecification: {}", pos );
         SubtreeSpecificationModifier ssModifier = null;
         
         if ( action == PARSE )
@@ -300,7 +303,7 @@ public class ACIItemParser
             {
                 case ID_BASE:
                     // ID_base
-                    LOG.debug("Parsing base: {}", pos );
+                    LOG.debug( "Parsing base: {}", pos );
 
                     if ( baseSeen )
                     {
@@ -324,7 +327,7 @@ public class ACIItemParser
                     
                 case ID_MINIMUM:
                     // ID_minimum
-                    LOG.debug("Parsing minimum: {}", pos );
+                    LOG.debug( "Parsing minimum: {}", pos );
 
                     if ( minimumSeen )
                     {
@@ -348,7 +351,7 @@ public class ACIItemParser
                     
                 case ID_MAXIMUM:
                     // ID_maximum
-                    LOG.debug("Parsing maximum: {}", pos );
+                    LOG.debug( "Parsing maximum: {}", pos );
 
                     if ( maximumSeen )
                     {
@@ -372,7 +375,7 @@ public class ACIItemParser
                     
                 case ID_SPECIFIC_EXCLUSIONS:
                     // ID_specificExclusions
-                    LOG.debug("Parsing a specificExclusion: {}", pos );
+                    LOG.debug( "Parsing a specificExclusion: {}", pos );
 
                     if ( specificExclusionsSeen )
                     {
@@ -412,7 +415,7 @@ public class ACIItemParser
      */
     private Dn parseDn( String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing a DN: {}", pos );
+        LOG.debug( "Parsing a DN: {}", pos );
 
         String dnStr = parseQuotedSafeUtf8( item, pos );
         Dn dn = null;
@@ -454,9 +457,9 @@ public class ACIItemParser
      * @throws ParseException If the grant or denial is invalid
      */
     private void parseSpecificExclusions( boolean action, String item, Position pos,
-            SubtreeSpecificationModifier ssModifier) throws ParseException
+            SubtreeSpecificationModifier ssModifier ) throws ParseException
     {
-        LOG.debug("Parsing specificExclusions: {}", pos );
+        LOG.debug( "Parsing specificExclusions: {}", pos );
 
         // OPEN_CURLY
         matchChar( item, LCURLY, pos );
@@ -513,7 +516,7 @@ public class ACIItemParser
             {
                 case ID_CHOP_BEFORE:
                     // ID_chopBefore
-                    LOG.debug("Parsing chopBefore: {}", pos );
+                    LOG.debug( "Parsing chopBefore: {}", pos );
 
                     if ( action == PARSE )
                     {
@@ -524,7 +527,7 @@ public class ACIItemParser
                     
                 case ID_CHOP_AFTER:
                     // ID_chopAfter
-                    LOG.debug("Parsing chopAfter: {}", pos );
+                    LOG.debug( "Parsing chopAfter: {}", pos );
 
                     if ( action == PARSE )
                     {
@@ -616,7 +619,7 @@ public class ACIItemParser
     private GrantAndDenial parseGrantAndDenial( String item, Position pos ) throws ParseException
     {
         String token = getToken( item, pos );
-        LOG.debug("Parsing a grantAndDenial: {], {}", token, pos );
+        LOG.debug( "Parsing a grantAndDenial: {], {}", token, pos );
 
         
         switch ( Strings.toLowerCaseAscii( token ) )
@@ -751,7 +754,7 @@ public class ACIItemParser
             throws ParseException
     {
         String token = Strings.toLowerCaseAscii( getToken( item, pos ) );
-        LOG.debug("Parsing a protecteItem: {}, {}", token, pos );
+        LOG.debug( "Parsing a protecteItem: {}, {}", token, pos );
         
         try
         {
@@ -891,7 +894,7 @@ public class ACIItemParser
                         
                         while ( hasMoreChars( pos ) )
                         {
-                            if ( isMatchChar( item, RCURLY, pos) || isMatchChar( item, SEP, pos ) )
+                            if ( isMatchChar( item, RCURLY, pos ) || isMatchChar( item, SEP, pos ) )
                             {
                                 pos.start--;
                                 value = item.substring( start, pos.start );
@@ -1136,7 +1139,7 @@ public class ACIItemParser
      */
     private Set<ProtectedItem> parseProtectedItems( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing protecteItems: {}", pos );
+        LOG.debug( "Parsing protecteItems: {}", pos );
 
         // The ID_protectedItems token has already been read by the caller function
         // ( SP )*
@@ -1222,7 +1225,7 @@ public class ACIItemParser
     private Set<GrantAndDenial> parseGrantAndDenials( boolean action, String item, Position pos ) 
             throws ParseException
     {
-        LOG.debug("Parsing grantAndDenials: {}", pos );
+        LOG.debug( "Parsing grantAndDenials: {}", pos );
 
         // ( SP )*
         skipSpaces( item, pos, ZERO_N );
@@ -1230,7 +1233,7 @@ public class ACIItemParser
         // OPEN_CURLY 
         matchChar( item, LCURLY, pos );
         
-        // (SP)*
+        // ( SP )*
         skipSpaces( item, pos, ZERO_N );
 
         boolean isFirst = true;
@@ -1269,7 +1272,7 @@ public class ACIItemParser
             
             if ( action == PARSE )
             {
-                if ( !grantsAndDenials.add( grantAndDenial ))
+                if ( !grantsAndDenials.add( grantAndDenial ) )
                 {
                     throw new ParseException( 
                             I18n.err( I18n.ERR_07010_DUPLICATED_GRANT_AND_DENIAL, grantAndDenial ), pos.start );
@@ -1306,7 +1309,7 @@ public class ACIItemParser
      */
     private List<ExprNode> parseRefinements( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing refinements: {}", pos );
+        LOG.debug( "Parsing refinements: {}", pos );
 
         // OPEN_CURLY
         matchChar( item, LCURLY, pos );
@@ -1385,7 +1388,7 @@ public class ACIItemParser
     private ExprNode parseRefinement( boolean action, String item, Position pos ) throws ParseException
     {
         String token = getToken( item, pos );
-        LOG.debug("Parsing a refinement: {}, {}", token, pos );
+        LOG.debug( "Parsing a refinement: {}, {}", token, pos );
 
         ExprNode node = null;
         
@@ -1404,7 +1407,7 @@ public class ACIItemParser
 
                 if ( action == PARSE )
                 {
-                    node = new EqualityNode<>( SchemaConstants.OBJECT_CLASS_AT , oid );
+                    node = new EqualityNode<>( SchemaConstants.OBJECT_CLASS_AT, oid );
                 }
                 
                 break;
@@ -1501,7 +1504,7 @@ public class ACIItemParser
      */
     private MaxValueCountElem parseMaxValueCount( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing a maxValueCount: {}", pos );
+        LOG.debug( "Parsing a maxValueCount: {}", pos );
 
         // OPEN_CURLY
         matchChar( item, LCURLY, pos );
@@ -1517,7 +1520,7 @@ public class ACIItemParser
         {
             case ID_TYPE:
                 // ID_type
-                LOG.debug("Parsing a type: {}", pos );
+                LOG.debug( "Parsing a type: {}", pos );
 
                 // ( SP )+
                 if ( !skipSpaces( item, pos, ONE_N ) )
@@ -1558,7 +1561,7 @@ public class ACIItemParser
                 
             case ID_MAX_COUNT:
                 // ID_maxCount
-                LOG.debug("Parsing a maxCount: {}", pos );
+                LOG.debug( "Parsing a maxCount: {}", pos );
 
                 // ( SP )+ 
                 if ( !skipSpaces( item, pos, ONE_N ) )
@@ -1626,7 +1629,7 @@ public class ACIItemParser
                 
                 return maxValueCount;
             } 
-            catch (LdapException e) 
+            catch ( LdapException e ) 
             {
                 throw new ParseException( 
                         I18n.err( I18n.ERR_07024_MAX_COUNT_MISSING_ATTRIBUTE_TYPE, oid ), pos.start );
@@ -1662,7 +1665,7 @@ public class ACIItemParser
      */
     private RestrictedByElem parseRestrictedValue( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing a restrictedValue: {}", pos );
+        LOG.debug( "Parsing a restrictedValue: {}", pos );
 
         // OPEN_CURLY
         matchChar( item, LCURLY, pos );
@@ -1678,7 +1681,7 @@ public class ACIItemParser
         {
             // ID_type
             case ID_TYPE:
-                LOG.debug("Parsing a type: {}", pos );
+                LOG.debug( "Parsing a type: {}", pos );
 
                 // ( SP )+
                 if ( !skipSpaces( item, pos, ONE_N ) )
@@ -1719,7 +1722,7 @@ public class ACIItemParser
                 
             case ID_VALUES_IN:
                 // ID_valuesIn
-                LOG.debug("Parsing valuesIn: {}", pos );
+                LOG.debug( "Parsing valuesIn: {}", pos );
 
                 // ( SP ) +
                 if ( !skipSpaces( item, pos, ONE_N ) )
@@ -1786,7 +1789,7 @@ public class ACIItemParser
                 }
                 
             } 
-            catch (LdapException e) 
+            catch ( LdapException e ) 
             {
                 throw new ParseException( I18n.err( I18n.ERR_07028_TYPE_INVALID_ATTRIBUTE, typeOid ), pos.start );
             }
@@ -1803,7 +1806,7 @@ public class ACIItemParser
                     valuesInAttributeType = new AttributeType( valuesInOid );
                 }
             } 
-            catch (LdapException e) 
+            catch ( LdapException e ) 
             {
                 throw new ParseException( 
                         I18n.err( I18n.ERR_07029_VALUES_IN_INVALID_ATTRIBUTE, valuesInOid ), pos.start );
@@ -1846,7 +1849,7 @@ public class ACIItemParser
      */
     private Set<String> parseDNs( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing DNs: {}", pos );
+        LOG.debug( "Parsing DNs: {}", pos );
 
         Set<String> names = new HashSet<>();
         boolean isFirst = true;
@@ -1945,12 +1948,12 @@ public class ACIItemParser
             throws ParseException
     {
         String token = getToken(  item, pos );
-        LOG.debug("Parsing a userClass: {}, {}", token, pos );
+        LOG.debug( "Parsing a userClass: {}, {}", token, pos );
 
 
         try 
         {
-            switch (Strings.toLowerCaseAscii( token ) )
+            switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_ALL_USERS:
                     // ID_allUsers
@@ -2120,7 +2123,7 @@ public class ACIItemParser
     private Set<ItemPermission> parseItemPermissions( boolean action, String item, Position pos ) 
             throws ParseException
     {
-        LOG.debug("Parsing itemPermissions: {}", pos );
+        LOG.debug( "Parsing itemPermissions: {}", pos );
 
         Set<ItemPermission> itemPermissions = null;
         
@@ -2211,7 +2214,7 @@ public class ACIItemParser
      */
     private ItemPermission parseItemPermission( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing a itemPermission: {}", pos );
+        LOG.debug( "Parsing a itemPermission: {}", pos );
 
         ItemPermission itemPermission = null;
         int precedence = 0;
@@ -2248,7 +2251,7 @@ public class ACIItemParser
             switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_PRECEDENCE:
-                    LOG.debug("Parsing itemPermission's precedence: {}", pos );
+                    LOG.debug( "Parsing itemPermission's precedence: {}", pos );
 
                     if ( precedenceSeen )
                     {
@@ -2270,7 +2273,7 @@ public class ACIItemParser
                     break;
 
                 case ID_USER_CLASSES:
-                    LOG.debug("Parsing itemPermission's userClass: {}", pos );
+                    LOG.debug( "Parsing itemPermission's userClass: {}", pos );
 
                     if ( userClassSeen )
                     {
@@ -2285,7 +2288,7 @@ public class ACIItemParser
                     break;
 
                 case ID_GRANTS_AND_DENIALS:
-                    LOG.debug("Parsing itemPermission's grantsAndDenials: {}", pos );
+                    LOG.debug( "Parsing itemPermission's grantsAndDenials: {}", pos );
 
                     if ( grantsAndDenialsSeen )
                     {
@@ -2370,7 +2373,7 @@ public class ACIItemParser
      */
     private UserPermission parseUserPermission( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing a userPermission: {}", pos );
+        LOG.debug( "Parsing a userPermission: {}", pos );
 
         UserPermission userPermission = null;
         Integer precedence = null;
@@ -2410,7 +2413,7 @@ public class ACIItemParser
             {
                 case ID_PRECEDENCE:
                     // ID_precedence
-                    LOG.debug("Parsing userPermission's precedence: {}", pos );
+                    LOG.debug( "Parsing userPermission's precedence: {}", pos );
 
                     if ( precedenceSeen )
                     {
@@ -2433,7 +2436,7 @@ public class ACIItemParser
 
                 case ID_PROTECTED_ITEMS:
                     // ID_protectedItems
-                    LOG.debug("Parsing userPermission's protectedItems: {}", pos );
+                    LOG.debug( "Parsing userPermission's protectedItems: {}", pos );
 
                     if ( protectedItemsSeen )
                     {
@@ -2449,7 +2452,7 @@ public class ACIItemParser
                     
                 case ID_GRANTS_AND_DENIALS:
                     // ID_grantsAndDenials
-                    LOG.debug("Parsing userPermission's grantsAndDenials: {}", pos );
+                    LOG.debug( "Parsing userPermission's grantsAndDenials: {}", pos );
 
                     if ( grantsAndDenialsSeen )
                     {
@@ -2462,6 +2465,9 @@ public class ACIItemParser
                     grantsAndDenialsSeen = true;
                     
                     break;
+
+                default:
+                    throw new ParseException( I18n.err( I18n.ERR_07052_UNKNOWN_ACIITEM_PART, token ), pos.start );
             }
             
             // ( SP )*
@@ -2470,13 +2476,13 @@ public class ACIItemParser
         
         // CLOSE_CURLY
 
-        if ( !protectedItemsSeen)
+        if ( !protectedItemsSeen )
         {
             // This is an error, we must have a set of protected items
             throw new ParseException( I18n.err( I18n.ERR_07054_MISSING_PROTECTED_ITEMS ), pos.start );
         }
 
-        if ( !grantsAndDenialsSeen)
+        if ( !grantsAndDenialsSeen )
         {
             // This is an error, we must have a set of grants and denials
             throw new ParseException( I18n.err( I18n.ERR_07035_MISSING_GRANTS_AND_DENIALS ), pos.start );
@@ -2511,7 +2517,7 @@ public class ACIItemParser
     private Set<AttributeType> parseAttributeTypeSet( boolean action, String item, Position pos ) 
             throws ParseException
     {
-        LOG.debug("Parsing attributeTypeSet: {}", pos );
+        LOG.debug( "Parsing attributeTypeSet: {}", pos );
 
         // OPEN_CURLY
         matchChar( item, LCURLY, pos );
@@ -2570,7 +2576,7 @@ public class ACIItemParser
                         attributeType = new AttributeType( oid );
                     }
                 } 
-                catch (LdapException e) 
+                catch ( LdapException e ) 
                 {
                     throw new ParseException( I18n.err( I18n.ERR_07028_TYPE_INVALID_ATTRIBUTE, oid ), pos.start );
                 }
@@ -2607,7 +2613,7 @@ public class ACIItemParser
      */
     private Set<UserClass> parseUserClasses( boolean action, String item, Position pos ) throws ParseException
     {
-        LOG.debug("Parsing userClasses: {}", pos );
+        LOG.debug( "Parsing userClasses: {}", pos );
 
         NoDuplicateKeysMap userClasses = null;
         
@@ -2687,7 +2693,7 @@ public class ACIItemParser
     private Set<UserPermission> parseUserPermissions( boolean action, String item, Position pos ) 
             throws ParseException
     {
-        LOG.debug("Parsing userPermissions: {}", pos );
+        LOG.debug( "Parsing userPermissions: {}", pos );
 
         Set<UserPermission> userPermissions = null;
         
@@ -2799,7 +2805,7 @@ public class ACIItemParser
                 String identificationTag, int precedence,  AuthenticationLevel authenticationLevel )
                     throws ParseException
     {
-        LOG.debug("Parsing itemFirst: {}", pos );
+        LOG.debug( "Parsing itemFirst: {}", pos );
 
         AciItemTuple aciItemTuple = new AciItemTuple();
         
@@ -2887,7 +2893,7 @@ public class ACIItemParser
                 String identificationTag, int precedence,  AuthenticationLevel authenticationLevel )
                     throws ParseException
     {
-        LOG.debug("Parsing userFirst: {}", pos );
+        LOG.debug( "Parsing userFirst: {}", pos );
 
         AciItemTuple aciItemTuple = new AciItemTuple();
         
@@ -2977,7 +2983,7 @@ public class ACIItemParser
      */
     private ACIItem parseAciItem( boolean action, String item ) throws ParseException
     {
-        LOG.debug("Parsing ACIItem: '{}'", item );
+        LOG.debug( "Parsing ACIItem: '{}'", item );
 
         Position pos = new Position( item );
         
@@ -3006,7 +3012,7 @@ public class ACIItemParser
         // ( SP )* 
         skipSpaces( item, pos, ZERO_N );
 
-        while ( !isMatchChar( item, RCURLY, pos) )
+        while ( !isMatchChar( item, RCURLY, pos ) )
         {
             if ( isFirstItem )
             {
@@ -3027,7 +3033,7 @@ public class ACIItemParser
             switch ( Strings.toLowerCaseAscii( token ) )
             {
                 case ID_IDENTIFICATION_TAG:
-                    LOG.debug("Parsing ACIItem's identificationTag: {}", pos );
+                    LOG.debug( "Parsing ACIItem's identificationTag: {}", pos );
 
                     if ( identificationTagSeen )
                     {
@@ -3048,7 +3054,7 @@ public class ACIItemParser
                     break;
                     
                 case ID_PRECEDENCE:
-                    LOG.debug("Parsing ACIItem's precedence: {}", pos );
+                    LOG.debug( "Parsing ACIItem's precedence: {}", pos );
 
                     if ( precedenceSeen )
                     {
@@ -3069,9 +3075,9 @@ public class ACIItemParser
                     break;
                     
                 case ID_AUTHENTICATION_LEVEL:
-                    LOG.debug("Parsing ACIItem's authenticationLevel: {}", pos );
+                    LOG.debug( "Parsing ACIItem's authenticationLevel: {}", pos );
 
-                    if (authenticationLevelSeen )
+                    if ( authenticationLevelSeen )
                     {
                         throw new ParseException( I18n.err(
                                 I18n.ERR_07050_AUTHENTICATION_LEVEL_ALREADY_SEEN, token ), pos.start );
@@ -3092,7 +3098,7 @@ public class ACIItemParser
                     //     ID_strong
                     token = getToken( item, pos );
                     
-                    switch ( Strings.toLowerCaseAscii(  token) )
+                    switch ( Strings.toLowerCaseAscii(  token ) )
                     {
                         case ID_NONE:
                             authenticationLevel = AuthenticationLevel.NONE;
@@ -3116,7 +3122,7 @@ public class ACIItemParser
                     break;
                     
                 case ID_ITEM_OR_USER_FIRST:
-                    LOG.debug("Parsing ACIItem's itemOrUserFirst: {}", pos );
+                    LOG.debug( "Parsing ACIItem's itemOrUserFirst: {}", pos );
 
                     if ( itemOrUserFirstSeen )
                     {
@@ -3239,12 +3245,12 @@ public class ACIItemParser
         
         try
         {
-            aCIItem = parseAciItem( PARSE, spec);
+            aCIItem = parseAciItem( PARSE, spec );
         }
         catch ( ParseException e )
         {
             throw new ParseException( I18n
-                    .err(I18n.ERR_07004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage()), 0);
+                    .err( I18n.ERR_07004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage() ), 0 );
         }
 
         return aCIItem;
@@ -3266,7 +3272,7 @@ public class ACIItemParser
         
         try
         {
-            LOG.debug("Check the ACIItem '{}'", item );
+            LOG.debug( "Check the ACIItem '{}'", item );
 
             parseAciItem( VALIDATE, item );
             
