@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License. -->
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.directory.api/api-parent)
+[![Maven Central](https://maven-badges.sml.io/maven-central/org.apache.directory.api/api-parent/badge.svg)](https://maven-badges.sml.io/maven-central/org.apache.directory.api/api-parent)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api/badge)](https://api.securityscorecards.dev/projects/github.com/apache/directory-ldap-api)
 
 Apache Directory LDAP API
