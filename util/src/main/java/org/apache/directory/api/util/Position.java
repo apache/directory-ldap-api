@@ -68,8 +68,15 @@ public class Position
             String head = text.substring( Math.max( start - 10, 0 ), start );
             String tail = text.substring( Math.min( start + 1, length ), Math.min( start + 10, length ) );
             
-            return "'..." + head + "'[" + text.charAt( start ) + "]'" + tail 
-                    + "...' [" + start + ", " + end + ", " + length + "]";
+            if ( start == length)
+            {
+                return "'..." + head + "'";
+            }
+            else
+            {
+                return "'..." + head + "'[" + text.charAt( start ) + "]'" + tail 
+                        + "...' [" + start + ", " + end + ", " + length + "]";
+            }
         }
         
         return "[" + start + ", " + end + ", " + length + "]";
