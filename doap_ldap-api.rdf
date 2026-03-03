@@ -30,7 +30,7 @@
     <description>The Apache Directory LDAP API is an ongoing effort to provide an enhanced LDAP API, as a replacement for JNDI and the existing LDAP API (jLdap and Mozilla LDAP API).</description>
     <bug-database rdf:resource="https://issues.apache.org/jira/browse/DIRAPI" />
     <mailing-list rdf:resource="https://directory.apache.org/mailing-lists-and-irc.html" />
-    <download-page rdf:resource="https://directory.apache.org/api/downloads.html" />
+    <download-page rdf:resource="https://directory.apache.org/api/downloads-2.html" />
     <programming-language>Java</programming-language>
     <category rdf:resource="https://projects.apache.org/category/network-client" />
 
