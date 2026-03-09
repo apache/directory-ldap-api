@@ -68,7 +68,7 @@ public class Position
             String head = text.substring( Math.max( start - 10, 0 ), start );
             String tail = text.substring( Math.min( start + 1, length ), Math.min( start + 10, length ) );
             
-            if ( start == length)
+            if ( start == length )
             {
                 return "'..." + head + "'";
             }
