@@ -121,6 +121,9 @@ public class LdapConnectionConfig
     /** name of the protocol used for creating SSL context, default value is "TLS" */
     private String sslProtocol = DEFAULT_SSL_PROTOCOL;
 
+    /** the endpoint identification algorithm used for hostname verification during TLS handshake, default value is "LDAPS" (RFC 4513) */
+    private String sslEndpointIdentificationAlgorithm = "LDAPS";
+
     /** The class used to detect if an attribute is HR or not */
     private BinaryAttributeDetector binaryAttributeDetector;
 
@@ -575,6 +578,32 @@ public class LdapConnectionConfig
     public void setSslProtocol( String sslProtocol )
     {
         this.sslProtocol = sslProtocol;
+    }
+
+
+    /**
+     * Gets the endpoint identification algorithm used for hostname verification during TLS handshake.
+     * The default value is "LDAPS" as specified by RFC 4513.
+     * Set to null to disable hostname verification (not recommended).
+     *
+     * @return the endpoint identification algorithm
+     */
+    public String getSslEndpointIdentificationAlgorithm()
+    {
+        return sslEndpointIdentificationAlgorithm;
+    }
+
+
+    /**
+     * Sets the endpoint identification algorithm used for hostname verification during TLS handshake.
+     * The default value is "LDAPS" as specified by RFC 4513.
+     * Set to null to disable hostname verification (not recommended).
+     *
+     * @param sslEndpointIdentificationAlgorithm the endpoint identification algorithm
+     */
+    public void setSslEndpointIdentificationAlgorithm( String sslEndpointIdentificationAlgorithm )
+    {
+        this.sslEndpointIdentificationAlgorithm = sslEndpointIdentificationAlgorithm;
     }
 
 
