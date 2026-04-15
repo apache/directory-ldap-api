@@ -20,11 +20,20 @@
 package org.apache.directory.ldap.client.api;
 
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
+import org.apache.directory.api.ldap.model.message.BindResponse;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +46,40 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class LdapNetworkConnectionTest
 {
+
+    @Test
+    public void testBindSaslCramMd5ForwardsCredentials() throws Exception
+    {
+        LdapNetworkConnection connection = spy( new LdapNetworkConnection( "localhost", 389 ) );
+        doReturn( null ).when( connection ).bind( any( SaslCramMd5Request.class ) );
+
+        ArgumentCaptor<SaslCramMd5Request> captor = ArgumentCaptor.forClass( SaslCramMd5Request.class );
+
+        connection.bindSaslCramMd5( "uid=alice", "correctPassword" );
+
+        verify( connection ).bind( captor.capture() );
+        assertEquals( "uid=alice", captor.getValue().getUsername() );
+        assertArrayEquals( "correctPassword".getBytes( StandardCharsets.UTF_8 ), captor.getValue().getCredentials(),
+            "bindSaslCramMd5 must forward the credentials parameter, not use a hardcoded value" );
+    }
+
+
+    @Test
+    public void testBindSaslDigestMd5ForwardsCredentials() throws Exception
+    {
+        LdapNetworkConnection connection = spy( new LdapNetworkConnection( "localhost", 389 ) );
+        doReturn( null ).when( connection ).bind( any( SaslDigestMd5Request.class ) );
+
+        ArgumentCaptor<SaslDigestMd5Request> captor = ArgumentCaptor.forClass( SaslDigestMd5Request.class );
+
+        connection.bindSaslDigestMd5( "uid=alice", "correctPassword" );
+
+        verify( connection ).bind( captor.capture() );
+        assertEquals( "uid=alice", captor.getValue().getUsername() );
+        assertArrayEquals( "correctPassword".getBytes( StandardCharsets.UTF_8 ), captor.getValue().getCredentials(),
+            "bindSaslDigestMd5 must forward the credentials parameter, not use a hardcoded value" );
+    }
+
 
     private static Stream<Arguments> data()
     {

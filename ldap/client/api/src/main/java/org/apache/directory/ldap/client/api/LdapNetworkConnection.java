@@ -1872,7 +1872,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         SaslCramMd5Request request = new SaslCramMd5Request();
         request.setUsername( userName );
-        request.setCredentials( "secret" );
+        request.setCredentials( credentials );
 
         return bind( request );
     }
@@ -1890,7 +1890,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         SaslDigestMd5Request request = new SaslDigestMd5Request();
         request.setUsername( userName );
-        request.setCredentials( "secret" );
+        request.setCredentials( credentials );
 
         return bind( request );
     }
