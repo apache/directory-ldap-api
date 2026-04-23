@@ -5095,6 +5095,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             SslFilter sslFilter = new SslFilter( sslContext );
             //sslFilter.setUseClientMode( true );
 
+            // Enforce hostname verification: verify the server certificate identity matches
+            // the configured LDAP host, as required by RFC 2830 Section 3.6 / RFC 4513.
+            sslFilter.setEndpointIdentificationAlgorithm( config.getSslEndpointIdentificationAlgorithm() );
+
             // Configure the enabled cipher lists
             String[] enabledCipherSuite = config.getEnabledCipherSuites();
 
