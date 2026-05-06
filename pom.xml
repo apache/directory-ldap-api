@@ -67,7 +67,7 @@
     
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
-    <bouncycastle.version>1.83</bouncycastle.version>
+    <bouncycastle.version>1.84</bouncycastle.version>
     <caffeine.version>2.9.3</caffeine.version>
     <commons.codec.version>1.22.0</commons.codec.version>
     <commons.collections.version>4.5.0</commons.collections.version>
