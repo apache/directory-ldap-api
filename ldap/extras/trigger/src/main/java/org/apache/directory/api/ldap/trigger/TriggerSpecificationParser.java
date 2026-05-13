@@ -1061,7 +1061,7 @@ public class TriggerSpecificationParser
      *              deleteOperationCalls |
      *              modifyOperationCalls |
      *              modifyDNOperationCalls
-     * </pre
+     * </pre>
      * 
      * @param spec The trigger specification string to parse
      * @param pos The position in the string
@@ -1119,7 +1119,7 @@ public class TriggerSpecificationParser
      * 
      * <pre>
      *   triggerSpecification = ( SP )* "after" ( SP )+ ldapOperationCalls
-     * </pre
+     * </pre>
      * 
      * @param spec The Trigger specification string to parse
      * @param pos The position in the string
