@@ -196,12 +196,29 @@ public class Dn implements Iterable<Rdn>, Externalizable
             return;
         }
 
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        
         for ( Rdn rdn : dn.rdns )
         {
-            this.rdns.add( new Rdn( schemaManager, rdn ) );
+            Rdn normalizedRdn = new Rdn( schemaManager, rdn );
+            
+            this.rdns.add( normalizedRdn );
+            
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
+                sb.append( ',' );
+            }
+            
+            sb.append( normalizedRdn.getNormName() );
         }
 
         upName = toUpName();
+        normName = sb.toString();
     }
 
 
@@ -209,7 +226,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Creates a new instance of Dn, using varargs to declare the RDNs. Each
      * String is either a full Rdn, or a couple of AttributeType DI and a value.
      * If the String contains a '=' symbol, the the constructor will assume that
-     * the String arg contains afull Rdn, otherwise, it will consider that the
+     * the String arg contains a full Rdn, otherwise, it will consider that the
      * following arg is the value.<br>
      * The created Dn is Schema aware.
      * <br><br>
@@ -235,10 +252,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Creates a new instance of schema aware Dn, using varargs to declare the RDNs. Each
-     * String is either a full Rdn, or a couple of AttributeType DI and a value.
+     * String is either a full Rdn, or a couple of AttributeType and a value.
+     * <br><br>
      * If the String contains a '=' symbol, the the constructor will assume that
-     * the String arg contains afull Rdn, otherwise, it will consider that the
-     * following arg is the value.<br>
+     * the String arg contains a full Rdn, otherwise, it will consider that the
+     * following arg is the value.
+     * <br><br>
      * The created Dn is Schema aware.
      * <br><br>
      * An example of usage would be :
@@ -251,6 +270,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     "ou", exampleName,
      *     baseDn);
      * </pre>
+     * 
+     * which will create the "cn=Test,ou=example" Dn.
+     * <br><br>
+     * If one single String is passed as an argument, then it will be considered as
+     * a full Dn.
+     * <br><br>
+     * Note that the method expect to receive a full Dn (one single value has been passed),
+     * many RDNs (in a &lt;type&gt; = &lt;value&gt; form) or pairs of attributeType/values.
+     * <br><br>
+     * It does not support receiving an incorrect RDN like "cn=" or "cn=test,dc="
      *
      * @param schemaManager the schema manager
      * @param upRdns The list of String composing the Dn
@@ -258,53 +287,75 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn( SchemaManager schemaManager, String... upRdns ) throws LdapInvalidDnException
     {
-        StringBuilder sbUpName = new StringBuilder();
-        boolean valueExpected = false;
-        boolean isFirst = true;
         this.schemaManager = schemaManager;
 
-        for ( String upRdn : upRdns )
+        if ( ( upRdns == null ) || ( upRdns.length == 0 ) )
         {
-            if ( Strings.isEmpty( upRdn ) )
+            // Special case: the empty Dn
+            upName = "";
+            normName = "";
+            
+            return;
+        }
+        
+        // Compute the upName
+        if ( upRdns.length == 1 )
+        {
+            // Another special case: the provided value is expected to be a full DN
+            upName = upRdns[0];
+        }
+        else
+        {
+            StringBuilder sbUpName = new StringBuilder();
+            boolean valueExpected = false;
+            boolean isFirst = true;
+        
+            // Reconstruct the upName from each RDN's upName.
+            // as we may get many forms of Rdns, 
+            for ( String upRdn : upRdns )
             {
-                continue;
-            }
-
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else if ( !valueExpected )
-            {
-                sbUpName.append( ',' );
-            }
-
-            if ( !valueExpected )
-            {
-                sbUpName.append( upRdn );
-
-                if ( upRdn.indexOf( '=' ) == -1 )
+                if ( Strings.isEmpty( upRdn ) )
                 {
-                    valueExpected = true;
+                    continue;
+                }
+        
+                if ( valueExpected )
+                {
+                    sbUpName.append( "=" ).append( upRdn );
+                    
+                    valueExpected = false;
+                }
+                else
+                {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sbUpName.append( ',' );
+                    }
+                    
+                    sbUpName.append( upRdn );
+        
+                    if ( upRdn.indexOf( '=' ) == -1 )
+                    {
+                        valueExpected = true;
+                    }
                 }
             }
-            else
+        
+            if ( !isFirst && valueExpected )
             {
-                sbUpName.append( "=" ).append( upRdn );
-
-                valueExpected = false;
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13611_VALUE_MISSING_ON_RDN ) );
             }
+        
+            // Stores the representations of a Dn : internal (as a string and as a
+            // byte[]) and external.
+            upName = sbUpName.toString();
         }
 
-        if ( !isFirst && valueExpected )
-        {
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_13611_VALUE_MISSING_ON_RDN ) );
-        }
-
-        // Stores the representations of a Dn : internal (as a string and as a
-        // byte[]) and external.
-        upName = sbUpName.toString();
-
+        // Now parse the Dn and construct the normName
         try
         {
             normName = parseInternal( schemaManager, upName, rdns );
@@ -322,6 +373,38 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
     }
 
+    
+    /**
+     * Creates a new instance of schema aware Dn, from a byte[] representation of an 
+     * UTF-8 String.
+     * 
+     * @param schemaManager the schema manager
+     * @param bytes The byte[] containing the DN as an UTF-8 encoded value
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
+     */
+    public Dn( SchemaManager schemaManager, byte[] bytes ) throws LdapInvalidDnException
+    {
+        this.schemaManager = schemaManager;
+        
+        // Convert the byte array to a String
+        upName = Strings.utf8ToString( bytes );
+        
+        try
+        {
+            normName = parseInternal( schemaManager, bytes, rdns );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            if ( schemaManager == null || !schemaManager.isRelaxed() )
+            {
+                throw e;
+            }
+            // Ignore invalid DN formats in relaxed mode.
+            // This is needed to support unbelievably insane
+            // DN formats such as <GUI=abcd...> format used by
+            // Active Directory
+        }
+    }
 
     /**
      * Creates a Dn from a list of Rdns.
@@ -1252,22 +1335,28 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Parse a Dn.
      *
      * @param schemaManager The SchemaManager
-     * @param name The Dn to be parsed
+     * @param bytes, The Dn to be parsed, as a byte[] of UTF-8 encoded chars
      * @param rdns The list that will contain the RDNs
-     * @return The nromalized Dn
+     * @return The normalized Dn
      * @throws LdapInvalidDnException If the Dn is invalid
      */
-    private static String parseInternal( SchemaManager schemaManager, String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    private static String parseInternal( SchemaManager schemaManager, byte[] bytes, List<Rdn> rdns ) throws LdapInvalidDnException
     {
-        try
-        {
-            return FastDnParser.parseDn( schemaManager, name, rdns );
-        }
-        catch ( TooComplexDnException e )
-        {
-            rdns.clear();
-            return new ComplexDnParser().parseDn( schemaManager, name, rdns );
-        }
+        return DnParser.parseDn( schemaManager, bytes, rdns );
+    }
+
+    /**
+     * Parse a Dn.
+     *
+     * @param schemaManager The SchemaManager
+     * @param name The Dn to be parsed
+     * @param rdns The list that will contain the RDNs
+     * @return The normalized Dn
+     * @throws LdapInvalidDnException If the Dn is invalid
+     */
+    private static String parseInternal( SchemaManager schemaManager, String upName, List<Rdn> rdns ) throws LdapInvalidDnException
+    {
+        return DnParser.parseDn( schemaManager, upName, rdns );
     }
 
 

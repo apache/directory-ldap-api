@@ -606,7 +606,7 @@ public class RdnTest
     public void testGetValue() throws LdapException
     {
         Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
-
+        
         assertEquals( "b", rdn.getValue() );
     }
 
@@ -661,7 +661,7 @@ public class RdnTest
     public void testEquals() throws LdapException
     {
         Rdn rdn = new Rdn( "a=b + c=d + e=f" );
-
+        
         assertFalse( rdn.equals( null ) );
         assertFalse( rdn.equals( "test" ) );
         assertFalse( rdn.equals( new Rdn( "a=c + c=d + e=f" ) ) );
@@ -871,6 +871,7 @@ public class RdnTest
 
         Rdn rdn3 = new Rdn( "cn= \\ a b c\\  " );
         Rdn rdn4 = new Rdn( "cn=\\ a\\ b\\ c\\ " );
+
         assertEquals( "cn= \\ a b c\\  ", rdn3.getName() );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getEscaped() );
         assertTrue( rdn3.equals( rdn4 ) );
@@ -1160,8 +1161,7 @@ public class RdnTest
     public void testRdnWithEmptyValue() throws LdapException
     {
         assertTrue( Rdn.isValid( "a=" ) );
-        assertTrue( Rdn.isValid( "a=\"\"" ) );
-        assertEquals( "a=\"\"", new Rdn( "a=\"\"" ).getName() );
+        assertFalse( Rdn.isValid( "a=\"\"" ) );
         assertEquals( "a=", new Rdn( "a=" ).getName() );
     }
 
@@ -1177,15 +1177,7 @@ public class RdnTest
         assertTrue( Rdn.isValid( "a=b\\,c" ) );
         assertEquals( "a=b\\,c", new Rdn( "a=b\\,c" ).getName() );
 
-        assertTrue( Rdn.isValid( "a=\"b,c\"" ) );
-        assertEquals( "a=\"b,c\"", new Rdn( "a=\"b,c\"" ).getName() );
-        assertEquals( "a=b\\,c", new Rdn( "a=\"b,c\"" ).getEscaped() );
-        assertEquals( "a=\"b,c\"", new Rdn( "a=\"b,c\"" ).getName() );
-
-        assertTrue( Rdn.isValid( "a=\"b\\,c\"" ) );
-        Rdn rdn = new Rdn( "a=\"b\\,c\"" );
-        assertEquals( "a=\"b\\,c\"", rdn.getName() );
-        assertEquals( "a=b\\,c", rdn.getEscaped() );
+        assertFalse( Rdn.isValid( "a=\"b,c\"" ) );
     }
 
 

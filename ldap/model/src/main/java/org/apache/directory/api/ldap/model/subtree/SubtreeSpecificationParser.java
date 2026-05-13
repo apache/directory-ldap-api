@@ -61,9 +61,8 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
 
 
 /**
- * A reusable wrapper around the antlr generated parser for an LDAP subtree
- * specification as defined by <a href="http://www.faqs.org/rfcs/rfc3672.html">
- * RFC 3672</a>. 
+ * A LDAP subtree parser base on the  specification as defined by 
+ * <a href="http://www.faqs.org/rfcs/rfc3672.html">RFC 3672</a>. 
  * 
  * The parsed grammar is:
  * 

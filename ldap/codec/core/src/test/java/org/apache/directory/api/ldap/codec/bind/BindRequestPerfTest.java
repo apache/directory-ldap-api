@@ -36,7 +36,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT)
-//@Ignore("Ignore performance tests: should not be with integration tests")
+//@Disabled("Ignore performance tests: should not be with integration tests")
 public class BindRequestPerfTest extends AbstractCodecServiceTest
 {
     /**

@@ -45,7 +45,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution(ExecutionMode.CONCURRENT)
-public class FastRdnParserTest
+public class RdnParserTest
 {
     /** A null schemaManager used in tests */
     SchemaManager schemaManager = null;
@@ -458,7 +458,7 @@ public class FastRdnParserTest
         
         for ( int i = 0; i < 10000000; i++ )
         {
-            new Rdn( "cn=test"+ i );
+            new Rdn( "cn=test"+ i + " + gn=toto" );
         }
         
         long t1 = System.currentTimeMillis();

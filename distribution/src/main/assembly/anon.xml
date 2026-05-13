@@ -41,7 +41,6 @@
         <include>org.apache.directory.api:api-util:jar:${project.version}</include>
 
         <!-- The external dependencies -->
-        <include>antlr:antlr:jar:${antlr.version}</include>
         <include>org.apache.commons:commons-collections4:jar:${commons.collections.version}</include>
         <include>org.slf4j:slf4j-api:jar:${slf4j.api.version}</include>
       </includes>

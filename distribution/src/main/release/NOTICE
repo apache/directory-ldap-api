@@ -17,8 +17,6 @@ This product uses Apache Maven (https://maven.apache.org/).
 
 This product includes/uses Apache Mina (https://mina.apache.org/).
 
-This product includes/uses software, AntLR Parser Generator (http://www.antlr.org/).
-
 This product uses software, JUnit (http://junit.org),
 developed by JUnit (http://www.junit.org)
 

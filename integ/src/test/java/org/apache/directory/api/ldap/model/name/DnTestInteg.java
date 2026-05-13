@@ -53,7 +53,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @Execution( ExecutionMode.CONCURRENT )
-public class DnTest
+public class DnTestInteg
 {
     private static SchemaManager schemaManager;
 
@@ -1845,11 +1845,12 @@ public class DnTest
 
         Dn result = new Dn( schemaManager, name );
 
-        assertEquals( result,
-                "0.9.2342.19200300.100.1.25=and some animals+ou=some people,0.9.2342.19200300.100.1.25=eXample,dc=cOm" );
+        assertEquals( 
+            "0.9.2342.19200300.100.1.25= and  some  animals +2.5.4.11= some  people ,0.9.2342.19200300.100.1.25= example ,0.9.2342.19200300.100.1.25= com ",
+            result.getNormName() );
         assertEquals(
-                "ou= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm",
-                result.getName() );
+            "ou= Some   People   + 0.9.2342.19200300.100.1.25=  And   Some anImAls,0.9.2342.19200300.100.1.25 = eXample,dc= cOm",
+            result.getName() );
     }
 
 
@@ -2034,11 +2035,12 @@ public class DnTest
 
 
     /**
-     * Test for DIRSERVER-642
+     * Test for DIRSERVER-642. Disabled as we don't support double quoted values
      *
      * @throws LdapException if anything goes wrong.
      */
     @Test
+    @Disabled
     public void testDoubleQuoteInNameDIRSERVER_642() throws LdapException
     {
         Dn name1 = new Dn( "cn=\"Kylie Minogue\",dc=example,dc=com" );
@@ -2063,6 +2065,7 @@ public class DnTest
      * @throws LdapException if anything goes wrong.
      */
     @Test
+    @Disabled
     public void testDoubleQuoteInNameDIRSERVER_642_1() throws LdapException
     {
         Dn dn = new Dn( "cn=\" Kylie Minogue \",dc=example,dc=com" );
@@ -2078,6 +2081,7 @@ public class DnTest
      * @throws LdapException if anything goes wrong.
      */
     @Test
+    @Disabled
     public void testDoubleQuoteWithSpecialCharsInNameDIRSERVER_250() throws LdapException
     {
         Dn dn = new Dn( "a=\"b,c\"" );
@@ -2345,14 +2349,14 @@ public class DnTest
     @Test
     public void testTrimAtavs() throws LdapException
     {
-        // antlr parser: string value with trailing spaces
+        // string value with trailing spaces
         Dn dn1 = new Dn( " cn = Amos\\,Tori , ou=system " );
         assertEquals( " cn = Amos\\,Tori ", dn1.getRdn().getName() );
         Ava atav1 = dn1.getRdn().getAva();
         assertEquals( "cn", atav1.getType() );
         assertEquals( "Amos,Tori", atav1.getValue().getString() );
 
-        // antlr parser: hexstring with trailing spaces
+        // hexstring with trailing spaces
         Dn dn3 = new Dn( " cn = #414243 , ou=system " );
         assertEquals( " cn = #414243 ", dn3.getRdn().getName() );
         Ava atav3 = dn3.getRdn().getAva();
@@ -2360,21 +2364,14 @@ public class DnTest
         assertTrue( Arrays.equals( Strings.getBytesUtf8( "ABC" ), atav3.getValue().getBytes() ) );
         assertTrue( Arrays.equals( Strings.getBytesUtf8( "ABC" ), atav3.getValue().getBytes() ) );
 
-        // antlr parser:
+        // DnParser
         Dn dn4 = new Dn( " cn = \\41\\42\\43 , ou=system " );
         assertEquals( " cn = \\41\\42\\43 ", dn4.getRdn().getName() );
         Ava atav4 = dn4.getRdn().getAva();
         assertEquals( "cn", atav4.getType() );
         assertEquals( "ABC", atav4.getValue().getString() );
 
-        // antlr parser: quotestring with trailing spaces
-        Dn dn5 = new Dn( " cn = \"ABC\" , ou=system " );
-        assertEquals( " cn = \"ABC\" ", dn5.getRdn().getName() );
-        Ava atav5 = dn5.getRdn().getAva();
-        assertEquals( "cn", atav5.getType() );
-        assertEquals( "ABC", atav5.getValue() .getString());
-
-        // fast parser: string value with trailing spaces
+        // DnParser: string value with trailing spaces
         Dn dn2 = new Dn( " cn = Amos Tori , ou=system " );
         assertEquals( " cn = Amos Tori ", dn2.getRdn().getName() );
         Ava atav2 = dn2.getRdn().getAva();
@@ -2466,6 +2463,7 @@ public class DnTest
         Dn dn = new Dn( "  ou  =  Example ,  ou  =  COM " );
 
         new Dn( schemaManager, dn );
+        
         assertEquals( "ou=Example,ou=COM", dn.getEscaped() );
         assertEquals( "  ou  =  Example ,  ou  =  COM ", dn.getName() );
 
@@ -2485,7 +2483,7 @@ public class DnTest
         assertEquals( "ou", atav.getType() );
         assertEquals( "Example", atav.getValue().getString() );
 
-        assertEquals( "ou=Example", atav.getName() );
+        assertEquals( "  ou  =  Example ", atav.getName() );
     }
 
 

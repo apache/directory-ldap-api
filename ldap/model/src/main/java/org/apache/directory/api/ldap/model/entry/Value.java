@@ -324,7 +324,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
         
         this.normValue = normValue;
         
-        if ( !attributeType.isRelaxed() )
+        if ( ( attributeType != null ) && !attributeType.isRelaxed() )
         {
             // Check the value
             if ( attributeType.getSyntax().getSyntaxChecker() != null )

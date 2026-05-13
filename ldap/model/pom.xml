@@ -68,21 +68,6 @@
       <artifactId>mina-core</artifactId>
     </dependency>
 
-  <!-- The original antlr artifact is needed by the antlr-maven-plugin which 
-    checks for its existence within the classpath. Use scope provided to avoid 
-    propagation to dependent projects. Choosen artifact is a valid OSGi bundle 
-    repackaged by ServiceMix team, kudos to them. -->
-    <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -106,44 +91,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <sourceFileExcludes>
-            <sourceFileExclude>**/Antlr*</sourceFileExclude>
-          </sourceFileExcludes>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <configuration />
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>antlr-maven-plugin</artifactId>
-        <configuration>
-          <grammars>*.g</grammars>
-        </configuration>
-        <executions>
-           <execution>
-              <goals>
-                 <goal>generate</goal>
-              </goals>
-           </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -207,8 +154,6 @@
               org.apache.directory.api.ldap.model.url;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-              antlr;version=${antlr.version},
-              antlr.collections.impl;version=${antlr.version},
               com.github.benmanes.caffeine.cache;bundle-version=${caffeine.version},
               javax.crypto,
               javax.crypto.spec,

@@ -37,17 +37,24 @@ public final class ParserUtil
 
     /** The various found characters */
     public static final char COLON      = ':';
+    public static final char COMMA      = ',';
     public static final char DOLLAR     = '$';
     public static final char DOT        = '.';
     public static final char DQUOTE     = '"';
     public static final char EQUAL      = '=';
+    public static final char ESC        = '\\';
     public static final char HYPHEN     = '-';
+    public static final char LANGLE     = '<';
     public static final char LCURLY     = '{';
     public static final char LPAREN     = '(';
+    public static final char PLUS       = '+';
+    public static final char RANGLE     = '>';
     public static final char RCURLY     = '}';
     public static final char RPAREN     = ')';
     public static final char SEMI_COLON = ';';
     public static final char SEP        = ',';
+    public static final char SHARP      = '#';
+    public static final char SPACE      = ' ';
     public static final char USCORE     = '_';
     public static final char ZERO       = '0';
 
@@ -225,10 +232,30 @@ public final class ParserUtil
     
     
     /**
+     * Match a specific character at the current position in the string.
+     * If present, move forward the current position.
+     * 
+     * @param bytes The byte[] to process
+     * @param b The expected byte
+     * @param pos The current position in the string
+     * @throws ParseException If the required character is not found at current position
+     */
+    public static void matchChar( byte[] bytes, byte b, Position pos ) throws ParseException
+    {
+        if ( !hasMoreChars( pos ) || bytes[ pos.start ] != b )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_17073_CHAR_REQUIRED, b ), pos.start );
+        }
+        
+        pos.start++;
+    }
+    
+    
+    /**
      * Check if a specific character is present at the current position in the string.
      * If the character is found, the position will be moved forward.
      * 
-     * @param schema The string to process
+     * @param str The string to process
      * @param c The expected character
      * @param pos The current position in the string
      * @return <code>true</code> if the character is present at the current position,
@@ -237,6 +264,29 @@ public final class ParserUtil
     public static boolean isMatchChar( String str, char c, Position pos )
     {
         if ( !hasMoreChars( pos ) || str.charAt( pos.start ) != c )
+        {
+            return false;
+        }
+        
+        pos.start++;
+        
+        return true;
+    }
+    
+    
+    /**
+     * Check if a specific character is present at the current position in the string.
+     * If the character is found, the position will be moved forward.
+     * 
+     * @param bytes The byte[] to process
+     * @param c The expected character
+     * @param pos The current position in the string
+     * @return <code>true</code> if the character is present at the current position,
+     * <code>false</code> if the character is not present or if we are at the end of the string.
+     */
+    public static boolean isMatchChar( byte c, Position pos )
+    {
+        if ( !hasMoreChars( pos ) || ( pos.getByte() != c ) )
         {
             return false;
         }

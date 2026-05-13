@@ -1708,23 +1708,16 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     private static void parse( SchemaManager schemaManager, String rdnStr, Rdn rdn ) throws LdapInvalidDnException
     {
-        try
+        if ( rdn != null )
         {
-            FastDnParser.parseRdn( schemaManager, rdnStr, rdn );
+            rdn.clear();
         }
-        catch ( TooComplexDnException e )
+        else
         {
-            if ( rdn != null )
-            {
-                rdn.clear();
-            }
-            else
-            {
-                rdn = new Rdn();
-            }
-            
-            new ComplexDnParser().parseRdn( schemaManager, rdnStr, rdn );
+            rdn = new Rdn();
         }
+
+        DnParser.parseRdn( schemaManager, rdnStr, rdn );
     }
 
 
@@ -1739,7 +1732,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     {
         if ( h == 0 )
         {
-            int hTmp = 37;
+            int h = 37;
 
             switch ( nbAvas )
             {
@@ -1749,7 +1742,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 case 1:
                     // We have a single Ava
-                    h = hTmp * 17 + ava.hashCode();
+                    h = h * 17 + ava.hashCode();
                     break;
 
                 default:
@@ -1757,7 +1750,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                     for ( Ava ata : avas )
                     {
-                        h = hTmp * 17 + ata.hashCode();
+                        h = h * 17 + ata.hashCode();
                     }
 
                     break;

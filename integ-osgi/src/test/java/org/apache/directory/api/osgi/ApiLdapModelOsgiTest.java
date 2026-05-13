@@ -47,8 +47,8 @@ public class ApiLdapModelOsgiTest extends ApiOsgiTestBase
     @Override
     protected void useBundleClasses() throws Exception
     {
-        new Dn( "dc=example,dc=com" ); // uses FastDnParser
-        new Dn( "cn=a+sn=b,dc=example,dc=com" ); // uses ComplexDnparser (antlr based)
+        new Dn( "dc=example,dc=com" );
+        new Dn( "cn=a+sn=b,dc=example,dc=com" );
         new Value( "foo" );
         new DefaultAttribute( "cn" );
         new DefaultEntry();

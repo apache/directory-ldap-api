@@ -455,8 +455,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */Ava( AttributeType attributeType, String upType, String normType, Value value, String upName )
-        throws LdapInvalidDnException
+    /* Unspecified protection */Ava( AttributeType attributeType, String upType, String normType, Value value,
+            String upName ) throws LdapInvalidDnException
     {
         this.attributeType = attributeType;
         String upTypeTrimmed = Strings.trim( upType );
@@ -521,7 +521,17 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         StringBuilder sb = new StringBuilder();
 
         this.upType = upType;
-        this.normType = normType;
+        
+        // Special case for oid attributeType
+        if ( ( normType != null ) && normType.startsWith( "oid." ) )
+        {
+            this.normType = normType.substring( 4 );
+        }
+        else
+        {
+            this.normType = normType;
+        }
+        
         this.value = value;
         
         sb.append( upType );
@@ -670,7 +680,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 }
             }
 
-            if ( this.attributeType == tmpAttributeType )
+            if ( ( this.attributeType != null ) && this.attributeType.equals( tmpAttributeType ) )
             {
                 // No need to normalize again
                 return;
@@ -689,6 +699,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
+            
+            // Update the normalized type
+            this.normType = this.attributeType.getOid();
 
             hashCode();
         }

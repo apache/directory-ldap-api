@@ -57,17 +57,10 @@ import org.osgi.framework.BundleContext;
 @ExamReactorStrategy(PerClass.class)
 public abstract class ApiOsgiTestBase
 {
-
     @Inject
     protected BundleContext context;
 
     private static Set<String> skips = new HashSet<String>();
-//    static
-//    {
-//        skips.add( "antlr-2.7.7.jar" );
-//        skips.add( "xpp3-1.1.4c.jar" );
-//        skips.add( "dom4j-1.6.1.jar" );
-//    }
 
 
     @Configuration

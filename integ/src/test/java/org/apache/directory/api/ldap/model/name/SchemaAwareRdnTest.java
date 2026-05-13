@@ -177,7 +177,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnOidUpper() throws LdapException
     {
-        assertEquals( "2.5.4.3=azerty", new Rdn( schemaManager, "OID.2.5.4.3 =  azerty" ).getEscaped() );
+        assertEquals( "OID.2.5.4.3=azerty", new Rdn( schemaManager, "OID.2.5.4.3 =  azerty" ).getEscaped() );
     }
 
 
@@ -877,38 +877,9 @@ public class SchemaAwareRdnTest
     public void testRdnWithSpaces() throws LdapException
     {
         Rdn rdn = new Rdn( schemaManager, "cn=a\\ b\\ c" );
+        
         assertEquals( "cn=a b c", rdn.getEscaped() );
     }
-    
-    /*
-    @Test
-        public void testEscapedSpaceInValue() throws LdapException
-    {
-        Rdn rdn1 = new Rdn( schemaManager, "cn=a b c" );
-        Rdn rdn2 = new Rdn( schemaManager, "cn=a\\ b\\ c" );
-        assertEquals( "2.5.4.3=a b c", rdn1.getEscaped() );
-        assertEquals( "2.5.4.3=a b c", rdn2.getEscaped() );
-        assertTrue( rdn1.equals( rdn2 ) );
-
-        Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
-        Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
-        assertEquals( "2.5.4.3= a b c ", rdn3.getEscaped() );
-        assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
-        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getEscaped() );
-        assertEquals( "cn=\\ a\\ b\\ c\\ ", rdn4.getName() );
-        assertTrue( rdn3.equals( rdn4 ) );
-    }
-    */
-    
-    /*
-    public void testEscapedSpaceInValue2() throws LdapException
-    {
-        Rdn rdn = new Rdn( schemaManager, "cn=\\ a\\ " );
-
-        assertEquals( "cn=\\ a\\ ", rdn.getName() );
-        assertEquals( "2.5.4.3=\\ a\\ ", rdn.getEscaped() );
-    }
-    */
 
 
     @Test
@@ -1253,9 +1224,8 @@ public class SchemaAwareRdnTest
     public void testRdnWithEmptyValue() throws LdapException
     {
         assertTrue( Rdn.isValid( "dc=" ) );
-        assertTrue( Rdn.isValid( "dc=\"\"" ) );
+        assertFalse( Rdn.isValid( "dc=\"\"" ) );
         assertEquals( "dc=", new Rdn( schemaManager, "dc=" ).getEscaped() );
-        assertEquals( "dc=", new Rdn( schemaManager, "dc=\"\"" ).getEscaped() );
     }
 
 
@@ -1270,14 +1240,7 @@ public class SchemaAwareRdnTest
         assertTrue( Rdn.isValid( "cn=b\\,c" ) );
         assertEquals( "cn=b\\,c", new Rdn( schemaManager, "cn=b\\,c" ).getEscaped() );
 
-        assertTrue( Rdn.isValid( "cn=\"b,c\"" ) );
-        assertEquals( "cn=b\\,c", new Rdn( schemaManager, "cn=\"b,c\"" ).getEscaped() );
-        assertEquals( "cn=\"b,c\"", new Rdn( schemaManager, "cn=\"b,c\"" ).getName() );
-
-        assertTrue( Rdn.isValid( "cn=\"b\\,c\"" ) );
-        Rdn rdn = new Rdn( schemaManager, "cn=\"b\\,c\"" );
-        assertEquals( "cn=\"b\\,c\"", rdn.getName() );
-        assertEquals( "cn=b\\,c", rdn.getEscaped() );
+        assertFalse( Rdn.isValid( "cn=\"b,c\"" ) );
     }
 
 

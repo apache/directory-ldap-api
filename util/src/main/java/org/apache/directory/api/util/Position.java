@@ -40,6 +40,9 @@ public class Position
     /** The parsed text. It's only used by the toString function */
     private String text;
     
+    /** The parsed text as a UTF-8 byte array */
+    byte[] bytes;
+    
     /**
      * A public constructor
      */
@@ -48,12 +51,40 @@ public class Position
         // Nothing to do
     }
     
+    
     /**
      * A public constructor
      */
     public Position( String text )
     {
         this.text = text;
+    }
+    
+    
+    /**
+     * A public constructor
+     */
+    public Position( byte[] bytes )
+    {
+        this.bytes = bytes;
+    }
+    
+    
+    /**
+     * @return the byte at the current position
+     */
+    public byte getByte()
+    {
+        return bytes[start];
+    }
+    
+    
+    /**
+     * @return The interned byte[]
+     */
+    public byte[] getBytes()
+    {
+        return bytes;
     }
 
 
@@ -68,7 +99,7 @@ public class Position
             String head = text.substring( Math.max( start - 10, 0 ), start );
             String tail = text.substring( Math.min( start + 1, length ), Math.min( start + 10, length ) );
             
-            if ( start == length)
+            if ( start == length )
             {
                 return "'..." + head + "'";
             }
@@ -76,6 +107,73 @@ public class Position
             {
                 return "'..." + head + "'[" + text.charAt( start ) + "]'" + tail 
                         + "...' [" + start + ", " + end + ", " + length + "]";
+            }
+        }
+        else if ( bytes != null )
+        {
+            int head = Math.max( start - 10, 0 );
+            int tail = Math.min( start + 1, length );
+            
+            if ( start == length )
+            {
+                return "'..." + ( char ) bytes[start - 1] + "[]'";
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.append( "'" );
+                
+                for ( int i = head; i < start; i++ )
+                {
+                    byte b = bytes[i];
+                    
+                    if ( ( b >= 0x20 ) && ( b <= 0x7F ) )
+                    {
+                        sb.append( ( char ) b );
+                    }
+                    else
+                    {
+                        sb.append( Strings.byteToString( b ) );
+                    }
+                }
+
+                sb.append( "'[" );
+                byte b = bytes[start];
+                
+                if ( ( b >= 0x20 ) && ( b <= 0x7F ) )
+                {
+                    sb.append( ( char ) b );
+                }
+                else
+                {
+                    sb.append( Strings.byteToString( b ) );
+                }
+
+                sb.append( "]'" );
+
+                for ( int i = start + 1; i < tail; i++ )
+                {
+                    b = bytes[i];
+                    
+                    if ( ( b >= 0x20 ) && ( b <= 0x7F ) )
+                    {
+                        sb.append( ( char ) b );
+                    }
+                    else
+                    {
+                        sb.append( Strings.byteToString( b ) );
+                    }
+                }
+                
+                sb.append( "...' [" ).
+                    append( start ).
+                    append( ", " ).
+                    append( end ).
+                    append( ", " ).
+                    append( length ).
+                    append( "]" );
+                
+                return sb.toString();
             }
         }
         

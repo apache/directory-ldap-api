@@ -76,11 +76,6 @@
     </dependency>
 
     <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
     </dependency>
@@ -121,11 +116,6 @@
                     <artifactItem>
                       <groupId>org.slf4j</groupId>
                       <artifactId>slf4j-api</artifactId>
-                    </artifactItem>
-                    
-                    <artifactItem>
-                      <groupId>antlr</groupId>
-                      <artifactId>antlr</artifactId>
                     </artifactItem>
                     
                     <artifactItem>

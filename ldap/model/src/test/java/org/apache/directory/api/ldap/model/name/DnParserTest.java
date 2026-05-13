@@ -73,6 +73,20 @@ public class DnParserTest
 
 
     /**
+     * test a simple Dn : a = b
+     * 
+     * @throws LdapException If the test failed
+     */
+    @Test
+    public void testLdapDNSimpleNoValue() throws LdapException
+    {
+        Dn dn = new Dn( "1.2.3.4.5 =  " );
+
+        assertEquals( "1.2.3.4.5 =  ", dn.getName() );
+    }
+
+
+    /**
      * test a composite Dn : a = b, d = e
      * 
      * @throws LdapException If the test failed
@@ -131,7 +145,7 @@ public class DnParserTest
 
 
     /**
-     * Test DN with '_' in value, because of special handling in Antlr grammar.
+     * Test DN with '_' in value.
      * 
      * @throws LdapException If the test failed
      */
@@ -239,7 +253,11 @@ public class DnParserTest
     @Test
     public void testLdapDNPairCharAttributeValue() throws LdapException
     {
-        Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
+        Dn dn = new Dn( "a = \\C3\\A9" );
+        assertEquals( "a=\u00e9", dn.getEscaped() );
+        assertEquals( "a = \\C3\\A9", dn.getName() );
+
+        dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
         assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getEscaped() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9", dn.getName() );
 
@@ -336,7 +354,7 @@ public class DnParserTest
             { 'C', '=', ' ', 'E', ( byte ) 0xc3, ( byte ) 0xa9, 'c' } );
 
         Dn name = new Dn( dn );
-
+        
         assertEquals( "C= E\u00e9c", name.getName() );
         assertEquals( "C=E\u00e9c", name.getEscaped() );
     }
@@ -541,6 +559,7 @@ public class DnParserTest
     @Test
     public void testNameFrenchChars() throws Exception
     {
+        // cn=Jérôme
         String cn = new String( new byte[]
             { 'c', 'n', '=', 0x4A, ( byte ) 0xC3, ( byte ) 0xA9, 0x72, ( byte ) 0xC3, ( byte ) 0xB4, 0x6D, 0x65 },
             StandardCharsets.UTF_8 );
@@ -625,6 +644,21 @@ public class DnParserTest
             assertTrue( true );
             return;
         }
+    }
+
+
+    /**
+     * Test to check that even with a non escaped char, the Dn is parsed ok
+     * or at least an error is generated.
+     * @throws LdapInvalidDnException 
+     */
+    @Test
+    public final void testEqualInValue() throws LdapInvalidDnException
+    {
+        String input = "ou==,ou=test";
+
+        Dn dn = new Dn( input );
+        System.out.println(dn);
     }
 
 
