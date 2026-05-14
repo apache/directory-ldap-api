@@ -52,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
@@ -116,6 +117,14 @@ public class PasswordUtilTest
     public void testUnsupportedHashMethodIsHandledAsPlainText()
     {
         testPassword( "{XXX}abc", "{XXX}abc", null, 8, 0 );
+    }
+
+
+    @Test
+    public void testCreateStoragePasswordFailsWhenAlgorithmIsNull()
+    {
+        assertThrows( IllegalArgumentException.class,
+            () -> PasswordUtil.createStoragePassword( "secret", null ) );
     }
 
 
@@ -396,10 +405,13 @@ public class PasswordUtilTest
         assertNotNull( passwordDetails.getPassword() );
         assertEquals( passwordLength, passwordDetails.getPassword().length );
 
-        // assert createStoragePassword / compareCredentials roundtrip
-        byte[] generated = PasswordUtil.createStoragePassword( plainText, algorithm );
-        assertTrue(
-            PasswordUtil.compareCredentials( Strings.getBytesUtf8( plainText ), generated ) );
+        if ( algorithm != null )
+        {
+            // assert createStoragePassword / compareCredentials roundtrip
+            byte[] generated = PasswordUtil.createStoragePassword( plainText, algorithm );
+            assertTrue(
+                PasswordUtil.compareCredentials( Strings.getBytesUtf8( plainText ), generated ) );
+        }
     }
 
 }

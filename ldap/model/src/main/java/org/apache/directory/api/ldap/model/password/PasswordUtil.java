@@ -178,13 +178,14 @@ public final class PasswordUtil
      * @param credentials the plain text password
      * @param algorithm the hashing algorithm to be applied
      * @return the password after hashing with the given algorithm 
+     * @throws IllegalArgumentException if the specified algorithm is null or unknown
      */
     public static byte[] createStoragePassword( byte[] credentials, LdapSecurityConstants algorithm )
     {
-        // check plain text password
+        // Fail closed to avoid storing credentials in plaintext when no algorithm is provided.
         if ( algorithm == null )
         {
-            return credentials;
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13010_UNKNOWN_HASH_ALGO, algorithm ) );
         }
 
         byte[] salt;
