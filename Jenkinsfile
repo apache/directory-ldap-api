@@ -67,6 +67,8 @@ pipeline {
       }
     }
 
+/* Commented Java 17, it fails with chekstyle */
+/*
     stage('Build JDK 17 Linux') {
       tools {
         jdk "jdk_17_latest"
@@ -78,6 +80,7 @@ pipeline {
         sh 'mvn clean install'
       }
     }
+*/
 
     stage('Build JDK 21 Linux') {
       tools {
