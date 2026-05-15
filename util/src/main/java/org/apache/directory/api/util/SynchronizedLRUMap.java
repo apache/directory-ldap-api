@@ -19,10 +19,6 @@
  */
 package org.apache.directory.api.util;
 
-
-import java.io.Externalizable;
-
-
 /**
  * <p>
  * An implementation of a Map which has a maximum size and uses a Least Recently
@@ -45,10 +41,8 @@ import java.io.Externalizable;
  * @since Commons Collections 1.0
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class SynchronizedLRUMap extends SequencedHashMap implements Externalizable
+public final class SynchronizedLRUMap extends SequencedHashMap
 {
-    /** Declares the Serial Version Uid */
-    private static final long serialVersionUID = 2197433140769957051L;
 
     /** Maximum size */
     private int maximumSize = 0;

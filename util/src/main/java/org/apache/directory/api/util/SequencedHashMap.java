@@ -19,11 +19,6 @@
  */
 package org.apache.directory.api.util;
 
-
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -58,11 +53,8 @@ import org.apache.directory.api.i18n.I18n;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("rawtypes")
-public class SequencedHashMap implements Map, Cloneable, Externalizable
+public class SequencedHashMap implements Map
 {
-    /** Declares the Serial Version Uid */
-    private static final long serialVersionUID = 3380552487888102930L;
-    
     // constants to define what the iterator should return on "next"
     /** The iterator will return the key */
     private static final int KEY = 0;
@@ -1336,48 +1328,4 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         return remove( get( index ) );
     }
 
-
-    // per Externalizable.readExternal(ObjectInput)
-
-    /**
-     * Deserializes this map from the given stream.
-     * 
-     * @param in
-     *            the stream to deserialize from
-     * @throws IOException
-     *             if the stream raises it
-     * @throws ClassNotFoundException
-     *             if the stream raises it
-     */
-    @Override
-    public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
-    {
-        int size = in.readInt();
-        for ( int i = 0; i < size; i++ )
-        {
-            Object key = in.readObject();
-            Object value = in.readObject();
-            put( key, value );
-        }
-    }
-
-
-    /**
-     * Serializes this map to the given stream.
-     * 
-     * @param out
-     *            the stream to serialize to
-     * @throws IOException
-     *             if the stream raises it
-     */
-    @Override
-    public void writeExternal( ObjectOutput out ) throws IOException
-    {
-        out.writeInt( size() );
-        for ( MapEntry pos = sentinel.next; pos != sentinel; pos = pos.next )
-        {
-            out.writeObject( pos.getKey() );
-            out.writeObject( pos.getValue() );
-        }
-    }
 }
