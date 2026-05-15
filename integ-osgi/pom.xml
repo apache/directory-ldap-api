@@ -127,13 +127,6 @@
       <artifactId>org.apache.felix.framework</artifactId>
       <scope>test</scope>
     </dependency>
-    
-    <!-- dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>osgi</artifactId>
-      <version>3.9.1-v20140110-1610</version>
-      <scope>test</scope>
-    </dependency-->
   </dependencies>
 
   <build>
