@@ -1342,7 +1342,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     private static String parseInternal( SchemaManager schemaManager, byte[] bytes, List<Rdn> rdns ) throws LdapInvalidDnException
     {
-        return DnParser.parseDn( schemaManager, bytes, rdns );
+        try
+        {
+            return FastDnParser.parseDn( schemaManager, bytes, rdns );
+        }
+        catch ( TooComplexDnException e )
+        {
+            rdns.clear();
+            
+            return ComplexDnParser.parseDn( schemaManager, bytes, rdns );
+        }
     }
 
     /**
@@ -1356,7 +1365,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     private static String parseInternal( SchemaManager schemaManager, String upName, List<Rdn> rdns ) throws LdapInvalidDnException
     {
-        return DnParser.parseDn( schemaManager, upName, rdns );
+        try
+        {
+            return FastDnParser.parseDn( schemaManager, upName, rdns );
+        }
+        catch ( TooComplexDnException e )
+        {
+            rdns.clear();
+            
+            return ComplexDnParser.parseDn( schemaManager, upName, rdns );
+        }
     }
 
 

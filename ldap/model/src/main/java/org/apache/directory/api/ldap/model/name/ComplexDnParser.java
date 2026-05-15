@@ -63,10 +63,10 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No protection*/final class DnParser
+/* No protection*/final class ComplexDnParser
 {
     /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( DnParser.class );
+    protected static final Logger LOG = LoggerFactory.getLogger( ComplexDnParser.class );
     
     /** A private enum listing the AttributeType state machine states */
     private enum AttributTypeStates 
@@ -104,7 +104,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
     private static final boolean ODD = false;   
 
     /** No constructor allowed */
-    private DnParser() 
+    private ComplexDnParser() 
     {
         throw new UnsupportedOperationException( "This is a utility class and cannot be instantiated" );
     }

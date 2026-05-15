@@ -843,9 +843,9 @@ public class DnParserTest
     {
         long t0 = System.currentTimeMillis();
         
-        for ( int i = 0; i < 1000000; i++ )
+        for ( int i = 0; i < 100000000; i++ )
         {
-            new Dn( "dc=example" + i );
+            new Dn( "dc=example" + i + "+dc=com");
         }
         
         long t1 = System.currentTimeMillis();

@@ -41,7 +41,7 @@ class ComplexDnParserTest {
     private static Method getPrivateMethod( String methodName, Class<?> clazz ) throws IllegalAccessException, IllegalArgumentException, 
         InvocationTargetException, NoSuchMethodException, SecurityException 
     {
-        Method method = DnParser.class.getDeclaredMethod( methodName, clazz, Position.class );
+        Method method = ComplexDnParser.class.getDeclaredMethod( methodName, clazz, Position.class );
         method.setAccessible( true );
 
         return method;

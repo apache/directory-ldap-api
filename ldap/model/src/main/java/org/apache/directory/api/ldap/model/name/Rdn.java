@@ -1717,7 +1717,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             rdn = new Rdn();
         }
 
-        DnParser.parseRdn( schemaManager, rdnStr, rdn );
+        ComplexDnParser.parseRdn( schemaManager, rdnStr, rdn );
     }
 
 
