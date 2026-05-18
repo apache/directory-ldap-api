@@ -33,7 +33,7 @@ pipeline {
 
   parameters {
       choice(name: 'nodeLabel', choices: ['ubuntu', 'arm', 'Windows'])
-      choice(name: 'jdkVersion', choices: ['jdk_17_latest', 'jdk_21_latest', 'jdk_25_latest', 'jdk_26_latest', 'jdk_17_latest_windows', 'jdk_21_latest_windows', 'jdk_25_latest_windows'])
+      choice(name: 'jdkVersion', choices: ['jdk_11_latest', 'jdk_17_latest', 'jdk_21_latest', 'jdk_25_latest', 'jdk_26_latest',  'jdk_11_latest_windows', 'jdk_17_latest_windows', 'jdk_21_latest_windows', 'jdk_25_latest_windows'])
       booleanParam(name: 'deployEnabled', defaultValue: true)
       booleanParam(name: 'sonarEnabled', defaultValue: true)
       booleanParam(name: 'testsEnabled', defaultValue: true)
@@ -100,6 +100,18 @@ pipeline {
       }
       steps {
         echo 'Building JDK 25 Linux'
+        sh 'java -version'
+        sh 'mvn -version'
+        sh 'mvn clean install -Pserial -Djava.security.manager=allow'
+      }
+    }
+
+    stage('Build JDK 26 Linux') {
+      tools {
+        jdk "jdk_26_latest"
+      }
+      steps {
+        echo 'Building JDK 26 Linux'
         sh 'java -version'
         sh 'mvn -version'
         sh 'mvn clean install -Pserial -Djava.security.manager=allow'
