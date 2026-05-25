@@ -281,8 +281,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     private CompletableFuture<Integer> connectionCloseFuture = new CompletableFuture<>(); 
     
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    static final String TIME_OUT_ERROR = I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED );
-
     static final String NO_RESPONSE_ERROR = I18n.err( I18n.ERR_04169_RESPONSE_QUEUE_EMPTIED );
     
    //------------------------- The constructors --------------------------//
@@ -817,10 +815,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // We didn't received anything : this is an error
         if ( LOG.isErrorEnabled() )
         {
-            LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Connect" ) );
+            LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Close" ) );
         }
 
-        throw new LdapException( TIME_OUT_ERROR );
+        throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Close" ) );
     }
     
     
@@ -852,7 +850,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 // if there is no cause assume timeout
                 if ( cause == null )
                 {
-                    throw new LdapException( TIME_OUT_ERROR );
+                    throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "checkSecured" ) );
                 }
 
                 throw new LdapTlsHandshakeException( I18n.err( I18n.ERR_04120_TLS_HANDSHAKE_ERROR ), cause );
@@ -1198,7 +1196,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Add" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Add" ) );
             }
 
             if ( addResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -1593,7 +1591,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind Simple" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -1754,7 +1752,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL Plain" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -1826,7 +1824,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -1934,7 +1932,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL CramlMD5" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -2006,7 +2004,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL plain" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -2092,7 +2090,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL Digest MD5" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -2164,7 +2162,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL GSSAPI" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -2236,7 +2234,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL External" ) );
             }
 
             if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -3312,7 +3310,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Modify" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Modify" ) );
             }
 
             if ( modifyResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -3708,7 +3706,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "ModifyDn" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "ModifyDN" ) );
             }
 
             if ( modifyDnResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -3930,7 +3928,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Delete" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Delete" ) );
             }
 
             if ( delResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -4142,7 +4140,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Compare" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Compare" ) );
             }
 
             if ( compareResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -4341,7 +4339,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                     LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Extended" ) );
                 }
                 
-                throw new LdapException( TIME_OUT_ERROR );
+                throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Extended" ) );
             }
 
             if ( response.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
@@ -5263,7 +5261,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                     }
                     
-                    throw new LdapException( TIME_OUT_ERROR );
+                    throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL" ) );
                 }
 
                 result = bindResponse.getLdapResult().getResultCode();
@@ -5292,7 +5290,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                         LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                     }
                     
-                    throw new LdapException( TIME_OUT_ERROR );
+                    throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL" ) );
                 }
 
                 result = bindResponse.getLdapResult().getResultCode();
@@ -5330,7 +5328,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                             LOG.error( I18n.err( I18n.ERR_04112_OP_FAILED_TIMEOUT, "Bind" ) );
                         }
                         
-                        throw new LdapException( TIME_OUT_ERROR );
+                        throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "Bind SASL" ) );
                     }
 
                     result = bindResponse.getLdapResult().getResultCode();
@@ -5416,7 +5414,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             LOG.error( I18n.err( I18n.ERR_04119_TIMEOUT ) );
         }
         
-        throw new LdapException( TIME_OUT_ERROR );
+        throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "write" ) );
     }
 
 

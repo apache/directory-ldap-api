@@ -100,7 +100,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
 
                 if ( response == null )
                 {
-                    throw new LdapException( LdapNetworkConnection.TIME_OUT_ERROR );
+                    throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "next()" ) );
                 }
 
                 messageId = response.getMessageId();

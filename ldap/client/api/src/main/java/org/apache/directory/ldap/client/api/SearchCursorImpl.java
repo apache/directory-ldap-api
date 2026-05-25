@@ -39,7 +39,6 @@ import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
-import org.apache.directory.ldap.client.api.exception.LdapConnectionTimeOutException;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,7 +144,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         {
             future.cancel( true );
 
-            throw new LdapConnectionTimeOutException( LdapNetworkConnection.TIME_OUT_ERROR );
+            throw new LdapException( I18n.err( I18n.ERR_04170_TIMEOUT_OCCURED, "next()" ) );
         }
 
         done = response instanceof SearchResultDone;
