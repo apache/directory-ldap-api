@@ -959,7 +959,7 @@ public class SchemaParser
     /**
      * Parses an OpenLDAP schemaObject elements/objects.
      *
-     * @param SchemaStr a LDAP schema to parse
+     * @param schemaStr As LDAP schema to parse
      * @return A list of schema elements
      * @throws ParseException  If we weren't able to parse the schema
      */

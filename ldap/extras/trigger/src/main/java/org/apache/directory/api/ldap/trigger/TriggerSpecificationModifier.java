@@ -64,7 +64,7 @@ public class TriggerSpecificationModifier
     /**
      * Sets the action time.
      *
-     * @param the action time
+     * @param actionTime the action time
      */
     public void setActionTime( ActionTime actionTime )
     {
@@ -75,7 +75,7 @@ public class TriggerSpecificationModifier
     /**
      * Sets the LDAP operation.
      *
-     * @param the LDAP operation
+     * @param ldapOperation the LDAP operation
      */
     public void setLdapOperation( LdapOperation ldapOperation )
     {
@@ -86,7 +86,7 @@ public class TriggerSpecificationModifier
     /**
      * Add a stored procedure spec.
      *
-     * @param the stored procedure spec to add
+     * @param spSpec the stored procedure spec to add
      */
     public void addSPSpec( SPSpec spSpec )
     {
@@ -117,7 +117,7 @@ public class TriggerSpecificationModifier
         /**
          * Set the name.
          *
-         * @param the name
+         * @param name the name
          */
         public void setName( String name )
         {
@@ -147,6 +147,11 @@ public class TriggerSpecificationModifier
         }
         
         
+        /**
+         * Generate a new SPSpec based on the name, options and parameters
+         * 
+         * @return A new SPSpecs
+         */
         public SPSpec getSPSpec()
         {
             return new SPSpec( name, options, parameters );

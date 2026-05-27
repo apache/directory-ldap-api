@@ -278,7 +278,6 @@ public final class ParserUtil
      * Check if a specific character is present at the current position in the string.
      * If the character is found, the position will be moved forward.
      * 
-     * @param bytes The byte[] to process
      * @param c The expected character
      * @param pos The current position in the string
      * @return <code>true</code> if the character is present at the current position,
@@ -312,7 +311,7 @@ public final class ParserUtil
      * @param pos The current position in the string
      * @return The parsed NumericOid
      */
-    public static String parseNumericOid( String str, Position pos ) throws ParseException
+    public static String parseNumericOid( String str, Position pos )
     {
         int start = pos.start;
         

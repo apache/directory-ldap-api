@@ -54,6 +54,8 @@ public class Position
     
     /**
      * A public constructor
+     * 
+     * @param text The String to parse
      */
     public Position( String text )
     {
@@ -63,6 +65,8 @@ public class Position
     
     /**
      * A public constructor
+     * 
+     * @param bytes The bytes to parse
      */
     public Position( byte[] bytes )
     {
@@ -71,6 +75,8 @@ public class Position
     
     
     /**
+     * Get the byte at the current position
+     * 
      * @return the byte at the current position
      */
     public byte getByte()
@@ -80,6 +86,8 @@ public class Position
     
     
     /**
+     * Get the stored bytes
+     * 
      * @return The interned byte[]
      */
     public byte[] getBytes()

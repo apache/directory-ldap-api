@@ -96,8 +96,8 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
  * and = ID_and ( SP )* COLON ( SP )* refinements
  * or = ID_or ( SP )* COLON ( SP )* refinements
  * not = ID_not ( SP )* COLON ( SP )* refinement
- * [FILTER = '(' ( '&' (SP)* FILTER+ | '|' (SP)* FILTER+ | '!' (SP)* FILTER | FILTER_VALUE ) ')' (SP)*
- * FILTER_VALUE = every char but '(', ')', '&', '|', '!']
+ * [FILTER = '(' ( '&amp;' (SP)* FILTER+ | '|' (SP)* FILTER+ | '!' (SP)* FILTER | FILTER_VALUE ) ')' (SP)*
+ * FILTER_VALUE = every char but '(', ')', '&amp;', '|', '!']
  * </pre>
  * 
  * Note: the 'filter' part is not present in RFC 3672
