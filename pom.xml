@@ -59,7 +59,7 @@
     <project.build.outputTimestamp>1779864522</project.build.outputTimestamp>
 
     <!-- SBOM generation versions -->
-    <version.cyclonedx>2.9.1</version.cyclonedx>
+    <version.cyclonedx>2.9.2</version.cyclonedx>
 
     <!-- Set versions for depending projects -->
     <skin.version>1.0.3</skin.version>
