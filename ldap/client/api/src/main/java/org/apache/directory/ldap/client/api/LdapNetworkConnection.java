@@ -971,8 +971,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 atDetector = new SchemaBinaryAttributeDetector( schemaManager );
             }
 
-            ioSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<Message>( codec, atDetector ) );
+            LdapMessageContainer<Message> newContainer = new LdapMessageContainer<>( codec, atDetector );
+
+            // Bound the size of the PDUs we accept from the peer
+            newContainer.setMaxPDUSize( config.getMaxPDUSize() );
+
+            ioSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, newContainer );
         }
     }
     
@@ -4689,6 +4693,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // Associate a DnFactory to the container
             ldapMessageContainer.setDnFactory( new DefaultDnFactory( schemaManager, 1000 ) );
             
+            // Bound the size of the PDUs we accept from the peer
+            ldapMessageContainer.setMaxPDUSize( config.getMaxPDUSize() );
+
             ioSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
 
         }
@@ -4942,6 +4949,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 codec, config.getBinaryAttributeDetector() );
         
         ldapMessageContainer.setDnFactory( new DefaultDnFactory( schemaManager, 1000 ) );
+        
+        // Bound the size of the PDUs we accept from the peer
+        ldapMessageContainer.setMaxPDUSize( config.getMaxPDUSize() );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
     }

@@ -59,8 +59,21 @@ public abstract class AbstractContainer implements Asn1Container
     /** A counter for the decoded bytes */
     private int decodedBytes;
 
-    /** The maximum allowed size for a PDU. Default to MAX int value */
-    private int maxPDUSize = Integer.MAX_VALUE;
+    /**
+     * The default maximum allowed size for a PDU: 8 MB.
+     * <p>
+     * A BER TLV declares the size of its value up-front and the decoder
+     * allocates that amount of memory before a single value byte has been
+     * received, so an unlimited default lets a hostile peer commit
+     * gigabytes of heap with a ~20 byte PDU. Embedders that legitimately
+     * exchange bigger PDUs can raise the limit with
+     * {@link #setMaxPDUSize(int)} (passing a value &lt;= 0 removes the
+     * limit entirely).
+     */
+    public static final int DEFAULT_MAX_PDU_SIZE = 8 * 1024 * 1024;
+    
+    /** The maximum allowed size for a PDU. Defaults to {@link #DEFAULT_MAX_PDU_SIZE} */
+    private int maxPDUSize = DEFAULT_MAX_PDU_SIZE;
 
     /** The incremental id used to tag TLVs */
     private int id = 0;

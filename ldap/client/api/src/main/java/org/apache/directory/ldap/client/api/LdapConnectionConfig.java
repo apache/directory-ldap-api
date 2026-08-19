@@ -63,6 +63,14 @@ public class LdapConnectionConfig
     /** The default timeout for operation : 30 seconds */
     public static final long DEFAULT_TIMEOUT = 30000L;
 
+    /**
+     * The default maximum size in bytes for an incoming PDU : 8 MB. The BER
+     * decoder allocates the memory a PDU declares before receiving its
+     * content, so this limit is what bounds the memory a hostile or
+     * compromised server can make the client commit per connection.
+     */
+    public static final int DEFAULT_MAX_PDU_SIZE = 8 * 1024 * 1024;
+
     /** the default protocol used for creating SSL context */
     public static final String DEFAULT_SSL_PROTOCOL = "TLS";
 
@@ -87,6 +95,9 @@ public class LdapConnectionConfig
 
     /** Timeout for I/O (TCP) writes */
     private Long sendTimeout;
+
+    /** The maximum size in bytes accepted for an incoming PDU. Defaults to {@link #DEFAULT_MAX_PDU_SIZE} */
+    private int maxPDUSize = DEFAULT_MAX_PDU_SIZE;
 
     /** A flag indicating if we are using TLS or not, default value is false */
     private boolean useTls = false;
@@ -366,7 +377,31 @@ public class LdapConnectionConfig
     {
         return connectTimeout;
     }
-    
+
+    /**
+     * Gets the maximum size in bytes accepted for an incoming PDU.
+     *
+     * @return the maximum accepted PDU size in bytes
+     */
+    public int getMaxPDUSize()
+    {
+        return maxPDUSize;
+    }
+
+
+    /**
+     * Sets the maximum size in bytes accepted for an incoming PDU. The BER decoder
+     * allocates the memory a PDU declares before receiving its content, so this
+     * limit bounds the memory a hostile or compromised server can make the client
+     * commit. Defaults to {@link #DEFAULT_MAX_PDU_SIZE}.
+     *
+     * @param maxPDUSize the maximum accepted PDU size in bytes. If &lt;= 0, the limit is removed
+     */
+    public void setMaxPDUSize( int maxPDUSize )
+    {
+        this.maxPDUSize = maxPDUSize;
+    }
+
 
     /**
      * Sets connect timeout in milliseconds.
