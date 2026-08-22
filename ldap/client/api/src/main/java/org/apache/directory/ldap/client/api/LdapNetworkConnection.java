@@ -4952,6 +4952,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         
         // Bound the size of the PDUs we accept from the peer
         ldapMessageContainer.setMaxPDUSize( config.getMaxPDUSize() );
+        
+        // Bound the level number of filter we accept
+        ldapMessageContainer.setMaxFilterDepth( config.getMaxFilterDepth() );
 
         session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
     }

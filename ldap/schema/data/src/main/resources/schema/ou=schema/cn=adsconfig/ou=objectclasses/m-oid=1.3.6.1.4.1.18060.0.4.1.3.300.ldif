@@ -10,10 +10,11 @@ m-supobjectclass: ads-dsBasedServer
 m-must: ads-confidentialityRequired
 m-must: ads-maxSizeLimit
 m-must: ads-maxTimeLimit
-m-must: ads-maxPDUSize
 m-must: ads-saslHost
 m-must: ads-saslPrincipal
 m-must: ads-saslRealms
+m-may: ads-maxPDUSize
+m-may: ads-maxFilterDepth
 m-may: ads-keystoreFile
 m-may: ads-certificatePassword
 m-may: ads-replReqHandler

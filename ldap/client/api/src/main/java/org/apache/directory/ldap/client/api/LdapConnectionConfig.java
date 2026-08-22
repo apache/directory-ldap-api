@@ -33,6 +33,7 @@ import javax.net.ssl.TrustManagerFactory;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.util.Network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,14 +64,6 @@ public class LdapConnectionConfig
     /** The default timeout for operation : 30 seconds */
     public static final long DEFAULT_TIMEOUT = 30000L;
 
-    /**
-     * The default maximum size in bytes for an incoming PDU : 8 MB. The BER
-     * decoder allocates the memory a PDU declares before receiving its
-     * content, so this limit is what bounds the memory a hostile or
-     * compromised server can make the client commit per connection.
-     */
-    public static final int DEFAULT_MAX_PDU_SIZE = 8 * 1024 * 1024;
-
     /** the default protocol used for creating SSL context */
     public static final String DEFAULT_SSL_PROTOCOL = "TLS";
 
@@ -96,8 +89,19 @@ public class LdapConnectionConfig
     /** Timeout for I/O (TCP) writes */
     private Long sendTimeout;
 
+    /**
+     * The default maximum size in bytes for an incoming PDU : 8 MB. The BER
+     * decoder allocates the memory a PDU declares before receiving its
+     * content, so this limit is what bounds the memory a hostile or
+     * compromised server can make the client commit per connection.
+     */
+    public static final int DEFAULT_MAX_PDU_SIZE = 8 * 1024 * 1024;
+
     /** The maximum size in bytes accepted for an incoming PDU. Defaults to {@link #DEFAULT_MAX_PDU_SIZE} */
     private int maxPDUSize = DEFAULT_MAX_PDU_SIZE;
+
+    /** The maximum accepted depth for nested search filters. Defaults to {@link #DEFAULT_MAX_FILTER_DEPTH} */
+    private int maxFilterDepth = LdapMessageContainer.DEFAULT_MAX_FILTER_DEPTH;
 
     /** A flag indicating if we are using TLS or not, default value is false */
     private boolean useTls = false;
@@ -400,6 +404,31 @@ public class LdapConnectionConfig
     public void setMaxPDUSize( int maxPDUSize )
     {
         this.maxPDUSize = maxPDUSize;
+    }
+    
+    
+    /**
+     * Get the maximum accepted depth for nested search filters
+     *
+     * @return the maximum accepted depth
+     */
+    public int getMaxFilterDepth()
+    {
+        return maxFilterDepth;
+    }
+
+
+    /**
+     * Set the maximum accepted depth for nested search filters. It defaults to
+     * {@link #DEFAULT_MAX_FILTER_DEPTH} : the depth is driven by the incoming
+     * PDU and each level consumes one stack frame while the decoded filter is
+     * transformed, so only raise it if deeper filters really are expected.
+     *
+     * @param maxFilterDepth the maximum accepted depth
+     */
+    public void setMaxFilterDepth( int maxFilterDepth )
+    {
+        this.maxFilterDepth = maxFilterDepth;
     }
 
 

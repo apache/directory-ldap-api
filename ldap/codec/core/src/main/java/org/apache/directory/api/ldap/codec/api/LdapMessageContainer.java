@@ -97,6 +97,18 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
     /** The global filter. This is used while decoding a PDU */
     private Filter topFilter;
 
+    /**
+     * The default maximum depth accepted for nested search filters : 128.
+     * The nesting depth is fully driven by the incoming PDU, and the codec
+     * (InitSearchRequestAttributeDescList.transform) recurses once per
+     * nesting level, so an unbounded depth lets a ~50KB PDU throw a
+     * StackOverflowError past the DecoderException handling.
+     */
+    public static final int DEFAULT_MAX_FILTER_DEPTH = 128;
+
+    /** The maximum accepted depth for nested search filters. Defaults to {@link #DEFAULT_MAX_FILTER_DEPTH} */
+    private int maxFilterDepth = DEFAULT_MAX_FILTER_DEPTH;
+
 
     /**
      * Creates a new LdapMessageContainer object. We will store ten grammars,
@@ -421,6 +433,21 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
     {
         if ( currentFilter != null )
         {
+            // Guard against StackOverflowError : the nesting depth of the filter
+            // is driven by the incoming PDU, so it has to be bounded before we
+            // accept one more level.
+            int depth = 0;
+
+            for ( Filter ancestor = currentFilter; ancestor != null; ancestor = ancestor.getParent() )
+            {
+                depth++;
+
+                if ( depth >= maxFilterDepth )
+                {
+                    throw new DecoderException( I18n.err( I18n.ERR_03046_FILTER_MAX_DEPTH_EXCEEDED, maxFilterDepth ) );
+                }
+            }
+
             // Ok, we have a parent. The new Filter will be added to
             // this parent, and will become the currentFilter if it's a connector.
             if ( currentFilter instanceof ConnectorFilter )
@@ -522,6 +549,31 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
         extendedResponse.getLdapResult().setMatchedDn( resultResponse.getLdapResult().getMatchedDn() );
         extendedResponse.getLdapResult().setReferral( resultResponse.getLdapResult().getReferral() );
         extendedResponse.getLdapResult().setResultCode( resultResponse.getLdapResult().getResultCode() );
+    }
+    
+    
+    /**
+     * Get the maximum accepted depth for nested search filters
+     *
+     * @return the maximum accepted depth
+     */
+    public int getMaxFilterDepth()
+    {
+        return maxFilterDepth;
+    }
+
+
+    /**
+     * Set the maximum accepted depth for nested search filters. It defaults to
+     * {@link #DEFAULT_MAX_FILTER_DEPTH} : the depth is driven by the incoming
+     * PDU and each level consumes one stack frame while the decoded filter is
+     * transformed, so only raise it if deeper filters really are expected.
+     *
+     * @param maxFilterDepth the maximum accepted depth
+     */
+    public void setMaxFilterDepth( int maxFilterDepth )
+    {
+        this.maxFilterDepth = maxFilterDepth;
     }
 
 
