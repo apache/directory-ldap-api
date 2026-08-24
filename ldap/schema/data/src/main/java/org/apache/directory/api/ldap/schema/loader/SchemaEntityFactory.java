@@ -85,6 +85,16 @@ public class SchemaEntityFactory implements EntityFactory
     /** The empty string array. */
     private static final String[] EMPTY_ARRAY = new String[]
         {};
+    
+    /**
+     * Name of the system property used to explicitly enable the loading of schema
+     * element implementations from the <code>m-bytecode</code> attribute. Disabled
+     * by default : the bytecode may originate from an untrusted LDAP peer (e.g. a
+     * remote subschema fetched by DefaultSchemaLoader), and defining then
+     * instantiating such a class executes the code it carries.
+     */
+    public static final String BYTECODE_LOADING_PROPERTY =
+        "org.apache.directory.api.ldap.schema.loader.allowBytecodeLoading";
 
     /** A special ClassLoader that loads a class from the bytecode attribute */
     private final AttributeClassLoader classLoader;
@@ -103,6 +113,51 @@ public class SchemaEntityFactory implements EntityFactory
                 return new AttributeClassLoader();
             }
         } );
+    }
+
+
+    /**
+     * Checks that loading classes from the m-bytecode attribute has been explicitly
+     * enabled with the {@link #BYTECODE_LOADING_PROPERTY} system property. It is
+     * disabled by default : the bytecode may come from an LDAP peer, and defining
+     * then instantiating such a class executes the code it carries with the
+     * privileges of the application.
+     *
+     * @param className The name of the class we refused to load, for the error message
+     * @throws LdapSchemaException When bytecode loading has not been explicitly enabled
+     */
+    private static void checkBytecodeLoadingEnabled( String className ) throws LdapSchemaException
+    {
+        if ( !Boolean.getBoolean( BYTECODE_LOADING_PROPERTY ) )
+        {
+            String msg = I18n.err( I18n.ERR_16081_WONT_LOAD_CLASS, className, BYTECODE_LOADING_PROPERTY );
+            LOG.error( msg );
+            
+            throw new LdapSchemaException( msg );
+        }
+    }
+
+
+    /**
+     * Checks that a class about to be instantiated as a schema element really is a
+     * subtype of the expected schema element type, before any of its code (static
+     * initializer, constructor) gets a chance to run.
+     *
+     * @param clazz The loaded, but not yet initialized, class
+     * @param expectedType The type the class must be assignable to
+     * @param className The class name, for the error message
+     * @throws LdapSchemaException When the class is not of the expected type
+     */
+    private static void checkExpectedType( Class<?> clazz, Class<?> expectedType, String className )
+        throws LdapSchemaException
+    {
+        if ( !expectedType.isAssignableFrom( clazz ) )
+        {
+            String msg = I18n.err( I18n.ERR_16082_CANNOT_INSTANTIATE_CLASS, className, expectedType.getName() );
+
+            LOG.error( msg );
+            throw new LdapSchemaException( msg );
+        }
     }
 
 
@@ -340,7 +395,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             try
             {
-                clazz = Class.forName( className );
+                clazz = Class.forName( className, false, SchemaEntityFactory.class.getClassLoader() );
             }
             catch ( ClassNotFoundException cnfe )
             {
@@ -350,6 +405,11 @@ public class SchemaEntityFactory implements EntityFactory
         }
         else
         {
+            // Loading a class from entry-provided bytecode executes code supplied
+            // by whatever produced the entry (possibly a remote LDAP peer), so it
+            // has to be explicitly enabled.
+            checkBytecodeLoadingEnabled( className );
+
             classLoader.setAttribute( byteCode );
             
             try
@@ -362,8 +422,11 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16051_CANNOT_LOAD_SC_CLASS, cnfe.getMessage() ) );
             }
             
-            byteCodeStr = Base64.getEncoder().encodeToString( byteCode.getBytes() );
+            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
         }
+
+        // Check the class really is a SyntaxChecker before running any of its code
+        checkExpectedType( clazz, SyntaxChecker.class, className );
 
         // Create the syntaxChecker instance
         try
@@ -523,7 +586,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             try
             {
-                clazz = Class.forName( className );
+                clazz = Class.forName( className, false, SchemaEntityFactory.class.getClassLoader() );
             }
             catch ( ClassNotFoundException cnfe )
             {
@@ -533,6 +596,11 @@ public class SchemaEntityFactory implements EntityFactory
         }
         else
         {
+            // Loading a class from entry-provided bytecode executes code supplied
+            // by whatever produced the entry (possibly a remote LDAP peer), so it
+            // has to be explicitly enabled.
+            checkBytecodeLoadingEnabled( className );
+            
             classLoader.setAttribute( byteCode );
             
             try
@@ -545,8 +613,11 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16059_CANNOT_LOAD_CMP_CLASS, cnfe.getMessage() ) );
             }
 
-            byteCodeStr = Base64.getEncoder().encodeToString( byteCode.getBytes() );
+            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
         }
+
+        // Check the class really is an LdapComparator before running any of its code
+        checkExpectedType( clazz, LdapComparator.class, className );
 
         // Create the comparator instance. Either we have a no argument constructor,
         // or we have one which takes an OID. Lets try the one with an OID argument first
@@ -753,7 +824,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             try
             {  
-                clazz = Class.forName( className );
+                clazz = Class.forName( className, false, SchemaEntityFactory.class.getClassLoader() );
             }
             catch ( ClassNotFoundException cnfe )
             {
@@ -763,6 +834,11 @@ public class SchemaEntityFactory implements EntityFactory
         }
         else
         {
+            // Loading a class from entry-provided bytecode executes code supplied
+            // by whatever produced the entry (possibly a remote LDAP peer), so it
+            // has to be explicitly enabled.
+            checkBytecodeLoadingEnabled( className );
+
             classLoader.setAttribute( byteCode );
             
             try
@@ -775,8 +851,11 @@ public class SchemaEntityFactory implements EntityFactory
                 throw new LdapSchemaException( I18n.err( I18n.ERR_16071_CANNOT_LOAD_NORM_CLASS, cnfe.getMessage() ) );
             }
 
-            byteCodeStr = Base64.getEncoder().encodeToString( byteCode.getBytes() );
+            byteCodeStr = new String( Base64.getEncoder().encodeToString( byteCode.getBytes() ) );
         }
+        
+        // Check the class really is a Normalizer before running any of its code
+        checkExpectedType( clazz, Normalizer.class, className );
 
         // Create the normalizer instance
         try
