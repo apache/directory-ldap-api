@@ -22,6 +22,7 @@ package org.apache.directory.api.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -325,5 +326,52 @@ public class StringsTest
     {
         // In the middle
         assertEquals( 4, Strings.areEquals( AZERTY, 2, "er" ) );
+    }
+
+
+    /**
+     * A non-ASCII byte (>= 0x80, negative in Java) coming from the network
+     * must not blow up the case-folding tables (DIRAPI : signed byte used
+     * as an array index)
+     */
+    @Test
+    public void testToLowerCaseByteArrayNonAscii()
+    {
+        // "cE9" is { 'c', 0xC3, 0xA9 } : the UTF-8 encoding of 'c' + 'e' with an acute accent
+        byte[] nonAscii = new byte[]
+            { 'c', ( byte ) 0xC3, ( byte ) 0xA9 };
+
+        // Must not throw ArrayIndexOutOfBoundsException, and must keep the
+        // non-ASCII bytes as they are
+        assertEquals( "c\u00E9", Strings.toLowerCase( nonAscii ) );
+
+        // Plain ASCII is still lowercased
+        assertEquals( "abc-123", Strings.toLowerCase( new byte[]
+            { 'A', 'B', 'C', '-', '1', '2', '3' } ) );
+    }
+
+
+    /**
+     * Chars above 0xFF must not blow up the 256 entries lowercase table
+     */
+    @Test
+    public void testToLowerCaseAsciiAboveTable()
+    {
+        // Must not throw ArrayIndexOutOfBoundsException
+        assertThrows( IllegalArgumentException.class, () -> {
+            Strings.toLowerCaseAscii( "ABC\u20AC" );
+        });
+    }
+
+
+    /**
+     * Chars above the uppercase table size must not blow up the table, and
+     * must be mapped to 0 like any other unsupported char
+     */
+    @Test
+    public void testToUpperCaseAsciiAboveTable()
+    {
+        // Must not throw ArrayIndexOutOfBoundsException
+        assertEquals( "ABC\u0000", Strings.toUpperCaseAscii( "abc\u20AC" ) );
     }
 }

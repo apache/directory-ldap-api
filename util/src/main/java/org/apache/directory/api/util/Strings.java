@@ -188,30 +188,30 @@ public final class Strings
     /** upperCase = 'A' .. 'Z', '0'..'9', '-' */
     private static final char[] UPPER_CASE =
         {
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, '-', 0, 0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,  '-',  0,   0,
             '0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 0, 0, 0, 0, 0, 0,
-            0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            '8', '9',  0,   0,   0,   0,   0,   0,
+             0,  'A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
             'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-            'X', 'Y', 'Z', 0, 0, 0, 0, 0,
-            0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            'X', 'Y', 'Z',  0,   0,   0,   0,   0,
+             0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
             'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-            'X', 'Y', 'Z', 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0
+            'X', 'Y', 'Z',  0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
+             0,   0,   0,   0,   0,   0,   0,   0,
     };
 
     /** The ASCI chars */
@@ -1896,7 +1896,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = TO_LOWER_CASE[chars[i]];
+            chars[i] = TO_LOWER_CASE[chars[i] & 0x000FF];
         }
 
         return new String( chars );
@@ -1922,7 +1922,11 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = TO_LOWER_CASE[chars[i]];
+            if ( ( chars[i] & 0x00FF ) != chars[i] ) 
+            {
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_17080_INVALID_CHAR_SHOULD_BE_ASCII, chars[i], i ) );
+            }
+            chars[i] = TO_LOWER_CASE[chars[i] & 0x000FF];
         }
 
         return new String( chars );
@@ -1946,7 +1950,7 @@ public final class Strings
 
         for ( int i = 0; i < value.length; i++ )
         {
-            value[i] = TO_LOWER_CASE_BYTE[value[i]];
+            value[i] = TO_LOWER_CASE_BYTE[value[i] & 0x000FF];
         }
 
         return Strings.utf8ToString( value );
@@ -1975,7 +1979,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = UPPER_CASE[chars[i]];
+            chars[i] = UPPER_CASE[chars[i] & 0x000FF];
         }
 
         return new String( chars );
@@ -2001,7 +2005,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = UPPER_CASE[chars[i]];
+            chars[i] = UPPER_CASE[chars[i] & 0x000FF];
         }
 
         return new String( chars );
@@ -2085,7 +2089,7 @@ public final class Strings
 
         for ( char c : chars )
         {
-            chars[pos++] = TO_LOWER_CASE[c];
+            chars[pos++] = TO_LOWER_CASE[c & 0x000FF];
         }
 
         return new String( chars );
@@ -2111,7 +2115,7 @@ public final class Strings
 
         for ( char c : str.toCharArray() )
         {
-            if ( ( c > 127 ) || !IS_PRINTABLE_CHAR[c] )
+            if ( ( c > 127 ) || !IS_PRINTABLE_CHAR[c & 0x000FF] )
             {
                 return false;
             }
