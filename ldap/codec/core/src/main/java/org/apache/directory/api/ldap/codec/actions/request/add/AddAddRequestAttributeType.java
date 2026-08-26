@@ -96,7 +96,7 @@ public class AddAddRequestAttributeType extends GrammarAction<LdapMessageContain
                 }
                 catch ( IllegalArgumentException le )
                 {
-                    String msg = I18n.err( I18n.ERR_05156_INVALID_ATTRIBUTE_TYPE, le.getMessage() );
+                    String msg = I18n.err( I18n.ERR_05156_INVALID_ATTRIBUTE_TYPE, type, le.getMessage() );
                     LOG.error( I18n.err( I18n.ERR_05114_ERROR_MESSAGE, msg, le.getMessage() ) );
                     throw new DecoderException( msg, le );
                 }
