@@ -2071,7 +2071,14 @@ public class OpenLdapSchemaParser
             {
                 moreExpected = false;
                 
-                oids.add( getOidStrict( pos ) );
+                String oidStr = getOidStrict( pos );
+                
+                if ( Strings.isEmpty( oidStr ) )
+                {
+                    break;
+                }
+                
+                oids.add( oidStr );
                 
                 if ( startsWith( reader, pos, RPAREN ) )
                 {
@@ -2786,7 +2793,7 @@ public class OpenLdapSchemaParser
      * 
      * @param elementsSeen The elements that have been processed already
      * @param element The current element
-     * @param pos T he position in the Schema
+     * @param pos The position in the Schema
      * @return The elements we have just processed
      * @throws LdapSchemaException If the schema is wrong
      */

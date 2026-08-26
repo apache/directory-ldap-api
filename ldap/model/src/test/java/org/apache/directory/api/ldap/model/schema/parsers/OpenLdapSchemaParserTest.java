@@ -24,12 +24,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
@@ -475,5 +478,20 @@ public class OpenLdapSchemaParserTest
         long t1 = System.currentTimeMillis();
         
         System.out.println( t1 - t0 );
+    }
+
+
+    @Test
+    public void testMalformed() throws Exception
+    {
+        assertThrows( ParseException.class, () ->
+        {
+            parser.parse( "ObjectClass ( 1.2.3 MUST (" );
+        });
+
+        assertThrows( ParseException.class, () ->
+        {
+            parser.parse( "AttributeType ( 1.2.3 NAME (" );
+        });
     }
 }
