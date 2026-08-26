@@ -24,6 +24,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.text.ParseException;
 import java.util.Arrays;
 
 import org.apache.directory.api.i18n.I18n;
@@ -37,6 +38,7 @@ import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.util.Position;
 import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -211,6 +213,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      */
     public Ava( SchemaManager schemaManager, String upType, byte[] upValue ) throws LdapInvalidDnException
     {
+        checkType( upType );
+
         if ( schemaManager != null )
         {
             this.schemaManager = schemaManager;
@@ -260,6 +264,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      */
     public Ava( SchemaManager schemaManager, String upType, String upName, byte[] upValue ) throws LdapInvalidDnException
     {
+        checkType( upType );
+
         if ( schemaManager != null )
         {
             this.schemaManager = schemaManager;
@@ -326,6 +332,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      */
     public Ava( SchemaManager schemaManager, String upType, String upValue ) throws LdapInvalidDnException
     {
+        checkType( upType );
+
         if ( schemaManager != null )
         {
             this.schemaManager = schemaManager;
@@ -374,6 +382,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      */
     public Ava( SchemaManager schemaManager, String upType, String upName, String upValue ) throws LdapInvalidDnException
     {
+        checkType( upType );
+
         if ( schemaManager != null )
         {
             this.schemaManager = schemaManager;
@@ -458,6 +468,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /* Unspecified protection */Ava( AttributeType attributeType, String upType, String normType, Value value,
             String upName ) throws LdapInvalidDnException
     {
+        checkType( upType );
+        checkType( normType );
         this.attributeType = attributeType;
         String upTypeTrimmed = Strings.trim( upType );
         String normTypeTrimmed = Strings.trim( normType );
@@ -552,6 +564,62 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         hashCode();
     }
 
+    /**
+     * Basic check that the attributeType is valid against the RFC 4512 definition:
+     * <pre>
+     *   descr = keystring
+     *   keystring = leadkeychar *keychar
+     *   leadkeychar = ALPHA
+     *   keychar = ALPHA / DIGIT / HYPHEN
+     *   ALPHA = 'A'..'Z' / 'a'..'z'
+     *   DIGIT = '0'..'9'
+     *   HYPHEN = '-'
+     * </pre>
+     * Note that at this step, the 'descr' is just the name of an attribute, but it can start
+     * with the "oid." prefix
+     * 
+     * @param type The attribute's name
+     * @throws LdapInvalidDnException If the name is not correct
+     */
+    private void checkType( String type ) throws LdapInvalidDnException
+    {
+        // It can't be null
+        String trimmedType = Strings.trim( type );
+
+        if ( Strings.isEmpty( trimmedType ) )
+        {
+            String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
+            // Do NOT log the message here. The error may be handled and therefore the log message may pollute the log files.
+            // Let the caller log the exception if needed.
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+        }
+        
+        Position pos = new Position( trimmedType );
+        pos.length = trimmedType.length();
+        
+        try
+        {
+            // Check the attribute now
+            ComplexDnParser.parseAttributeType( pos );
+            
+            if ( pos.start != pos.length )
+            {
+                // We haven't parsed all the attribute type: that means it's invalid
+                String msg = I18n.err( I18n.ERR_05156_INVALID_ATTRIBUTE_TYPE, type );
+                // Do NOT log the message here. The error may be handled and therefore the log message may pollute the log files.
+                // Let the caller log the exception if needed.
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, msg );
+            }
+        }
+        catch ( ParseException pe )
+        {
+            // Do NOT log the message here. The error may be handled and therefore the log message may pollute the log files.
+            // Let the caller log the exception if needed.
+            String msg = I18n.err( I18n.ERR_05156_INVALID_ATTRIBUTE_TYPE, type, pe.getMessage() );
+
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, msg );
+        }
+    }
 
     /**
      * Construct a schema aware Ava. The AttributeType and value will be checked accordingly
@@ -611,7 +679,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             if ( Strings.isEmpty( normTypeTrimmed ) )
             {
                 String message = I18n.err( I18n.ERR_13600_TYPE_IS_NULL_OR_EMPTY );
-                // Do NOT log the message here. The error may be handled and therefore the log message may polute the log files.
+                // Do NOT log the message here. The error may be handled and therefore the log message may pollute the log files.
                 // Let the caller log the exception if needed.
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }

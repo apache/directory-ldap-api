@@ -1294,7 +1294,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
      * S9 --![0..9.]--> end
      * </pre>
      */
-    private static String parseAttributeType( Position pos ) throws ParseException
+    public static String parseAttributeType( Position pos ) throws ParseException
     {
         AttributTypeStates state = AttributTypeStates.START;
         
@@ -1343,7 +1343,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                         case 'J': case 'K': case 'L': case 'M': case 'N': 
                         /* no 'O' */case 'P': case 'Q': case 'R': case 'S': 
                         case 'T': case 'U': case 'V': case 'W': case 'X': 
-                        case 'Y': case 'Z': case '-': case '_':
+                        case 'Y': case 'Z':
                             // A descr
                             state = AttributTypeStates.STATE_1;
                             pos.start++;
