@@ -53,13 +53,14 @@ public class Position
     
     
     /**
-     * A public constructor
+     * A public constructor. 
      * 
      * @param text The String to parse
      */
     public Position( String text )
     {
         this.text = text;
+        bytes = Strings.getBytesUtf8( text );
     }
     
     
