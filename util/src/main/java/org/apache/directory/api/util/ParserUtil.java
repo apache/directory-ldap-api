@@ -130,6 +130,7 @@ public final class ParserUtil
      */
     public static int parseInteger( String str, Position pos ) throws ParseException
     {
+        // Check if it's a 0
         if ( isMatchChar( str, ZERO, pos ) )
         {
             // This is only allowed if we have one single digit
@@ -146,6 +147,14 @@ public final class ParserUtil
                         I18n.err( I18n.ERR_17078_INVALID_INTEGER_STARTING_WITH_ZERO ), pos.start );
             }
         }
+        
+        // Ok, not a 0, so something between 1 and 9, let's make sure we have such a LDIGIT first
+        if ( !hasMoreChars( pos ) || !Chars.isDigit( str.charAt( pos.start ) ) )
+        {
+            // Truncated input or a non-digit where an integer is required
+            throw new ParseException( I18n.err( I18n.ERR_17073_CHAR_REQUIRED, "0..9" ), pos.start );
+        }
+
         
         int integer = str.charAt( pos.start ) - '0';
         pos.start++;
@@ -430,8 +439,15 @@ public final class ParserUtil
     public static String parseDescr( String str, Position pos ) throws ParseException
     {
         int start = pos.start;
-                
-        if ( !hasMoreChars( pos ) || !Chars.isAlpha( str.charAt( pos.start ) ) )
+        
+        // First check that we have some remaining chars
+        if ( !hasMoreChars( pos ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_17074_DESCR_INCORRECT_FIRST_CHAR, "<end of input>" ), pos.start );
+        }
+        
+        // Then check that it's a ALPHA
+        if ( !Chars.isAlpha( str.charAt( pos.start ) ) )
         {
             throw new ParseException( 
                     I18n.err( I18n.ERR_17074_DESCR_INCORRECT_FIRST_CHAR, str.charAt( pos.start ) ), pos.start );
@@ -489,6 +505,12 @@ public final class ParserUtil
         // There might be some spaces
         skipSpaces( str, pos, ZERO_N );
         
+        // Check that we still have chars to process
+        if ( !hasMoreChars( pos ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_15008_OID_REQUIRED, "<end of input>" ), pos.start );
+        }
+
         if ( Chars.isDigit( str.charAt( pos.start ) ) )
         {
             int start = pos.start;
