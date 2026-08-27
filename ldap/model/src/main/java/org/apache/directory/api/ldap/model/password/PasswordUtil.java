@@ -322,19 +322,29 @@ public final class PasswordUtil
 
         if ( algorithm != null )
         {
-            // Let's get the encrypted part of the stored password
-            // We should just keep the password, excluding the algorithm
-            // and the salt, if any.
-            // But we should also get the algorithm and salt to
-            // be able to encrypt the submitted user password in the next step
-            PasswordDetails passwordDetails = PasswordUtil.splitCredentials( storedCredentials );
-
-            // Reuse the saltedPassword information to construct the encrypted
-            // password given by the user.
-            byte[] userPassword = PasswordUtil.encryptPassword( receivedCredentials, passwordDetails.getAlgorithm(),
-                passwordDetails.getSalt() );
-
-            return compareBytes( userPassword, passwordDetails.getPassword() );
+            try
+            {
+                // Let's get the encrypted part of the stored password
+                // We should just keep the password, excluding the algorithm
+                // and the salt, if any.
+                // But we should also get the algorithm and salt to
+                // be able to encrypt the submitted user password in the next step
+                PasswordDetails passwordDetails = PasswordUtil.splitCredentials( storedCredentials );
+    
+                // Reuse the saltedPassword information to construct the encrypted
+                // password given by the user.
+                byte[] userPassword = PasswordUtil.encryptPassword( receivedCredentials, passwordDetails.getAlgorithm(),
+                    passwordDetails.getSalt() );
+    
+                return compareBytes( userPassword, passwordDetails.getPassword() );
+            }
+            catch ( RuntimeException re )
+            {
+                // A malformed stored credential (truncated payload, invalid Base64,
+                // bad crypt/BCrypt salt...) must make the comparison fail closed,
+                // not escape a boolean-contract API as an unchecked exception.
+                return false;
+            }
         }
         else
         {
@@ -532,16 +542,28 @@ public final class PasswordUtil
                 // in two parts, no decoding required.
                 // The salt comes first, not like for SSHA and SMD5, and is 2 bytes long
                 // The algorithm, salt, and password will be stored into the PasswordDetails structure.
+                if ( credentials.length < algoLength + 2 )
+                {
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_13000_INVALID_LENGTH ) );
+                }
+
                 byte[] salt = new byte[2];
                 password = new byte[credentials.length - salt.length - algoLength];
                 split( credentials, algoLength, salt, password );
+                
                 return new PasswordDetails( algorithm, salt, password );
 
             case HASH_METHOD_CRYPT_BCRYPT:
-                    salt = Arrays.copyOfRange( credentials, algoLength, credentials.length - 31 );
-                    password = Arrays.copyOfRange( credentials, credentials.length - 31, credentials.length );
-                    
-                    return new PasswordDetails( algorithm, salt, password );
+                // Check the algo part length before manipulating it
+                if ( credentials.length - 31 < algoLength )
+                {
+                    throw new IllegalArgumentException( I18n.err( I18n.ERR_13000_INVALID_LENGTH ) );
+                }
+
+                salt = Arrays.copyOfRange( credentials, algoLength, credentials.length - 31 );
+                password = Arrays.copyOfRange( credentials, credentials.length - 31, credentials.length );
+                
+                return new PasswordDetails( algorithm, salt, password );
 
             case HASH_METHOD_CRYPT_MD5:
             case HASH_METHOD_CRYPT_SHA256:
@@ -575,6 +597,13 @@ public final class PasswordUtil
         // The algorithm, salt, and password will be stored into the PasswordDetails structure.
         byte[] passwordAndSalt = Base64.getDecoder()
             .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ) );
+
+        // Check that the hsh has the proper length
+        if ( passwordAndSalt.length < hashLen )
+        {
+            // A truncated payload must not lead to a negative-size array allocation
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13000_INVALID_LENGTH ) );
+        }
 
         int saltLength = passwordAndSalt.length - hashLen;
         byte[] salt = saltLength == 0 ? null : new byte[saltLength];
@@ -678,6 +707,13 @@ public final class PasswordUtil
         byte[] passwordAndSalt = Base64.getDecoder()
             .decode( Strings.utf8ToString( credentials, algoLength, credentials.length - algoLength ) );
 
+        // Check the hash length (32 chars)
+        if ( passwordAndSalt.length < PKCS5S2_LENGTH )
+        {
+            // A truncated payload must not lead to a negative-size array allocation
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13000_INVALID_LENGTH ) );
+        }
+
         int saltLength = passwordAndSalt.length - PKCS5S2_LENGTH;
         byte[] salt = new byte[saltLength];
         byte[] password = new byte[PKCS5S2_LENGTH];
@@ -719,6 +755,12 @@ public final class PasswordUtil
             }
 
             pos++;
+        }
+        
+        if ( pos >= credentials.length )
+        {
+            // No '$' separator between the salt and the hash : malformed credential
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13000_INVALID_LENGTH ) );
         }
 
         byte[] salt = Arrays.copyOfRange( credentials, algoLength, pos );
