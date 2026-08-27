@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.extras.extended.pwdModify;
 
 import org.apache.directory.api.ldap.model.message.AbstractExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -128,7 +127,9 @@ public class PasswordModifyResponseImpl extends AbstractExtendedResponse impleme
 
         if ( genPassword != null )
         {
-            sb.append( Strings.utf8ToString( genPassword ) );
+            // The generated password is the user's new credential : it must
+            // never be printed in diagnostic output (see PasswordModifyRequestImpl)
+            sb.append( "Omitted for security reason" );
         }
         else
         {

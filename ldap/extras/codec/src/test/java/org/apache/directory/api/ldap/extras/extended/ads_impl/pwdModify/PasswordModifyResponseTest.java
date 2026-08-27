@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -138,5 +139,27 @@ public class PasswordModifyResponseTest
         factory.encodeValue( asn1Buffer, passwordModifyResponse );
 
         assertArrayEquals( bb, asn1Buffer.getBytes().array() );
+    }
+
+
+    /**
+     * The generated password is credential material : it must never show up
+     * in the String representation of the response (which is routinely logged).
+     */
+    @Test
+    public void testToStringDoesNotLeakGenPassword() throws DecoderException
+    {
+        PasswordModifyFactory factory = ( PasswordModifyFactory ) codec.getExtendedResponseFactories().
+            get( PasswordModifyResponse.EXTENSION_OID );
+        PasswordModifyResponse passwordModifyResponse = ( PasswordModifyResponse ) factory.newResponse(
+            new byte[]
+                {
+                    0x30, 0x06,             // PasswordModifyResponse ::= SEQUENCE {
+                      ( byte ) 0x80, 0x04,  // genPassword    [0]  OCTET STRING OPTIONAL
+                        's', '3', 'c', 'r'
+                } );
+
+        assertNotNull( passwordModifyResponse.getGenPassword() );
+        assertFalse( passwordModifyResponse.toString().contains( "s3cr" ) );
     }
 }
