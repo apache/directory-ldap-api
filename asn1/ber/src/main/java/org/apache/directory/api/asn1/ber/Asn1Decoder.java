@@ -208,6 +208,19 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
             else if ( ( octet & TLV.LENGTH_EXTENSION_RESERVED ) != TLV.LENGTH_EXTENSION_RESERVED )
             {
                 int expectedLength = octet & TLV.LENGTH_SHORT_MASK;
+                
+                if ( expectedLength == 0 )
+                {
+                    // Octet 0x80 : the indefinite length form. It is not
+                    // supported by this decoder (LDAP, RFC 4511, requires the
+                    // definite form) : reject it instead of silently decoding
+                    // it as a zero length, which would make this decoder see
+                    // different message contents than a conforming BER parser.
+                    String msg = I18n.err( I18n.ERR_01009_INDEFINITE_LENGTH_NOT_SUPPORTED );
+                    LOG.error( msg );
+                    throw new DecoderException( msg );
+                }
+
 
                 if ( expectedLength > 4 )
                 {
