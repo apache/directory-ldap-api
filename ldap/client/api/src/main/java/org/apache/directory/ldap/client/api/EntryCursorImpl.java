@@ -105,17 +105,17 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
 
                 messageId = response.getMessageId();
 
-                if ( response instanceof SearchResultEntry )
-                {
-                    return true;
-                }
-
-                if ( response instanceof SearchResultReference )
+                if ( response instanceof SearchResultEntry || response instanceof SearchResultReference )
                 {
                     return true;
                 }
             }
-            while ( !( response instanceof SearchResultDone ) );
+                // The response is neither an entry, a reference nor a SearchResultDone
+                // (typically an IntermediateResponse) : skip it, but only after having
+                // advanced the underlying cursor, otherwise searchCursor.get() would
+                // return the very same response forever, spinning this thread at 100%
+                // CPU on a single unexpected PDU sent by a hostile or buggy server.
+            while ( !( response instanceof SearchResultDone ) && searchCursor.next() );
 
             return false;
         }
