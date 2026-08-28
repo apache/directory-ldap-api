@@ -70,6 +70,18 @@ public class BCrypt
     private static final int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
     private static final int BCRYPT_SALT_LEN = 16;
 
+    /**
+     * Name of the system property allowing to raise the maximum log2 work factor
+     * accepted when hashing with a caller supplied salt (16 by default, 30 at most).
+     * The salt of a stored credential may be attacker controlled, so the work
+     * factor accepted at verification time must be bounded.
+     */
+    public static final String MAX_LOG_ROUNDS_PROPERTY = "org.apache.directory.api.bcrypt.maxLogRounds";
+
+    /** The default maximum log2 work factor accepted from a caller supplied salt (2^16 rounds) */
+    private static final int DEFAULT_MAX_LOG2_ROUNDS = 16;
+
+
     // Blowfish parameters
     private static final int BLOWFISH_NUM_ROUNDS = 16;
 
@@ -756,6 +768,31 @@ public class BCrypt
 
 
     /**
+     * Get the maximum log2 number of rounds accepted when hashing with a caller
+     * supplied salt : {@link #DEFAULT_MAX_LOG2_ROUNDS} by default, overridable
+     * with the {@link #MAX_LOG_ROUNDS_PROPERTY} system property (clamped to
+     * the [{@link #GENSALT_DEFAULT_LOG2_ROUNDS}, 30] interval).
+     *
+     * @return the maximum accepted log2 number of rounds
+     */
+    private static int getMaxLogRounds()
+    {
+        try
+        {
+            int maxLogRounds = Integer.parseInt( System.getProperty( MAX_LOG_ROUNDS_PROPERTY,
+                Integer.toString( DEFAULT_MAX_LOG2_ROUNDS ) ) );
+
+            return Math.min( Math.max( maxLogRounds, GENSALT_DEFAULT_LOG2_ROUNDS ), 30 );
+        }
+        catch ( NumberFormatException nfe )
+        {
+            return DEFAULT_MAX_LOG2_ROUNDS;
+        }
+    }
+
+
+
+    /**
      * Hash a password using the OpenBSD bcrypt scheme
      * @param password  the password to hash
      * @param salt  the salt to hash with (perhaps generated
@@ -803,6 +840,17 @@ public class BCrypt
         }
         
         rounds = Integer.parseInt( salt.substring( off, off + 2 ) );
+        
+        // The salt frequently comes verbatim from a stored credential that an
+        // attacker may have written : refuse unbounded work factors, otherwise
+        // verifying a bind against a stored '$2a$30$...' value costs 2^30 bcrypt
+        // rounds (hours of CPU), a cheap denial of service. Deployments that
+        // legitimately use a higher work factor can raise the limit with the
+        // MAX_LOG_ROUNDS_PROPERTY system property.
+        if ( rounds > getMaxLogRounds() )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_13008_ROUNDS_EXCEEDED_MAXIMUM ) );
+        }
 
         realSalt = salt.substring( off + 3, off + 25 );
         
