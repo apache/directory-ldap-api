@@ -22,7 +22,10 @@ package org.apache.directory.api.ldap.model.schema.syntaxes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.Duration;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.TelephoneNumberSyntaxChecker;
 import org.junit.jupiter.api.Test;
@@ -110,5 +113,45 @@ public class TelephoneNumberSyntaxCheckerTest
     {
         checker = TelephoneNumberSyntaxChecker.builder().build();
         assertTrue( checker.isValidSyntax( "1" ) );
+    }
+
+
+    @Test
+    public void testNoCatastrophicBacktracking()
+    {
+        // A long digit run followed by one non matching character used to send
+        // the previous default regexp into exponential backtracking (ReDoS) :
+        // the match must stay linear in the value length
+        StringBuilder sb = new StringBuilder();
+
+        for ( int i = 0; i < 200; i++ )
+        {
+            sb.append( '1' );
+        }
+
+        sb.append( 'A' );
+
+        String attack = sb.toString();
+
+        assertTimeoutPreemptively( Duration.ofSeconds( 5 ),
+            () -> assertFalse( checker.isValidSyntax( attack ) ) );
+
+        // And the equivalent valid value still matches
+        assertTimeoutPreemptively( Duration.ofSeconds( 5 ),
+            () -> assertTrue( checker.isValidSyntax( attack.substring( 0, attack.length() - 1 ) ) ) );
+
+        // Values above the length cap are rejected up front, bounding both the
+        // matching work and the regexp engine's recursion depth
+        StringBuilder big = new StringBuilder();
+
+        for ( int i = 0; i < 100000; i++ )
+        {
+            big.append( '1' );
+        }
+
+        String bigValue = big.toString();
+
+        assertTimeoutPreemptively( Duration.ofSeconds( 5 ),
+            () -> assertFalse( checker.isValidSyntax( bigValue ) ) );
     }
 }

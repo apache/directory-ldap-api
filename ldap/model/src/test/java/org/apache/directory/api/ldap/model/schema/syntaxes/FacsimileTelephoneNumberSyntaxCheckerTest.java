@@ -22,6 +22,9 @@ package org.apache.directory.api.ldap.model.schema.syntaxes;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+
+import java.time.Duration;
 
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.FacsimileTelephoneNumberSyntaxChecker;
 import org.junit.jupiter.api.Test;
@@ -136,5 +139,49 @@ public class FacsimileTelephoneNumberSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "+ 33 1 (456) 7891   12345$twoDimensional$" ) );
         assertFalse( checker.isValidSyntax( "+ 33 1 (456) 7891   12345$twoDimensional$twoDimensional" ) );
         assertFalse( checker.isValidSyntax( "+ 33 1 (456) 7891   12345$b4Width$ $a3Width" ) );
+    }
+
+
+    @Test
+    public void testNoCatastrophicBacktracking()
+    {
+        // A long digit run followed by one non matching character used to send
+        // the previous default regexp into exponential backtracking (ReDoS) :
+        // the match must stay linear in the value length
+        StringBuilder sb = new StringBuilder();
+
+        for ( int i = 0; i < 200; i++ )
+        {
+            sb.append( '1' );
+        }
+
+        sb.append( 'A' );
+
+        String attack = sb.toString();
+
+        assertTimeoutPreemptively( Duration.ofSeconds( 5 ),
+            () -> assertFalse( checker.isValidSyntax( attack ) ) );
+
+        assertTimeoutPreemptively( Duration.ofSeconds( 5 ),
+            () -> assertFalse( checker.isValidSyntax( attack + "$twoDimensional" ) ) );
+
+        // An invalid telephone number part must be rejected whatever the logging
+        // level (the rejection used to be guarded by LOG.isDebugEnabled()), and
+        // the character right before the '$' is part of the number
+        assertFalse( checker.isValidSyntax( "12A$twoDimensional" ) );
+
+        // Values above the length cap are rejected up front, bounding both the
+        // matching work and the regexp engine's recursion depth
+        StringBuilder big = new StringBuilder();
+
+        for ( int i = 0; i < 100000; i++ )
+        {
+            big.append( '1' );
+        }
+
+        String bigValue = big.toString();
+
+        assertTimeoutPreemptively( Duration.ofSeconds( 5 ),
+            () -> assertFalse( checker.isValidSyntax( bigValue ) ) );
     }
 }

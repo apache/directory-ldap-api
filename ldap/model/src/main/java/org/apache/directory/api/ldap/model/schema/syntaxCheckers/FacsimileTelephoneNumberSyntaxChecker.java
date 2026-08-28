@@ -56,8 +56,25 @@ import org.apache.directory.api.util.Strings;
 @SuppressWarnings("serial")
 public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
 {
-    /** The default pattern used to check a TelephoneNumber */
-    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
+    /**
+     * The default pattern used to check a TelephoneNumber.
+     * <p>
+     * Note : the unparenthesized alternative matches a single character (not a
+     * '+' quantified run) : a quantifier nested inside the outer '(...)+' is the
+     * classic catastrophic backtracking (ReDoS) shape, and syntax checkers run
+     * on attacker supplied values. Both forms accept exactly the same language,
+     * but this one is matched in linear time.
+     */
+    //private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
+    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*])+$";
+
+    /**
+     * The maximum length accepted for a value. A facsimile telephone number is
+     * a few tens of characters at most, plus a handful of fax parameters :
+     * refusing longer values up front bounds both the matching work and the
+     * regexp engine's recursion depth on attacker supplied values.
+     */
+    protected static final int MAX_VALUE_LENGTH = 255;
     
     /** The compiled default pattern */
     private String defaultRegexp;
@@ -238,7 +255,7 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        if ( strValue.length() == 0 )
+        if ( ( strValue.length() == 0 ) || ( strValue.length() > MAX_VALUE_LENGTH ) )
         {
             if ( LOG.isDebugEnabled() )
             {
@@ -275,19 +292,24 @@ public final class FacsimileTelephoneNumberSyntaxChecker extends SyntaxChecker
         // First check the telephone number if the '$' is not at the first position
         if ( dollarPos > 0 )
         {
-            boolean result = defaultPattern.matcher( strValue.substring( 0, dollarPos - 1 ) ).matches();
+            // The telephone number part is everything up to (excluding) the first '$'
+            // (it previously dropped the character before the '$' too)
+            boolean result = defaultPattern.matcher( strValue.substring( 0, dollarPos ) ).matches();
 
-            if ( LOG.isDebugEnabled() )
+            if ( !result )
             {
-                if ( result )
+                if ( LOG.isDebugEnabled() )
+                {
+                    LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
+                }
+
+                return false;
+            }
+            else 
+            {
+                if ( LOG.isDebugEnabled() )
                 {
                     LOG.debug( I18n.err( I18n.MSG_13701_SYNTAX_VALID, value ) );
-                }
-                else
-                { 
-                    LOG.debug( I18n.err( I18n.ERR_13210_SYNTAX_INVALID, value ) );
-                    
-                    return false;
                 }
             }
 

@@ -47,8 +47,25 @@ import org.apache.directory.api.util.Strings;
 @SuppressWarnings("serial")
 public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
 {
-    /** The default pattern used to check a TelephoneNumber */
-    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
+    /**
+     * The default pattern used to check a TelephoneNumber.
+     * <p>
+     * Note : the unparenthesized alternative matches a single character (not a
+     * '+' quantified run) : a quantifier nested inside the outer '(...)+' is the
+     * classic catastrophic backtracking (ReDoS) shape, and syntax checkers run
+     * on attacker supplied values. Both forms accept exactly the same language,
+     * but this one is matched in linear time.
+     */
+    //private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*]+)+$";
+    private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ,;/#*]+\\))|[0-9- ,;/#*])+$";
+
+    /**
+     * The maximum length accepted for a value. An E.123 telephone number is a
+     * few tens of characters at most : refusing longer values up front bounds
+     * both the matching work and the regexp engine's recursion depth on
+     * attacker supplied values.
+     */
+    protected static final int MAX_VALUE_LENGTH = 255;
     
     /** The default pattern */
     private final String defaultRegexp;
@@ -197,7 +214,7 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        if ( strValue.length() == 0 )
+        if ( ( strValue.length() == 0 ) || ( strValue.length() > MAX_VALUE_LENGTH ) )
         {
             if ( LOG.isDebugEnabled() )
             {
@@ -208,13 +225,10 @@ public final class TelephoneNumberSyntaxChecker extends SyntaxChecker
         }
 
         // We will use a regexp to check the TelephoneNumber.
-        boolean result;
-        
-        // Not sure this is 100% necessary...
-        synchronized ( defaultPattern )
-        {
-            result = defaultPattern.matcher( strValue ).matches();
-        }
+        // Pattern is thread safe and each matcher is local to this call, so no
+        // synchronization is needed : a synchronized block here would serialize
+        // every validation done on the shared INSTANCE across all threads.
+        boolean result = defaultPattern.matcher( strValue ).matches();
 
         if ( LOG.isDebugEnabled() )
         {
