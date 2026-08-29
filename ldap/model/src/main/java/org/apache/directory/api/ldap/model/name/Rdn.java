@@ -1732,7 +1732,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     {
         if ( h == 0 )
         {
-            int h = 37;
+            int hTemp = 37;
 
             switch ( nbAvas )
             {
@@ -1742,7 +1742,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 case 1:
                     // We have a single Ava
-                    h = h * 17 + ava.hashCode();
+                    hTemp = hTemp * 17 + ava.hashCode();
                     break;
 
                 default:
@@ -1750,11 +1750,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                     for ( Ava ata : avas )
                     {
-                        h = h * 17 + ata.hashCode();
+                        hTemp = hTemp * 17 + ata.hashCode();
                     }
 
                     break;
             }
+            
+            h = hTemp;
         }
 
         return h;
@@ -1882,9 +1884,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 break;
         }
 
-        // Read the hashCode
-        h = Serialize.deserializeInt( buffer, pos );
+        // Read the serialized hashCode, but do not trust it: it may have been
+        // written by a version whose Rdn.hashCode() was broken (always 0), or
+        // differ from what the fixed computation produces. Recompute it lazily
+        // so that equal Rdns always share the same hashCode.
+        Serialize.deserializeInt( buffer, pos );
         pos += 4;
+        h = hashCode();
 
         return pos;
     }
@@ -2040,7 +2046,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 break;
         }
 
-        h = in.readInt();
+        // Read the serialized hashCode, but recompute it lazily instead of
+        // trusting it (older versions serialized an incorrect value)
+        in.readInt();
+        h = hashCode();
     }
 
 
