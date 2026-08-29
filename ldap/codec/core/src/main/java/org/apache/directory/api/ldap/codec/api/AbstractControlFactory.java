@@ -25,6 +25,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.Control;
 
 /**
@@ -90,6 +91,14 @@ public abstract class AbstractControlFactory<C extends Control> implements Contr
     @Override
     public void decodeValue( ControlContainer container, Control control, byte[] controlBytes ) throws DecoderException
     {
+        if ( ( controlBytes == null ) || ( controlBytes.length == 0 ) )
+        {
+            // This factory requires a non-empty control value: fail with a clean
+            // protocol error instead of a NullPointerException, and never let an
+            // empty value silently produce a default-initialized control.
+            throw new DecoderException( I18n.err( I18n.ERR_08109_BAD_CONTROL_VALUE, control.getOid() ) );
+        }
+
         ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
         container.setControl( control );
         Asn1Decoder.decode( buffer, ( Asn1Container ) container );

@@ -68,20 +68,23 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
         TLV tlv = container.getCurrentTLV();
 
         // We have to handle the special case of a 0 length matched
-        // value
+        // value, for which the TLV data is still null: never propagate
+        // null into a factory (ByteBuffer.wrap( null ) would throw an
+        // uncaught NullPointerException).
+        byte[] responseValue = tlv.getLength() == 0 ? Strings.EMPTY_BYTES : tlv.getValue().getData();
+
+        // let's decode
+        IntermediateOperationFactory intermediateFactory = container.getIntermediateFactory();
+
+        if ( intermediateFactory != null )
+        {
+            intermediateFactory.decodeValue( intermediateResponse, responseValue );
+        }
+        else
+
         if ( tlv.getLength() >= 0 )
         {
-            // let's decode
-            IntermediateOperationFactory intermediateFactory = container.getIntermediateFactory();
-            
-            if ( intermediateFactory != null )
-            {
-                intermediateFactory.decodeValue( intermediateResponse, tlv.getValue().getData() );
-            }
-            else
-            {
-                intermediateResponse.setResponseValue( tlv.getValue().getData() );
-            }
+            intermediateResponse.setResponseValue( responseValue );
         }
 
         // We can have an END transition

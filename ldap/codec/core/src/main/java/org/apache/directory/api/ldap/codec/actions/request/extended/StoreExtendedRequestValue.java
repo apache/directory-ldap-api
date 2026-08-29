@@ -70,23 +70,20 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
         
         ExtendedOperationFactory factory = container.getLdapCodecService().
             getExtendedRequestFactories().get( extendedRequest.getRequestName() );
-
+        
         // We have to handle the special case of a 0 length matched
-        // value
+        // value, for which the TLV data is still null: never propagate
+        // null into a factory (ByteBuffer.wrap( null ) would throw an
+        // uncaught NullPointerException).
+        byte[] requestValue = tlv.getLength() == 0 ? Strings.EMPTY_BYTES : tlv.getValue().getData();
+        
         try
         {
-            if ( tlv.getLength() == 0 )
-            {
-                ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( Strings.EMPTY_BYTES );
-            } 
-            else
-            {
-                ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( tlv.getValue().getData() );
-            }
+            ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( requestValue );
 
             if ( factory != null )
             {
-                factory.decodeValue( extendedRequest, tlv.getValue().getData() );
+                factory.decodeValue( extendedRequest, requestValue );
             }
         }
         catch ( DecoderException de )

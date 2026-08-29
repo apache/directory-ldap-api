@@ -69,23 +69,21 @@ public class StoreExtendedResponseValue extends GrammarAction<LdapMessageContain
         
         ExtendedOperationFactory factory = container.getExtendedFactory();
 
-        // We have to handle the special case of a 0 length matched value
+        // We have to handle the special case of a 0 length matched value,
+        // for which the TLV data is still null: never propagate null into
+        // a factory (ByteBuffer.wrap( null ) would throw an uncaught
+        // NullPointerException).
+        byte[] responseValue = tlv.getLength() == 0 ? Strings.EMPTY_BYTES : tlv.getValue().getData();
+
         try
         {
             if ( factory == null )
             {
-                if ( tlv.getLength() == 0 )
-                {
-                    ( ( OpaqueExtendedResponse ) extendedResponse ).setResponseValue( Strings.EMPTY_BYTES );
-                }
-                else
-                {
-                    ( ( OpaqueExtendedResponse ) extendedResponse ).setResponseValue( tlv.getValue().getData() );
-                }
+                ( ( OpaqueExtendedResponse ) extendedResponse ).setResponseValue( responseValue );
             }
             else
             {
-                factory.decodeValue( extendedResponse, tlv.getValue().getData() );
+                factory.decodeValue( extendedResponse, responseValue );
             }
         }
         catch ( DecoderException de )

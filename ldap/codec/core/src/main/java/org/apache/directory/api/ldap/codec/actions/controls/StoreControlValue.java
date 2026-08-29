@@ -78,16 +78,20 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
         // Store the value - have to handle the special case of a 0 length value
         if ( tlv.getLength() >= 0 )
         {
+            // Store the value - have to handle the special case of a 0 length value,
+            // for which BerValue.data is still null: never propagate null into a factory
+            // (ByteBuffer.wrap( null ) would throw an uncaught NullPointerException).
+            byte[] controlValue = tlv.getLength() == 0 ? Strings.EMPTY_BYTES : value.getData();
             ControlFactory<?> factory = container.getControlFactory();
-           
+        
             if ( factory == null )
             {
                 // We don't know about this control, so it's an opaque control 
-                ( ( OpaqueControl ) control ).setEncodedValue( value.getData() );
+                ( ( OpaqueControl ) control ).setEncodedValue( controlValue );
             }
             else
             {
-                factory.decodeValue( control, value.getData() );
+                factory.decodeValue( control, controlValue );
             }
         }
 
