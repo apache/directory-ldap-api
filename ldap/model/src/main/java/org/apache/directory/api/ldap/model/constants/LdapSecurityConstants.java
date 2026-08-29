@@ -69,6 +69,12 @@ public enum LdapSecurityConstants
     /** The crypt (SHA-512) encryption method */
     HASH_METHOD_CRYPT_SHA512("CRYPT-SHA-512", "SHA-512", "crypt", "$6$"),
     
+    /** The BCrypt encryption method, crypt $2b$ revision (written by modern OpenBSD/OpenLDAP) */
+    HASH_METHOD_CRYPT_BCRYPT_B("CRYPT-BCRYPT-B", "BCRYPT", "crypt", "$2b$"),
+
+    /** The BCrypt encryption method, crypt $2y$ revision (written by PHP crypt/password_hash) */
+    HASH_METHOD_CRYPT_BCRYPT_Y("CRYPT-BCRYPT-Y", "BCRYPT", "crypt", "$2y$"),
+
     /** The BCrypt encryption method */
     HASH_METHOD_CRYPT_BCRYPT("CRYPT-BCRYPT", "BCRYPT", "crypt", "$2a$"),
 
@@ -217,6 +223,16 @@ public enum LdapSecurityConstants
         if ( matches( algorithm, HASH_METHOD_CRYPT_BCRYPT ) )
         {
             return HASH_METHOD_CRYPT_BCRYPT;
+        }
+
+        if ( matches( algorithm, HASH_METHOD_CRYPT_BCRYPT_B ) )
+        {
+            return HASH_METHOD_CRYPT_BCRYPT_B;
+        }
+
+        if ( matches( algorithm, HASH_METHOD_CRYPT_BCRYPT_Y ) )
+        {
+            return HASH_METHOD_CRYPT_BCRYPT_Y;
         }
 
         if ( matches( algorithm, HASH_METHOD_SHA256 ) )

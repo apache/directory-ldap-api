@@ -23,6 +23,8 @@ package org.apache.directory.api.ldap.model.password;
 
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT;
+import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT_B;
+import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT_Y;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_MD5;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_SHA256;
 import static org.apache.directory.api.ldap.model.constants.LdapSecurityConstants.HASH_METHOD_CRYPT_SHA512;
@@ -116,7 +118,19 @@ public class PasswordUtilTest
     @Test
     public void testUnsupportedHashMethodIsHandledAsPlainText()
     {
-        testPassword( "{XXX}abc", "{XXX}abc", null, 8, 0 );
+        // An unrecognized '{scheme}' prefix must not fall back to a plain text
+        // comparison : the stored blob itself would become password-equivalent
+        assertFalse( PasswordUtil.compareCredentials(
+            Strings.getBytesUtf8( "{XXX}abc" ), Strings.getBytesUtf8( "{XXX}abc" ) ) );
+
+        // Same for schemes that exist in other directories but are not supported here
+        String argon2 = "{ARGON2}$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ$abcdef";
+        assertFalse( PasswordUtil.compareCredentials(
+            Strings.getBytesUtf8( argon2 ), Strings.getBytesUtf8( argon2 ) ) );
+
+        // A plain text password merely starting with '{' (no closing '}') is still compared
+        assertTrue( PasswordUtil.compareCredentials(
+            Strings.getBytesUtf8( "{abc" ), Strings.getBytesUtf8( "{abc" ) ) );
     }
 
 
@@ -377,6 +391,24 @@ public class PasswordUtilTest
         testPassword( "secret",
             "{crypt}$2a$06$LH2xIb/TZmajuLJGDNuegeeY.SCwkg6YAVLNXTh8n4Xfb1uwmLXg6",
             HASH_METHOD_CRYPT_BCRYPT, CRYPT_BCRYPT_LENGTH, 29 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT2bEncrypted()
+    {
+        testPassword( "secret",
+            "{CRYPT}$2b$06$LH2xIb/TZmajuLJGDNuegeeY.SCwkg6YAVLNXTh8n4Xfb1uwmLXg6",
+            HASH_METHOD_CRYPT_BCRYPT_B, CRYPT_BCRYPT_LENGTH, 29 );
+    }
+
+
+    @Test
+    public void testPasswordCRYPT2yEncrypted()
+    {
+        testPassword( "secret",
+            "{CRYPT}$2y$06$LH2xIb/TZmajuLJGDNuegeeY.SCwkg6YAVLNXTh8n4Xfb1uwmLXg6",
+            HASH_METHOD_CRYPT_BCRYPT_Y, CRYPT_BCRYPT_LENGTH, 29 );
     }
 
 

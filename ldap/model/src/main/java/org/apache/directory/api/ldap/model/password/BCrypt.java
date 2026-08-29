@@ -825,7 +825,9 @@ public class BCrypt
         {
             minor = salt.charAt( 2 );
             
-            if ( minor != 'a' || salt.charAt( 3 ) != '$' )
+            // The 'b' and 'y' revisions hash identically to 'a' for the password
+            // lengths this implementation supports
+            if ( ( ( minor != 'a' ) && ( minor != 'b' ) && ( minor != 'y' ) ) || ( salt.charAt( 3 ) != '$' ) )
             {
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_13005_INVALID_SALT_REVISION ) );
             }

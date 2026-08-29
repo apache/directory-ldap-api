@@ -219,6 +219,8 @@ public final class PasswordUtil
                 break;
                 
             case HASH_METHOD_CRYPT_BCRYPT:
+            case HASH_METHOD_CRYPT_BCRYPT_B:
+            case HASH_METHOD_CRYPT_BCRYPT_Y:
                 salt = Strings.getBytesUtf8( BCrypt.genSalt() );
                 break;
 
@@ -232,7 +234,9 @@ public final class PasswordUtil
         sb.append( '{' ).append( Strings.upperCase( algorithm.getPrefix() ) ).append( '}' );
 
         if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT
-            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT )
+            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT
+            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT_B
+            || algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT_BCRYPT_Y )
         {
             sb.append( Strings.utf8ToString( salt ) );
             sb.append( Strings.utf8ToString( hashedPassword ) );
@@ -348,8 +352,46 @@ public final class PasswordUtil
         }
         else
         {
+            // Fail closed when the stored credential declares a password scheme
+            // (a '{...}' prefix) we do not recognize : falling back to a plain text
+            // comparison would make the stored value itself password-equivalent
+            // (an attacker knowing the '{scheme}hash' blob could bind with it),
+            // and the real password would silently stop working.
+            if ( isSchemePrefixed( storedCredentials ) )
+            {
+                return false;
+            }
+
             return compareBytes( receivedCredentials, storedCredentials );
         }
+    }
+
+
+    /**
+     * Tells if the given credentials start with a '{scheme}' shaped prefix, i.e. a
+     * '{' at the first position with a matching '}' further on. Such a value
+     * declares a password scheme and must never be compared as plain text, even
+     * when the scheme is not recognized.
+     *
+     * @param credentials The stored credentials
+     * @return <code>true</code> if the credentials are scheme-prefixed
+     */
+    private static boolean isSchemePrefixed( byte[] credentials )
+    {
+        if ( Strings.isEmpty( credentials  ) || ( credentials[0] != '{' ) )
+        {
+            return false;
+        }
+
+        for ( int pos = 1; pos < credentials.length; pos++ )
+        {
+            if ( credentials[pos] == '}' )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     
@@ -442,6 +484,8 @@ public final class PasswordUtil
                 return Strings.getBytesUtf8( crypted2 );
 
             case HASH_METHOD_CRYPT_BCRYPT:
+            case HASH_METHOD_CRYPT_BCRYPT_B:
+            case HASH_METHOD_CRYPT_BCRYPT_Y:
                 String crypted3 = BCrypt.hashPw( Strings.utf8ToString( credentials ), Strings.utf8ToString( salt ) );
                 return Strings.getBytesUtf8( crypted3.substring( crypted3.length() - 31 ) );
                 
@@ -554,6 +598,8 @@ public final class PasswordUtil
                 return new PasswordDetails( algorithm, salt, password );
 
             case HASH_METHOD_CRYPT_BCRYPT:
+            case HASH_METHOD_CRYPT_BCRYPT_B:
+            case HASH_METHOD_CRYPT_BCRYPT_Y:
                 // Check the algo part length before manipulating it
                 if ( credentials.length - 31 < algoLength )
                 {
