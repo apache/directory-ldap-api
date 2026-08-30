@@ -19,6 +19,11 @@
  */
 package org.apache.directory.ldap.client.api.search;
 
+import java.text.ParseException;
+
+import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
 
 /**
  * This class is used to handle the Present filter (ie, attr =* )
@@ -27,7 +32,7 @@ package org.apache.directory.ldap.client.api.search;
  */
 /* No qualifier*/final class AttributeDescriptionFilter extends AbstractFilter
 {
-    /** The attribute that must be prersent */
+    /** The attribute that must be present */
     private String attribute;
 
 
@@ -38,6 +43,17 @@ package org.apache.directory.ldap.client.api.search;
      */
     private AttributeDescriptionFilter( String attribute )
     {
+        // Check that the attribute is valid
+        try
+        {
+            AttributeUtils.parseAttribute( attribute, true, FilterParser.STRICT );
+        }
+        catch ( ParseException pe )
+        {
+            LOGGER.error( I18n.err( I18n.ERR_04181_INVALID_FILTER_ATTRIBUTE_DESCRIPTIONT ), attribute );
+            throw new IllegalArgumentException();
+        }
+        
         this.attribute = attribute;
     }
 

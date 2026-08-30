@@ -199,6 +199,42 @@ public final class AttributeUtils
     }
 
 
+    /**
+     * Parse attribute's options :
+     * 
+     * <pre>
+     * options = *( ';' option )
+     * option = 1*keychar
+     * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
+     * </pre>
+     * 
+     * @param str The parsed option
+     * @param pos The position in the parsed option string
+     * @exception ParseException The parsed option is invalid
+     */
+    private static int parseOptions( String attribute, int pos ) throws ParseException
+    {
+        while ( Strings.isCharASCII( attribute, pos, ';' ) )
+        {
+            pos++;
+
+            // We have an option
+            if ( !Chars.isAlphaDigitMinus( attribute, pos ) )
+            {
+                // We must have at least one keychar
+                throw new ParseException( I18n.err( I18n.ERR_13201_EMPTY_OPTION_NOT_ALLOWED ), pos );
+            }
+
+            pos++;
+
+            while ( Chars.isAlphaDigitMinus( attribute, pos ) )
+            {
+                pos++;
+            }
+        }
+        
+        return pos;
+    }
 
 
     /**
@@ -283,6 +319,57 @@ public final class AttributeUtils
         }
 
         return true;
+    }
+
+
+    /**
+     * Parse a number :
+     * 
+     * <pre>
+     * number = '0' | '1'..'9' digits
+     * digits = '0'..'9'*
+     * </pre>
+     * 
+     * @param filter The number in the filter
+     * @param pos The position in the parsed filter string
+     * @return The new position if a number has been found, -1 otherwise
+     */
+    private static int parseNumber( String filter, int pos )
+    {
+        char c = Strings.charAt( filter, pos );
+
+        switch ( c )
+        {
+            case '0':
+                // If we get a starting '0', we should get out
+                pos++;
+                
+                return pos;
+
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                pos++;
+                
+                break;
+
+            default:
+                // Not a number.
+                return -1;
+        }
+
+        while ( Chars.isDigit( filter, pos ) )
+        {
+            pos++;
+        }
+
+        return pos;
     }
 
 
@@ -381,8 +468,63 @@ public final class AttributeUtils
     }
 
 
+    /**
+     * Parse an OID.
+     *
+     * numericoid = number 1*( '.' number )
+     * number = '0'-'9' / ( '1'-'9' 1*'0'-'9' )
+     *
+     * @param str The OID to parse
+     * @param pos The current position in the string
+     * @throws ParseException If we don't have a valid OID
+     */
+    public static int parseOID( String str, int pos ) throws ParseException
+    {
+        // We have an OID
+        pos = parseNumber( str, pos );
+        
+        if ( pos == -1 )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos );
+        }
 
+        // We must have at least one '.' number
+        if ( !Strings.isCharASCII( str, pos, '.' ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_13221_INVALID_OID_MISSING_DOT ), pos );
+        }
 
+        pos++;
+
+        pos = parseNumber( str, pos );
+        
+        if ( pos == -1 )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos );
+        }
+
+        while ( true )
+        {
+            // Break if we get something which is not a '.'
+            if ( !Strings.isCharASCII( str, pos, '.' ) )
+            {
+                break;
+            }
+
+            pos++;
+            
+            pos = parseNumber( str, pos );
+
+            if ( pos == -1 )
+            {
+                throw new ParseException( I18n.err( I18n.ERR_13202_INVALID_OID_MISSING_NUMBER ), pos );
+            }
+        }
+        
+        return pos;
+    }
+
+    
     /**
      * Parse an OID.
      *
@@ -504,8 +646,6 @@ public final class AttributeUtils
     }
 
 
-
-
     /**
      * Parse an attribute. The grammar is :
      * attributedescription = attributetype options
@@ -573,6 +713,97 @@ public final class AttributeUtils
         else
         {
             throw new ParseException( I18n.err( I18n.ERR_13223_BAD_CHAR_IN_ATTRIBUTE ), pos.start );
+        }
+    }
+
+
+    /**
+     * Parse an attribute. The grammar is :
+     * attributedescription = attributetype options
+     * attributetype = oid
+     * oid = descr / numericoid
+     * descr = keystring
+     * numericoid = number 1*( '.' number )
+     * options = *( ';' option )
+     * option = 1*keychar
+     * keystring = leadkeychar *keychar
+     * leadkeychar = 'a'-z' | 'A'-'Z'
+     * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
+     * number = '0'-'9' / ( '1'-'9' 1*'0'-'9' )
+     *
+     * @param bytes The parsed attribute,
+     * @param pos The position of the attribute in the current string
+     * @param withOption A flag set if we want to parse the options
+     * @param relaxed A flag set if we want to parse without being too strict
+     * @return The parsed attribute if valid
+     * @throws ParseException If we had an issue while parsing the attribute
+     */
+    public static String parseAttribute( String attribute, boolean withOption, boolean relaxed )
+        throws ParseException
+    {
+        int pos = 0;
+        
+        String trimmedAttribute = Strings.trim( attribute );
+        
+        if ( Strings.isEmpty( trimmedAttribute ) )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_13222_EMPTY_ATTRIBUTE ), pos );
+        }
+        
+        // We must have an OID or an DESCR first
+        char c = attribute.charAt( pos );
+
+        if ( Chars.isAlpha( c ) )
+        {
+            pos++;
+            
+            // A DESCR
+            while ( Chars.isAlphaDigitMinus( trimmedAttribute, pos ) 
+                    || ( relaxed && Strings.isCharASCII( trimmedAttribute, pos, '_' ) ) )
+            {
+                pos++;
+            }
+
+            // Parse the options if needed
+            if ( withOption )
+            {
+                pos = parseOptions( trimmedAttribute, pos );
+            }
+
+            // Do we have trailing chars?
+            String result = trimmedAttribute.substring( 0, pos );
+            
+            if ( pos < trimmedAttribute.length() )
+            {
+                throw new ParseException( I18n.err( I18n.ERR_13223_BAD_CHAR_IN_ATTRIBUTE ), pos );
+            }
+            
+            return result;
+        }
+        else if ( Chars.isDigit( c ) )
+        {
+            // Parse the OID
+            pos = parseOID( trimmedAttribute, pos );
+
+            // Parse the options
+            if ( withOption )
+            {
+                pos = parseOptions( trimmedAttribute, pos );
+            }
+
+            // Do we have trailing chars?
+            String result = trimmedAttribute.substring( 0, pos );
+            
+            if ( pos < trimmedAttribute.length() )
+            {
+                throw new ParseException( I18n.err( I18n.ERR_13223_BAD_CHAR_IN_ATTRIBUTE ), pos );
+            }
+            
+            return result;
+        }
+        else
+        {
+            throw new ParseException( I18n.err( I18n.ERR_13223_BAD_CHAR_IN_ATTRIBUTE ), pos );
         }
     }
 

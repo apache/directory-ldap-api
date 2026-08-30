@@ -44,7 +44,7 @@ import org.apache.directory.api.util.Unicode;
 public final class FilterParser
 {
     // The default parsing mode is STRICT
-    private static final boolean STRICT = false;
+    public static final boolean STRICT = false;
     
     private FilterParser()
     {

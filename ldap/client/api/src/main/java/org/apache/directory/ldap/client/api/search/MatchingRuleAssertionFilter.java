@@ -20,7 +20,13 @@
 package org.apache.directory.ldap.client.api.search;
 
 
+import java.text.ParseException;
+
+import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.filter.FilterEncoder;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -53,9 +59,22 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
      * @param value The value to test for
      * @param operator The FilterOperator
      */
-    MatchingRuleAssertionFilter( String attribute, String value, 
-        FilterOperator operator )
+    MatchingRuleAssertionFilter( String attribute, String value,  FilterOperator operator )
     {
+        // Check that the attribute is valid. It may be null
+        if ( !Strings.isEmpty( attribute ) )
+        {
+            try
+            {
+                AttributeUtils.parseAttribute( attribute, true, FilterParser.STRICT );
+            }
+            catch ( ParseException pe )
+            {
+                LOGGER.error( I18n.err( I18n.ERR_04181_INVALID_FILTER_ATTRIBUTE_DESCRIPTIONT ), attribute );
+                throw new IllegalArgumentException();
+            }
+        }
+        
         this.attribute = attribute;
         this.value = value;
         this.operator = operator;
@@ -97,7 +116,8 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
      */
     public MatchingRuleAssertionFilter setMatchingRule( String matchingRule )
     {
-        this.matchingRule = matchingRule;
+        this.matchingRule = checkMatchingRule( matchingRule );
+
         return this;
     }
 
@@ -109,7 +129,8 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
      */
     public MatchingRuleAssertionFilter useDnAttributes()
     {
-        this.useDnAttributes = true;
+        useDnAttributes = true;
+        
         return this;
     }
     
@@ -121,18 +142,22 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
     public StringBuilder build( StringBuilder builder )
     {
         builder.append( "(" );
+        
         if ( attribute != null )
         {
             builder.append( attribute );
         }
+        
         if ( useDnAttributes )
         {
             builder.append( ":dn" );
         }
+        
         if ( matchingRule != null && !matchingRule.isEmpty() )
         {
             builder.append( ":" ).append( matchingRule );
         }
+        
         return builder.append( operator.operator() )
             .append( FilterEncoder.encodeFilterValue( value ) ).append( ")" );
     }

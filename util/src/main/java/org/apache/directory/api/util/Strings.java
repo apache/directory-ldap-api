@@ -1020,6 +1020,28 @@ public final class Strings
 
 
     /**
+     * Tells if a char is alphabetic ('a'-'z' or 'A'-'Z')
+     * @param c The char to check
+     * @return <code>true</code> if the char is alphabetic
+     */
+    public static boolean isAlpha( char c )
+    {
+        return ( ( c >= 'a' ) && ( c <= 'z' ) ) || ( ( c >= 'A' ) && ( c <= 'Z' ) );
+    }
+
+
+    /**
+     * Tells if a char is numeric ('0'-'9')
+     * @param c The char to check
+     * @return <code>true</code> if the char is numberic
+     */
+    public static boolean isDigit( char c )
+    {
+        return ( c >= '0' ) && ( c <= '9' );
+    }
+
+
+    /**
      * <p>
      * Removes spaces (char &lt;= 32) from both start and ends of this String,
      * handling <code>null</code> by returning <code>null</code>.
