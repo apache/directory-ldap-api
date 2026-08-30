@@ -40,7 +40,7 @@ public class StoreError<C extends Asn1Container> extends AbstractReadInteger<C>
      */
     public StoreError()
     {
-        super( "PPolicy error" );
+        super( "PPolicy error", PasswordPolicyErrorEnum.MINIMAL_ERROR.getValue(), PasswordPolicyErrorEnum.MAXIMAL_ERROR.getValue() );
     }
 
 

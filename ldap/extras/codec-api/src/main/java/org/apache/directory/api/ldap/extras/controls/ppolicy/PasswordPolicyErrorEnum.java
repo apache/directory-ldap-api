@@ -29,6 +29,9 @@ import org.apache.directory.api.i18n.I18n;
  */
 public enum PasswordPolicyErrorEnum
 {
+    /** The minimal error code */
+    MINIMAL_ERROR(0),
+    
     /** The password has expired */
     PASSWORD_EXPIRED(0),
     
@@ -57,8 +60,11 @@ public enum PasswordPolicyErrorEnum
     PASSWORD_IN_HISTORY(8),
     
     /** The length of the password is too long */
-    PASSWORD_TOO_LONG(9);
+    PASSWORD_TOO_LONG(9),
 
+    /** The maximal error code */
+    MAXIMAL_ERROR(9);
+    
     private int value;
 
 

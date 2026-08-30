@@ -24,6 +24,7 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
@@ -211,6 +212,32 @@ public class PasswordPolicyResponseTest
         factory.encodeValue( asn1Buffer, passwordPolicyResponse );
 
         assertArrayEquals( bb.array(),  asn1Buffer.getBytes().array() );
+    }
+
+
+    @Test
+    public void testDecodeRespWithInvalidErrorValue()
+    {
+        ByteBuffer bb = ByteBuffer.allocate( 5 );
+
+        bb.put( new byte[]
+            {
+                0x30, 0x03,                     // PasswordPolicyResponseValue ::= SEQUENCE {
+                  ( byte ) 0x81, 0x01, 0x2A     //     error   [1] ENUMERATED { -- 42, out of range
+            } );
+
+        bb.flip();
+
+        PasswordPolicyResponseFactory factory = ( PasswordPolicyResponseFactory ) codec.getResponseControlFactories().
+            get( PasswordPolicyResponse.OID );
+        PasswordPolicyResponse passwordPolicyResponse = factory.newControl();
+
+        // An out of range error value sent by a hostile server must surface as
+        // a DecoderException (protocol error), not as a runtime exception
+        assertThrows( DecoderException.class, ( ) ->
+        {
+            factory.decodeValue( passwordPolicyResponse, bb.array() );
+        } );
     }
 
 
