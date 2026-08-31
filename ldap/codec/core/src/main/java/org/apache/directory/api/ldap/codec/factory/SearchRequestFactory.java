@@ -41,6 +41,7 @@ import org.apache.directory.api.ldap.model.filter.SimpleNode;
 import org.apache.directory.api.ldap.model.filter.SubstringNode;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.util.CollectionUtils;
 import org.apache.directory.api.util.Strings;
 
 /**
@@ -62,22 +63,21 @@ public final class SearchRequestFactory implements Messagefactory
     }
 
     /**
-     * Recursively encode the children of a connector node (AND, OR, NOT)
+     * Encode the children of a connector node (AND, OR, NOT), in reverse order,
+     * to have the last child encoded first in the reverse buffer. This is done
+     * iteratively: recursing once per sibling would make the stack depth grow
+     * with the number of children, a StackOverflowError DoS for large filters.
      *
      * @param buffer The buffer where to put the PDU
      * @param children The children to encode
      */
     private void encodeFilters( Asn1Buffer buffer, Iterator<ExprNode> children )
     {
-        if ( children.hasNext() )
+        children = CollectionUtils.reverse( children );
+        
+        while ( children.hasNext() )
         {
-            ExprNode child = children.next();
-
-            // Recurse
-            encodeFilters( buffer, children );
-
-            // And finally the child, at the right position
-            encodeFilter( buffer, child );
+            encodeFilter( buffer, children.next() );
         }
     }
 

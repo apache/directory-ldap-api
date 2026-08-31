@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.util.CollectionUtils;
 
 /**
  * The Response factory.
@@ -55,20 +56,20 @@ public abstract class ResponseFactory implements Messagefactory
 
 
     /**
-     * Encode referral's URLs recursively
+     * Encode referral's URLs, in reverse order, to have the last URL encoded
+     * first in the reverse buffer. This is done iteratively: recursing once
+     * per URL would make the stack depth grow with the number of URLs.
      *
      * @param buffer The buffer that will contain the encoded urls
      * @param urls The urls to encode
      */
     protected void encodeReferralUrls( Asn1Buffer buffer, Iterator<String> urls )
     {
-        if ( urls.hasNext() )
+        urls = CollectionUtils.reverse( urls );
+        
+        while ( urls.hasNext() )
         {
-            String url = urls.next();
-
-            encodeReferralUrls( buffer, urls );
-
-            BerValue.encodeOctetString( buffer, url );
+            BerValue.encodeOctetString( buffer, urls.next() );
         }
     }
 

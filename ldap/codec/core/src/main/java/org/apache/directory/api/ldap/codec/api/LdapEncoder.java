@@ -53,6 +53,7 @@ import org.apache.directory.api.ldap.codec.factory.UnbindRequestFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Request;
+import org.apache.directory.api.util.CollectionUtils;
 
 
 /**
@@ -72,8 +73,8 @@ public final class LdapEncoder
 
 
     /**
-     * Encode a control to a byte[]. The controls are encoded recursively, to start with the last
-     * control first.
+     * Encode a control to a byte[]. The controls are encoded iteratively, in reverse
+     * order, to start with the last control first.
      * <br>
      * A control is encoded as:
      * <pre>
@@ -94,13 +95,15 @@ public final class LdapEncoder
     private static void encodeControls( Asn1Buffer buffer, LdapApiService codec,
         Map<String, Control> controls, Iterator<String> iterator, boolean isRequest ) throws EncoderException
     {
-        if ( iterator.hasNext() )
+        // Iterate in reverse order, to have the last control encoded first in the
+        // reverse buffer. This is done iteratively: recursing once per control
+        // would make the stack depth grow with the number of controls.
+        iterator = CollectionUtils.reverse( iterator );
+
+        while ( iterator.hasNext() )
         {
             // Get the Control from its OID
             Control control = controls.get( iterator.next() );
-
-            // Encode the remaining controls recursively
-            encodeControls( buffer, codec, controls, iterator, isRequest );
 
             // Fetch the control's factory from the LdapApiService
             ControlFactory<?> controlFactory;
