@@ -71,6 +71,7 @@ import org.apache.directory.api.ldap.codec.api.SaslFilter;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.api.ldap.extras.controls.ad.TreeDelete;
 import org.apache.directory.api.ldap.extras.controls.ad.TreeDeleteImpl;
+import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -250,6 +251,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /** A flag indicating that the BindRequest has been issued and successfully authenticated the user */
     private AtomicBoolean authenticated = new AtomicBoolean( false );
+
+    /**
+     * A flag set while a StartTLS transition is in progress (StartTLS extended request sent,
+     * TLS handshake not yet completed). While set, no PDU other than the StartTLS extended
+     * response may be processed (RFC 4511, 4.14.3) : anything else on the still-plaintext
+     * session is treated as a fatal protocol error, as it can only have been injected.
+     */
+    private AtomicBoolean startTlsPending = new AtomicBoolean( false );
 
     /** a list of listeners interested in getting notified when the
      *  connection's session gets closed cause of network issues
@@ -3072,6 +3081,29 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ResponseFuture<? extends Response> responseFuture = peekFromFutureMap( responseId );
 
         boolean isNoD = isNoticeOfDisconnect( response );
+        
+        // While a StartTLS transition is in progress, RFC 4511 4.14.3 mandates that
+        // any PDU received between the StartTLS response and the completion of the
+        // TLS negotiation be treated as a protocol error : the session is still
+        // plaintext, so such a PDU can only come from an active attacker trying to
+        // inject responses before the security layer is in place. Drop the connection.
+        if ( startTlsPending.get() && !isNoD )
+        {
+            boolean isStartTlsResponse = ( response instanceof ExtendedResponse )
+                && ( responseFuture instanceof ExtendedFuture )
+                && ( ( ( ExtendedFuture ) responseFuture ).getExtendedRequest() != null )
+                && StartTlsRequest.EXTENSION_OID.equals(
+                    ( ( ExtendedFuture ) responseFuture ).getExtendedRequest().getRequestName() );
+
+            if ( !isStartTlsResponse )
+            {
+                LOG.error( I18n.err( I18n.ERR_04132_UNEXPECTED_RESPONSE_TYPE, response.getType() ) );
+
+                session.closeNow();
+
+                return;
+            }
+        }
 
         if ( ( responseFuture == null ) && !isNoD )
         {
@@ -5048,16 +5080,28 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 return;
             }
 
-            ExtendedResponse resp = extended( new StartTlsRequestImpl() );
-            LdapResult result = resp.getLdapResult();
+            try
+            {
+                // Quarantine the session for the duration of the transition : between the
+                // StartTLS request and the completion of the TLS handshake, only the
+                // StartTLS extended response may be processed (RFC 4511, 4.14.3)
+                startTlsPending.set( true );
 
-            if ( result.getResultCode() == ResultCodeEnum.SUCCESS )
-            {
-                addSslFilter();
+                ExtendedResponse resp = extended( new StartTlsRequestImpl() );
+                LdapResult result = resp.getLdapResult();
+
+                if ( result.getResultCode() == ResultCodeEnum.SUCCESS )
+                {
+                    addSslFilter();
+                }
+                else
+                {
+                    throw new LdapOperationException( result.getResultCode(), result.getDiagnosticMessage() );
+                }
             }
-            else
+            finally
             {
-                throw new LdapOperationException( result.getResultCode(), result.getDiagnosticMessage() );
+                startTlsPending.set( false );
             }
         }
         catch ( LdapException e )
