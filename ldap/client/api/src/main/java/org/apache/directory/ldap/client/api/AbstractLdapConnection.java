@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
@@ -88,6 +89,9 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     @Override
     public void bind( Dn name ) throws LdapException
     {
+        // This is an explicit unauthenticated authentication bind (RFC 4513, 5.1.2) :
+        // build the BindRequest directly, so that we don't go through the simple bind
+        // methods which reject an empty password associated with a non empty name.
         byte[] credBytes = Strings.EMPTY_BYTES;
 
         BindRequest bindRequest = new BindRequestImpl();
@@ -111,7 +115,16 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
             LOG.debug( I18n.msg( I18n.MSG_04145_BIND_REQUEST, name ) );
         }
 
-        bind( new Dn( schemaManager, new Dn( name ) ), null );
+        // This is an explicit unauthenticated authentication bind (RFC 4513, 5.1.2) :
+        // build the BindRequest directly, so that we don't go through the simple bind
+        // methods which reject an empty password associated with a non empty name.
+        BindRequest bindRequest = new BindRequestImpl();
+        bindRequest.setDn( new Dn( schemaManager, name ) );
+        bindRequest.setCredentials( Strings.EMPTY_BYTES );
+
+        BindResponse bindResponse = bind( bindRequest );
+
+        processResponse( bindResponse );
     }
 
 
@@ -121,7 +134,28 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     @Override
     public void bind( String name, String credentials ) throws LdapException
     {
-        bind( new Dn( schemaManager, new Dn( name ) ), credentials );
+        // A simple bind used to authenticate a user must never silently degrade to
+        // an unauthenticated bind (RFC 4513, 5.1.2) : 
+        // "Clients SHOULD be implemented to require
+        //  user selection of the Unauthenticated Authentication Mechanism by
+        //  means other than user input of an empty password.  Clients SHOULD
+        //  disallow an empty password input to a Name/Password Authentication
+        //  user interface."
+        // Sending a non empty name with empty credentials would be granted an 
+        // anonymous session by many servers,
+        // an authentication bypass for callers doing password verification. Callers
+        // really wanting an unauthenticated bind must use bind( Dn ) explicitly.
+        if ( Strings.isEmpty( credentials ) && ( name != null ) && !Dn.EMPTY_DN.equals( name ) )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04105_MISSING_PASSWORD ) );
+            }
+
+            throw new LdapAuthenticationException( I18n.msg( I18n.MSG_04105_MISSING_PASSWORD ) );
+        }
+
+        bind( new Dn( schemaManager, name ), credentials );
     }
 
 
@@ -131,6 +165,27 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     @Override
     public void bind( Dn name, String credentials ) throws LdapException
     {
+        // A simple bind used to authenticate a user must never silently degrade to
+        // an unauthenticated bind (RFC 4513, 5.1.2) : 
+        // "Clients SHOULD be implemented to require
+        //  user selection of the Unauthenticated Authentication Mechanism by
+        //  means other than user input of an empty password.  Clients SHOULD
+        //  disallow an empty password input to a Name/Password Authentication
+        //  user interface."
+        // Sending a non empty name with empty credentials would be granted an 
+        // anonymous session by many servers,
+        // an authentication bypass for callers doing password verification. Callers
+        // really wanting an unauthenticated bind must use bind( Dn ) explicitly.
+        if ( Strings.isEmpty( credentials ) && ( name != null ) && !Dn.EMPTY_DN.equals( name ) )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04105_MISSING_PASSWORD ) );
+            }
+
+            throw new LdapAuthenticationException( I18n.msg( I18n.MSG_04105_MISSING_PASSWORD ) );
+        }
+        
         byte[] credBytes = credentials == null ? Strings.EMPTY_BYTES : Strings.getBytesUtf8( credentials );
 
         BindRequest bindRequest = new BindRequestImpl();
