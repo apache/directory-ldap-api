@@ -28,6 +28,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +92,21 @@ public class AddControl extends GrammarAction<ControlsContainer>
 
         ControlFactory<?> factory = container.getLdapCodecService().getResponseControlFactories().get( oidValue );
         container.setFactory( factory );
-        Control control = factory.newControl();
+        
+        Control control;
+
+        if ( factory == null )
+        {
+            // The control is not known : create an OpaqueControl instead of
+            // failing with a NullPointerException, as the core codec does
+            // (see StoreControlName). Its value, if any, will be stored as
+            // raw bytes.
+            control = new OpaqueControl( oidValue );
+        }
+        else
+        {
+            control = factory.newControl();
+        }
 
         container.setCurrentControl( control );
         container.addControl( control );

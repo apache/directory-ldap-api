@@ -28,6 +28,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.endTransaction.controls.ControlsContainer;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +77,20 @@ public class StoreControlValue extends GrammarAction<ControlsContainer>
         // Store the value - have to handle the special case of a 0 length value
         try
         {
-            if ( tlv.getLength() == 0 )
+            if ( controlFactory == null )
+            {
+                // The control is not known : it has been created as an
+                // OpaqueControl by the AddControl action, store the raw value
+                if ( tlv.getLength() == 0 )
+                {
+                    ( ( OpaqueControl ) control ).setEncodedValue( Strings.EMPTY_BYTES );
+                }
+                else
+                {
+                    ( ( OpaqueControl ) control ).setEncodedValue( value.getData() );
+                }
+            }
+            else if ( tlv.getLength() == 0 )
             {
                 controlFactory.decodeValue( control, Strings.EMPTY_BYTES );
             }

@@ -43,6 +43,7 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValu
 import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionResponse;
 import org.apache.directory.api.ldap.extras.extended.endTransaction.UpdateControls;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
@@ -315,5 +316,51 @@ public class EndTransactionResponseTest
         factory.encodeValue( asn1Buffer, endTransactionResponse );
 
         assertArrayEquals( bb, asn1Buffer.getBytes().array() );
+    }
+
+    /**
+     * Test the decoding of a EndTransactionResponse with an updateControls
+     * containing a control with an unregistered OID : it must be decoded as
+     * an opaque control instead of failing with a NullPointerException
+     * 
+     * @throws DecoderException If the ASN1 decoding failed
+     */
+    @Test
+    public void testEndTransactionResponseUnknownControl() throws DecoderException
+    {
+        byte[] bb = new byte[]
+            { 
+                0x30, 0x24,                     // EndTransactionResponse ::= SEQUENCE {
+                  0x30, 0x22,                   // UpdateControls
+                    0x30, 0x20,                 // updateControl
+                      0x02, 0x01, 0x01,         // messageID
+                      0x30, 0x1B,               // controls 
+                        0x30, 0x19,             // Control ::= SEQUENCE {
+                          0x04, 0x09,           // controlType LDAPOID (not registered)
+                            '1', '.', '2', '.', '3', '.', '4', '.', '5',
+                          0x01, 0x01, ( byte ) 0xFF,  // criticality BOOLEAN DEFAULT FALSE, 
+                          0x04, 0x09,           // controlValue OCTET STRING OPTIONAL }
+                            0x30, 0x07,
+                              0x02, 0x01, 0x01,
+                              0x04, 0x02,
+                                'a', 'b'
+        };
+        
+        EndTransactionFactory factory = ( EndTransactionFactory ) codec.getExtendedResponseFactories().
+            get( EndTransactionResponse.EXTENSION_OID );
+        EndTransactionResponse endTransactionResponse = ( EndTransactionResponse ) factory.newResponse( bb );
+
+        assertEquals( 1, endTransactionResponse.getUpdateControls().size() );
+        
+        UpdateControls updateControls = endTransactionResponse.getUpdateControls().get( 0 );
+        assertEquals( 1, updateControls.getMessageId() );
+        assertNotNull( updateControls.getControls() );
+        assertEquals( 1, updateControls.getControls().size() );
+        
+        Control control = updateControls.getControls().get( 0 );
+        assertEquals( "1.2.3.4.5", control.getOid() );
+        assertTrue( control instanceof OpaqueControl );
+        assertTrue( control.isCritical() );
+        assertEquals( 9, ( ( OpaqueControl ) control ).getEncodedValue().length );
     }
 }
