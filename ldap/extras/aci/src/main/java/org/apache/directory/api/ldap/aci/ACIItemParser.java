@@ -3159,7 +3159,11 @@ public class ACIItemParser
                                     authenticationLevel );
                             
                             break;
+                            
                         default:
+                            // This is an error, we must have a item
+                            throw new ParseException( 
+                                I18n.err( I18n.ERR_07053_MISSING_ITEM_OR_USER_FIRST ), pos.start );
                     }
     
                     itemOrUserFirstSeen = true;

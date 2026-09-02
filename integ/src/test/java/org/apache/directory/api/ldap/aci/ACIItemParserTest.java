@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.aci;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -68,6 +69,33 @@ public class ACIItemParserTest
     {
         // try to parse the result of item.toString() again
         parser.parse( item.toString() );
+    }
+    /**
+     * A value with a dangling itemOrUserFirst part (no itemFirst/userFirst following it)
+     * must be rejected by both check() and parse() with a ParseException, never a
+     * NullPointerException: the syntax checker must not accept a value that parse()
+     * cannot consume later (parse/validate divergence).
+     * 
+     * @throws Exception If the test failed
+     */
+    @Test
+    public void testItemOrUserFirstWithoutItemFirstOrUserFirst() throws Exception
+    {
+        String spec = " { identificationTag \"id1\", precedence 1, "
+            + "authenticationLevel none, itemOrUserFirst } ";
+
+        try
+        {
+            parser.parse( spec );
+            fail( "A dangling itemOrUserFirst part must not parse" );
+        }
+        catch ( ParseException pe )
+        {
+            // expected, and especially not a NullPointerException
+        }
+
+        // check() must refuse exactly what parse() cannot consume
+        assertFalse( parser.check( spec ) );
     }
 
 
