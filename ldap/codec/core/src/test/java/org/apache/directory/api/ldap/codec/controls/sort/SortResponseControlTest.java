@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Asn1Buffer;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
@@ -116,7 +117,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
             get( SortResponse.OID );
         SortResponse control = factory.newControl();
 
-        assertThrows( IllegalArgumentException.class, ( ) ->
+        assertThrows( DecoderException.class, ( ) ->
         {
             factory.decodeValue( control, bb.array() );
         } );

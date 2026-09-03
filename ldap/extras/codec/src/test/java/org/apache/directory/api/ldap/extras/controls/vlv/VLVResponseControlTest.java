@@ -186,7 +186,7 @@ public class VLVResponseControlTest
                   0x02, 0x01, 0x01,     //    targetPosition    INTEGER (0 .. maxInt),
                   0x02, 0x01, 0x01,     //    contentCount     INTEGER (0 .. maxInt),
                   0x0A, 0x01, 0x11,     //    virtualListViewResult ENUMERATED {
-                                        //                   success (0),
+                                        //                   unknown  (17),
                   0x04, 0x04,           //    contextID     OCTET STRING OPTIONAL }
                     'a', 'b', 'c', 'd'
             } );
@@ -198,7 +198,7 @@ public class VLVResponseControlTest
             get( VirtualListViewResponse.OID );
         VirtualListViewResponse virtualListView = factory.newControl();
 
-        assertThrows( IllegalArgumentException.class, ( ) ->
+        assertThrows( DecoderException.class, ( ) ->
         {
             factory.decodeValue( virtualListView, bb.array() );
         } );

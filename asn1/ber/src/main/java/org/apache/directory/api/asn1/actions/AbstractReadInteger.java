@@ -122,13 +122,13 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
 
             setIntegerValue( number, container );
         }
-        catch ( IntegerDecoderException ide )
+        catch ( IllegalArgumentException | IntegerDecoderException e )
         {
-            LOG.error( I18n.err( I18n.ERR_01102_INVALID_INTEGER, Strings.dumpBytes( value.getData() ), ide
+            LOG.error( I18n.err( I18n.ERR_01102_INVALID_INTEGER, Strings.dumpBytes( value.getData() ), e
                 .getLocalizedMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( ide.getMessage(), ide );
+            throw new DecoderException( e.getMessage(), e );
         }
     }
 }
