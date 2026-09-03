@@ -1278,7 +1278,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
-     * Unescape the given string according to RFC 2253 If in &lt;string&gt; form, a
+     * Unescape the given string according to RFC 4514 If in &lt;string&gt; form, a
      * LDAP string representation asserted value can be obtained by replacing
      * (left-to-right, non-recursively) each &lt;pair&gt; appearing in the &lt;string&gt; as
      * follows: 
@@ -1290,6 +1290,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * If in &lt;hexstring&gt; form, a BER representation can be obtained
      * from converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
      * by the &lt;hexpair&gt;
+     * 
+     * NOTE: We don't support anymore quoted strings.
      *
      * @param value The value to be unescaped
      * @return Returns a string value as a String, and a binary value as a byte
@@ -1305,10 +1307,19 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
         char[] chars = value.toCharArray();
 
-        // If the value is contained into double quotes, return it as is.
+        // If the value is contained into double quotes, it won't be accepted,
+        // accordingly to RFC 4514 which does not support any more
+        // LDAP v2 forms:
+        // "Removed specification of additional requirements for LDAPv2
+        // implementations which also support LDAPv3 (RFC 2253, Section 4)
+        // as LDAPv2 is now Historic"
+        // which means that:
+        // "Implementations MUST allow a value to be surrounded by quote ('"'
+        // ASCII 34) characters" (RFC 2253, section 4)
+        // is not anymore accepted
         if ( ( chars[0] == '\"' ) && ( chars[chars.length - 1] == '\"' ) )
         {
-            return new String( chars, 1, chars.length - 2 );
+            throw new IllegalArgumentException( I18n.err(  I18n.ERR_13637_LDAPV2_QUOTED_VALUE_NOT_ACCEPTED ) );
         }
 
         if ( chars[0] == '#' )
@@ -1378,6 +1389,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                                 isHex = true;
                                 pair = ( byte ) ( Hex.getHexValue( chars[i] ) << 4 );
                             }
+                            else
+                            {
+                                // An escape char \ is expected to be followed by either a special char
+                                // or an hexpair first char
+                                throw new IllegalArgumentException( I18n.err(  I18n.ERR_13631_WRONG_ESCAPED_SEQUENCE ) );
+                            }
 
                             break;
                     }
@@ -1392,6 +1409,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             bytes[pos++] = pair;
                             isHex = false;
                             pair = 0;
+                        }
+                        else
+                        {
+                            // Invalid, we expect a second HEX
+                            throw new IllegalArgumentException( I18n.err( I18n.ERR_13613_VALUE_NOT_IN_HEX_FORM_ODD_NUMBER ) );
                         }
                     }
                     else
@@ -1411,6 +1433,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             case ';':
                             case '<':
                             case '>':
+                                throw new IllegalArgumentException( I18n.err( I18n.ERR_13615_UNESCAPED_CHARS_NOT_ALLOWED ) );
+
                             case '#':
                                 if ( i != 0 )
                                 {
@@ -1447,6 +1471,18 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                         }
                     }
                 }
+            }
+
+            if ( isHex )
+            {
+                // Invalid, we expect a second HEX
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13613_VALUE_NOT_IN_HEX_FORM_ODD_NUMBER ) );
+            }
+            
+            if ( escaped )
+            {
+                // Invalid, we expect some following characters
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_13636_INVALID_END_ESCAPED_CHARACTER ) );
             }
 
             return Strings.utf8ToString( bytes, pos );
