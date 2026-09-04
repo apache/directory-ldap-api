@@ -2007,8 +2007,8 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                     }
                     else
                     {
-                        // The end...
-                        break;
+                        throw new ParseException( I18n.err( I18n.ERR_13635_INVALID_VALUE_CHARACTER, 
+                            ( char ) bytes[pos.start] ), pos.start );
                     }
                 }
 
