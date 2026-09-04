@@ -89,9 +89,6 @@ public final class FilterEncoder
     public static String encodeFilterValue( String value )
     {
         StringBuilder sb = new StringBuilder( value.length() );
-        boolean escaped = false;
-        boolean hexPair = false;
-        char hex = '\0';
 
         for ( int i = 0; i < value.length(); i++ )
         {
@@ -100,151 +97,29 @@ public final class FilterEncoder
             switch ( ch )
             {
                 case '*':
-                    if ( escaped )
-                    {
-                        sb.append( "\\5C" );
-
-                        if ( hexPair )
-                        {
-                            sb.append( hex );
-                            hexPair = false;
-                        }
-
-                        escaped = false;
-                    }
-
                     sb.append( "\\2A" );
                     break;
 
                 case '(':
-                    if ( escaped )
-                    {
-                        sb.append( "\\5C" );
-
-                        if ( hexPair )
-                        {
-                            sb.append( hex );
-                            hexPair = false;
-                        }
-
-                        escaped = false;
-                    }
-
                     sb.append( "\\28" );
                     break;
 
                 case ')':
-                    if ( escaped )
-                    {
-                        sb.append( "\\5C" );
-
-                        if ( hexPair )
-                        {
-                            sb.append( hex );
-                            hexPair = false;
-                        }
-
-                        escaped = false;
-                    }
-
                     sb.append( "\\29" );
                     break;
 
                 case '\0':
-                    if ( escaped )
-                    {
-                        sb.append( "\\5C" );
-
-                        if ( hexPair )
-                        {
-                            sb.append( hex );
-                            hexPair = false;
-                        }
-
-                        escaped = false;
-                    }
-
                     sb.append( "\\00" );
                     break;
 
                 case '\\':
-                    if ( escaped )
-                    {
-                        sb.append( "\\5C" );
-                        escaped = false;
-                    }
-                    else
-                    {
-                        escaped = true;
-                        hexPair = false;
-                    }
-
-                    break;
-
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case 'a':
-                case 'b':
-                case 'c':
-                case 'd':
-                case 'e':
-                case 'f':
-                case 'A':
-                case 'B':
-                case 'C':
-                case 'D':
-                case 'E':
-                case 'F':
-                    if ( escaped )
-                    {
-                        if ( hexPair )
-                        {
-                            sb.append( '\\' ).append( hex ).append( ch );
-                            escaped = false;
-                            hexPair = false;
-                        }
-                        else
-                        {
-                            hexPair = true;
-                            hex = ch;
-                        }
-                    }
-                    else
-                    {
-                        sb.append( ch );
-                    }
-
+                    sb.append( "\\5C" );
                     break;
 
                 default:
-                    if ( escaped )
-                    {
-                        sb.append( "\\5C" );
-
-                        if ( hexPair )
-                        {
-                            sb.append( hex );
-                            hexPair = false;
-                        }
-
-                        escaped = false;
-                    }
-
                     sb.append( ch );
+                    break;
             }
-        }
-
-        if ( escaped )
-        {
-            sb.append( "\\5C" );
         }
 
         return sb.toString();

@@ -121,7 +121,8 @@ public class FilterBuilderTest
         assertEquals( "(o=*of*)", contains( "o", "of" ).toString() );
         assertEquals( "(o=*sit*of*chi*)", contains( "o", "sit", "of", "chi" ).toString() );
         assertEquals( "(cn=*\u00e9*)", contains( "cn", "\u00e9" ).toString() );
-        assertEquals( "(cn=*\\C3\\E9*)", contains( "cn", "\\C3\\E9" ).toString() );
+        //assertEquals( "(cn=*\\C3\\E9*)", contains( "cn", "\\C3\\E9" ).toString() );
+        assertEquals( "(cn=*\\5CC3\\5CE9*)", contains( "cn", "\\C3\\E9" ).toString() );
     }
 
 

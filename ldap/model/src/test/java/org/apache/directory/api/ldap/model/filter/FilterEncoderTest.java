@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.model.filter;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -129,7 +130,27 @@ public class FilterEncoderTest
         assertEquals( "\\5C", FilterEncoder.encodeFilterValue( "\\" ) );
         assertEquals( "\\00", FilterEncoder.encodeFilterValue( "\0" ) );
         assertEquals( "\\28\\2A\\29", FilterEncoder.encodeFilterValue( "(*)" ) );
-        assertEquals( "a test \\2A \\5Cend", FilterEncoder.encodeFilterValue( "a test \\2A \\end" ) );
+        assertEquals( "a test \\5C2A \\5Cend", FilterEncoder.encodeFilterValue( "a test \\2A \\end" ) );
     }
 
+
+    /**
+     * Verifies the encoder is injective: an input that already looks like an RFC 4515
+     * hex escape must not be passed through unchanged, otherwise two different inputs
+     * (e.g. "admin" and "\61dmin") assert the same value and application level guards
+     * evaluated on the raw string (blocklists, lockout counters) can be bypassed.
+     */
+    @Test
+    public void testEncodeFilterValueEscapesEveryBackslash()
+    {
+        // A backslash followed by two hex digits must be escaped, not passed through
+        assertEquals( "\\5C61dmin", FilterEncoder.encodeFilterValue( "\\61dmin" ) );
+        assertEquals( "\\5C2a", FilterEncoder.encodeFilterValue( "\\2a" ) );
+
+        // "\2a" as input must not produce the same assertion as "*"
+        assertFalse( FilterEncoder.encodeFilterValue( "\\2a" ).equals( FilterEncoder.encodeFilterValue( "*" ) ) );
+
+        // A trailing backslash followed by a single hex digit must not drop the digit
+        assertEquals( "x\\5C4", FilterEncoder.encodeFilterValue( "x\\4" ) );
+    }
 }
