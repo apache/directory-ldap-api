@@ -63,6 +63,19 @@ public class AddRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an attribute value carrying malformed Base64 :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_REQUEST error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1AttrWithMalformedBase64Value()
+    {
+        testParsingFail( AddRequestTest.class, "request_with_1_attr_with_malformed_base64_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with the dn attribute
      */
     @Test
@@ -191,6 +204,19 @@ public class AddRequestTest extends AbstractTest
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
         assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
+    }
+
+
+    /**
+     * Test parsing of a request with an attribute value carrying malformed Base64 :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_REQUEST error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1ControlMalformedBase64Value()
+    {
+        testParsingFail( AddRequestTest.class, "request_with_1_control_malformed_base64_value.xml" );
     }
 
 

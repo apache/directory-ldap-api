@@ -63,7 +63,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
- * Tests for the Del Request parsing
+ * Tests for the Search Request parsing
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -210,6 +210,19 @@ public class SearchRequestTest extends AbstractTest
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
         assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
+    }
+
+
+    /**
+     * Test parsing of a request with an malformed Base64 control :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1ControlMalformedBase64Value()
+    {
+        testParsingFail( SearchRequestTest.class, "request_with_1_control_malformed_base64_value.xml" );
     }
 
 
@@ -1049,6 +1062,19 @@ public class SearchRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithApproxMatchMalformedBase64Value()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_approxMatch_malformed_base64_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with an approxMatch Filter with empty value
      */
     @Test
@@ -1180,6 +1206,19 @@ public class SearchRequestTest extends AbstractTest
         assertEquals( "sn", greaterEqFilter.getAttribute() );
 
         assertEquals( "DSMLv2.0 rocks!!", greaterEqFilter.getValue().getString() );
+    }
+
+
+    /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithGreaterOrEqualFilterMalformedBase64Value()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_greaterOrEqual_malformed_base64_value.xml" );
     }
 
 
@@ -1319,6 +1358,19 @@ public class SearchRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithLessOrEqualFilterMalformedBase64Value()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_lessOrEqual_malformed_base64_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with an lessOrEqual Filter
      */
     @Test
@@ -1418,37 +1470,15 @@ public class SearchRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with an Equality Filter with base64 value
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
      */
     @Test
-    public void testRequestWithEqualityMatchFilterBase64Value()
+    public void testRequestWithEqualityMatchFilterMalformedBase64Value()
     {
-        Dsmlv2Parser parser = null;
-        try
-        {
-            parser = newParser();
-
-            parser.setInput( SearchRequestTest.class
-                .getResource( "filters/request_with_equalityMatch_base64_value.xml" ).openStream(), "UTF-8" );
-
-            parser.parse();
-        }
-        catch ( Exception e )
-        {
-            fail( e.getMessage() );
-        }
-
-        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        ExprNode filter = searchRequest.getFilter();
-
-        assertTrue( filter instanceof EqualityNode );
-
-        EqualityNode<?> equalityFilter = ( EqualityNode<?> ) filter;
-
-        assertEquals( "sn", equalityFilter.getAttribute() );
-
-        assertEquals( "DSMLv2.0 rocks!!", equalityFilter.getValue().getString() );
+        testParsingFail( SearchRequestTest.class, "filters/request_with_equalityMatch_malformed_base64_value.xml" );
     }
 
 
@@ -1627,6 +1657,19 @@ public class SearchRequestTest extends AbstractTest
         assertEquals( "DSMLv2.0 rocks!!", extensibleMatchFilter.getValue().getString() );
 
         assertEquals( false, extensibleMatchFilter.hasDnAttributes() );
+    }
+
+
+    /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithExtensibleMatchFilterMalformedBase64Value()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_extensibleMatch_malformed_base64_value.xml" );
     }
 
 
@@ -2003,6 +2046,19 @@ public class SearchRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithSubstrings1MalformedBase64Initial()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_substrings_1_malformed_base64_initial.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with a Substrings Filter with 1 emptyInitial element
      */
     @Test
@@ -2178,6 +2234,19 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( 1, initials.size() );
         assertEquals( "DSMLv2.0 rocks!!", initials.get( 0 ) );
+    }
+
+
+    /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithSubstrings1MalformedBase64Any()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_substrings_1_malformed_base64_any.xml" );
     }
 
 
@@ -2361,6 +2430,19 @@ public class SearchRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an malformed Base64 filter :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWithSubstrings1MalformedBase64Final()
+    {
+        testParsingFail( SearchRequestTest.class, "filters/request_with_substrings_1_malformed_base64_final.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with a Substrings Filter with 1 empty Final element
      */
     @Test
@@ -2452,5 +2534,40 @@ public class SearchRequestTest extends AbstractTest
         searchRequest.setFilter( "(memberOf=cn=MercyCenterHospitalGroup,ou=Relationship,dc=HPD,o=IHE-Europe,c=FRA)" );
  
         System.out.println( searchRequest.toDsml( element ).asXML() );
+    }
+
+
+    /**
+     * Test parsing of a request with an Equality Filter with base64 value
+     */
+    @Test
+    public void testRequestWithEqualityMatchFilterBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = newParser();
+    
+            parser.setInput( SearchRequestTest.class
+                .getResource( "filters/request_with_equalityMatch_base64_value.xml" ).openStream(), "UTF-8" );
+    
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+    
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+    
+        ExprNode filter = searchRequest.getFilter();
+    
+        assertTrue( filter instanceof EqualityNode );
+    
+        EqualityNode<?> equalityFilter = ( EqualityNode<?> ) filter;
+    
+        assertEquals( "sn", equalityFilter.getAttribute() );
+    
+        assertEquals( "DSMLv2.0 rocks!!", equalityFilter.getValue().getString() );
     }
 }

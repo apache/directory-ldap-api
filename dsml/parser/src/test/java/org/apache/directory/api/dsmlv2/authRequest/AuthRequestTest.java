@@ -191,6 +191,19 @@ public class AuthRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an attribute value carrying malformed Base64 :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_REQUEST error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1ControlMalformedBase64Value()
+    {
+        testParsingFail( AuthRequestTest.class, "request_with_1_control_malformed_base64_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with a (optional) Control element with empty value
      */
     @Test

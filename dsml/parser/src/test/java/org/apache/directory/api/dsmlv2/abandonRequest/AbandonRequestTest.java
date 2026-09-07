@@ -32,6 +32,7 @@ import java.util.Map;
 import org.apache.directory.api.dsmlv2.AbstractTest;
 import org.apache.directory.api.dsmlv2.DsmlControl;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.api.dsmlv2.authRequest.AuthRequestTest;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -191,6 +192,19 @@ public class AbandonRequestTest extends AbstractTest
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
         assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
+    }
+
+
+    /**
+     * Test parsing of an abandon request with an attribute value carrying malformed Base64 :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_REQUEST error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1ControlMalformedBase64Value()
+    {
+        testParsingFail( AuthRequestTest.class, "request_with_1_control_malformed_base64_value.xml" );
     }
 
 

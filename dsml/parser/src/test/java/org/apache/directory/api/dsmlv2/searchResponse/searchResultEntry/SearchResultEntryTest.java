@@ -439,6 +439,19 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
 
     /**
+     * Test parsing of a response with an attribute with a malformed Base64 value :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testResponseWith_1_attr_1_base64_MalformedBase64Response()
+    {
+        testParsingFail( SearchResultEntryTest.class, "response_with_1_attr_1_base64_malformed_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a response with 1 Attr 1 empty Value
      */
     @Test

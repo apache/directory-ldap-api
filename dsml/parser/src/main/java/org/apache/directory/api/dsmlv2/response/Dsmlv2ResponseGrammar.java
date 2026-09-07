@@ -22,7 +22,6 @@ package org.apache.directory.api.dsmlv2.response;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -1216,7 +1215,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        searchResultEntry.addAttributeValue( Base64.getDecoder().decode( nextText ) );
+                        searchResultEntry.addAttributeValue( ParserUtils.base64Decode( xpp, nextText ) );
                     }
                     else
                     {
@@ -1353,7 +1352,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                 {
-                    extendedResponse.setResponseValue( Base64.getDecoder().decode( nextText.trim() ) );
+                    extendedResponse.setResponseValue( ParserUtils.base64Decode( xpp, nextText.trim() ) );
                 }
                 else
                 {
@@ -2145,7 +2144,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             {
                 if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                 {
-                    control.setValue( Base64.getDecoder().decode( nextText.trim() ) );
+                    control.setValue( ParserUtils.base64Decode( xpp, nextText.trim() ) );
                 }
                 else
                 {

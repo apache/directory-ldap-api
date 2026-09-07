@@ -667,6 +667,19 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
 
     /**
+     * Test parsing of a response with an malformed Base64 response :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testResponseWithMalformedBase64Response()
+    {
+        testParsingFail( ExtendedResponseTest.class, "response_with_malformed_base64_response.xml" );
+    }
+
+
+    /**
      * Test parsing of a response with empty Response
      */
     @Test

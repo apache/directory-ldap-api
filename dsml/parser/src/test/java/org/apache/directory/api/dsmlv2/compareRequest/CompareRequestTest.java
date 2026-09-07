@@ -360,6 +360,19 @@ public class CompareRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an attribute value carrying malformed Base64 :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_REQUEST error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1CompleteAssertionMalformedBase64Value()
+    {
+        testParsingFail( CompareRequestTest.class, "request_with_1_complete_assertion_malformed_base64_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with an Attr elements with empty value
      */
     @Test

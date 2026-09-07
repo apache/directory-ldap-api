@@ -22,7 +22,7 @@
               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <compareRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
     <assertion name="sn">
-      <value xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</value>
+      <value xsi:type="xsd:base64Binary">!!!Not BAse64!!!</value>
     </assertion>
   </compareRequest>
 </batchRequest>

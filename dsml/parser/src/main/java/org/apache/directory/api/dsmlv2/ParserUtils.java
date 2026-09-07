@@ -152,6 +152,33 @@ public final class ParserUtils
 
 
     /**
+     * Decodes a Base64 encoded value coming from a DSML document. Malformed
+     * Base64 makes java.util.Base64's strict decoder throw an unchecked
+     * IllegalArgumentException, which would escape the grammars and the
+     * Dsmlv2Engine (they only handle XmlPullParserException) : convert it to
+     * the declared error channel so a MALFORMED_REQUEST error response is
+     * produced instead of an uncaught runtime exception.
+     *
+     * @param xpp the XPP parser (used to locate the error)
+     * @param base64Value the Base64 encoded text to decode
+     * @return the decoded bytes
+     * @throws XmlPullParserException when the value is not valid Base64
+     */
+    public static byte[] base64Decode( XmlPullParser xpp, String base64Value ) throws XmlPullParserException
+    {
+        try
+        {
+            return Base64.getDecoder().decode( base64Value );
+        }
+        catch ( IllegalArgumentException iae )
+        {
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03047_INVALID_BASE64_VALUE, base64Value ), xpp,
+                iae );
+        }
+    }
+
+
+    /**
      * Indicates if the value needs to be encoded as Base64
      *
      * @param value the value to check

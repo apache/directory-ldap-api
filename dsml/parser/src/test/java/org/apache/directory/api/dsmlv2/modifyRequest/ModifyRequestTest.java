@@ -161,6 +161,19 @@ public class ModifyRequestTest extends AbstractTest
 
 
     /**
+     * Test parsing of a request with an malformed Base64 control :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1ControlMalformedBase64Value()
+    {
+        testParsingFail( ModifyRequestTest.class, "request_with_1_control_malformed_base64_value.xml" );
+    }
+
+
+    /**
      * Test parsing of a request with a (optional) Control element with empty value
      */
     @Test
@@ -389,6 +402,19 @@ public class ModifyRequestTest extends AbstractTest
                 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=', 'c', 'o', 'm' }, StandardCharsets.UTF_8 );
 
         assertEquals( expected, attribute.get().getString() );
+    }
+
+
+    /**
+     * Test parsing of a request with an malformed Base64 control :
+     * the parser must fail through the declared XmlPullParserException error channel
+     * (which the Dsmlv2Engine turns into a MALFORMED_RESPONSE error response), not
+     * with an uncaught IllegalArgumentException
+     */
+    @Test
+    public void testRequestWith1ModificationMalformedBase64Value()
+    {
+        testParsingFail( ModifyRequestTest.class, "request_with_1_modification_malformed_base64_value.xml" );
     }
 
 
