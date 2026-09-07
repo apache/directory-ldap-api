@@ -431,8 +431,18 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
      */
     public void addCurrentFilter( Filter localFilter ) throws DecoderException
     {
+        // The filter element's TLV must occur at the structural position the grammar
+        // state assumes: directly nested inside the enclosing connector's TLV (or
+        // inside the SearchRequest TLV for the root filter). Without this check, a
+        // filter TLV physically nested inside another filter element's TLV would be
+        // attached as a sibling, decoding a filter a conformant parser rejects
+        // (parser differential / filter-structure smuggling).
+        TLV currentTlv = getCurrentTLV();
+        TLV parentTlv = currentTlv != null ? currentTlv.getParent() : null;
+
         if ( currentFilter != null )
         {
+            // Check that the current filter 
             // Guard against StackOverflowError : the nesting depth of the filter
             // is driven by the incoming PDU, so it has to be bounded before we
             // accept one more level.
@@ -452,6 +462,12 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
             // this parent, and will become the currentFilter if it's a connector.
             if ( currentFilter instanceof ConnectorFilter )
             {
+                // Just check if the parent is null or is not the proper parent
+                if ( ( parentTlv == null ) || ( parentTlv.getId() != currentFilter.getTlvId() ) )
+                {
+                    throw new DecoderException( I18n.err( I18n.ERR_05161_MISPLACED_FILTER_TLV, localFilter ) );
+                }
+
                 ( ( ConnectorFilter ) currentFilter ).addFilter( localFilter );
             }
             else
@@ -468,7 +484,13 @@ public class LdapMessageContainer<E extends Message> extends AbstractContainer
         }
         else
         {
-            // No parent. This Filter will become the root.
+            // No parent. This Filter will become the root if the parent's TLV is correct (ie not null
+            // or with a wrong ID)
+            if ( ( parentTlv == null ) || ( parentTlv.getId() != tlvId ) )
+            {
+                throw new DecoderException( I18n.err( I18n.ERR_05161_MISPLACED_FILTER_TLV, localFilter ) );
+            }
+
             currentFilter = localFilter;
             currentFilter.setParent( null, tlvId );
             topFilter = localFilter;
