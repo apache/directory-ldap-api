@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
@@ -492,6 +491,16 @@ public class OpenLdapSchemaParserTest
         assertThrows( ParseException.class, () ->
         {
             parser.parse( "AttributeType ( 1.2.3 NAME (" );
+        });
+    }
+    
+    
+    @Test
+    public void testTooShort() throws Exception
+    {
+        assertThrows( ParseException.class , () ->
+        {
+            parser.parse(  "ObjectClass( 1.1 DESC 'x\\5" );
         });
     }
 }

@@ -953,10 +953,11 @@ public class OpenLdapSchemaParser
     {
         return isEscape( pos, pos.start );
     }
+    
 
     private static boolean isEscape( PosSchema pos, int index ) throws LdapSchemaException
     {
-        if ( ( pos.line == null ) || ( pos.line.length() - index < 2 ) || pos.line.charAt( index ) != ESCAPE )
+        if ( ( pos.line == null ) || ( pos.line.length() - index < 3 ) || pos.line.charAt( index ) != ESCAPE )
         {
             return false;
         }
@@ -974,6 +975,7 @@ public class OpenLdapSchemaParser
 
         return isEscape;
     }
+    
     
     /**
      * 
