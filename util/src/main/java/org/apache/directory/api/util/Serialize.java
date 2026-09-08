@@ -104,7 +104,15 @@ public final class Serialize
             throw new ArrayIndexOutOfBoundsException();
         }
 
-        return ( buffer[pos] << 24 ) + ( buffer[pos + 1] << 16 ) + ( buffer[pos + 2] << 8 ) + buffer[pos + 3];
+        // Mask each byte: bytes are signed in Java, and sign extension would corrupt
+        // any value whose lower three bytes have their high bit set (the exact inverse
+        // of serialize( int, byte[], int ) requires unsigned byte reassembly)
+        return ( ( buffer[pos] & 0xFF ) << 24 )
+             | ( ( buffer[pos + 1] & 0xFF ) << 16 )
+             | ( ( buffer[pos + 2] & 0xFF ) << 8 )
+             |   ( buffer[pos + 3] & 0xFF );
+
+//        return ( buffer[pos] << 24 ) + ( buffer[pos + 1] << 16 ) + ( buffer[pos + 2] << 8 ) + buffer[pos + 3];
     }
 
 
@@ -124,6 +132,14 @@ public final class Serialize
 
         int len = deserializeInt( buffer, pos );
         pos += 4;
+
+        if ( len < 0 )
+        {
+            // A negative length can only come from a corrupted buffer: fail loudly
+            // instead of silently returning an empty array and desynchronizing the
+            // caller's cursor
+            throw new ArrayIndexOutOfBoundsException();
+        }
 
         if ( len > 0 )
         {
