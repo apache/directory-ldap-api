@@ -180,7 +180,13 @@ public class SubstringNode extends LeafNode
         {
             for ( int i = 0; i < anyPattern.length; i++ )
             {
-                buf.append( ".*" ).append( Pattern.quote( anyPattern[i] ) );
+                // Wrap each 'any' fragment in an independent (atomic) group with a
+                // reluctant quantifier : the group commits to the first occurrence
+                // of the fragment and can never be backtracked into. Matching the
+                // in-order fragment sequence stays linear, instead of exhibiting
+                // catastrophic backtracking (O(n^k)) on filters carrying many '*'
+                // wildcards, e.g. (description=*a*a*a*a*a*a*a*a*).
+                buf.append( "(?>.*?" ).append( Pattern.quote( anyPattern[i] ) ).append( ')' );
             }
         }
 

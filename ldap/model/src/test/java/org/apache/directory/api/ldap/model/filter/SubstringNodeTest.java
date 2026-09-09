@@ -24,10 +24,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 
 /**
@@ -137,5 +140,30 @@ public class SubstringNodeTest
             boolean b3 = pattern.matcher( "Test test" ).matches();
             assertFalse( b3 );
         }
+    }
+
+
+    /**
+     * Tests that a substring assertion with many wildcards does not trigger
+     * catastrophic regex backtracking when it fails to match : 50 'a'
+     * fragments can never be found in a value of 49 'a's, and the failure
+     * must be detected in linear time.
+     */
+    @Test
+    public void testGetRegexpManyWildcardsNoCatastrophicBacktracking() throws Exception
+    {
+        String[] any = new String[50];
+        Arrays.fill( any, "a" );
+
+        Pattern pattern = SubstringNode.getRegex( null, any, null );
+
+        char[] chars = new char[49];
+        Arrays.fill( chars, 'a' );
+        String value = new String( chars );
+
+        boolean matches = assertTimeoutPreemptively( Duration.ofSeconds( 10 ),
+            () -> pattern.matcher( value ).matches() );
+
+        assertFalse( matches );
     }
 }
