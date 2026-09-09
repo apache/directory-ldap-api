@@ -448,7 +448,13 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 throw new ParseException( I18n.err( I18n.ERR_17053_MISSING_TZ ), pos + 1 + digits.length() );
             }
         }
-    }
+        else
+        {
+            // The time zone must be 'Z', '+HH[MM]' or '-HH[MM]' and must terminate the
+            // string: anything else (e.g. trailing garbage after a fraction) is invalid
+            throw new ParseException( I18n.err( I18n.ERR_17053_MISSING_TZ ), pos );
+        }
+   }
 
 
     /**
