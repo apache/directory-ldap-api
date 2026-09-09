@@ -59,7 +59,7 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
  * Here is the grammar:
  * 
  * <pre>
-* triggerSpecification = ( SP )* "after" ( SP )+ ldapOperationSPCalls
+ * triggerSpecification = ( SP )* "after" ( SP )+ ldapOperationSPCalls
  * 
  * ldapOperationSPCalls =
  *              addOperationCalls | 
