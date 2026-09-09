@@ -233,4 +233,84 @@ public class TriggerSpecificationParserTest
             StoredProcedureParameter.Delete_DELETED_ENTRY.instance() ) );
     }
 
+
+    @Test
+    public void testWithLdapContextParameterForAddOperation() throws Exception
+    {
+        TriggerSpecification triggerSpecification = null;
+
+        String spec = "AFTER Add CALL \"Logger.logAddOperation\" ($entry, $attributes, $ldapContext \"ou=Log,ou=System\");";
+
+        triggerSpecification = parser.parse( spec );
+
+        assertNotNull( triggerSpecification );
+        assertEquals( triggerSpecification.getActionTime(), ActionTime.AFTER );
+        assertEquals( triggerSpecification.getLdapOperation(), LdapOperation.ADD );
+        List<SPSpec> spSpecs = triggerSpecification.getSPSpecs();
+        assertTrue( spSpecs != null );
+        assertTrue( spSpecs.size() == 1 );
+        SPSpec theSpec = spSpecs.get( 0 );
+        assertEquals( theSpec.getName(), "Logger.logAddOperation" );
+        assertEquals( theSpec.getOptions().size(), 0 );
+        assertEquals( theSpec.getParameters().size(), 3 );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.Add_ENTRY.instance() ) );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.Add_ATTRIBUTES.instance() ) );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( new Dn( "ou=Log,ou=System" ) ) ) );
+    }
+
+
+    @Test
+    public void testWithLdapContextParameterForModifyOperation() throws Exception
+    {
+        TriggerSpecification triggerSpecification = null;
+
+        String spec = "AFTER Modify CALL \"Logger.logModifyOperation\" ($object, $ldapContext \"ou=Log,ou=System\");";
+
+        triggerSpecification = parser.parse( spec );
+
+        assertNotNull( triggerSpecification );
+        assertEquals( triggerSpecification.getActionTime(), ActionTime.AFTER );
+        assertEquals( triggerSpecification.getLdapOperation(), LdapOperation.MODIFY );
+        List<SPSpec> spSpecs = triggerSpecification.getSPSpecs();
+        assertTrue( spSpecs != null );
+        assertTrue( spSpecs.size() == 1 );
+        SPSpec theSpec = spSpecs.get( 0 );
+        assertEquals( theSpec.getName(), "Logger.logModifyOperation" );
+        assertEquals( theSpec.getOptions().size(), 0 );
+        assertEquals( theSpec.getParameters().size(), 2 );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.Modify_OBJECT.instance() ) );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( new Dn( "ou=Log,ou=System" ) ) ) );
+    }
+
+
+    @Test
+    public void testWithLdapContextParameterForModifyDNOperation() throws Exception
+    {
+        TriggerSpecification triggerSpecification = null;
+
+        String spec = "AFTER ModifyDN.Rename CALL \"Logger.logModifyDNRenameOperation\" ($entry, $ldapContext \"ou=Log,ou=System\");";
+
+        triggerSpecification = parser.parse( spec );
+
+        assertNotNull( triggerSpecification );
+        assertEquals( triggerSpecification.getActionTime(), ActionTime.AFTER );
+        assertEquals( triggerSpecification.getLdapOperation(), LdapOperation.MODIFYDN_RENAME );
+        List<SPSpec> spSpecs = triggerSpecification.getSPSpecs();
+        assertTrue( spSpecs != null );
+        assertTrue( spSpecs.size() == 1 );
+        SPSpec theSpec = spSpecs.get( 0 );
+        assertEquals( theSpec.getName(), "Logger.logModifyDNRenameOperation" );
+        assertEquals( theSpec.getOptions().size(), 0 );
+        assertEquals( theSpec.getParameters().size(), 2 );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.ModifyDN_ENTRY.instance() ) );
+        assertTrue( theSpec.getParameters().contains(
+            StoredProcedureParameter.Generic_LDAP_CONTEXT.instance( new Dn( "ou=Log,ou=System" ) ) ) );
+    }
+
 }

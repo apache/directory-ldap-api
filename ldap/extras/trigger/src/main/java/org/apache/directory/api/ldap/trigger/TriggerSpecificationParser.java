@@ -126,7 +126,7 @@ import static org.apache.directory.api.util.ParserUtil.ZERO_N;
  *    ( 
  *      ( SP )+ callNameOptionList
  *      OPEN_PAREN ( SP )*
- *        ( modifyDNSPParameterList )?
+ *        ( modifyDNParameterList )?
  *      CLOSE_PAREN ( SP )* SEMI ( SP )*
  *    )+
  *         
@@ -513,7 +513,6 @@ public class TriggerSpecificationParser
                 case ID_LDAP_CONTEXT:
                     // Get the DN
                     skipSpaces( spec, pos, ONE_N );
-                    String dnStr = parseQuotedSafeUtf8( token, pos );
                     
                     Dn ldapContext = parseDn( spec, pos );
 
@@ -688,7 +687,6 @@ public class TriggerSpecificationParser
                 case ID_LDAP_CONTEXT:
                     // Get the DN
                     skipSpaces( spec, pos, ONE_N );
-                    String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
                     Dn ldapContext = parseDn( spec, pos );
                 
@@ -799,7 +797,6 @@ public class TriggerSpecificationParser
                 case ID_LDAP_CONTEXT:
                     // Get the DN
                     skipSpaces( spec, pos, ONE_N );
-                    String dnStr = parseQuotedSafeUtf8( spec, pos );
                     
                     Dn ldapContext = parseDn( spec, pos );
 
@@ -970,8 +967,7 @@ public class TriggerSpecificationParser
             
             tsModifier.addSPSpec( spSpecModifier.getSPSpec() ); 
 
-            // The closing ')'
-            matchChar( spec, RPAREN, pos );
+            // The closing ')' has already been swallowed
             skipSpaces( spec, pos, ZERO_N );
             matchChar( spec, SEMI_COLON, pos );
             skipSpaces( spec, pos, ZERO_N );
@@ -988,7 +984,7 @@ public class TriggerSpecificationParser
      *    ( 
      *      ( SP )+ callNameOptionList
      *      OPEN_PAREN ( SP )*
-     *        ( modifyDNSPParameterList )?
+     *        ( modifyDNParameterList )?
      *      CLOSE_PAREN ( SP )* SEMI ( SP )*
      *    )+
      * </pre>
