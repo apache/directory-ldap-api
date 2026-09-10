@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.codec.Charsets;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.api.dsmlv2.ParserUtils;
@@ -260,7 +259,7 @@ public class Dsmlv2Engine
         {
             ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
             processDSML( byteOut );
-            return new String( byteOut.toByteArray(), Charsets.UTF_8 );
+            return new String( byteOut.toByteArray(), StandardCharsets.UTF_8 );
         }
         catch ( IOException e )
         {

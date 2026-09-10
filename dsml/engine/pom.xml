@@ -82,7 +82,6 @@
               org.apache.directory.api.dsmlv2.engine;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
-              org.apache.commons.codec;version=${commons.codec.version},
               org.apache.directory.api.dsmlv2;version=${project.version},
               org.apache.directory.api.dsmlv2.request;version=${project.version},
               org.apache.directory.api.dsmlv2.response;version=${project.version},

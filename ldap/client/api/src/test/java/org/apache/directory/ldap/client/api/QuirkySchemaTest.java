@@ -512,6 +512,7 @@ public class QuirkySchemaTest
             
             
             @Override
+            @Deprecated
             public boolean doesFutureExistFor( int messageId )
             {
                 return false;

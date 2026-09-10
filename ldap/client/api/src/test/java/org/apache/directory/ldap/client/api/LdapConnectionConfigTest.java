@@ -42,7 +42,7 @@ public class LdapConnectionConfigTest {
         LdapConnectionConfig config = new LdapConnectionConfig();
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            config.setTrustManagers(null);
+            config.setTrustManagers((TrustManager[])null);
         });
     }
     

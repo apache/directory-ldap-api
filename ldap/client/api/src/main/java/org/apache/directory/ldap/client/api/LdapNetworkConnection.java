@@ -4933,10 +4933,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public boolean doesFutureExistFor( int messageId )
     {
-        ResponseFuture<?> responseFuture = futureMap.get( messageId );
-        return responseFuture != null;
+        return isRequestCompleted( messageId );
     }
 
 
