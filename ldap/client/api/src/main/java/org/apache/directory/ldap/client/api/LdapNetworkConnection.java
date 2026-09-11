@@ -276,6 +276,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /** The SaslFilter key */
     private static final String SASL_FILTER_KEY = "saslFilter";
+    
+    /**
+     * The TLS protocol versions enabled by default when the configuration does not
+     * specify any : only TLS 1.2 and TLS 1.3, as SSLv3, TLS 1.0 and TLS 1.1 are
+     * deprecated (RFC 8996). Older versions can still be enabled explicitly with
+     * {@link LdapConnectionConfig#setEnabledProtocols(String...)}.
+     */
+    static final String[] DEFAULT_ENABLED_PROTOCOLS = { "TLSv1.2", "TLSv1.3" };
+
 
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
@@ -5164,7 +5173,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             
             //sslFilter.setUseNonBlockingPipeline( true );
 
-            // Be sure we disable SSLV3
+            // Be sure we disable SSLV3, TLSv1 and TLSv1.1 (RFC 8996)
             String[] enabledProtocols = config.getEnabledProtocols();
 
             if ( ( enabledProtocols != null ) && ( enabledProtocols.length != 0 ) )
@@ -5173,9 +5182,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
             else
             {
-                // Default to TLS
-                sslFilter.setEnabledProtocols( new String[]
-                    { "TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3" } );
+                // Default to the non-deprecated TLS versions only. TLSv1/TLSv1.1
+                // must be opted into explicitly via LdapConnectionConfig.setEnabledProtocols()
+                sslFilter.setEnabledProtocols( DEFAULT_ENABLED_PROTOCOLS );
             }
 
             // for LDAPS/TLS
