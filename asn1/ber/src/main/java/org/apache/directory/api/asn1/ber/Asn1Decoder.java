@@ -402,7 +402,13 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
             // We have a parent, so we will check that its expected length is
             // not exceeded.
             int expectedLength = parentTLV.getExpectedLength();
-            int currentLength = tlv.getSize();
+
+            // The TLV size (1 tag byte + length bytes + value length) is
+            // computed in long arithmetic : for a hostile length close to
+            // Integer.MAX_VALUE, TLV.getSize()'s int sum wraps negative,
+            // which would bypass the containment check below and corrupt the
+            // parent's expectedLength.
+            long currentLength = 1L + tlv.getLengthNbBytes() + tlv.getLength();
 
             if ( expectedLength < currentLength )
             {
@@ -412,10 +418,10 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
                 {
                     LOG.debug( I18n.msg( I18n.MSG_01005_TLV, 
                                 Integer.valueOf( expectedLength ), 
-                                Integer.valueOf( currentLength ) ) );
+                                Long.valueOf( currentLength ) ) );
                 }
                 
-                throw new DecoderException( I18n.err( I18n.ERR_01003_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH, Integer
+                throw new DecoderException( I18n.err( I18n.ERR_01003_VALUE_LENGTH_ABOVE_EXPECTED_LENGTH, Long
                     .valueOf( currentLength ), Integer.valueOf( expectedLength ) ) );
             }
 
@@ -491,8 +497,9 @@ public final class Asn1Decoder implements TLVBerDecoderMBean
             }
             else
             {
-                // Renew the expected Length.
-                parentTLV.setExpectedLength( expectedLength - currentLength );
+                // Renew the expected Length. The cast is safe : currentLength
+                // is > 0 and < expectedLength here, so the difference fits an int.
+                parentTLV.setExpectedLength( ( int ) ( expectedLength - currentLength ) );
                 tlv.setExpectedLength( length );
 
                 if ( tlv.isConstructed() )
