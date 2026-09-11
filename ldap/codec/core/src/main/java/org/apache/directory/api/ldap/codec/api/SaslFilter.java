@@ -73,6 +73,18 @@ public class SaslFilter extends IoFilterAdapter
      */
     public static final String OFFSET = SaslFilter.class.getName() + ".Offset";
 
+    /**
+     * A session attribute key that holds the bytes of a partially received
+     * 4 byte SASL length prefix.
+     */
+    public static final String LENGTH_BYTES = SaslFilter.class.getName() + ".LengthBuffer";
+
+    /**
+     * A session attribute key that holds the offset of a partially received
+     * 4 byte SASL length prefix.
+     */
+    public static final String LENGTH_OFFSET = SaslFilter.class.getName() + ".LengthOffset";
+
     /** The SASL client, only set if the filter is used at the client side. */
     private final SaslClient saslClient;
 
@@ -178,14 +190,54 @@ public class SaslFilter extends IoFilterAdapter
              */
             byte[] bytes = ( byte[] ) session.getAttribute( BYTES, null );
             int offset = ( int ) session.getAttribute( OFFSET, -1 );
+            
             if ( bytes == null )
             {
-                int bufferSize = buf.getInt();
-                if ( bufferSize > maxBufferSize )
+                /*
+                 * Read the 4 length prefix bytes, handling the case that the prefix
+                 * itself is split across TCP fragments.
+                 */
+                byte[] lengthBytes = ( byte[] ) session.getAttribute( LENGTH_BYTES, null );
+                int lengthOffset = ( int ) session.getAttribute( LENGTH_OFFSET, 0 );
+
+                if ( lengthBytes == null )
                 {
-                    throw new IllegalStateException(
-                        bufferSize + " exceeds the negotiated receive buffer size limit: " + maxBufferSize );
+                    lengthBytes = new byte[4];
+                    lengthOffset = 0;
                 }
+
+                int lengthLength = Math.min( lengthBytes.length - lengthOffset, buf.remaining() );
+                buf.get( lengthBytes, lengthOffset, lengthLength );
+                lengthOffset += lengthLength;
+
+                if ( lengthOffset < lengthBytes.length )
+                {
+                    LOG.debug( "Partial SASL length prefix received:  {}/{}", lengthOffset, lengthBytes.length );
+                    session.setAttribute( LENGTH_BYTES, lengthBytes );
+                    session.setAttribute( LENGTH_OFFSET, lengthOffset );
+                    break;
+                }
+
+                session.removeAttribute( LENGTH_BYTES );
+                session.removeAttribute( LENGTH_OFFSET );
+
+                int bufferSize = ( ( lengthBytes[0] & 0xFF ) << 24 ) | ( ( lengthBytes[1] & 0xFF ) << 16 )
+                    | ( ( lengthBytes[2] & 0xFF ) << 8 ) | ( lengthBytes[3] & 0xFF );
+
+                /*
+                 * Fully validate the length prefix before any allocation. The prefix is
+                 * outside of the SASL integrity protection, so it must be treated as
+                 * untrusted input: a negative or zero length is rejected through the
+                 * regular SaslException error path instead of surfacing as an
+                 * unhandled RuntimeException in the filter chain.
+                 */
+                if ( ( bufferSize <= 0 ) || ( bufferSize > maxBufferSize ) )
+                {
+                    throw new SaslException(
+                        "Invalid SASL length prefix " + bufferSize
+                            + ", negotiated receive buffer size limit: " + maxBufferSize );
+                }
+
                 bytes = new byte[bufferSize];
                 offset = 0;
             }
@@ -268,6 +320,13 @@ public class SaslFilter extends IoFilterAdapter
          * Ensure to not send larger SASL message than negotiated.
          */
         int max = maxBufferSize - 200;
+
+        if ( max <= 0 )
+        {
+            throw new SaslException( "Negotiated max buffer size " + maxBufferSize
+                + " is too small to wrap any data" );
+        }
+
         for ( int offset = 0; offset < bufferLength; offset += max )
         {
             int length = Math.min( bufferLength - offset, max );
