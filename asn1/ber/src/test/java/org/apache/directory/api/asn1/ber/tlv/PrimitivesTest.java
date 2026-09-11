@@ -179,19 +179,37 @@ public class PrimitivesTest
         assertEquals( -1, IntegerDecoder.parse( value ) );
         value.reset();
 
-        value.init( 5 );
-        // res = 2^31 = MinInt
-        value.setData( new byte[]
-            { 0x00, ( byte ) 0x80, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00 } );
-        assertEquals( Integer.MIN_VALUE, IntegerDecoder.parse( value ) );
-        value.reset();
+        try
+        {
+            value.init( 5 );
+            // 2^31 : does not fit in an int, must be rejected instead of
+            // silently wrapping to Integer.MIN_VALUE
+            value.setData( new byte[]
+                { 0x00, ( byte ) 0x80, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00 } );
+            IntegerDecoder.parse( value );
+            fail();
+        }
+        catch ( IntegerDecoderException ide )
+        {
+            // Expected
+            value.reset();
+        }
 
-        value.init( 5 );
-        // res = 2^31 = MinInt
-        value.setData( new byte[]
-            { 0x00, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF } );
-        assertEquals( -1, IntegerDecoder.parse( value ) );
-        value.reset();
+        try
+        {
+            value.init( 5 );
+            // 2^32 - 1 = 4294967295 : does not fit in an int, must be rejected
+            // instead of silently wrapping to -1
+            value.setData( new byte[]
+                { 0x00, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF } );
+            IntegerDecoder.parse( value );
+            fail();
+        }
+        catch ( IntegerDecoderException ide )
+        {
+            // Expected
+            value.reset();
+        }
 
         try
         {

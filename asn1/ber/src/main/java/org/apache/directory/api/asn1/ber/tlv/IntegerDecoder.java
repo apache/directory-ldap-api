@@ -131,17 +131,19 @@ public final class IntegerDecoder
                         throw new IntegerDecoderException( I18n.err( I18n.ERR_01304_0_BYTES_LONG_INTEGER ) );
                     }
 
-                    result = bytes[1] & 0x00FF;
-                    result = ( result << 8 ) | ( bytes[2] & 0x00FF );
-                    result = ( result << 8 ) | ( bytes[3] & 0x00FF );
-                    result = ( result << 8 ) | ( bytes[4] & 0x00FF );
+                    // A valid 5 bytes INTEGER (a 0x00 pad followed by a byte with
+                    // its high bit set) is a positive value in [2^31, 2^32 - 1] :
+                    // it never fits in a Java int. Reject it instead of silently
+                    // returning the wrapped (negative) 32 low bits, which callers
+                    // would misinterpret (eg a pagedResults size of 4294967295
+                    // being absorbed as 'unlimited' instead of a protocol error).
+                    throw new IntegerDecoderException( I18n.err( I18n.ERR_01306_VALUE_NOT_IN_RANGE,
+                        Integer.MIN_VALUE, Integer.MAX_VALUE ) );
                 }
                 else
                 {
                     throw new IntegerDecoderException( I18n.err( I18n.ERR_01304_0_BYTES_LONG_INTEGER ) );
                 }
-
-                break;
 
             case 4:
                 if ( bytes[0] == 0x00 )
