@@ -114,7 +114,7 @@ public class PooledLdapConnectionTest
         }
         verify( spyPooledConnection ).isConnected(); // called inside the try-with-resources block
         verify(spyPooledConnection).close(); // auto close
-        verify( pool ).releaseConnection( connection ); // close called releaseConnection
+        verify( pool ).getConnection(); // We should have asked for a new connection after the disconnection
     }
 
 
