@@ -1036,6 +1036,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 schemaManager.add( newAttributeType );
                 entry.addAttribute( attributeType, attributeValue );
             }
+            else
+            {
+                // A parser must not silently discard data from a document it accepted :
+                // when the relaxed-mode recovery does not apply (strict SchemaManager,
+                // or a value rejected by the syntax checker), fail the record visibly
+                // instead of dropping the attribute while reporting a successful parse.
+                LOG.error( I18n.err( I18n.ERR_13460_BAD_ATTRIBUTE ), e );
+                throw new LdapLdifException( I18n.err( I18n.ERR_13460_BAD_ATTRIBUTE ), e );
+            }
         }
     }
 

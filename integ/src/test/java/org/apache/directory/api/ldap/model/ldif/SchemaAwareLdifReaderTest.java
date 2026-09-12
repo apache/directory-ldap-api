@@ -102,6 +102,21 @@ public class SchemaAwareLdifReaderTest
         {
             data[i] = ( byte ) i;
         }
+        
+        // Be sure that the first bytes are compliant with the JPEG format
+        
+        data[0] = ( byte ) 0xFF;
+        data[1] = ( byte ) 0xD8;
+        data[2] = ( byte ) 0xFF;
+        data[3] = ( byte ) 0xE0;
+        data[4] = ( byte ) 0x00;
+        data[5] = ( byte ) 0x00;
+        data[6] = 'J';
+        data[7] = 'F';
+        data[8] = 'I';
+        data[9] = 'F';
+        data[10] = 0x00;
+
 
         HJENSEN_JPEG_FILE = createFile( "hjensen", data );
         FIONA_JPEG_FILE = createFile( "fiona", data );
@@ -200,35 +215,51 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifVersionStart() throws Exception
     {
-        String ldif =
-            "version:\n" +
-                " 1\n" +
-                "\n" +
-                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                "cn: app1\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName:   app1   \n" +
-                "dependencies:\n" +
-                "envVars:";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertEquals( 1, reader.getVersion() );
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( ldif.length(), entry.getLengthBeforeParsing() );
-
-        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
+            String ldif =
+                "version:\n" +
+                    " 1\n" +
+                    "\n" +
+                    "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                    "cn: app1\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName:   app1   \n" +
+                    "dependencies:\n" +
+                    "envVars:";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertEquals( 1, reader.getVersion() );
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+    
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( ldif.length(), entry.getLengthBeforeParsing() );
+    
+            assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
@@ -265,32 +296,47 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifParserEndSpaces() throws Exception
     {
-        String ldif =
-            "version:   1\n" +
-                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                "cn: app1\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName:   app1   \n" +
-                "dependencies:\n" +
-                "envVars:";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
-
+            String ldif =
+                "version:   1\n" +
+                    "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                    "cn: app1\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName:   app1   \n" +
+                    "dependencies:\n" +
+                    "envVars:";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+    
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+    
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
@@ -559,167 +605,231 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifParserMuiltiLineComments() throws Exception
     {
-        String ldif =
-            "#comment\n" +
-                " still a comment\n" +
-                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                "cn: app1#another comment\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName: app1\n" +
-                "serviceType: http\n" +
-                "userPassword:\n" +
-                "httpHeaders:\n" +
-                "startupOptions:";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "app1#another comment" ) );
-
-        attr = entry.get( "objectclass" );
-        assertTrue( attr.contains( "top" ) );
-        assertTrue( attr.contains( "apApplication" ) );
-
-        attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
-
-        attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getString() );
+            String ldif =
+                "#comment\n" +
+                    " still a comment\n" +
+                    "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                    "cn: app1#another comment\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName: app1\n" +
+                    "serviceType: http\n" +
+                    "userPassword:\n" +
+                    "httpHeaders:\n" +
+                    "startupOptions:";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "cn" );
+            assertTrue( attr.contains( "app1#another comment" ) );
+    
+            attr = entry.get( "objectclass" );
+            assertTrue( attr.contains( "top" ) );
+            assertTrue( attr.contains( "apApplication" ) );
+    
+            attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+    
+            attr = entry.get( "userPassword" );
+            assertEquals( "", attr.get().getString() );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
     @Test
     public void testLdifParserMultiLineEntries() throws Exception
     {
-        String ldif =
-            "#comment\n" +
-                "dn: cn=app1,ou=appli\n" +
-                " cations,ou=conf,dc=apache,dc=org\n" +
-                "cn: app1#another comment\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName: app1\n" +
-                "serviceType: http\n" +
-                "userPassword:\n" +
-                "httpHeaders:\n" +
-                "startupOptions:";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "app1#another comment" ) );
-
-        attr = entry.get( "objectclass" );
-        assertTrue( attr.contains( "top" ) );
-        assertTrue( attr.contains( "apApplication" ) );
-
-        attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
-
-        attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getString() );
+            String ldif =
+                "#comment\n" +
+                    "dn: cn=app1,ou=appli\n" +
+                    " cations,ou=conf,dc=apache,dc=org\n" +
+                    "cn: app1#another comment\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName: app1\n" +
+                    "serviceType: http\n" +
+                    "userPassword:\n" +
+                    "httpHeaders:\n" +
+                    "startupOptions:";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "cn" );
+            assertTrue( attr.contains( "app1#another comment" ) );
+    
+            attr = entry.get( "objectclass" );
+            assertTrue( attr.contains( "top" ) );
+            assertTrue( attr.contains( "apApplication" ) );
+    
+            attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+    
+            attr = entry.get( "userPassword" );
+            assertEquals( "", attr.get().getString() );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
     @Test
     public void testLdifParserBase64() throws Exception
     {
-        String ldif =
-            "#comment\n" +
-                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                "cn:: RW1tYW51ZWwgTMOpY2hhcm55\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName: app1\n" +
-                "serviceType: http\n" +
-                "userPassword:\n" +
-                "httpHeaders:\n" +
-                "startupOptions:";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "Emmanuel L\u00e9charny" ) );
-
-        attr = entry.get( "objectclass" );
-        assertTrue( attr.contains( "top" ) );
-        assertTrue( attr.contains( "apApplication" ) );
-
-        attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
-
-        attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getString() );
+            String ldif =
+                "#comment\n" +
+                    "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                    "cn:: RW1tYW51ZWwgTMOpY2hhcm55\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName: app1\n" +
+                    "serviceType: http\n" +
+                    "userPassword:\n" +
+                    "httpHeaders:\n" +
+                    "startupOptions:";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "cn" );
+            assertTrue( attr.contains( "Emmanuel L\u00e9charny" ) );
+    
+            attr = entry.get( "objectclass" );
+            assertTrue( attr.contains( "top" ) );
+            assertTrue( attr.contains( "apApplication" ) );
+    
+            attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+    
+            attr = entry.get( "userPassword" );
+            assertEquals( "", attr.get().getString() );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
     @Test
     public void testLdifParserBase64MultiLine() throws Exception
     {
-        String ldif =
-            "#comment\n" +
-                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                "cn:: RW1tYW51ZWwg\n" +
-                " TMOpY2hhcm55ICA=\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName: app1\n" +
-                "serviceType: http\n" +
-                "userPassword:\n" +
-                "httpHeaders:\n" +
-                "startupOptions:";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertNotNull( entries );
-
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isLdifContent() );
-
-        assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
-
-        Attribute attr = entry.get( "cn" );
-        assertTrue( attr.contains( "Emmanuel L\u00e9charny  " ) );
-
-        attr = entry.get( "objectclass" );
-        assertTrue( attr.contains( "top" ) );
-        assertTrue( attr.contains( "apApplication" ) );
-
-        attr = entry.get( "displayname" );
-        assertTrue( attr.contains( "app1" ) );
-
-        attr = entry.get( "userPassword" );
-        assertEquals( "", attr.get().getString() );
+            String ldif =
+                "#comment\n" +
+                    "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                    "cn:: RW1tYW51ZWwg\n" +
+                    " TMOpY2hhcm55ICA=\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName: app1\n" +
+                    "serviceType: http\n" +
+                    "userPassword:\n" +
+                    "httpHeaders:\n" +
+                    "startupOptions:";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertNotNull( entries );
+    
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isLdifContent() );
+    
+            assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
+    
+            Attribute attr = entry.get( "cn" );
+            assertTrue( attr.contains( "Emmanuel L\u00e9charny  " ) );
+    
+            attr = entry.get( "objectclass" );
+            assertTrue( attr.contains( "top" ) );
+            assertTrue( attr.contains( "apApplication" ) );
+    
+            attr = entry.get( "displayname" );
+            assertTrue( attr.contains( "app1" ) );
+    
+            attr = entry.get( "userPassword" );
+            assertEquals( "", attr.get().getString() );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
@@ -1159,67 +1269,83 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifParserRFC2849Sample5() throws Exception, Exception
     {
-        String ldif =
-            "version: 1\n" +
-                "dn: cn=Horatio Jensen, ou=Product Testing, dc=airius, dc=com\n" +
-                "objectclass: top\n" +
-                "objectclass: person\n" +
-                "objectclass: organizationalPerson\n" +
-                "cn: Horatio Jensen\n" +
-                "cn: Horatio N Jensen\n" +
-                "sn: Jensen\n" +
-                "uid: hjensen\n" +
-                "telephonenumber: +1 408 555 1212\n" +
-                "jpegphoto:< file:" +
-                HJENSEN_JPEG_FILE.getAbsolutePath() +
-                "\n";
-
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        String[][] values =
-            {
-                { "dn", "cn=Horatio Jensen, ou=Product Testing, dc=airius, dc=com" },
-                { "objectclass", "top" },
-                { "objectclass", "person" },
-                { "objectclass", "organizationalPerson" },
-                { "cn", "Horatio Jensen" },
-                { "cn", "Horatio N Jensen" },
-                { "sn", "Jensen" },
-                { "uid", "hjensen" },
-                { "telephonenumber", "+1 408 555 1212" },
-                { "jpegphoto", null } };
-
-        assertEquals( 1, entries.size() );
-
-        // Entry 1
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isLdifContent() );
-
-        for ( int i = 0; i < values.length; i++ )
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
         {
-            if ( "dn".equalsIgnoreCase( values[i][0] ) )
-            {
-                assertEquals( values[i][1], entry.getDn().getName() );
-            }
-            else if ( "jpegphoto".equalsIgnoreCase( values[i][0] ) )
-            {
-                // We can't have a jpegPhoto with a null value
-                assertNull( entry.get( values[i][0] ) );
-            }
-            else
-            {
-                Attribute attr = entry.get( values[i][0] );
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-                if ( attr.contains( values[i][1] ) )
+            String ldif =
+                "version: 1\n" +
+                    "dn: cn=Horatio Jensen, ou=Product Testing, dc=airius, dc=com\n" +
+                    "objectclass: top\n" +
+                    "objectclass: person\n" +
+                    "objectclass: organizationalPerson\n" +
+                    "cn: Horatio Jensen\n" +
+                    "cn: Horatio N Jensen\n" +
+                    "sn: Jensen\n" +
+                    "uid: hjensen\n" +
+                    "telephonenumber: +1 408 555 1212\n" +
+                    "jpegphoto:< file:" +
+                    HJENSEN_JPEG_FILE.getAbsolutePath() +
+                    "\n";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            String[][] values =
                 {
-                    assertTrue( true );
+                    { "dn", "cn=Horatio Jensen, ou=Product Testing, dc=airius, dc=com" },
+                    { "objectclass", "top" },
+                    { "objectclass", "person" },
+                    { "objectclass", "organizationalPerson" },
+                    { "cn", "Horatio Jensen" },
+                    { "cn", "Horatio N Jensen" },
+                    { "sn", "Jensen" },
+                    { "uid", "hjensen" },
+                    { "telephonenumber", "+1 408 555 1212" },
+                    { "jpegphoto", null } };
+    
+            assertEquals( 1, entries.size() );
+    
+            // Entry 1
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isLdifContent() );
+    
+            for ( int i = 0; i < values.length; i++ )
+            {
+                if ( "dn".equalsIgnoreCase( values[i][0] ) )
+                {
+                    assertEquals( values[i][1], entry.getDn().getName() );
+                }
+                else if ( "jpegphoto".equalsIgnoreCase( values[i][0] ) )
+                {
+                    // We can't have a jpegPhoto with a null value
+                    assertNotNull( entry.get( values[i][0] ) );
                 }
                 else
                 {
-                    assertTrue( attr.contains( values[i][1].getBytes( StandardCharsets.UTF_8 ) ) );
+                    Attribute attr = entry.get( values[i][0] );
+    
+                    if ( attr.contains( values[i][1] ) )
+                    {
+                        assertTrue( true );
+                    }
+                    else
+                    {
+                        assertTrue( attr.contains( values[i][1].getBytes( StandardCharsets.UTF_8 ) ) );
+                    }
                 }
+            }
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
             }
         }
     }
@@ -1263,232 +1389,248 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifParserRFC2849Sample6() throws Exception, Exception
     {
-        String ldif =
-            "version: 1\n" +
-                // First entry modification : ADD
-                "# Add a new entry\n" +
-                "dn: cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com\n" +
-                "changetype: add\n" +
-                "objectclass: top\n" +
-                "objectclass: person\n" +
-                "objectclass: organizationalPerson\n" +
-                "cn: Fiona Jensen\n" +
-                "sn: Jensen\n" +
-                "uid: fiona\n" +
-                "telephonenumber: +1 408 555 1212\n" +
-                "jpegphoto:< file:" +
-                FIONA_JPEG_FILE.getAbsolutePath() +
-                "\n" +
-                "\n"
-                +
-                // Second entry modification : DELETE
-                "# Delete an existing entry\n" +
-                "dn: cn=Robert Jensen, ou=Marketing, dc=airius, dc=com\n" +
-                "changetype: delete\n" +
-                "\n"
-                +
-                // Third entry modification : MODRDN
-                "# Modify an entry's relative distinguished name\n" +
-                "dn: cn=Paul Jensen, ou=Product Development, dc=airius, dc=com\n" +
-                "changetype: modrdn\n" +
-                "newrdn: cn=Paula Jensen\n" +
-                "deleteoldrdn: 1\n" +
-                "\n"
-                +
-                // Forth entry modification : MODRDN
-                "# Rename an entry and move all of its children to a new location in\n" +
-                "# the directory tree (only implemented by LDAPv3 servers).\n" +
-                "dn: ou=PD Accountants, ou=Product Development, dc=airius, dc=com\n" +
-                "changetype: moddn\n" +
-                "newrdn: ou=Product Development Accountants\n" +
-                "deleteoldrdn: 0\n" +
-                "newsuperior: ou=Accounting, dc=airius, dc=com\n" +
-                "# Modify an entry: add an additional value to the postaladdress\n" +
-                "# attribute, completely delete the description attribute, replace\n" +
-                "# the telephonenumber attribute with two values, and delete a specific\n" +
-                "# value from the facsimiletelephonenumber attribute\n" +
-                "\n"
-                +
-                // Fitfh entry modification : MODIFY
-                "dn: cn=Paula Jensen, ou=Product Development, dc=airius, dc=com\n" +
-                "changetype: modify\n" +
-                "add: postaladdress\n" +
-                "postaladdress: 123 Anystreet $ Sunnyvale, CA $ 94086\n" +
-                "-\n" +
-                "delete: description\n" +
-                "-\n" +
-                "replace: telephonenumber\n" +
-                "telephonenumber: +1 408 555 1234\n" +
-                "telephonenumber: +1 408 555 5678\n" +
-                "-\n" +
-                "delete: facsimiletelephonenumber\n" +
-                "facsimiletelephonenumber: +1 408 555 9876\n" +
-                "-\n" +
-                "\n"
-                +
-                // Sixth entry modification : MODIFY
-                "# Modify an entry: replace the postaladdress attribute with an empty\n" +
-                "# set of values (which will cause the attribute to be removed), and\n" +
-                "# delete the entire description attribute. Note that the first will\n" +
-                "# always succeed, while the second will only succeed if at least\n" +
-                "# one value for the description attribute is present.\n" +
-                "dn: cn=Ingrid Jensen, ou=Product Support, dc=airius, dc=com\n" +
-                "changetype: modify\n" +
-                "replace: postaladdress\n" +
-                "-\n" +
-                "delete: description\n" +
-                "-\n";
-
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        String[][][] values =
-            {
-                // First entry modification : ADD
-                {
-                    { "dn", "cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com" },
-                    { "objectclass", "top" },
-                    { "objectclass", "person" },
-                    { "objectclass", "organizationalPerson" },
-                    { "cn", "Fiona Jensen" },
-                    { "sn", "Jensen" },
-                    { "uid", "fiona" },
-                    { "telephonenumber", "+1 408 555 1212" },
-                    { "jpegphoto", "" } },
-                    // Second entry modification : DELETE
-                    {
-                        { "dn", "cn=Robert Jensen, ou=Marketing, dc=airius, dc=com" } },
-                    // Third entry modification : MODRDN
-                    {
-                        { "dn", "cn=Paul Jensen, ou=Product Development, dc=airius, dc=com" },
-                        { "cn=Paula Jensen" } },
-                    // Forth entry modification : MODRDN
-                    {
-                        { "dn", "ou=PD Accountants, ou=Product Development, dc=airius, dc=com" },
-                        { "ou=Product Development Accountants" },
-                        { "ou=Accounting, dc=airius, dc=com" } },
-                    // Fitfh entry modification : MODIFY
-                    {
-                        { "dn", "cn=Paula Jensen, ou=Product Development, dc=airius, dc=com" },
-                        // add
-                        { "postaladdress", "123 Anystreet $ Sunnyvale, CA $ 94086" },
-                            // delete
-                            { "description" },
-                            // replace
-                            { "telephonenumber", "+1 408 555 1234", "+1 408 555 5678" },
-                            // delete
-                            { "facsimiletelephonenumber", "+1 408 555 9876" }, },
-                    // Sixth entry modification : MODIFY
-                    {
-                        { "dn", "cn=Ingrid Jensen, ou=Product Support, dc=airius, dc=com" },
-                        // replace
-                        { "postaladdress" },
-                            // delete
-                            { "description" } } };
-
-        LdifEntry entry = entries.get( 0 );
-        assertTrue( entry.isChangeAdd() );
-
-        for ( int i = 0; i < values.length; i++ )
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
         {
-            if ( "dn".equalsIgnoreCase( values[0][i][0] ) )
-            {
-                assertEquals( values[0][i][1], entry.getDn().getName() );
-            }
-            else if ( "jpegphoto".equalsIgnoreCase( values[0][i][0] ) )
-            {
-                Attribute attr = entry.get( values[0][i][0] );
-                assertEquals( Strings.dumpBytes( data ), Strings.dumpBytes( attr.getBytes() ) );
-            }
-            else
-            {
-                Attribute attr = entry.get( values[0][i][0] );
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-                if ( attr.contains( values[0][i][1] ) )
+            String ldif =
+                "version: 1\n" +
+                    // First entry modification : ADD
+                    "# Add a new entry\n" +
+                    "dn: cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com\n" +
+                    "changetype: add\n" +
+                    "objectclass: top\n" +
+                    "objectclass: person\n" +
+                    "objectclass: organizationalPerson\n" +
+                    "cn: Fiona Jensen\n" +
+                    "sn: Jensen\n" +
+                    "uid: fiona\n" +
+                    "telephonenumber: +1 408 555 1212\n" +
+                    "jpegphoto:< file:" +
+                    FIONA_JPEG_FILE.getAbsolutePath() +
+                    "\n" +
+                    "\n"
+                    +
+                    // Second entry modification : DELETE
+                    "# Delete an existing entry\n" +
+                    "dn: cn=Robert Jensen, ou=Marketing, dc=airius, dc=com\n" +
+                    "changetype: delete\n" +
+                    "\n"
+                    +
+                    // Third entry modification : MODRDN
+                    "# Modify an entry's relative distinguished name\n" +
+                    "dn: cn=Paul Jensen, ou=Product Development, dc=airius, dc=com\n" +
+                    "changetype: modrdn\n" +
+                    "newrdn: cn=Paula Jensen\n" +
+                    "deleteoldrdn: 1\n" +
+                    "\n"
+                    +
+                    // Forth entry modification : MODRDN
+                    "# Rename an entry and move all of its children to a new location in\n" +
+                    "# the directory tree (only implemented by LDAPv3 servers).\n" +
+                    "dn: ou=PD Accountants, ou=Product Development, dc=airius, dc=com\n" +
+                    "changetype: moddn\n" +
+                    "newrdn: ou=Product Development Accountants\n" +
+                    "deleteoldrdn: 0\n" +
+                    "newsuperior: ou=Accounting, dc=airius, dc=com\n" +
+                    "# Modify an entry: add an additional value to the postaladdress\n" +
+                    "# attribute, completely delete the description attribute, replace\n" +
+                    "# the telephonenumber attribute with two values, and delete a specific\n" +
+                    "# value from the facsimiletelephonenumber attribute\n" +
+                    "\n"
+                    +
+                    // Fitfh entry modification : MODIFY
+                    "dn: cn=Paula Jensen, ou=Product Development, dc=airius, dc=com\n" +
+                    "changetype: modify\n" +
+                    "add: postaladdress\n" +
+                    "postaladdress: 123 Anystreet $ Sunnyvale, CA $ 94086\n" +
+                    "-\n" +
+                    "delete: description\n" +
+                    "-\n" +
+                    "replace: telephonenumber\n" +
+                    "telephonenumber: +1 408 555 1234\n" +
+                    "telephonenumber: +1 408 555 5678\n" +
+                    "-\n" +
+                    "delete: facsimiletelephonenumber\n" +
+                    "facsimiletelephonenumber: +1 408 555 9876\n" +
+                    "-\n" +
+                    "\n"
+                    +
+                    // Sixth entry modification : MODIFY
+                    "# Modify an entry: replace the postaladdress attribute with an empty\n" +
+                    "# set of values (which will cause the attribute to be removed), and\n" +
+                    "# delete the entire description attribute. Note that the first will\n" +
+                    "# always succeed, while the second will only succeed if at least\n" +
+                    "# one value for the description attribute is present.\n" +
+                    "dn: cn=Ingrid Jensen, ou=Product Support, dc=airius, dc=com\n" +
+                    "changetype: modify\n" +
+                    "replace: postaladdress\n" +
+                    "-\n" +
+                    "delete: description\n" +
+                    "-\n";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            String[][][] values =
                 {
-                    assertTrue( true );
+                    // First entry modification : ADD
+                    {
+                        { "dn", "cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com" },
+                        { "objectclass", "top" },
+                        { "objectclass", "person" },
+                        { "objectclass", "organizationalPerson" },
+                        { "cn", "Fiona Jensen" },
+                        { "sn", "Jensen" },
+                        { "uid", "fiona" },
+                        { "telephonenumber", "+1 408 555 1212" },
+                        { "jpegphoto", "" } },
+                        // Second entry modification : DELETE
+                        {
+                            { "dn", "cn=Robert Jensen, ou=Marketing, dc=airius, dc=com" } },
+                        // Third entry modification : MODRDN
+                        {
+                            { "dn", "cn=Paul Jensen, ou=Product Development, dc=airius, dc=com" },
+                            { "cn=Paula Jensen" } },
+                        // Forth entry modification : MODRDN
+                        {
+                            { "dn", "ou=PD Accountants, ou=Product Development, dc=airius, dc=com" },
+                            { "ou=Product Development Accountants" },
+                            { "ou=Accounting, dc=airius, dc=com" } },
+                        // Fitfh entry modification : MODIFY
+                        {
+                            { "dn", "cn=Paula Jensen, ou=Product Development, dc=airius, dc=com" },
+                            // add
+                            { "postaladdress", "123 Anystreet $ Sunnyvale, CA $ 94086" },
+                                // delete
+                                { "description" },
+                                // replace
+                                { "telephonenumber", "+1 408 555 1234", "+1 408 555 5678" },
+                                // delete
+                                { "facsimiletelephonenumber", "+1 408 555 9876" }, },
+                        // Sixth entry modification : MODIFY
+                        {
+                            { "dn", "cn=Ingrid Jensen, ou=Product Support, dc=airius, dc=com" },
+                            // replace
+                            { "postaladdress" },
+                                // delete
+                                { "description" } } };
+    
+            LdifEntry entry = entries.get( 0 );
+            assertTrue( entry.isChangeAdd() );
+    
+            for ( int i = 0; i < values.length; i++ )
+            {
+                if ( "dn".equalsIgnoreCase( values[0][i][0] ) )
+                {
+                    assertEquals( values[0][i][1], entry.getDn().getName() );
+                }
+                else if ( "jpegphoto".equalsIgnoreCase( values[0][i][0] ) )
+                {
+                    Attribute attr = entry.get( values[0][i][0] );
+                    assertEquals( Strings.dumpBytes( data ), Strings.dumpBytes( attr.getBytes() ) );
                 }
                 else
                 {
-                    assertTrue( attr.contains( values[0][i][1].getBytes( StandardCharsets.UTF_8 ) ) );
+                    Attribute attr = entry.get( values[0][i][0] );
+    
+                    if ( attr.contains( values[0][i][1] ) )
+                    {
+                        assertTrue( true );
+                    }
+                    else
+                    {
+                        assertTrue( attr.contains( values[0][i][1].getBytes( StandardCharsets.UTF_8 ) ) );
+                    }
                 }
             }
+    
+            // Second entry
+            entry = entries.get( 1 );
+            assertTrue( entry.isChangeDelete() );
+            assertEquals( values[1][0][1], entry.getDn().getName() );
+    
+            // Third entry
+            entry = entries.get( 2 );
+            assertTrue( entry.isChangeModRdn() );
+            assertEquals( values[2][0][1], entry.getDn().getName() );
+            assertEquals( values[2][1][0], entry.getNewRdn() );
+            assertTrue( entry.isDeleteOldRdn() );
+    
+            // Forth entry
+            entry = entries.get( 3 );
+            assertTrue( entry.isChangeModDn() );
+            assertEquals( values[3][0][1], entry.getDn().getName() );
+            assertEquals( values[3][1][0], entry.getNewRdn() );
+            assertFalse( entry.isDeleteOldRdn() );
+            assertEquals( values[3][2][0], entry.getNewSuperior() );
+    
+            // Fifth entry
+            entry = entries.get( 4 );
+            List<Modification> modifs = entry.getModifications();
+    
+            assertTrue( entry.isChangeModify() );
+            assertEquals( values[4][0][1], entry.getDn().getName() );
+    
+            // "add: postaladdress"
+            // "postaladdress: 123 Anystreet $ Sunnyvale, CA $ 94086"
+            Modification item = modifs.get( 0 );
+            assertEquals( ModificationOperation.ADD_ATTRIBUTE, item.getOperation() );
+            assertEquals( values[4][1][0], item.getAttribute().getId() );
+            assertTrue( item.getAttribute().contains( values[4][1][1] ) );
+    
+            // "delete: description\n" +
+            item = modifs.get( 1 );
+            assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, item.getOperation() );
+            assertEquals( values[4][2][0], item.getAttribute().getId() );
+    
+            // "replace: telephonenumber"
+            // "telephonenumber: +1 408 555 1234"
+            // "telephonenumber: +1 408 555 5678"
+            item = modifs.get( 2 );
+            assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, item.getOperation() );
+    
+            assertEquals( values[4][3][0], item.getAttribute().getUpId() );
+            assertTrue( item.getAttribute().contains( values[4][3][1], values[4][3][2] ) );
+    
+            // "delete: facsimiletelephonenumber"
+            // "facsimiletelephonenumber: +1 408 555 9876"
+            item = modifs.get( 3 );
+    
+            assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, item.getOperation() );
+    
+            assertEquals( values[4][4][0], item.getAttribute().getId() );
+            assertTrue( item.getAttribute().contains( values[4][4][1] ) );
+    
+            // Sixth entry
+            entry = entries.get( 5 );
+            modifs = entry.getModifications();
+    
+            assertTrue( entry.isChangeModify() );
+            assertEquals( values[5][0][1], entry.getDn().getName() );
+    
+            // "replace: postaladdress"
+            item = modifs.get( 0 );
+            assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, item.getOperation() );
+            assertEquals( values[5][1][0], item.getAttribute().getId() );
+    
+            // "delete: description"
+            item = modifs.get( 1 );
+            assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, item.getOperation() );
+            assertEquals( values[5][2][0], item.getAttribute().getId() );
         }
-
-        // Second entry
-        entry = entries.get( 1 );
-        assertTrue( entry.isChangeDelete() );
-        assertEquals( values[1][0][1], entry.getDn().getName() );
-
-        // Third entry
-        entry = entries.get( 2 );
-        assertTrue( entry.isChangeModRdn() );
-        assertEquals( values[2][0][1], entry.getDn().getName() );
-        assertEquals( values[2][1][0], entry.getNewRdn() );
-        assertTrue( entry.isDeleteOldRdn() );
-
-        // Forth entry
-        entry = entries.get( 3 );
-        assertTrue( entry.isChangeModDn() );
-        assertEquals( values[3][0][1], entry.getDn().getName() );
-        assertEquals( values[3][1][0], entry.getNewRdn() );
-        assertFalse( entry.isDeleteOldRdn() );
-        assertEquals( values[3][2][0], entry.getNewSuperior() );
-
-        // Fifth entry
-        entry = entries.get( 4 );
-        List<Modification> modifs = entry.getModifications();
-
-        assertTrue( entry.isChangeModify() );
-        assertEquals( values[4][0][1], entry.getDn().getName() );
-
-        // "add: postaladdress"
-        // "postaladdress: 123 Anystreet $ Sunnyvale, CA $ 94086"
-        Modification item = modifs.get( 0 );
-        assertEquals( ModificationOperation.ADD_ATTRIBUTE, item.getOperation() );
-        assertEquals( values[4][1][0], item.getAttribute().getId() );
-        assertTrue( item.getAttribute().contains( values[4][1][1] ) );
-
-        // "delete: description\n" +
-        item = modifs.get( 1 );
-        assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, item.getOperation() );
-        assertEquals( values[4][2][0], item.getAttribute().getId() );
-
-        // "replace: telephonenumber"
-        // "telephonenumber: +1 408 555 1234"
-        // "telephonenumber: +1 408 555 5678"
-        item = modifs.get( 2 );
-        assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, item.getOperation() );
-
-        assertEquals( values[4][3][0], item.getAttribute().getUpId() );
-        assertTrue( item.getAttribute().contains( values[4][3][1], values[4][3][2] ) );
-
-        // "delete: facsimiletelephonenumber"
-        // "facsimiletelephonenumber: +1 408 555 9876"
-        item = modifs.get( 3 );
-
-        assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, item.getOperation() );
-
-        assertEquals( values[4][4][0], item.getAttribute().getId() );
-        assertTrue( item.getAttribute().contains( values[4][4][1] ) );
-
-        // Sixth entry
-        entry = entries.get( 5 );
-        modifs = entry.getModifications();
-
-        assertTrue( entry.isChangeModify() );
-        assertEquals( values[5][0][1], entry.getDn().getName() );
-
-        // "replace: postaladdress"
-        item = modifs.get( 0 );
-        assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, item.getOperation() );
-        assertEquals( values[5][1][0], item.getAttribute().getId() );
-
-        // "delete: description"
-        item = modifs.get( 1 );
-        assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, item.getOperation() );
-        assertEquals( values[5][2][0], item.getAttribute().getId() );
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
@@ -1802,30 +1944,46 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testRemoveAttribute() throws Exception
     {
-        String ldif =
-            "version: 1\n" +
-                "dn: cn=Horatio Jensen, ou=Product Testing, dc=airius, dc=com\n" +
-                "objectclass: top\n" +
-                "objectclass: person\n" +
-                "objectclass: organizationalPerson\n" +
-                "cn: Horatio Jensen\n" +
-                "cn: Horatio N Jensen\n" +
-                "sn: Jensen\n" +
-                "uid: hjensen\n" +
-                "telephonenumber: +1 408 555 1212\n" +
-                "jpegphoto:< file:" +
-                HJENSEN_JPEG_FILE.getAbsolutePath() +
-                "\n";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        LdifEntry entry = entries.get( 0 );
-
-        assertNotNull( entry.get( "uid" ) );
-        entry.removeAttribute( "uid" );
-        assertNull( entry.get( "uid" ) );
+            String ldif =
+                "version: 1\n" +
+                    "dn: cn=Horatio Jensen, ou=Product Testing, dc=airius, dc=com\n" +
+                    "objectclass: top\n" +
+                    "objectclass: person\n" +
+                    "objectclass: organizationalPerson\n" +
+                    "cn: Horatio Jensen\n" +
+                    "cn: Horatio N Jensen\n" +
+                    "sn: Jensen\n" +
+                    "uid: hjensen\n" +
+                    "telephonenumber: +1 408 555 1212\n" +
+                    "jpegphoto:< file:" +
+                    HJENSEN_JPEG_FILE.getAbsolutePath() +
+                    "\n";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            LdifEntry entry = entries.get( 0 );
+    
+            assertNotNull( entry.get( "uid" ) );
+            entry.removeAttribute( "uid" );
+            assertNull( entry.get( "uid" ) );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
@@ -1991,75 +2149,91 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifChangeDeleteWithControls() throws Exception
     {
-        String ldif =
-            "version:   1\n" +
-                "dn: dc=example,dc=com\n" +
-                "control: 1.1.1\n" +
-                "control: 1.1.2 true\n" +
-                "control: 1.1.3:ABCDEF\n" +
-                "control: 1.1.4 true:ABCDEF\n" +
-                "control: 1.1.5::RW1tYW51ZWwgTMOpY2hhcm55\n" +
-                "control: 1.1.6 true::RW1tYW51ZWwgTMOpY2hhcm55\n" +
-                "changetype: delete\n";
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
+        {
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        LdifReader reader = new LdifReader( schemaManager );
-        List<LdifEntry> entries = reader.parseLdif( ldif );
-        reader.close();
-
-        assertEquals( 1, entries.size() );
-
-        // Entry
-        LdifEntry entry = entries.get( 0 );
-
-        assertEquals( "dc=example,dc=com", entry.getDn().getName() );
-
-        assertTrue( entry.isLdifChange() );
-        assertTrue( entry.isChangeDelete() );
-
-        assertTrue( entry.hasControls() );
-        assertEquals( 6, entry.getControls().size() );
-
-        // First control
-        LdifControl control = entry.getControl( "1.1.1" );
-
-        assertEquals( "1.1.1", control.getOid() );
-        assertFalse( control.isCritical() );
-        assertNull( control.getValue() );
-
-        // Second control
-        control = entry.getControl( "1.1.2" );
-
-        assertEquals( "1.1.2", control.getOid() );
-        assertTrue( control.isCritical() );
-        assertNull( control.getValue() );
-
-        // Third control
-        control = entry.getControl( "1.1.3" );
-
-        assertEquals( "1.1.3", control.getOid() );
-        assertFalse( control.isCritical() );
-        assertEquals( "ABCDEF", Strings.utf8ToString( control.getValue() ) );
-
-        // Forth control
-        control = entry.getControl( "1.1.4" );
-
-        assertEquals( "1.1.4", control.getOid() );
-        assertTrue( control.isCritical() );
-        assertEquals( "ABCDEF", Strings.utf8ToString( control.getValue() ) );
-
-        // Fifth control
-        control = entry.getControl( "1.1.5" );
-
-        assertEquals( "1.1.5", control.getOid() );
-        assertFalse( control.isCritical() );
-        assertEquals( "Emmanuel L\u00e9charny", Strings.utf8ToString( control.getValue() ) );
-
-        // Sixth control
-        control = entry.getControl( "1.1.6" );
-
-        assertEquals( "1.1.6", control.getOid() );
-        assertTrue( control.isCritical() );
-        assertEquals( "Emmanuel L\u00e9charny", Strings.utf8ToString( control.getValue() ) );
+            String ldif =
+                "version:   1\n" +
+                    "dn: dc=example,dc=com\n" +
+                    "control: 1.1.1\n" +
+                    "control: 1.1.2 true\n" +
+                    "control: 1.1.3:ABCDEF\n" +
+                    "control: 1.1.4 true:ABCDEF\n" +
+                    "control: 1.1.5::RW1tYW51ZWwgTMOpY2hhcm55\n" +
+                    "control: 1.1.6 true::RW1tYW51ZWwgTMOpY2hhcm55\n" +
+                    "changetype: delete\n";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+            List<LdifEntry> entries = reader.parseLdif( ldif );
+            reader.close();
+    
+            assertEquals( 1, entries.size() );
+    
+            // Entry
+            LdifEntry entry = entries.get( 0 );
+    
+            assertEquals( "dc=example,dc=com", entry.getDn().getName() );
+    
+            assertTrue( entry.isLdifChange() );
+            assertTrue( entry.isChangeDelete() );
+    
+            assertTrue( entry.hasControls() );
+            assertEquals( 6, entry.getControls().size() );
+    
+            // First control
+            LdifControl control = entry.getControl( "1.1.1" );
+    
+            assertEquals( "1.1.1", control.getOid() );
+            assertFalse( control.isCritical() );
+            assertNull( control.getValue() );
+    
+            // Second control
+            control = entry.getControl( "1.1.2" );
+    
+            assertEquals( "1.1.2", control.getOid() );
+            assertTrue( control.isCritical() );
+            assertNull( control.getValue() );
+    
+            // Third control
+            control = entry.getControl( "1.1.3" );
+    
+            assertEquals( "1.1.3", control.getOid() );
+            assertFalse( control.isCritical() );
+            assertEquals( "ABCDEF", Strings.utf8ToString( control.getValue() ) );
+    
+            // Forth control
+            control = entry.getControl( "1.1.4" );
+    
+            assertEquals( "1.1.4", control.getOid() );
+            assertTrue( control.isCritical() );
+            assertEquals( "ABCDEF", Strings.utf8ToString( control.getValue() ) );
+    
+            // Fifth control
+            control = entry.getControl( "1.1.5" );
+    
+            assertEquals( "1.1.5", control.getOid() );
+            assertFalse( control.isCritical() );
+            assertEquals( "Emmanuel L\u00e9charny", Strings.utf8ToString( control.getValue() ) );
+    
+            // Sixth control
+            control = entry.getControl( "1.1.6" );
+    
+            assertEquals( "1.1.6", control.getOid() );
+            assertTrue( control.isCritical() );
+            assertEquals( "Emmanuel L\u00e9charny", Strings.utf8ToString( control.getValue() ) );
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
+        }
     }
 
 
@@ -2149,97 +2323,113 @@ public class SchemaAwareLdifReaderTest
     @Test
     public void testLdifParserLengthAndOffset() throws Exception
     {
-        String ldif1 = "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-            "cn: app1\n" +
-            "objectClass: top\n" +
-            "objectClass: apApplication\n" +
-            "displayName:   app1   \n" +
-            "dependencies:\n" +
-            "envVars:\n";
-
-        String comment = "# This comment was copied. Delete an entry. The operation will attach the LDAPv3\n" +
-            "# Tree Delete Control defined in [9]. The criticality\n" +
-            "# field is \"true\" and the controlValue field is\n" +
-            "# absent, as required by [9].\n";
-
-        String version = "version:   1\n";
-
-        String ldif =
-            version +
-                ldif1 +
-                "\n" +
-                comment +
-                ldif1 + "\n";
-
-        LdifReader reader = new LdifReader( schemaManager );
-
-        List<LdifEntry> lstEntries = null;
-
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
         try
         {
-            lstEntries = reader.parseLdif( ldif );
-        }
-        catch ( Exception ne )
-        {
-            fail();
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
+
+            String ldif1 = "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                "cn: app1\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName:   app1   \n" +
+                "dependencies:\n" +
+                "envVars:\n";
+    
+            String comment = "# This comment was copied. Delete an entry. The operation will attach the LDAPv3\n" +
+                "# Tree Delete Control defined in [9]. The criticality\n" +
+                "# field is \"true\" and the controlValue field is\n" +
+                "# absent, as required by [9].\n";
+    
+            String version = "version:   1\n";
+    
+            String ldif =
+                version +
+                    ldif1 +
+                    "\n" +
+                    comment +
+                    ldif1 + "\n";
+    
+            LdifReader reader = new LdifReader( schemaManager );
+    
+            List<LdifEntry> lstEntries = null;
+    
+            try
+            {
+                lstEntries = reader.parseLdif( ldif );
+            }
+            catch ( Exception ne )
+            {
+                fail();
+            }
+            finally
+            {
+                reader.close();
+            }
+    
+            LdifEntry entry1 = lstEntries.get( 0 );
+    
+            assertEquals( version.length() + ldif1.length(), entry1.getLengthBeforeParsing() );
+    
+            LdifEntry entry2 = lstEntries.get( 1 );
+    
+            assertEquals( ldif1.length() + comment.length(), entry2.getLengthBeforeParsing() );
+    
+            byte[] data = Strings.getBytesUtf8( ldif );
+    
+            String ldif1Bytes = new String( data, ( int ) entry1.getOffset(), entry1.getLengthBeforeParsing(),
+                StandardCharsets.UTF_8 );
+            assertNotNull( reader.parseLdif( ldif1Bytes ).get( 0 ) );
+    
+            String ldif2Bytes = new String( data, ( int ) entry2.getOffset(), entry2.getLengthBeforeParsing(),
+                StandardCharsets.UTF_8 );
+            assertNotNull( reader.parseLdif( ldif2Bytes ).get( 0 ) );
+    
+            File file = File.createTempFile( "offsetTest", "ldif" );
+            file.deleteOnExit();
+            OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( file ), Charset.defaultCharset() );
+            writer.write( ldif );
+            writer.close();
+    
+            RandomAccessFile raf = new RandomAccessFile( file, "r" );
+    
+            LdifReader ldifReader = new LdifReader( file );
+    
+            LdifEntry rafEntry1 = ldifReader.next();
+    
+            data = new byte[rafEntry1.getLengthBeforeParsing()];
+            raf.read( data, ( int ) rafEntry1.getOffset(), data.length );
+    
+            reader = new LdifReader( schemaManager );
+            LdifEntry reReadeRafEntry1 = reader.parseLdif( new String( data, Charset.defaultCharset() ) ).get( 0 );
+            assertNotNull( reReadeRafEntry1 );
+            assertEquals( rafEntry1.getOffset(), reReadeRafEntry1.getOffset() );
+            assertEquals( rafEntry1.getLengthBeforeParsing(), reReadeRafEntry1.getLengthBeforeParsing() );
+            reader.close();
+    
+            LdifEntry rafEntry2 = ldifReader.next();
+    
+            data = new byte[rafEntry2.getLengthBeforeParsing()];
+            raf.readFully( data, 0, data.length );
+    
+            reader = new LdifReader( schemaManager );
+            LdifEntry reReadeRafEntry2 = reader.parseLdif( new String( data, Charset.defaultCharset() ) ).get( 0 );
+            assertNotNull( reReadeRafEntry2 );
+            assertEquals( rafEntry2.getLengthBeforeParsing(), reReadeRafEntry2.getLengthBeforeParsing() );
+            reader.close();
+            ldifReader.close();
+            raf.close();
         }
         finally
         {
-            reader.close();
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
         }
-
-        LdifEntry entry1 = lstEntries.get( 0 );
-
-        assertEquals( version.length() + ldif1.length(), entry1.getLengthBeforeParsing() );
-
-        LdifEntry entry2 = lstEntries.get( 1 );
-
-        assertEquals( ldif1.length() + comment.length(), entry2.getLengthBeforeParsing() );
-
-        byte[] data = Strings.getBytesUtf8( ldif );
-
-        String ldif1Bytes = new String( data, ( int ) entry1.getOffset(), entry1.getLengthBeforeParsing(),
-            StandardCharsets.UTF_8 );
-        assertNotNull( reader.parseLdif( ldif1Bytes ).get( 0 ) );
-
-        String ldif2Bytes = new String( data, ( int ) entry2.getOffset(), entry2.getLengthBeforeParsing(),
-            StandardCharsets.UTF_8 );
-        assertNotNull( reader.parseLdif( ldif2Bytes ).get( 0 ) );
-
-        File file = File.createTempFile( "offsetTest", "ldif" );
-        file.deleteOnExit();
-        OutputStreamWriter writer = new OutputStreamWriter( new FileOutputStream( file ), Charset.defaultCharset() );
-        writer.write( ldif );
-        writer.close();
-
-        RandomAccessFile raf = new RandomAccessFile( file, "r" );
-
-        LdifReader ldifReader = new LdifReader( file );
-
-        LdifEntry rafEntry1 = ldifReader.next();
-
-        data = new byte[rafEntry1.getLengthBeforeParsing()];
-        raf.read( data, ( int ) rafEntry1.getOffset(), data.length );
-
-        reader = new LdifReader( schemaManager );
-        LdifEntry reReadeRafEntry1 = reader.parseLdif( new String( data, Charset.defaultCharset() ) ).get( 0 );
-        assertNotNull( reReadeRafEntry1 );
-        assertEquals( rafEntry1.getOffset(), reReadeRafEntry1.getOffset() );
-        assertEquals( rafEntry1.getLengthBeforeParsing(), reReadeRafEntry1.getLengthBeforeParsing() );
-        reader.close();
-
-        LdifEntry rafEntry2 = ldifReader.next();
-
-        data = new byte[rafEntry2.getLengthBeforeParsing()];
-        raf.readFully( data, 0, data.length );
-
-        reader = new LdifReader( schemaManager );
-        LdifEntry reReadeRafEntry2 = reader.parseLdif( new String( data, Charset.defaultCharset() ) ).get( 0 );
-        assertNotNull( reReadeRafEntry2 );
-        assertEquals( rafEntry2.getLengthBeforeParsing(), reReadeRafEntry2.getLengthBeforeParsing() );
-        reader.close();
-        ldifReader.close();
-        raf.close();
     }
 
 
@@ -2247,96 +2437,112 @@ public class SchemaAwareLdifReaderTest
     // for DIRAPI-174
     public void testLineNumber() throws Exception
     {
-        String ldif =
-            "versionN:   1\n" + // wrong tag name 'versionN'
-                "dn: dc=example,dc=com\n" +
-                "changetype: delete\n" +
-                "attr1: test";
-
-        try ( LdifReader reader = new LdifReader( schemaManager ) )
+        boolean isRelaxed = schemaManager.isRelaxed();
+        
+        try
         {
-            try
-            {
-                reader.parseLdif( ldif );
-                fail();
-            }
-            catch ( Exception e )
-            {
-            }
-            
-            assertEquals( 1, reader.getLineNumber() );
-        }
+            // Set the schema manager in relax mode to avoid having schema errors
+            schemaManager.setRelaxed();
 
-        ldif =
-            "version:   1\n" +
-                "d n: dc=example,dc=com\n" + // wrong name "d n"
-                "changetype: delete\n" +
-                "attr1: test";
-
-        try ( LdifReader reader = new LdifReader( schemaManager ) )
-        {
-            try
+            String ldif =
+                "versionN:   1\n" + // wrong tag name 'versionN'
+                    "dn: dc=example,dc=com\n" +
+                    "changetype: delete\n" +
+                    "attr1: test";
+    
+            try ( LdifReader reader = new LdifReader( schemaManager ) )
             {
-                reader.parseLdif( ldif );
-                fail();
-            }
-            catch ( Exception e )
-            {
+                try
+                {
+                    reader.parseLdif( ldif );
+                    fail();
+                }
+                catch ( Exception e )
+                {
+                }
+                
+                assertEquals( 1, reader.getLineNumber() );
             }
     
-            assertEquals( 2, reader.getLineNumber() );
-        }
-
-        // wrong changetype
-        ldif =
-            "version:   1\n" +
-                "dn: dc=example,dc=com\n" +
-                "changetype: delete\n" +
-                "attr1: test";
+            ldif =
+                "version:   1\n" +
+                    "d n: dc=example,dc=com\n" + // wrong name "d n"
+                    "changetype: delete\n" +
+                    "attr1: test";
+    
+            try ( LdifReader reader = new LdifReader( schemaManager ) )
+            {
+                try
+                {
+                    reader.parseLdif( ldif );
+                    fail();
+                }
+                catch ( Exception e )
+                {
+                }
         
-        try ( LdifReader reader = new LdifReader( schemaManager ) )
-        {
-            try
-            {
-                reader.parseLdif( ldif );
-                fail();
-            }
-            catch ( Exception e )
-            {
-            }
-            
-            assertEquals( 4, reader.getLineNumber() );
-        }
-
-        ldif =
-            "version:   1\n" +
-                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                "cn: app1\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName:   app1   \n" +
-                "dependencies:\n" +
-                "envVars:\n\n" + // watch out the extra newline while counting
-                "d n: cn=app2,ou=applications,ou=conf,dc=apache,dc=org\n" + // wrong start
-                "cn: app2\n" +
-                "objectClass: top\n" +
-                "objectClass: apApplication\n" +
-                "displayName:   app2   \n" +
-                "dependencies:\n" +
-                "envVars:";
-        
-        try ( LdifReader reader = new LdifReader( schemaManager ) )
-        {
-            try
-            {
-                reader.parseLdif( ldif );
-                fail( "shouldn't be parsed" );
-            }
-            catch ( Exception e )
-            {
+                assertEquals( 2, reader.getLineNumber() );
             }
     
-            assertEquals( 10, reader.getLineNumber() );
+            // wrong changetype
+            ldif =
+                "version:   1\n" +
+                    "dn: dc=example,dc=com\n" +
+                    "changetype: delete\n" +
+                    "attr1: test";
+            
+            try ( LdifReader reader = new LdifReader( schemaManager ) )
+            {
+                try
+                {
+                    reader.parseLdif( ldif );
+                    fail();
+                }
+                catch ( Exception e )
+                {
+                }
+                
+                assertEquals( 4, reader.getLineNumber() );
+            }
+    
+            ldif =
+                "version:   1\n" +
+                    "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                    "cn: app1\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName:   app1   \n" +
+                    "dependencies:\n" +
+                    "envVars:\n\n" + // watch out the extra newline while counting
+                    "d n: cn=app2,ou=applications,ou=conf,dc=apache,dc=org\n" + // wrong start
+                    "cn: app2\n" +
+                    "objectClass: top\n" +
+                    "objectClass: apApplication\n" +
+                    "displayName:   app2   \n" +
+                    "dependencies:\n" +
+                    "envVars:";
+            
+            try ( LdifReader reader = new LdifReader( schemaManager ) )
+            {
+                try
+                {
+                    reader.parseLdif( ldif );
+                    fail( "shouldn't be parsed" );
+                }
+                catch ( Exception e )
+                {
+                }
+        
+                assertEquals( 10, reader.getLineNumber() );
+            }
+        }
+        finally
+        {
+            if ( !isRelaxed )
+            {
+                // Put the schemaManager back in strict mode
+                schemaManager.setStrict();
+            }
         }
     }
 
