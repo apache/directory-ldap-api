@@ -31,6 +31,7 @@ import javax.naming.ldap.LdapContext;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.name.Rdn;
 
 
 /**
@@ -92,7 +93,9 @@ public final class TriggerUtils
         objectClass.add( SchemaConstants.TRIGGER_EXECUTION_SUBENTRY_OC );
         subentry.put( SchemaConstants.SUBTREE_SPECIFICATION_AT, subtreeSpec );
         subentry.put( SchemaConstants.PRESCRIPTIVE_TRIGGER_SPECIFICATION_AT, prescriptiveTriggerSpec );
-        apCtx.createSubcontext( "cn=" + subentryCN, subentry );
+        
+        // The CN is a plain value : escape it before splicing it into DN syntax (RFC 4514)
+        apCtx.createSubcontext( "cn=" + Rdn.escapeValue( subentryCN ), subentry );
     }
 
 
@@ -110,7 +113,9 @@ public final class TriggerUtils
         String triggerSpec ) throws NamingException
     {
         Attributes changes = new BasicAttributes( SchemaConstants.PRESCRIPTIVE_TRIGGER_SPECIFICATION_AT, triggerSpec, true );
-        apCtx.modifyAttributes( "cn=" + subentryCN, DirContext.ADD_ATTRIBUTE, changes );
+        
+        // The CN is a plain value : escape it before splicing it into DN syntax (RFC 4514)
+        apCtx.modifyAttributes( "cn=" + Rdn.escapeValue( subentryCN ), DirContext.ADD_ATTRIBUTE, changes );
     }
 
 

@@ -41,6 +41,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.IOUtils;
 
 
@@ -138,7 +139,8 @@ public final class JavaStoredProcUtils
         attributes.put( "storedProcUnitName", fullClassName );
         attributes.put( "javaByteCode", buf );
 
-        ctx.createSubcontext( "storedProcUnitName=" + fullClassName, attributes );
+        // The class name is a plain value : escape it before splicing it into DN syntax (RFC 4514)
+        ctx.createSubcontext( "storedProcUnitName=" + Rdn.escapeValue( fullClassName ), attributes );
     }
 
 
