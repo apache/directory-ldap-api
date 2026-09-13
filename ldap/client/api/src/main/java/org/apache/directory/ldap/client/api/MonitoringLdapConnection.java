@@ -183,6 +183,7 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
         {
             startTlsCalled = true;
         }
+        
         return connection.extended( oid );
     }
 
@@ -197,6 +198,7 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
         {
             startTlsCalled = true;
         }
+        
         return connection.extended( oid, value );
     }
 
@@ -211,6 +213,7 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
         {
             startTlsCalled = true;
         }
+        
         return connection.extended( oid );
     }
 
@@ -225,6 +228,7 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
         {
             startTlsCalled = true;
         }
+        
         return connection.extended( oid, value );
     }
 
@@ -235,10 +239,11 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
     @Override
     public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
     {
-        if ( extendedRequest.hasControl( StartTlsRequest.EXTENSION_OID ) )
+        if ( StartTlsRequest.EXTENSION_OID.equals( extendedRequest.getRequestName() ) )
         {
             startTlsCalled = true;
         }
+        
         return connection.extended( extendedRequest );
     }
 }

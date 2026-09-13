@@ -407,6 +407,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
         {
             BindResponse response = connection.bind( bindRequest );
             bindCalled = true;
+            
             return response;
         }
 
@@ -418,6 +419,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 startTlsCalled = true;
             }
+            
             return connection.extended( oid );
         }
 
@@ -429,6 +431,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 startTlsCalled = true;
             }
+            
             return connection.extended( oid, value );
         }
 
@@ -440,6 +443,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 startTlsCalled = true;
             }
+            
             return connection.extended( oid );
         }
 
@@ -451,6 +455,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 startTlsCalled = true;
             }
+            
             return connection.extended( oid, value );
         }
 
@@ -458,10 +463,11 @@ public class ValidatingPoolableLdapConnectionFactoryTest
         @Override
         public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
         {
-            if ( extendedRequest.hasControl( StartTlsRequest.EXTENSION_OID ) )
+            if ( StartTlsRequest.EXTENSION_OID.equals( extendedRequest.getRequestName() ) )
             {
                 startTlsCalled = true;
             }
+            
             return connection.extended( extendedRequest );
         }
 
