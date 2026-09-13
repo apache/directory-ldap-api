@@ -79,7 +79,21 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
         
         try
         {
-            ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( requestValue );
+            // Only store the raw value when the message actually is an OpaqueExtendedRequest :
+            // a registered ExtendedOperationFactory may produce any ExtendedRequest
+            // implementation (the interface does not mandate OpaqueExtendedRequest), and a
+            // remote PDU must never be able to trigger a ClassCastException out of the decoder.
+            if ( extendedRequest instanceof OpaqueExtendedRequest )
+            {
+                if ( tlv.getLength() == 0 )
+                {
+                    ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( Strings.EMPTY_BYTES );
+                } 
+                else
+                {
+                    ( ( OpaqueExtendedRequest ) extendedRequest ).setRequestValue( tlv.getValue().getData() );
+                }
+            }
 
             if ( factory != null )
             {
