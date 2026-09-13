@@ -5416,10 +5416,23 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
         catch ( LdapException e )
         {
+            // The SASL bind did not complete on the client side, but the server may
+            // already have answered SUCCESS - in which case bindReceived() has set the
+            // authenticated flag from the IO thread. Reset it : a connection whose
+            // SASL handshake failed must not report itself as authenticated.
+            authenticated.set( false );
+
             throw e;
         }
         catch ( Exception e )
         {
+            // Typically a SaslException thrown by evaluateChallenge() when the
+            // verification of the server's final SASL token fails (mutual
+            // authentication) : the server has answered SUCCESS, so the authenticated
+            // flag is already set. Reset it, the client-side verification failed and
+            // no SASL security layer has been installed.
+            authenticated.set( false );
+
             LOG.error( e.getMessage() );
             throw new LdapException( e );
         }
