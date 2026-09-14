@@ -98,6 +98,16 @@ public class ACIItemParser
     /** Flags to use to differentiate a parsing from a checking */
     private static final boolean PARSE = true;
     private static final boolean VALIDATE = false;
+    
+    /**
+     * The maximum allowed nesting depth for a 'classes' refinement. Refinement
+     * parsing is mutually recursive (parseRefinement <-> parseRefinements plus
+     * the direct 'not:' recursion); without a bound, a crafted value a few tens
+     * of KB long exhausts the thread stack (StackOverflowError) before any
+     * ParseException can be raised.
+     */
+    private static final int MAX_REFINEMENT_DEPTH = 64;
+
 
     /** The grammar tokens */
     private static final String ID_ALL_ATTRIBUTE_VALUES     = "allattributevalues";
@@ -1094,7 +1104,7 @@ public class ACIItemParser
                     }
     
                     // refinement
-                    ExprNode refinement = parseRefinement( action, item, pos );
+                    ExprNode refinement = parseRefinement( action, item, 0, pos );
                     
                     if ( action == PARSE )
                     {
@@ -1303,11 +1313,12 @@ public class ACIItemParser
      * 
      * @action Tells if we parse or validate the ACIItem
      * @param item The ACIItem to parse
+     * @param depth The current refinement nesting depth
      * @param pos The position in the string
      * @return The list of refinements
      * @throws ParseException If the grant or denial is invalid
      */
-    private List<ExprNode> parseRefinements( boolean action, String item, Position pos ) throws ParseException
+    private List<ExprNode> parseRefinements( boolean action, String item, int depth, Position pos ) throws ParseException
     {
         LOG.debug( "Parsing refinements: {}", pos );
 
@@ -1348,7 +1359,7 @@ public class ACIItemParser
             }
             
             // refinement
-            ExprNode refinement = parseRefinement( action, item, pos );
+            ExprNode refinement = parseRefinement( action, item, depth, pos );
             
             if ( action == PARSE )
             {
@@ -1381,12 +1392,18 @@ public class ACIItemParser
      * 
      * @action Tells if we parse or validate the ACIItem
      * @param item The ACIItem to parse
+     * @param depth The current refinement nesting depth
      * @param pos The position in the string
      * @return The ExprNode representing the refinement
      * @throws ParseException If the refinement is invalid
      */
-    private ExprNode parseRefinement( boolean action, String item, Position pos ) throws ParseException
+    private ExprNode parseRefinement( boolean action, String item, int depth, Position pos ) throws ParseException
     {
+        if ( depth > MAX_REFINEMENT_DEPTH )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_07058_REFINEMENT_NESTING_TOO_DEEP, MAX_REFINEMENT_DEPTH ), pos.start );
+        }
+
         String token = getToken( item, pos );
         LOG.debug( "Parsing a refinement: {}, {}", token, pos );
 
@@ -1423,7 +1440,7 @@ public class ACIItemParser
                 // ( SP )*
                 skipSpaces( item, pos, ZERO_N );
                 
-                List<ExprNode> andChildren = parseRefinements( action, item, pos );
+                List<ExprNode> andChildren = parseRefinements( action, item, depth + 1, pos );
 
                 if ( action == PARSE )
                 {
@@ -1443,7 +1460,7 @@ public class ACIItemParser
                 // ( SP )*
                 skipSpaces( item, pos, ZERO_N );
                 
-                List<ExprNode> orChildren = parseRefinements( action, item, pos );
+                List<ExprNode> orChildren = parseRefinements( action, item, depth + 1, pos );
 
                 if ( action == PARSE )
                 {
@@ -1464,7 +1481,7 @@ public class ACIItemParser
                 skipSpaces( item, pos, ZERO_N );
                 
                 // refinement
-                ExprNode child = parseRefinement( action, item, pos );
+                ExprNode child = parseRefinement( action, item, depth + 1, pos );
 
                 if ( action == PARSE )
                 {
