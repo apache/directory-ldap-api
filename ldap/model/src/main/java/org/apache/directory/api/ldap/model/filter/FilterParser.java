@@ -45,6 +45,14 @@ public final class FilterParser
 {
     // The default parsing mode is STRICT
     public static final boolean STRICT = false;
+
+    /**
+     * The maximum number of nested filter levels ('&amp;', '|', '!') accepted. The parser
+     * recurses once per nesting level: without a bound, a hostile filter made of a few
+     * tens of KB of "(!" (received for instance in a referral LDAP URL) kills the calling
+     * thread with a StackOverflowError instead of a ParseException.
+     */
+    private static final int MAX_FILTER_DEPTH = 128;
     
     private FilterParser()
     {
@@ -177,7 +185,7 @@ public final class FilterParser
     {
         try
         {
-            ExprNode node = parseFilterInternal( schemaManager, filter, pos, relaxed );
+            ExprNode node = parseFilterInternal( schemaManager, filter, 0, pos, relaxed );
             
             if ( node instanceof UndefinedNode )
             {
@@ -1045,19 +1053,20 @@ public final class FilterParser
      * @param node The node to feed
      * @param filterBytes The filter bytes to parse
      * @param pos The position in the filter bytes
+     * @param depth The current filter nesting depth
      * @param relaxed If the filter is analyzed in relaxed mode or not
      * @return the created {@link ExprNode}
      * @throws ParseException If the Node can't be parsed
      * @throws LdapException If we met an error while parsing a filter element
      */
-    private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filterBytes, Position pos,
+    private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filterBytes, int depth, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
         BranchNode branchNode = ( BranchNode ) node;
         int nbChildren = 0;
 
         // We must have at least one filter
-        ExprNode child = parseFilterInternal( schemaManager, filterBytes, pos, relaxed );
+        ExprNode child = parseFilterInternal( schemaManager, filterBytes, depth + 1, pos, relaxed );
 
         if ( !( child instanceof UndefinedNode ) )
         {
@@ -1077,7 +1086,7 @@ public final class FilterParser
         }
 
         // Now, iterate recursively though all the remaining filters, if any
-        while ( ( child = parseFilterInternal( schemaManager, filterBytes, pos, relaxed ) ) != UndefinedNode.UNDEFINED_NODE )
+        while ( ( child = parseFilterInternal( schemaManager, filterBytes, depth + 1, pos, relaxed ) ) != UndefinedNode.UNDEFINED_NODE )
         {
             // Add the child to the node children if not null
             if ( child != null )
@@ -1120,13 +1129,14 @@ public final class FilterParser
      * 
      * @param schemaManager The {@link SchemaManager}
      * @param filterBytes The filter bytes to parse
+     * @param depth The current filter nesting depth
      * @param pos The position in the filter bytes
      * @param relaxed If the filter is analyzed in relaxed mode or not
      * @return the created {@link ExprNode}
      * @throws ParseException If the Node can't be parsed
      * @throws LdapException If we met an error while parsing a filter element
      */
-    private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filterBytes, Position pos,
+    private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filterBytes, int depth, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
         ExprNode node;
@@ -1148,7 +1158,7 @@ public final class FilterParser
                 skipWhiteSpaces( filterBytes, pos );
                 
                 node = new AndNode();
-                node = parseBranchNode( schemaManager, node, filterBytes, pos, relaxed );
+                node = parseBranchNode( schemaManager, node, filterBytes, depth, pos, relaxed );
                 break;
 
             case '|':
@@ -1159,7 +1169,7 @@ public final class FilterParser
                 skipWhiteSpaces( filterBytes, pos );
                 
                 node = new OrNode();
-                node = parseBranchNode( schemaManager, node, filterBytes, pos, relaxed );
+                node = parseBranchNode( schemaManager, node, filterBytes, depth, pos, relaxed );
                 break;
 
             case '!':
@@ -1170,7 +1180,7 @@ public final class FilterParser
                 skipWhiteSpaces( filterBytes, pos );
                 
                 node = new NotNode();
-                node = parseBranchNode( schemaManager, node, filterBytes, pos, relaxed );
+                node = parseBranchNode( schemaManager, node, filterBytes, depth, pos, relaxed );
                 break;
 
             default:
@@ -1191,15 +1201,22 @@ public final class FilterParser
      * 
      * @param schemaManager The {@link SchemaManager}
      * @param filterBytes The filter bytes to parse
+     * @param depth The current filter nesting depth
      * @param pos The position in the filter bytes
      * @param relaxed If the filter is analyzed in relaxed mode or not
      * @return the created {@link ExprNode}
      * @throws ParseException If the Node can't be parsed
      * @throws LdapException If we met an error while parsing a filter element
      */
-    private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filterBytes, Position pos,
+    private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filterBytes, int depth, Position pos,
         boolean relaxed ) throws ParseException, LdapException
     {
+        // Bound the recursion: a deeply nested filter is hostile, not valid
+        if ( depth > MAX_FILTER_DEPTH )
+        {
+            throw new ParseException( I18n.err( I18n.ERR_13319_MAX_FILTER_DEPTH_EXCEEDED, MAX_FILTER_DEPTH ), pos.start );
+        }
+
         // Skip spaces
         skipWhiteSpaces( filterBytes, pos );
         
@@ -1223,7 +1240,7 @@ public final class FilterParser
         skipWhiteSpaces( filterBytes, pos );
         
         // parse the filter component
-        ExprNode node = parseFilterComp( schemaManager, filterBytes, pos, relaxed );
+        ExprNode node = parseFilterComp( schemaManager, filterBytes, depth, pos, relaxed );
 
         if ( node == UndefinedNode.UNDEFINED_NODE )
         {

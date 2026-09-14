@@ -1242,4 +1242,62 @@ public class FilterParserTest
         
         assertEquals( "(cn=ACME\\28tm\\29)", filterStr2 );
     }
+
+
+    /**
+     * A reasonably nested filter must still parse.
+     */
+    @Test
+    public void testNestedFilterWithinDepthLimit() throws ParseException
+    {
+        int depth = 50;
+        StringBuilder sb = new StringBuilder();
+
+        for ( int i = 0; i < depth; i++ )
+        {
+            sb.append( "(!" );
+        }
+
+        sb.append( "(cn=test)" );
+
+        for ( int i = 0; i < depth; i++ )
+        {
+            sb.append( ')' );
+        }
+
+        ExprNode node = FilterParser.parse( sb.toString() );
+        assertTrue( node instanceof NotNode );
+    }
+
+
+    /**
+     * A hostile, deeply nested filter (e.g. delivered in a referral LDAP URL) must be
+     * rejected with a ParseException instead of killing the calling thread with a
+     * StackOverflowError.
+     */
+    @Test
+    public void testDeeplyNestedFilterIsRejected()
+    {
+        int depth = 100000;
+        StringBuilder sb = new StringBuilder();
+
+        for ( int i = 0; i < depth; i++ )
+        {
+            sb.append( "(!" );
+        }
+
+        sb.append( "(cn=test)" );
+
+        for ( int i = 0; i < depth; i++ )
+        {
+            sb.append( ')' );
+        }
+
+        String hostile = sb.toString();
+
+        assertThrows( ParseException.class, () ->
+        {
+            FilterParser.parse( hostile );
+        } );
+    }
 }
