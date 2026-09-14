@@ -1978,7 +1978,7 @@ public enum ResultCodeEnum
 
         switch ( ldapResult.getResultCode() )
         {
-        // Not erroneous code
+            // Not erroneous code
             case SUCCESS:
             case PARTIAL_RESULTS:
             case REFERRAL:

@@ -915,4 +915,92 @@ public class OidTest
         assertFalse( oid1.equals( oid3 ) );
         assertFalse( oid2.equals( oid3 ) );
     }
+
+
+    /**
+     * A 14 bytes arc used to throw an ArrayIndexOutOfBoundsException, as the
+     * decoding buffer was allocated one byte short (DIRAPI : nbBytes rounding)
+     */
+    @Test
+    public void fromBytes14ByteArc() throws DecoderException
+    {
+        byte[] arc14 = new byte[14];
+        arc14[0] = ( byte ) 0x81;
+
+        for ( int i = 1; i < 13; i++ )
+        {
+            arc14[i] = ( byte ) 0x80;
+        }
+
+        arc14[13] = 0x00;
+
+        // 2^91 - 80
+        assertEquals( "2.2475880078570760549798248368", Oid.fromBytes( arc14 ).toString() );
+    }
+
+
+    /**
+     * A 16 bytes arc used to silently decode to a wrong value (8 low-order
+     * bytes dropped)
+     */
+    @Test
+    public void fromBytes16ByteArc() throws DecoderException
+    {
+        byte[] arc16 = new byte[16];
+        arc16[0] = ( byte ) 0x81;
+
+        for ( int i = 1; i < 15; i++ )
+        {
+            arc16[i] = ( byte ) 0x80;
+        }
+
+        arc16[15] = 0x00;
+
+        // 2^105 - 80
+        assertEquals( "2.40564819207303340847894502571952", Oid.fromBytes( arc16 ).toString() );
+    }
+
+
+    /**
+     * A multi-byte arc in second position used to decode to a wrong value :
+     * the unpacking indexed the buffer from position 0 (first arc) instead of
+     * the arc's own start offset
+     */
+    @Test
+    public void fromBytesBigSecondArc() throws DecoderException
+    {
+        byte[] bytes = new byte[11];
+        bytes[0] = 0x2A; // 1.2
+        bytes[1] = ( byte ) 0x81;
+
+        for ( int i = 2; i < 10; i++ )
+        {
+            bytes[i] = ( byte ) 0x80;
+        }
+
+        bytes[10] = 0x00;
+
+        // 2^63
+        assertEquals( "1.2.9223372036854775808", Oid.fromBytes( bytes ).toString() );
+    }
+
+
+    /**
+     * A trailing byte with the continuation bit set is a truncated arc and
+     * must be rejected, not silently discarded
+     */
+    @Test
+    public void fromBytesTruncatedArcIsRejected()
+    {
+        try
+        {
+            Oid.fromBytes( new byte[]
+                { 0x2A, ( byte ) 0x86 } );
+            fail( "Truncated arc must be rejected" );
+        }
+        catch ( DecoderException expected )
+        {
+            // expected
+        }
+    }
 }

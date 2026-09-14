@@ -342,108 +342,26 @@ public final class Oid
                 
                 if ( valLength > 8 )
                 {
-                    // Above 9 bytes, we won't be able to store the value in a long...
-                    // Compute the number of necessary bytes
-                    int nbBytes = valLength * 7 / 8;
-                    
-                    if ( valLength % 7 != 0 )
-                    {
-                        nbBytes++;
-                    }
-                    
-                    byte[] result = new byte[nbBytes];
-                    
-                    // Now iterate on the incoming bytes
-                    int pos = nbBytes - 1;
-                    int valEnd = valStart + valLength - 1;
-                    int j = 0;
-                    
-                    while ( j < valLength - 8 )
-                    {
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 1] << 7 ) | ( oidBytes[valEnd - j] & 0x7F ) );
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 2] << 6 ) | ( ( oidBytes[valEnd - j - 1] & 0x7E ) >> 1 ) );
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 3] << 5 ) | ( ( oidBytes[valEnd - j - 2] & 0x7C ) >> 2 ) );
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 4] << 4 ) | ( ( oidBytes[valEnd - j - 3] & 0x78 ) >> 3 ) );
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 5] << 3 ) | ( ( oidBytes[valEnd - j - 4] & 0x70 ) >> 4 ) );
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 6] << 2 ) | ( ( oidBytes[valEnd - j - 5] & 0x60 ) >> 5 ) );
-                        result[pos--] = ( byte ) ( ( oidBytes[valEnd - j - 7] << 1 ) | ( ( oidBytes[valEnd - j - 6] & 0x40 ) >> 6 ) );
-                        j += 8;
-                    }
-                    
-                    switch ( valLength - j )
-                    {
-                        case 7 :
-                            result[pos--] = ( byte ) ( ( oidBytes[5] << 7 ) | ( oidBytes[6] & 0x7F ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[4] << 6 ) | ( ( oidBytes[5] & 0x7E ) >> 1 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[3] << 5 ) | ( ( oidBytes[4] & 0x7C ) >> 2 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[2] << 4 ) | ( ( oidBytes[3] & 0x78 ) >> 3 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[1] << 3 ) | ( ( oidBytes[2] & 0x70 ) >> 4 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] << 2 ) | ( ( oidBytes[1] & 0x60 ) >> 5 ) );
-                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x40 ) >> 6 );
-                            break;
-                            
-                        case 6 :
-                            result[pos--] = ( byte ) ( ( oidBytes[4] << 7 ) | ( oidBytes[5] & 0x7F ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[3] << 6 ) | ( ( oidBytes[4] & 0x7E ) >> 1 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[2] << 5 ) | ( ( oidBytes[3] & 0x7C ) >> 2 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[1] << 4 ) | ( ( oidBytes[2] & 0x78 ) >> 3 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] << 3 ) | ( ( oidBytes[1] & 0x70 ) >> 4 ) );
-                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x60 ) >> 5 );
-                            break;
+                    // Above 8 bytes, the arc value may not fit in a long :
+                    // accumulate it in a BigInteger, 7 bits per encoded byte.
+                    // (The previous bit-packing implementation under-allocated
+                    // its buffer for some arc lengths and misdecoded any arc
+                    // after the first one, as it indexed from position 0.)
+                   BigInteger bigInteger = BigInteger.ZERO;
 
-                        case 5 :
-                            result[pos--] = ( byte ) ( ( oidBytes[3] << 7 ) | ( oidBytes[4] & 0x7F ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[2] << 6 ) | ( ( oidBytes[3] & 0x7E ) >> 1 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[1] << 5 ) | ( ( oidBytes[2] & 0x7C ) >> 2 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] << 4 ) | ( ( oidBytes[1] & 0x78 ) >> 3 ) );
-                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x70 ) >> 4 );
-                            break;
-                            
-                        case 4 :
-                            result[pos--] = ( byte ) ( ( oidBytes[2] << 7 ) | ( oidBytes[3] & 0x7F ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[1] << 6 ) | ( ( oidBytes[2] & 0x7E ) >> 1 ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] << 5 ) | ( ( oidBytes[1] & 0x7C ) >> 2 ) );
-                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x78 ) >> 3 );
-                            break;
-                            
-                        case 3 :
-                            result[pos--] = ( byte ) ( ( oidBytes[1] << 7 ) | ( oidBytes[2] & 0x7F ) );
-                            result[pos--] = ( byte ) ( ( oidBytes[0] << 6 ) | ( ( oidBytes[1] & 0x7E ) >> 1 ) );
-                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x7C ) >> 2 );
-                            break;
-
-                        case 2 :
-                            result[pos--] = ( byte ) ( ( oidBytes[0] << 7 ) | ( oidBytes[1] & 0x7F ) );
-                            result[pos] = ( byte ) ( ( oidBytes[0] & 0x7E ) >> 1 );
-                            break;
-                            
-                        case 1 :
-                            result[pos] = ( byte ) ( oidBytes[0] & 0x7F );
-                            break;
-                            
-                        default :
-                            // Exist to please checkstyle...
-                            break;
-                    }
-                    
-                    BigInteger bigInteger;
-                    
-                    if ( ( result[0] & 0x80 ) == 0x80 )
+                    for ( int j = valStart; j <= i; j++ )
                     {
-                        byte[] newResult = new byte[result.length + 1];
-                        System.arraycopy( result, 0, newResult, 1, result.length );
-                        result = newResult;
+                        bigInteger = bigInteger.shiftLeft( 7 ).or( BigInteger.valueOf( oidBytes[j] & 0x7F ) );
                     }
-                    
-                    bigInteger = new BigInteger( result );
-                    
+
                     if ( firstArc )
                     {
                         // This is a joint-iso-itu-t(2) arc
                         bigInteger = bigInteger.subtract( JOINT_ISO_ITU_T );
                         builder.append( '2' );
+                        firstArc = false;
                     }
-                    
+
                     builder.append( '.' ).append( bigInteger.toString() );
                 }
                 else
@@ -484,12 +402,21 @@ public final class Oid
                     builder.append( '.' ).append( value );
                 }
                 
-                valStart = i;
+                // The next arc, if any, starts at the following byte
+                valStart = i + 1;
                 valLength = 0;
                 value = 0;
             }
         }
-    
+
+
+        if ( valLength != 0 )
+        {
+            // The last arc is truncated : its final byte has the continuation
+            // bit set. Reject the OID instead of silently dropping the arc.
+            throw new DecoderException( I18n.err( I18n.ERR_00003_INVALID_OID, Arrays.toString( oidBytes ) ) );
+        }
+
         return new Oid( builder.toString(), oidBytes );
     }
 
