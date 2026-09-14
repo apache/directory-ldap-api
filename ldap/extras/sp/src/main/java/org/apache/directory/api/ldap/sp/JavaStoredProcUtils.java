@@ -21,13 +21,20 @@
 package org.apache.directory.api.ldap.sp;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -52,6 +59,42 @@ import org.apache.directory.api.util.IOUtils;
  */
 public final class JavaStoredProcUtils
 {
+    /**
+     * The name of the system property that extends the class allowlist used when
+     * deserializing a stored procedure result: a comma separated list of fully
+     * qualified class names.
+     */
+    public static final String SP_RESULT_ALLOWED_CLASSES_PROPERTY =
+        "org.apache.directory.api.ldap.sp.allowedClasses";
+
+    /** The JDK value and collection types accepted by default in a stored procedure result */
+    private static final Set<String> DEFAULT_ALLOWED_CLASSES = new HashSet<>( Arrays.asList(
+        "java.lang.Boolean",
+        "java.lang.Byte",
+        "java.lang.Character",
+        "java.lang.Double",
+        "java.lang.Enum",
+        "java.lang.Float",
+        "java.lang.Integer",
+        "java.lang.Long",
+        "java.lang.Number",
+        "java.lang.Object",
+        "java.lang.Short",
+        "java.lang.String",
+        "java.math.BigDecimal",
+        "java.math.BigInteger",
+        "java.util.ArrayList",
+        "java.util.Date",
+        "java.util.HashMap",
+        "java.util.HashSet",
+        "java.util.Hashtable",
+        "java.util.LinkedHashMap",
+        "java.util.LinkedHashSet",
+        "java.util.LinkedList",
+        "java.util.Properties",
+        "java.util.TreeMap",
+        "java.util.TreeSet",
+        "java.util.Vector" ) );
 
     /**
      * Private constructor.
@@ -60,6 +103,96 @@ public final class JavaStoredProcUtils
     {
     }
 
+    /**
+     * An ObjectInputStream that refuses to load any class that is not explicitly
+     * allowlisted, and refuses dynamic proxies. The bytes it reads come straight from
+     * the LDAP server's extended response, so they are entirely under the control of a
+     * potentially malicious or compromised server: an unrestricted ObjectInputStream
+     * would let such a server run a deserialization gadget chain in this JVM (CWE-502).
+     */
+    private static final class RestrictedObjectInputStream extends ObjectInputStream
+    {
+        private final Set<String> allowedClasses;
+
+        private RestrictedObjectInputStream( InputStream in, Set<String> allowedClasses ) throws IOException
+        {
+            super( in );
+            this.allowedClasses = allowedClasses;
+        }
+
+
+        @Override
+        protected Class<?> resolveClass( ObjectStreamClass desc ) throws IOException, ClassNotFoundException
+        {
+            String name = desc.getName();
+
+            // Strip the array part, if any: [[Ljava.lang.String; -> java.lang.String
+            while ( name.startsWith( "[" ) )
+            {
+                name = name.substring( 1 );
+            }
+
+            if ( name.length() == 1 )
+            {
+                // An array of a primitive type, always fine
+                return super.resolveClass( desc );
+            }
+
+            if ( name.startsWith( "L" ) && name.endsWith( ";" ) )
+            {
+                name = name.substring( 1, name.length() - 1 );
+            }
+
+            if ( !allowedClasses.contains( name ) )
+            {
+                throw new InvalidClassException( desc.getName(),
+                    I18n.err( I18n.ERR_10001_SP_RESULT_CLASS_NOT_ALLOWED, desc.getName() ) );
+            }
+
+            return super.resolveClass( desc );
+        }
+
+
+        @Override
+        protected Class<?> resolveProxyClass( String[] interfaces ) throws IOException, ClassNotFoundException
+        {
+            // A dynamic proxy is never a legitimate stored procedure result
+            throw new InvalidClassException(
+                I18n.err( I18n.ERR_10001_SP_RESULT_CLASS_NOT_ALLOWED, "a dynamic proxy" ) );
+        }
+    }
+
+
+    /**
+     * Deserializes a stored procedure result received from the server, accepting only a
+     * small allowlist of JDK value and collection types. Additional application result
+     * types can be accepted by setting the {@value #SP_RESULT_ALLOWED_CLASSES_PROPERTY}
+     * system property to a comma separated list of fully qualified class names.
+     *
+     * @param responseStream The serialized response value, as received from the server
+     * @return The deserialized object
+     * @throws IOException If the stream is corrupted or contains a class outside the allowlist
+     * @throws ClassNotFoundException If an allowed class cannot be loaded
+     */
+    static Object deserializeResponse( byte[] responseStream ) throws IOException, ClassNotFoundException
+    {
+        Set<String> allowedClasses = new HashSet<>( DEFAULT_ALLOWED_CLASSES );
+        String extraClasses = System.getProperty( SP_RESULT_ALLOWED_CLASSES_PROPERTY );
+
+        if ( extraClasses != null )
+        {
+            for ( String extraClass : extraClasses.split( "," ) )
+            {
+                allowedClasses.add( extraClass.trim() );
+            }
+        }
+
+        try ( ObjectInputStream ois = new RestrictedObjectInputStream(
+            new ByteArrayInputStream( responseStream ), allowedClasses ) )
+        {
+            return ois.readObject();
+        }
+    }
 
     /**
      * Returns the stream data of a Java class.
@@ -191,7 +324,7 @@ public final class JavaStoredProcUtils
              * Restore a Java object from the return value.
              */
             byte[] responseStream = resp.getEncodedValue();
-            responseObject = SerializationUtils.deserialize( responseStream );
+            responseObject = deserializeResponse( responseStream );
         }
         catch ( Exception e )
         {
