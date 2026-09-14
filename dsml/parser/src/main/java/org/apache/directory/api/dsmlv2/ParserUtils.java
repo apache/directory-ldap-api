@@ -352,7 +352,7 @@ public final class ParserUtils
         {
             if ( LOG.isWarnEnabled() )
             {
-                LOG.warn( I18n.msg( I18n.MSG_3000_FAILED_TO_CREATE_XSLT_TRANSFORMER ), e1 );
+                LOG.warn( I18n.msg( I18n.MSG_03000_FAILED_TO_CREATE_XSLT_TRANSFORMER ), e1 );
             }
 
             // return original document

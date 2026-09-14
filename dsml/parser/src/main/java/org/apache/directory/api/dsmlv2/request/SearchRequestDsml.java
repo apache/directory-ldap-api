@@ -80,6 +80,17 @@ public class SearchRequestDsml
     /** The global filter. This is used while decoding a PDU */
     private Filter topFilter;
 
+    /**
+     * The default maximum depth accepted for nested filter elements : 128.
+     * The nesting depth is fully driven by the incoming DSML document, and
+     * the recursive transform() consumes one stack frame per level, so an
+     * unbounded depth lets a document of nested &lt;not&gt;/&lt;and&gt;
+     * elements throw a StackOverflowError while it is parsed.
+     */
+    public static final int DEFAULT_MAX_FILTER_DEPTH = 128;
+
+    /** The maximum accepted depth for nested filter elements. Defaults to {@link #DEFAULT_MAX_FILTER_DEPTH} */
+    private int maxFilterDepth = DEFAULT_MAX_FILTER_DEPTH;
 
     /**
      * Creates a new getDecoratedMessage() of SearchRequestDsml.
@@ -176,6 +187,24 @@ public class SearchRequestDsml
     {
         if ( currentFilter != null )
         {
+            // Guard against StackOverflowError : the nesting depth of the filter
+            // is driven by the incoming document, so it has to be bounded before
+            // we accept one more level.
+            int depth = 0;
+
+            for ( Filter ancestor = currentFilter; ancestor != null; ancestor = ancestor.getParent() )
+            {
+                depth++;
+
+                if ( depth >= maxFilterDepth )
+                {
+                    String message = I18n.err( I18n.ERR_03048_FILTER_TOO_DEEP, maxFilterDepth );
+                    LOG_DSML.error( message );
+                    
+                    throw new DecoderException( message );
+                }
+            }
+
             // Ok, we have a parent. The new Filter will be added to
             // this parent, and will become the currentFilter if it's a connector.
             ( ( ConnectorFilter ) currentFilter ).addFilter( localFilter );
@@ -193,6 +222,31 @@ public class SearchRequestDsml
             currentFilter.setParent( null );
             topFilter = localFilter;
         }
+    }
+
+
+    /**
+     * Get the maximum accepted depth for nested filter elements
+     *
+     * @return the maximum accepted depth
+     */
+    public int getMaxFilterDepth()
+    {
+        return maxFilterDepth;
+    }
+
+
+    /**
+     * Set the maximum accepted depth for nested filter elements. It defaults to
+     * {@link #DEFAULT_MAX_FILTER_DEPTH} : the depth is driven by the incoming
+     * document and each level consumes one stack frame while the filter is
+     * transformed, so only raise it if deeper filters really are expected.
+     *
+     * @param maxFilterDepth the maximum accepted depth
+     */
+    public void setMaxFilterDepth( int maxFilterDepth )
+    {
+        this.maxFilterDepth = maxFilterDepth;
     }
 
 

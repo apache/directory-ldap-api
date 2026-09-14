@@ -27,6 +27,8 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -50,6 +52,9 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
 
     /** The current control */
     private DsmlControl<? extends Control> currentControl;
+
+    /** A logger for this class */
+    protected static final Logger LOG_DSML = LoggerFactory.getLogger( "DSML" );
 
 
     /**
