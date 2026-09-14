@@ -54,6 +54,7 @@ import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
+import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -837,6 +838,13 @@ public class Dsmlv2Engine
             {
                 LOG.warn( I18n.msg( I18n.MSG_02003_ERROR, bindResponse.getLdapResult().getDiagnosticMessage() ) );
             }
+
+            // Fail closed : when the bind failed, none of the batch requests may be
+            // processed, otherwise they would all be executed over what is now an
+            // anonymous connection. The caller (processDSML) turns this exception
+            // into an ErrorResponse and stops, instead of silently continuing
+            // without the configured identity.
+            throw new LdapAuthenticationException( bindResponse.getLdapResult().getDiagnosticMessage() );
         }
     }
 }
