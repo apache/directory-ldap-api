@@ -760,7 +760,37 @@ public class LdifAnonymizer
                     anonymizedAttribute.add( newdDn.toString() );
                 }
                 
-                newLdifEntry.addAttribute( attribute );
+                newLdifEntry.addAttribute( anonymizedAttribute );
+            }
+            // Deal with the special case of a NameAndOptionalUID
+            else if ( attributeType.getSyntax().getSyntaxChecker() instanceof NameAndOptionalUIDSyntaxChecker )
+            {
+                for ( Value dnValue : attribute )
+                {
+                    // Get rid of the # part (UID)
+                    String valueStr = dnValue.getString();
+                    int uidPos = valueStr.indexOf( '#' );
+                    String uid = null;
+
+                    if ( uidPos != -1 )
+                    {
+                        uid = valueStr.substring( uidPos + 1 );
+                        valueStr = valueStr.substring( 0, uidPos );
+                    }
+
+                    Dn dn = new Dn( schemaManager, valueStr );
+                    Dn newDn = anonymizeDn( dn );
+                    String newDnStr = newDn.toString();
+
+                    if ( uid != null )
+                    {
+                        newDnStr = newDnStr + '#' + uid;
+                    }
+
+                    anonymizedAttribute.add( newDnStr );
+                }
+
+                newLdifEntry.addAttribute( anonymizedAttribute );
             }
             else
             {

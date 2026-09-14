@@ -22,6 +22,8 @@ package org.apache.directory.ldap.client.api;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -407,6 +409,43 @@ public class LdifAnonymizerTest
             // We can only test the length and the fact the values are not equal (as the vale has been anonymized)
             assertNotSame( 0, value.length() );
             assertEquals( str.length(), value.length() );
+        }
+    }
+
+
+    @Test
+    public void testAnonymizerChangeTypeAddWithDnValuedAttributes() throws LdapException, IOException
+    {
+        String ldif =
+            "dn: cn=test,dc=example,dc=com\n" +
+            "changetype: add\n" +
+            "objectClass: top\n" +
+            "objectClass: person\n" +
+            "cn: test\n" +
+            "sn: Test\n" +
+            "seeAlso: cn=emmanuel,dc=acme,dc=com\n";
+
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "dc=example,dc=com" );
+        anonymizer.addNamingContext( "dc=acme,dc=com" );
+        String result = anonymizer.anonymize( ldif );
+
+        // The original DN-valued attribute must not survive anonymization
+        assertFalse( result.contains( "emmanuel" ) );
+
+        List<LdifEntry> entries = ldifReader.parseLdif( result );
+
+        assertEquals( 1, entries.size() );
+
+        LdifEntry entry = entries.get( 0 );
+        assertTrue( entry.isChangeAdd() );
+
+        Attribute seeAlso = entry.getEntry().get( "seeAlso" );
+        assertNotNull( seeAlso );
+
+        for ( Value value : seeAlso )
+        {
+            assertFalse( value.getString().contains( "emmanuel" ) );
         }
     }
 }
