@@ -129,6 +129,15 @@ public class SubtreeSpecificationParser
     private static final boolean PARSE = true;
     private static final boolean VALIDATE = false;
 
+    /**
+     * The maximum number of nested refinement levels ('and', 'or', 'not') accepted.
+     * The refinement grammar is parsed by mutual recursion (parseRefinement ->
+     * parseNot/parseAndOr -> parseRefinement), one stack frame set per nesting
+     * level: without a bound, a hostile subtreeSpecification value kills the
+     * calling thread with a StackOverflowError instead of a ParseException.
+     */
+    private static final int MAX_REFINEMENT_DEPTH = 128;
+
     /** The ObjectClass AT */
     private static AttributeType objectClassAt;
 
@@ -385,18 +394,19 @@ public class SubtreeSpecificationParser
      * 
      * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
+     * @param depth The current depth of nested refinement
      * @param pos The position in the string
      * @return The parsed node
      * @ParseException If the input was incorrect
      */
-    private void parseAndOr( boolean action, String spec, Position pos, BranchNode node ) throws ParseException
+    private void parseAndOr( boolean action, String spec, int depth, Position pos, BranchNode node ) throws ParseException
     {
         // The 'and'/'or' token has already been parsed
         skipSpaces( spec, pos, ZERO_N );
         
         matchChar( spec, COLON, pos );
         
-        parseRefinements( action, spec, pos, node );
+        parseRefinements( action, spec, depth, pos, node );
     }
     
     
@@ -408,18 +418,19 @@ public class SubtreeSpecificationParser
      * 
      * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
+     * @param depth The current depth of nested refinement
      * @param pos The position in the string
      * @return The parsed node
      * @ParseException If the input was incorrect
      */
-    private void parseNot( boolean action, String spec, Position pos, BranchNode node ) throws ParseException
+    private void parseNot( boolean action, String spec, int depth, Position pos, BranchNode node ) throws ParseException
     {
         // The 'and'/'or' token has already been parsed
         skipSpaces( spec, pos, ZERO_N );
         
         matchChar( spec, COLON, pos );
         
-        ExprNode refinement = parseRefinement( action, spec, pos );
+        ExprNode refinement = parseRefinement( action, spec, depth + 1, pos );
         
         if ( action == PARSE )
         {
@@ -439,11 +450,12 @@ public class SubtreeSpecificationParser
      * </pre>
      * 
      * @param spec The subtreeSpecification string to parse
+     * @param depth The current depth of nested refinement
      * @param pos The position in the string
      * @return the parsed nodes
      * @ParseException If the input was incorrect
      */
-    private void parseRefinements( boolean  action, String spec, Position pos, BranchNode node ) throws ParseException
+    private void parseRefinements( boolean  action, String spec, int depth, Position pos, BranchNode node ) throws ParseException
     {
         matchChar( spec, LCURLY, pos );
         
@@ -472,7 +484,7 @@ public class SubtreeSpecificationParser
             
             skipSpaces( spec, pos, ZERO_N );
             
-            ExprNode refinement = parseRefinement( action, spec, pos );
+            ExprNode refinement = parseRefinement( action, spec, depth + 1, pos );
             
             if ( action == PARSE )
             {
@@ -494,12 +506,21 @@ public class SubtreeSpecificationParser
      * 
      * @action Tells if we parse or validate the spec
      * @param spec The subtreeSpecification string to parse
+     * @param depth The current depth of nested refinement
      * @param pos The position in the string
      * @return the parsed refinement
      * @ParseException If the input was incorrect
      */
-    private ExprNode parseRefinement( boolean action, String spec, Position pos ) throws ParseException
+    private ExprNode parseRefinement( boolean action, String spec, int depth, Position pos ) throws ParseException
     {
+        // Bound the recursion: a refinement nested deeper than any legitimate
+        // administrative value is hostile input, not a valid specification.
+        if ( depth > MAX_REFINEMENT_DEPTH )
+        {
+            throw new ParseException( "The subtreeSpecification refinement is nested deeper than "
+                + MAX_REFINEMENT_DEPTH + " levels", pos.start );
+        }
+
         // Skip optional spaces
         skipSpaces( spec, pos, ONE_N );
         
@@ -519,7 +540,7 @@ public class SubtreeSpecificationParser
                     andNode = new AndNode();
                 }
                 
-                parseAndOr( action, spec, pos, andNode );
+                parseAndOr( action, spec, depth, pos, andNode );
                 
                 return andNode;
                 
@@ -531,7 +552,7 @@ public class SubtreeSpecificationParser
                     orNode = new OrNode();
                 }
                 
-                parseAndOr( action, spec, pos, orNode );
+                parseAndOr( action, spec, depth, pos, orNode );
                 
                 return orNode;
                 
@@ -543,7 +564,7 @@ public class SubtreeSpecificationParser
                     notNode = new NotNode();
                 }
                 
-                parseNot( action, spec, pos, notNode );
+                parseNot( action, spec, depth, pos, notNode );
                 
                 return notNode;
                 
@@ -669,7 +690,7 @@ public class SubtreeSpecificationParser
                     andNode = new AndNode();
                 }
                 
-                parseAndOr( action, spec, pos, andNode );
+                parseAndOr( action, spec, 0, pos, andNode );
                 
                 if ( action == PARSE )
                 {
@@ -686,7 +707,7 @@ public class SubtreeSpecificationParser
                     orNode = new OrNode();
                 }
                 
-                parseAndOr( action, spec, pos, orNode );
+                parseAndOr( action, spec, 0, pos, orNode );
                 
                 if ( action == PARSE )
                 {
@@ -703,7 +724,7 @@ public class SubtreeSpecificationParser
                     new NotNode();
                 }
                 
-                parseNot( action, spec, pos, notNode );
+                parseNot( action, spec, 0, pos, notNode );
                 
                 if ( action == PARSE )
                 {
