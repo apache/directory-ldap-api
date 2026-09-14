@@ -285,10 +285,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     static final String[] DEFAULT_ENABLED_PROTOCOLS = { "TLSv1.2", "TLSv1.3" };
 
-
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
 
+    /** The JAAS/JGSS credentials acquisition property */
+    private static final String USE_SUBJECT_CREDS_ONLY = "javax.security.auth.useSubjectCredsOnly";
+
+    /**
+     * A lock used to serialize the GSSAPI binds : they temporarily modify
+     * process-global system properties, so concurrent binds must not
+     * interleave with each other
+     */
+    private static final Object GSSAPI_BIND_LOCK = new Object();
+     
     /** The krb5 configuration property */
     private static final String KRB5_CONF = "java.security.krb5.conf";
     
@@ -2300,66 +2309,110 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public BindFuture bindAsync( SaslGssApiRequest request )
         throws LdapException
     {
-        // Krb5.conf file
-        if ( request.getKrb5ConfFilePath() != null )
+        // The Kerberos configuration ('java.security.krb5.conf') and the
+        // 'javax.security.auth.useSubjectCredsOnly' system properties are
+        // process-global : serialize the GSSAPI binds so that concurrent binds
+        // cannot observe each other's Kerberos settings, and restore the
+        // previous values once the SASL negotiation is done (the negotiation
+        // is completed by the time Subject.doAs() returns, as the SASL rounds
+        // are blocking).
+        synchronized ( GSSAPI_BIND_LOCK )
         {
-            // Using the krb5.conf file provided by the user
-            System.setProperty( KRB5_CONF, request.getKrb5ConfFilePath() );
-        }
-        else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
-            && ( request.getKdcPort() != 0 ) )
-        {
+            String previousKrb5Conf = System.getProperty( KRB5_CONF );
+            String previousUseSubjectCredsOnly = System.getProperty( USE_SUBJECT_CREDS_ONLY );
+            
             try
             {
-                // Using a custom krb5.conf we create from the settings provided by the user
-                String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
-                    request.getKdcPort() );
-                System.setProperty( KRB5_CONF, krb5ConfPath );
-            }
-            catch ( IOException ioe )
-            {
-                throw new LdapException( ioe );
-            }
-        }
-        else
-        {
-            // Using the system Kerberos configuration
-            System.clearProperty( KRB5_CONF );
-        }
-
-        // Login Module configuration
-        if ( request.getLoginModuleConfiguration() != null )
-        {
-            // Using the configuration provided by the user
-            Configuration.setConfiguration( request.getLoginModuleConfiguration() );
-        }
-        else
-        {
-            // Using the default configuration
-            Configuration.setConfiguration( new Krb5LoginConfiguration() );
-        }
-
-        try
-        {
-            System.setProperty( "javax.security.auth.useSubjectCredsOnly", "true" );
-            LoginContext loginContext = new LoginContext( request.getLoginContextName(),
-                new SaslCallbackHandler( request ) );
-            loginContext.login();
-
-            final SaslGssApiRequest requetFinal = request;
-            return ( BindFuture ) Subject.doAs( loginContext.getSubject(), new PrivilegedExceptionAction<Object>()
-            {
-                @Override
-                public Object run() throws Exception
+                // Krb5.conf file
+                if ( request.getKrb5ConfFilePath() != null )
                 {
-                    return bindSasl( requetFinal );
+                    // Using the krb5.conf file provided by the user
+                    System.setProperty( KRB5_CONF, request.getKrb5ConfFilePath() );
                 }
-            } );
+                else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
+                    && ( request.getKdcPort() != 0 ) )
+                {
+                    try
+                    {
+                        // Using a custom krb5.conf we create from the settings provided by the user
+                        String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
+                            request.getKdcPort() );
+                        System.setProperty( KRB5_CONF, krb5ConfPath );
+                    }
+                    catch ( IOException ioe )
+                    {
+                        throw new LdapException( ioe );
+                    }
+                }
+                // Otherwise use the JVM Kerberos configuration as it is : we do not
+                // clear the property, as it may have been set by the operator for
+                // the whole JVM.
+
+                // Login Module configuration : it is passed to the LoginContext,
+                // scoping it to this login, instead of being installed as the
+                // JVM-global JAAS Configuration, so that co-resident JAAS setups
+                // are not silently replaced.
+                Configuration loginModuleConfiguration;
+
+                if ( request.getLoginModuleConfiguration() != null )
+                {
+                    // Using the configuration provided by the user
+                    loginModuleConfiguration = request.getLoginModuleConfiguration();
+                }
+                else
+                {
+                    // Using the default configuration
+                    loginModuleConfiguration = new Krb5LoginConfiguration();
+                }
+
+                try
+                {
+                    System.setProperty( USE_SUBJECT_CREDS_ONLY, "true" );
+                    LoginContext loginContext = new LoginContext( request.getLoginContextName(), null,
+                        new SaslCallbackHandler( request ), loginModuleConfiguration );
+                    loginContext.login();
+
+                    final SaslGssApiRequest requetFinal = request;
+                    return ( BindFuture ) Subject.doAs( loginContext.getSubject(),
+                        new PrivilegedExceptionAction<Object>()
+                        {
+                            @Override
+                            public Object run() throws Exception
+                            {
+                                return bindSasl( requetFinal );
+                            }
+                        } );
+                }
+                catch ( Exception e )
+                {
+                    connectionCloseFuture.complete( 0 );
+                    throw new LdapException( e );
+                }
+            }
+            finally
+            {
+                restoreSystemProperty( KRB5_CONF, previousKrb5Conf );
+                restoreSystemProperty( USE_SUBJECT_CREDS_ONLY, previousUseSubjectCredsOnly );
+            }
         }
-        catch ( Exception e )
+    }
+    
+    /**
+     * Restore a system property to its previous value, removing it if it was
+     * not set before.
+     *
+     * @param key The property key
+     * @param previousValue The previous value, or null if the property was not set
+     */
+    private static void restoreSystemProperty( String key, String previousValue )
+    {
+        if ( previousValue == null )
         {
-            connectionCloseFuture.complete( 0 );
-            throw new LdapException( e );
+            System.clearProperty( key );
+        }
+        else
+        {
+            System.setProperty( key, previousValue );
         }
     }
 
