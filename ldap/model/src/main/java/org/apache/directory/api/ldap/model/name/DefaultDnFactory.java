@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.model.name;
 
 import java.time.Duration;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.slf4j.Logger;
@@ -96,7 +97,7 @@ public class DefaultDnFactory implements DnFactory
 
         if ( cachedDn == null )
         {
-            LOG.debug( "Dn {} not found in the cache, creating", dn );
+            LOG.debug( I18n.msg( I18n.MSG_13600_DN_NOT_IN_CACHE_CREATING, dn ) );
 
             cachedDn = new Dn( schemaManager, dn );
 
@@ -118,7 +119,7 @@ public class DefaultDnFactory implements DnFactory
             }
         }
 
-        LOG.debug( "Dn {} found in the cache", dn );
+        LOG.debug( I18n.msg( I18n.MSG_13601_DN_FOUND_IN_CACHE, dn ) );
 
         if ( enableStats )
         {

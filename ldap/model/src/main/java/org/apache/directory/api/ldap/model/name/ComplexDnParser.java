@@ -1418,7 +1418,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                             // We should have at least another '.' and number
                             String attributType = Strings.getString( 
                                     pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                            LOG.error( "Wrong attributeType '{}' at {}", attributType, pos );
+                            LOG.error( I18n.err( I18n.ERR_13638_WRONG_ATTRIBUTE_TYPE, attributType, pos ) );
                             
                             throw new ParseException( 
                                     I18n.err( I18n.ERR_13630_BAD_OID_ATTRIBUTE_TYPE, pos ), pos.start );
@@ -1440,7 +1440,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                         // We should have at least another '.' and number
                         String attributType = Strings.getString( 
                                 pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                        LOG.error( "Wrong attributeType '{}' at {}", attributType, pos );
+                        LOG.error( I18n.err( I18n.ERR_13638_WRONG_ATTRIBUTE_TYPE, attributType, pos ) );
                         
                         throw new ParseException( 
                                 I18n.err( I18n.ERR_13630_BAD_OID_ATTRIBUTE_TYPE, pos ), pos.start );
@@ -1602,7 +1602,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                             // We should have at least another '.' and number
                             String attributType = Strings.getString( 
                                     pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                            LOG.error( "Wrong attributeType '{}' at {}", attributType, pos );
+                            LOG.error( I18n.err( I18n.ERR_13638_WRONG_ATTRIBUTE_TYPE, attributType, pos ) );
                             
                             throw new ParseException( 
                                     I18n.err( I18n.ERR_13630_BAD_OID_ATTRIBUTE_TYPE, pos ), pos.start );
@@ -1690,7 +1690,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                 // We should have at least another '.' and number
                 attributType = Strings.getString( 
                         pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                LOG.error( "Wrong attributeType '{}' at {}", attributType, pos );
+                LOG.error( I18n.err( I18n.ERR_13638_WRONG_ATTRIBUTE_TYPE, attributType, pos ) );
                 
                 throw new ParseException( I18n.err( I18n.ERR_13630_BAD_OID_ATTRIBUTE_TYPE, attributType ), pos.start );
 
@@ -1698,7 +1698,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                 // We should have at least another '.' and number
                 attributType = Strings.getString( 
                         pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                LOG.error( "Wrong attributeType '{}' at {}", attributType, pos );
+                LOG.error( I18n.err( I18n.ERR_13638_WRONG_ATTRIBUTE_TYPE, attributType, pos ) );
                 
                 throw new ParseException( 
                         I18n.err( I18n.ERR_13630_BAD_OID_ATTRIBUTE_TYPE, pos ), pos.start );
