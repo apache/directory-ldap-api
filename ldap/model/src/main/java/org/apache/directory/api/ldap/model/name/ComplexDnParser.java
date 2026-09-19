@@ -1387,7 +1387,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                         default:
                             // The end, return the found attributeType
                             String attributType = Strings.utf8ToString( pos.getBytes(), start, pos.start - start );
-                            LOG.debug( "Parsed attributeType '{}'", attributType );
+                            LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                             
                             return attributType;
                     }
@@ -1485,7 +1485,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                             // the descr is just 'o' or 'O'
                             String attributType = Strings.getString( 
                                     pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                            LOG.debug( "Parsed attributeType '{}'", attributType );
+                            LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                             
                             return attributType;
                     }
@@ -1529,7 +1529,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                             // the descr is just '[oO][iI]' 
                             String attributType = Strings.getString( 
                                     pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                            LOG.debug( "Parsed attributeType '{}'", attributType );
+                            LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                             
                             return attributType;
                     }
@@ -1573,7 +1573,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                             // the descr is just '[oO][iI][dD]' 
                             String attributType = Strings.getString( 
                                     pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                            LOG.debug( "Parsed attributeType '{}'", attributType );
+                            LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                             
                             return attributType;
                     }
@@ -1625,7 +1625,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                         // Then end, the numericOID is complete
                         String attributType = Strings.getString( 
                                 pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                        LOG.debug( "Parsed attributeType '{}'", attributType );
+                        LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                         
                         return attributType;
                     }
@@ -1652,7 +1652,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                             // The end, the numericOID is complete
                             String attributType = Strings.getString( 
                                     pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                            LOG.debug( "Parsed attributeType '{}'", attributType );
+                            LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                             
                             return attributType;
                     }
@@ -1681,7 +1681,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                // The end, return the found attributeType
                 String attributType = Strings.getString( 
                         pos.getBytes(), start, pos.start - start, StandardCharsets.UTF_8 );
-                LOG.debug( "Parsed attributeType '{}'", attributType );
+                LOG.debug( I18n.msg( I18n.MSG_13602_PARSED_ATTRIBUTE_TYPE, attributType ) );
                 
                 return attributType;
 
