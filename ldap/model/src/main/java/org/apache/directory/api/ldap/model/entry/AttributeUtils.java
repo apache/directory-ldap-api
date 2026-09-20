@@ -731,8 +731,7 @@ public final class AttributeUtils
      * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
      * number = '0'-'9' / ( '1'-'9' 1*'0'-'9' )
      *
-     * @param bytes The parsed attribute,
-     * @param pos The position of the attribute in the current string
+     * @param attribute The attribute to parse,
      * @param withOption A flag set if we want to parse the options
      * @param relaxed A flag set if we want to parse without being too strict
      * @return The parsed attribute if valid
