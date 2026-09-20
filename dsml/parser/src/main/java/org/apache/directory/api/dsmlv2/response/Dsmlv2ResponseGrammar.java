@@ -1040,7 +1040,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             }
             else
             {
-                throw new XmlPullParserException( "dn attribute is required", xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03049_DN_ATTRIBUTE_REQUIRED ), xpp, null );
             }
         }
     };

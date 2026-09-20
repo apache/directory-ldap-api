@@ -517,8 +517,7 @@ public class SubtreeSpecificationParser
         // administrative value is hostile input, not a valid specification.
         if ( depth > MAX_REFINEMENT_DEPTH )
         {
-            throw new ParseException( "The subtreeSpecification refinement is nested deeper than "
-                + MAX_REFINEMENT_DEPTH + " levels", pos.start );
+            throw new ParseException( I18n.err( I18n.ERR_13909_SUBTREE_SPECIFICATION_REFINEMENT_TOO_DEEP, MAX_REFINEMENT_DEPTH ), pos.start );
         }
 
         // Skip optional spaces

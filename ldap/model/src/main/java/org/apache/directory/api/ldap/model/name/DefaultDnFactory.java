@@ -123,7 +123,7 @@ public class DefaultDnFactory implements DnFactory
 
         if ( enableStats )
         {
-            LOG.debug( "Dn cache hit - {} , miss - {} and is normalized = {}", hitCount, missCount, cachedDn.isSchemaAware() );
+            LOG.debug( I18n.msg( I18n.MSG_13603_DN_CACHE_HIT, hitCount, missCount, cachedDn.isSchemaAware() ) );
         }
 
         return cachedDn;

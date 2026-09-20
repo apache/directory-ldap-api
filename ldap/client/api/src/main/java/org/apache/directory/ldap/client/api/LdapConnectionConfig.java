@@ -615,10 +615,11 @@ public class LdapConnectionConfig
     public void setTrustManagers( TrustManager... trustManagers )
     {
         if ( ( trustManagers == null ) || ( trustManagers.length == 0 )
-            || ( trustManagers.length == 1 && trustManagers[0] == null ) )
+            || ( ( trustManagers.length == 1 ) && ( trustManagers[0] == null ) ) )
         {
-            throw new IllegalArgumentException( "TrustManagers must not be null or empty" );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04183_TRUSTMANAGERS_CANT_BE_NULL ) );
         }
+        
         this.trustManagers = trustManagers;
     }
 

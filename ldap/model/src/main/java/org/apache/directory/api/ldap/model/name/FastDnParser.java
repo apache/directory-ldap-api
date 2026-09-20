@@ -43,7 +43,7 @@ import org.apache.directory.api.util.Strings;
     /** No constructor allowed */
     private FastDnParser() 
     {
-        throw new UnsupportedOperationException( "This is a utility class and cannot be instantiated" );
+        throw new UnsupportedOperationException( I18n.err(  I18n.ERR_13639_UTILITY_CLASS_CANT_BE_INSTANCIATED ) );
     }
 
     

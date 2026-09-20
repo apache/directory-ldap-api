@@ -21,6 +21,8 @@
 package org.apache.directory.ldap.client.api;
 
 import java.io.IOException;
+
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 
 /**
@@ -62,7 +64,7 @@ public class PooledLdapConnection extends LdapConnectionWrapper
         }
         catch ( LdapException e )
         {
-            throw new IOException( "Failed to release connection to pool", e );
+            throw new IOException( I18n.err( I18n.ERR_04184_FAILED_RELEASE_CONNECTION ), e );
         }
     }
 

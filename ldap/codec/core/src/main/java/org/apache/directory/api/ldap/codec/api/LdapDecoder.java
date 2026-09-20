@@ -98,7 +98,7 @@ public class LdapDecoder
         {
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( I18n.msg( I18n.MSG_5200_DECODED_LDAP_MESSAGE, container ) );
+                LOG.debug( I18n.msg( I18n.MSG_05200_DECODED_LDAP_MESSAGE, container ) );
             }
 
             return container.getMessage();

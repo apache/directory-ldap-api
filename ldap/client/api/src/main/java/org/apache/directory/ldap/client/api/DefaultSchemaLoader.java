@@ -320,7 +320,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         {
             if ( !subschemaSubentryCursor.next() )
             {
-                throw new LdapException( "Unable to read schema at: " + subschemaSubentryDn );
+                throw new LdapException( I18n.err(  I18n.ERR_04185_CANT_READ_SCHEMA, subschemaSubentryDn ) );
             }
             Entry subschemaSubentry = subschemaSubentryCursor.get();
 

@@ -25,6 +25,7 @@ import javax.security.sasl.SaslClient;
 import javax.security.sasl.SaslException;
 import javax.security.sasl.SaslServer;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
@@ -168,11 +169,11 @@ public class SaslFilter extends IoFilterAdapter
     public synchronized void messageReceived( NextFilter nextFilter, IoSession session, Object message )
         throws SaslException
     {
-        LOG.debug( "Message received:  {}", message );
+        LOG.debug( I18n.msg( I18n.MSG_05201_MESSAGE_RECEIVED, message ) );
 
         if ( !hasSecurityLayer )
         {
-            LOG.debug( "Will not use SASL on received message." );
+            LOG.debug( I18n.msg( I18n.MSG_05202_WILL_NOT_USE_SASL_ON_RECEIVE ) );
             nextFilter.messageReceived( session, message );
             return;
         }
@@ -212,7 +213,7 @@ public class SaslFilter extends IoFilterAdapter
 
                 if ( lengthOffset < lengthBytes.length )
                 {
-                    LOG.debug( "Partial SASL length prefix received:  {}/{}", lengthOffset, lengthBytes.length );
+                    LOG.debug( I18n.msg( I18n.MSG_05203_PARTIAL_SASL_LENGTH_PREFIX, lengthOffset, lengthBytes.length ) );
                     session.setAttribute( LENGTH_BYTES, lengthBytes );
                     session.setAttribute( LENGTH_OFFSET, lengthOffset );
                     break;
@@ -233,9 +234,7 @@ public class SaslFilter extends IoFilterAdapter
                  */
                 if ( ( bufferSize <= 0 ) || ( bufferSize > maxBufferSize ) )
                 {
-                    throw new SaslException(
-                        "Invalid SASL length prefix " + bufferSize
-                            + ", negotiated receive buffer size limit: " + maxBufferSize );
+                    throw new SaslException( I18n.err( I18n.ERR_05207_INVALID_SASL_LENGTH_PREFIX, bufferSize, maxBufferSize ) );
                 }
 
                 bytes = new byte[bufferSize];
@@ -255,7 +254,7 @@ public class SaslFilter extends IoFilterAdapter
             offset += length;
             if ( offset < bytes.length )
             {
-                LOG.debug( "Partial SASL message received:  {}/{}", offset, bytes.length );
+                LOG.debug( I18n.msg( I18n.MSG_05204_PARTIAL_SASL_MESSAGE, offset, bytes.length ) );
                 session.setAttribute( BYTES, bytes );
                 session.setAttribute( OFFSET, offset );
                 break;
@@ -264,7 +263,7 @@ public class SaslFilter extends IoFilterAdapter
             /*
              * Unwrap the SASL message and forward it to the next filter.
              */
-            LOG.debug( "Will use SASL to unwrap received message of length:  {}", bytes.length );
+            LOG.debug( I18n.msg( I18n.MSG_05205_WILL_USE_SASL_UNWRAP, bytes.length ) );
             byte[] token = unwrap( bytes, 0, bytes.length );
             nextFilter.messageReceived( session, IoBuffer.wrap( token ) );
 
@@ -281,7 +280,7 @@ public class SaslFilter extends IoFilterAdapter
     public synchronized void filterWrite( NextFilter nextFilter, IoSession session, WriteRequest writeRequest )
         throws SaslException
     {
-        LOG.debug( "Filtering write request:  {}", writeRequest );
+        LOG.debug( I18n.msg( I18n.MSG_05206_FILTERING_WRITE_REQUEST, writeRequest ) );
 
         /*
          * Check if security layer processing should be disabled once.
@@ -289,7 +288,7 @@ public class SaslFilter extends IoFilterAdapter
         if ( session.containsAttribute( DISABLE_SECURITY_LAYER_ONCE ) )
         {
             // Remove the marker attribute because it is temporary.
-            LOG.debug( "Disabling SaslFilter once; will not use SASL on write request." );
+            LOG.debug( I18n.msg( I18n.MSG_05207_DISABLING_SASL_FILTER ) );
             session.removeAttribute( DISABLE_SECURITY_LAYER_ONCE );
             nextFilter.filterWrite( session, writeRequest );
             return;
@@ -297,7 +296,7 @@ public class SaslFilter extends IoFilterAdapter
 
         if ( !hasSecurityLayer )
         {
-            LOG.debug( "Will not use SASL on write request." );
+            LOG.debug( I18n.msg( I18n.MSG_05208_WILL_NOT_USE_SASL_ON_WRITE ) );
             nextFilter.filterWrite( session, writeRequest );
             return;
         }
@@ -314,7 +313,7 @@ public class SaslFilter extends IoFilterAdapter
         byte[] bufferBytes = new byte[bufferLength];
         buf.get( bufferBytes );
 
-        LOG.info( "Will use SASL to wrap message of length:  {}", bufferLength );
+        LOG.info( I18n.msg( I18n.MSG_05210_WILL_USE_SASL_WRAP, bufferLength ) );
 
         /*
          * Ensure to not send larger SASL message than negotiated.
@@ -323,8 +322,7 @@ public class SaslFilter extends IoFilterAdapter
 
         if ( max <= 0 )
         {
-            throw new SaslException( "Negotiated max buffer size " + maxBufferSize
-                + " is too small to wrap any data" );
+            throw new SaslException( I18n.err(  I18n.ERR_0528_NEGOCIATED_MAX_BUFFER_TOO_SMALL, maxBufferSize ) );
         }
 
         for ( int offset = 0; offset < bufferLength; offset += max )
@@ -341,7 +339,7 @@ public class SaslFilter extends IoFilterAdapter
             saslLayerBuffer.position( 0 );
             saslLayerBuffer.limit( 4 + saslLayer.length );
 
-            LOG.debug( "Sending encrypted token of length {}.", saslLayerBuffer.limit() );
+            LOG.debug( I18n.msg( I18n.MSG_05209_SENDING_ENCRYPTED_TOKEN, saslLayerBuffer.limit() ) );
             nextFilter.filterWrite( session, new DefaultWriteRequest( saslLayerBuffer, writeRequest.getFuture() ) );
         }
     }

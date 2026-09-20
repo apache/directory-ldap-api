@@ -106,7 +106,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
     /** No constructor allowed */
     private ComplexDnParser() 
     {
-        throw new UnsupportedOperationException( "This is a utility class and cannot be instantiated" );
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_13639_UTILITY_CLASS_CANT_BE_INSTANCIATED ) );
     }
     
     
@@ -1352,7 +1352,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
                         
                         default:
                             // Not an attributeType...
-                            LOG.debug( "Cannot parse an attributeType at {}", pos );
+                            LOG.debug( I18n.msg(  I18n.MSG_13604_CANNOT_PARSE_ATTRIBUTE_TYPE, pos ) );
                             
                             return "";
                     }
@@ -1669,7 +1669,7 @@ import static org.apache.directory.api.util.ParserUtil.SPACE;
         {
             case START:
                 // Not an attributeType...
-                LOG.debug( "Cannot parse an attributeType at {}", pos );
+                LOG.debug( I18n.msg(  I18n.MSG_13604_CANNOT_PARSE_ATTRIBUTE_TYPE, pos ) );
                 return "";
 
             case STATE_1:
