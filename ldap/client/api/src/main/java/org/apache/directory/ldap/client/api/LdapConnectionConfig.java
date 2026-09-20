@@ -100,7 +100,7 @@ public class LdapConnectionConfig
     /** The maximum size in bytes accepted for an incoming PDU. Defaults to {@link #DEFAULT_MAX_PDU_SIZE} */
     private int maxPDUSize = DEFAULT_MAX_PDU_SIZE;
 
-    /** The maximum accepted depth for nested search filters. Defaults to {@link #DEFAULT_MAX_FILTER_DEPTH} */
+    /** The maximum accepted depth for nested search filters. Defaults to {@link LdapMessageContainer#DEFAULT_MAX_FILTER_DEPTH} */
     private int maxFilterDepth = LdapMessageContainer.DEFAULT_MAX_FILTER_DEPTH;
 
     /** A flag indicating if we are using TLS or not, default value is false */
@@ -420,7 +420,7 @@ public class LdapConnectionConfig
 
     /**
      * Set the maximum accepted depth for nested search filters. It defaults to
-     * {@link #DEFAULT_MAX_FILTER_DEPTH} : the depth is driven by the incoming
+     * {@link LdapMessageContainer#DEFAULT_MAX_FILTER_DEPTH} : the depth is driven by the incoming
      * PDU and each level consumes one stack frame while the decoded filter is
      * transformed, so only raise it if deeper filters really are expected.
      *
