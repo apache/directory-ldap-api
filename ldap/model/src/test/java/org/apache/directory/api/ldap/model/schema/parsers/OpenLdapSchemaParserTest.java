@@ -503,4 +503,44 @@ public class OpenLdapSchemaParserTest
             parser.parse(  "ObjectClass( 1.1 DESC 'x\\5" );
         });
     }
+
+
+    /**
+     * A SYNTAX length or a ruleid that does not fit in a long/int must be reported
+     * as a ParseException, not escape as an unchecked NumberFormatException
+     * (the descriptions may come from a remote server's subschema).
+     */
+    @Test
+    public void testOversizedSyntaxLength() throws Exception
+    {
+        String description = "( 1.1 SYNTAX 1.1{99999999999999999999} )";
+
+        // Quirks mode
+        assertThrows( ParseException.class, () -> parser.parseAttributeType( description ) );
+
+        // Strict mode
+        OpenLdapSchemaParser strictParser = new OpenLdapSchemaParser();
+        strictParser.setQuirksMode( false );
+        assertThrows( ParseException.class, () -> strictParser.parseAttributeType( description ) );
+
+        // A valid length is still accepted
+        assertEquals( 32768L,
+            strictParser.parseAttributeType( "( 1.1 SYNTAX 1.1{32768} )" ).getSyntaxLength() );
+    }
+
+
+    @Test
+    public void testOversizedRuleId() throws Exception
+    {
+        OpenLdapSchemaParser strictParser = new OpenLdapSchemaParser();
+        strictParser.setQuirksMode( false );
+
+        assertThrows( ParseException.class,
+            () -> strictParser.parseDitStructureRule( "( 99999999999 FORM 1.2.3 )" ) );
+        assertThrows( ParseException.class,
+            () -> parser.parseDitStructureRule( "( 99999999999 FORM 1.2.3 )" ) );
+
+        // A valid ruleid is still accepted
+        assertEquals( 1, strictParser.parseDitStructureRule( "( 1 FORM 1.2.3 )" ).getRuleId() );
+    }
 }

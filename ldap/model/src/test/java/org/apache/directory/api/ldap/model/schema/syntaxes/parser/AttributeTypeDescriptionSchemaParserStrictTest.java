@@ -641,7 +641,7 @@ public class AttributeTypeDescriptionSchemaParserStrictTest
             attributeType = parser.parse( value );
             fail( "Exception expected, invalid SYNTAX 1.2.3.4{12345678901234567890} (length overflow)" );
         }
-        catch ( NumberFormatException nfe )
+        catch ( ParseException pe )
         {
             // expected
         }
