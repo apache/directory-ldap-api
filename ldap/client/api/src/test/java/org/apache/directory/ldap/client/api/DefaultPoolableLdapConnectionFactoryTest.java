@@ -85,6 +85,31 @@ public class DefaultPoolableLdapConnectionFactoryTest
 
 
     @Test
+    public void testIdentityRestoredWhenBorrowerSaslBinds() throws Exception
+    {
+        LdapConnection mockConnection = mock( LdapConnection.class );
+        when( mockConnection.isConnected() ).thenReturn( true );
+        when( mockConnection.isAuthenticated() ).thenReturn( true );
+
+        LdapConnectionPool pool = newPool( mockConnection );
+
+        LdapConnection connection = pool.getConnection();
+        verify( mockConnection, times( 1 ) ).bind( ADMIN_DN, ADMIN_CREDENTIALS );
+
+        // the borrower authenticates as another user with a SASL mechanism
+        SaslPlainRequest saslRequest = new SaslPlainRequest();
+        saslRequest.setUsername( "mallory" );
+        saslRequest.setCredentials( "melon" );
+        connection.bind( saslRequest );
+        verify( mockConnection, times( 1 ) ).bind( saslRequest );
+
+        // returning the connection to the pool must restore the pool identity
+        pool.releaseConnection( connection );
+        verify( mockConnection, times( 2 ) ).bind( ADMIN_DN, ADMIN_CREDENTIALS );
+    }
+
+
+    @Test
     public void testNoRebindWhenIdentityUntouched() throws Exception
     {
         LdapConnection mockConnection = mock( LdapConnection.class );
