@@ -1896,6 +1896,33 @@ public final class Strings
 
 
     /**
+     * Lowercases a char using the TO_LOWER_CASE table. A char outside the table
+     * is returned as is : masking it would map it to an unrelated ASCII char
+     * (e.g. U+0143 would become 'c').
+     *
+     * @param c The char to lowercase
+     * @return The lowercased char
+     */
+    private static char toLowerCaseChar( char c )
+    {
+        return ( c < TO_LOWER_CASE.length ) ? TO_LOWER_CASE[c] : c;
+    }
+
+
+    /**
+     * Uppercases a char using the UPPER_CASE table. A char outside the table is
+     * mapped to 0, like any other char the table does not support.
+     *
+     * @param c The char to uppercase
+     * @return The uppercased char, or 0
+     */
+    private static char toUpperCaseChar( char c )
+    {
+        return ( c < UPPER_CASE.length ) ? UPPER_CASE[c] : 0;
+    }
+
+
+    /**
      * Rewrote the toLowercase method to improve performances.
      * In Ldap, attributesType are supposed to use ASCII chars :
      * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
@@ -1918,7 +1945,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = TO_LOWER_CASE[chars[i] & 0x000FF];
+            chars[i] = toLowerCaseChar( chars[i] );
         }
 
         return new String( chars );
@@ -2001,7 +2028,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = UPPER_CASE[chars[i] & 0x000FF];
+            chars[i] = toUpperCaseChar( chars[i] );
         }
 
         return new String( chars );
@@ -2027,7 +2054,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = UPPER_CASE[chars[i] & 0x000FF];
+            chars[i] = toUpperCaseChar( chars[i] );
         }
 
         return new String( chars );
@@ -2111,7 +2138,7 @@ public final class Strings
 
         for ( char c : chars )
         {
-            chars[pos++] = TO_LOWER_CASE[c & 0x000FF];
+            chars[pos++] = toLowerCaseChar( c );
         }
 
         return new String( chars );
