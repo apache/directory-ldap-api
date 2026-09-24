@@ -85,7 +85,7 @@ public class Asn1DecoderMaxPduSizeTest
 
 
     /**
-     * The explicit opt-out (a value <= 0) must still remove the limit.
+     * The explicit opt-out (a value &lt;= 0) must still remove the limit.
      */
     @Test
     public void testExplicitOptOutRemovesTheLimit() throws DecoderException

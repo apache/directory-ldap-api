@@ -103,8 +103,6 @@ public class SearchRequestFilterNestingTest extends AbstractCodecServiceTest
      * length is enlarged to cover it). Byte-count bookkeeping still
      * balances, but a conformant parser rejects the PDU; the decoder must
      * not silently attach the smuggled element as a sibling filter.
-     *
-     * @throws DecoderException If the ASN1 decoding failed
      */
     @Test
     public void testDecodeSmuggledNestedFilterRejected()

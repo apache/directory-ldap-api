@@ -303,7 +303,7 @@ public class FastDnParserTest
 
 
     /**
-     * test a simple Dn with pair char attribute value : a = \,\=\+\<\>\#\;\\\"\C3\A9"
+     * test a simple Dn with pair char attribute value : a = \,\=\+\&lt;\&gt;\#\;\\\"\C3\A9"
      */
     @Test
     public void testLdapDNPairCharAttributeValue() throws LdapException
