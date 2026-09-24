@@ -33,6 +33,8 @@ import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindRequestImpl;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Strings;
@@ -100,7 +102,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
 
         BindResponse bindResponse = bind( bindRequest );
 
-        processResponse( bindResponse );
+        processBindResponse( bindResponse );
     }
 
 
@@ -124,7 +126,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
 
         BindResponse bindResponse = bind( bindRequest );
 
-        processResponse( bindResponse );
+        processBindResponse( bindResponse );
     }
 
 
@@ -194,7 +196,36 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
 
         BindResponse bindResponse = bind( bindRequest );
 
+        processBindResponse( bindResponse );
+    }
+
+
+    /**
+     * Process the response of a bind operation. Only a SUCCESS result means the
+     * connection is authenticated : any other result code throws an exception, including
+     * the non error codes a server may return for a bind, like REFERRAL (the server does not
+     * hold the entry, and has not checked the credentials) or SASL_BIND_IN_PROGRESS.
+     * Otherwise, a caller relying on the absence of exception would consider an unverified
+     * password as valid.
+     *
+     * @param bindResponse The BindResponse to process
+     * @throws LdapException If the bind did not succeed
+     */
+    protected static void processBindResponse( BindResponse bindResponse ) throws LdapException
+    {
+        // Throws the associated exception for the error codes
         processResponse( bindResponse );
+
+        LdapResult ldapResult = bindResponse.getLdapResult();
+
+        if ( ldapResult.getResultCode() != ResultCodeEnum.SUCCESS )
+        {
+            LdapAuthenticationException authenticationException = new LdapAuthenticationException(
+                I18n.err( I18n.ERR_04102_UNABLE_TO_BIND_CONNECTION, ldapResult.getResultCode() ) );
+            authenticationException.setResolvedDn( ldapResult.getMatchedDn() );
+
+            throw authenticationException;
+        }
     }
 
 
