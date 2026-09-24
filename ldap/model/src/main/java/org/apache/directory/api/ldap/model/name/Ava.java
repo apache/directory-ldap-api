@@ -530,6 +530,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value value )
         throws LdapInvalidDnException
     {
+        // The type is spliced as is into the upName : it must not carry any DN
+        // structural char (this constructor is used by the public Rdn( type, value )
+        // constructors, not only by the DN parsers)
+        checkType( upType );
+
         StringBuilder sb = new StringBuilder();
 
         this.upType = upType;
@@ -1419,6 +1424,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             else
             {
+                checkType( upType );
+
                 // In this case, we will use the upType instead
                 this.normType = Strings.lowerCaseAscii( upTypeTrimmed );
                 this.upType = upType;

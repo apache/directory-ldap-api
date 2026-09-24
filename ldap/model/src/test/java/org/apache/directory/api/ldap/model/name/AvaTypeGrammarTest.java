@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -83,5 +84,33 @@ public class AvaTypeGrammarTest
     public void testValuesAreStillEscaped() throws LdapInvalidDnException
     {
         assertEquals( "cn=x\\,y", new Ava( "cn", "x,y" ).getEscaped() );
+    }
+
+
+    /**
+     * The public Rdn( type, value ) constructors build their Ava through a package
+     * protected constructor : it must validate the type too, otherwise a type
+     * carrying DN structural chars ends up spliced as is in the Rdn upName
+     */
+    @Test
+    public void testStructuralCharactersInRdnTypeAreRejected()
+    {
+        assertThrows( LdapInvalidDnException.class,
+            () -> new Rdn( "cn=probe,ou=admins", "x" ) );
+
+        assertThrows( LdapInvalidDnException.class,
+            () -> new Rdn( ( SchemaManager ) null, "cn=probe,ou=admins", "x" ) );
+
+        assertThrows( LdapInvalidDnException.class,
+            () -> new Rdn( "cn+uid", "x" ) );
+    }
+
+
+    @Test
+    public void testValidRdnTypesAreAccepted() throws Exception
+    {
+        assertEquals( "cn=x", new Rdn( "cn", "x" ).getName() );
+        assertEquals( "2.5.4.3=x", new Rdn( "2.5.4.3", "x" ).getName() );
+        assertEquals( "cn=x\\,y", new Rdn( "cn", "x\\,y" ).getName() );
     }
 }
