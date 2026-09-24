@@ -1425,7 +1425,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         BindResponse bindResponse = bind( bindRequest );
 
-        processResponse( bindResponse );
+        processBindResponse( bindResponse );
     }
 
 
@@ -1445,7 +1445,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         BindResponse bindResponse = bind( bindRequest );
 
-        processResponse( bindResponse );
+        processBindResponse( bindResponse );
     }
 
 
