@@ -225,6 +225,21 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     private PasswordWarning authenticateConnection( final LdapConnection connection,
         final Dn userDn, final char[] password ) throws PasswordException
     {
+        // A password verification must never silently degrade to an unauthenticated
+        // bind (RFC 4513, 5.1.2) : a name with empty credentials would be granted an
+        // anonymous session by many servers, and would be reported as a successful
+        // authentication. Reject a missing or empty password before binding.
+        if ( ( password == null ) || ( password.length == 0 ) )
+        {
+            if ( LOG.isDebugEnabled() )
+            {
+                LOG.debug( I18n.msg( I18n.MSG_04105_MISSING_PASSWORD ) );
+            }
+
+            throw new PasswordException( I18n.msg( I18n.MSG_04105_MISSING_PASSWORD ) )
+                .setResultCode( ResultCodeEnum.INVALID_CREDENTIALS );
+        }
+
         return passwordPolicyResponder.process(
             new PasswordPolicyOperation()
             {
