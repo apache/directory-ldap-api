@@ -312,4 +312,18 @@ public class CountrySyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "ZM" ) );
         assertTrue( checker.isValidSyntax( "ZW" ) );
     }
+
+
+    /**
+     * A non-ASCII value must be rejected, not make the checker throw an
+     * ArrayIndexOutOfBoundsException (the value may come from the network)
+     */
+    @Test
+    public void testNonAsciiString()
+    {
+        assertFalse( checker.isValidSyntax( "fr\u00E9" ) );
+        assertFalse( checker.isValidSyntax( "\u00E9\u00E9" ) );
+        assertFalse( checker.isValidSyntax( "\u0146\u0152" ) );
+        assertTrue( checker.isValidSyntax( "fr" ) );
+    }
 }

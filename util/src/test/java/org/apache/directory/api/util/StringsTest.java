@@ -374,4 +374,38 @@ public class StringsTest
         // Must not throw ArrayIndexOutOfBoundsException
         assertEquals( "ABC\u0000", Strings.toUpperCaseAscii( "abc\u20AC" ) );
     }
+
+
+
+    /**
+     * Latin-1 chars whose code is >= 0xC0 are above the 192 entries uppercase
+     * table : they must be mapped to 0, not throw an ArrayIndexOutOfBoundsException
+     */
+    @Test
+    public void testToUpperCaseLatin1AboveTable()
+    {
+        assertEquals( "FR\u0000", Strings.toUpperCaseAscii( "fr\u00E9" ) );
+        assertEquals( "FR\u0000", Strings.toUpperCase( "fr\u00E9" ) );
+        assertEquals( "\u0000\u0000", Strings.toUpperCaseAscii( "\u00FF\u00C0" ) );
+
+        // A char above 0xFF must not be mapped onto an ASCII letter (U+0141 & 0xFF is 'A')
+        assertEquals( "\u0000", Strings.toUpperCaseAscii( "\u0141" ) );
+    }
+
+
+    /**
+     * A char above 0xFF must be kept as is, not be mapped onto the ASCII letter
+     * matching its low byte (U+0143 & 0xFF is 'C'), which would make 'cn' and
+     * '\u0143n' the same attribute type once normalized
+     */
+    @Test
+    public void testLowerCaseAboveLatin1()
+    {
+        assertEquals( "\u0143n", Strings.lowerCaseAscii( "\u0143N" ) );
+        assertEquals( "\u0143n", Strings.toLowerCase( "\u0143N" ) );
+
+        // ASCII and Latin-1 are handled as before
+        assertEquals( "cn", Strings.lowerCaseAscii( "CN" ) );
+        assertEquals( "\u00C9", Strings.lowerCaseAscii( "\u00C9" ) );
+    }
 }
