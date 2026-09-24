@@ -697,7 +697,7 @@ public class OpenLdapSchemaParser
             parse( reader );
             afterParse();
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -2381,7 +2381,16 @@ public class OpenLdapSchemaParser
 
         String lenStr = pos.line.substring( start, pos.start );
         
-        return Integer.parseInt( lenStr );
+        try
+        {
+            return Integer.parseInt( lenStr );
+        }
+        catch ( NumberFormatException nfe )
+        {
+            // The ruleid does not fit in an int
+            throw new LdapSchemaException( I18n.err( I18n.ERR_13811_INVALID_RULE_ID,
+                pos.lineNumber, start ) );
+        }
     }
 
     
@@ -2867,7 +2876,7 @@ public class OpenLdapSchemaParser
                 return parseAttributeTypeStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             // This exception is not passed as a cause in ParseException. Therefore at least log in, so it won't be lost.
             LOG.trace( I18n.err( I18n.ERR_13865_ERROR_PARSING_AT, attributeTypeDescription, e.getMessage() ), e );
@@ -3382,7 +3391,7 @@ public class OpenLdapSchemaParser
                 return parseDitContentRuleStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -3755,7 +3764,7 @@ public class OpenLdapSchemaParser
                 return parseDitStructureRuleStrict( reader, pos );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -4091,7 +4100,7 @@ public class OpenLdapSchemaParser
                 return parseLdapComparatorStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -4385,7 +4394,7 @@ public class OpenLdapSchemaParser
                 return parseLdapSyntaxStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -4606,7 +4615,7 @@ public class OpenLdapSchemaParser
                 return parseMatchingRuleStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -4903,7 +4912,7 @@ public class OpenLdapSchemaParser
                 return parseMatchingRuleUseStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -5202,7 +5211,7 @@ public class OpenLdapSchemaParser
                 return parseNameFormStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -5563,7 +5572,7 @@ public class OpenLdapSchemaParser
                 return parseNormalizerStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -5865,7 +5874,7 @@ public class OpenLdapSchemaParser
                 return parseObjectClassStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -6265,7 +6274,7 @@ public class OpenLdapSchemaParser
                 return parseSyntaxCheckerStrict( reader, pos, objectIdentifierMacros );
             }
         }
-        catch ( IOException | LdapSchemaException e )
+        catch ( IOException | LdapSchemaException | RuntimeException e )
         {
             throw new ParseException( e.getMessage(), 0 );
         }
@@ -6670,7 +6679,7 @@ public class OpenLdapSchemaParser
                 parse( reader );
                 afterParse();
             }
-            catch ( LdapSchemaException | IOException e )
+            catch ( LdapSchemaException | IOException | RuntimeException e )
             {
                 throw new ParseException( e.getMessage(), 0 );
             }

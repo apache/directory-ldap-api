@@ -94,6 +94,22 @@ public class FilterOperandValidationTest
 
 
     @Test
+    public void testSetMatchingRuleRejectsTrailingCharsAfterNumericOid()
+    {
+        assertThrows( IllegalArgumentException.class,
+            () -> extensible( "cn", "x" ).setMatchingRule( "2.5.13.2:=x)(uid=admin" ) );
+        assertThrows( IllegalArgumentException.class,
+            () -> extensible( "cn", "x" ).setMatchingRule( "2.5.13.2)(cn=*" ) );
+        assertThrows( IllegalArgumentException.class,
+            () -> extensible( "cn", "x" ).setMatchingRule( "2.5.13.2 " ) );
+        assertThrows( IllegalArgumentException.class,
+            () -> extensible( "cn", "x" ).setMatchingRule( "2.5.13." ) );
+        assertThrows( IllegalArgumentException.class,
+            () -> extensible( "cn", "x" ).setMatchingRule( "2" ) );
+    }
+
+
+    @Test
     public void testValidOperandsStillAccepted()
     {
         // keystring attribute

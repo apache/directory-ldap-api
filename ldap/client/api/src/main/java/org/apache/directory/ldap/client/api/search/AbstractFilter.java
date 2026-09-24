@@ -71,11 +71,20 @@ import org.slf4j.LoggerFactory;
         }
         else
         {
+            int pos;
+
             try
             {
-                AttributeUtils.parseOID( matchingRule, 0 );
+                pos = AttributeUtils.parseOID( matchingRule, 0 );
             }
             catch ( ParseException pe )
+            {
+                throw new IllegalArgumentException( I18n.err(  I18n.ERR_04182_INVALID_MATCHING_RULE, matchingRule ) );
+            }
+
+            // The whole operand must be a numeric OID : any trailing char would be
+            // concatenated unescaped into the filter, and could alter its structure
+            if ( pos != matchingRule.length() )
             {
                 throw new IllegalArgumentException( I18n.err(  I18n.ERR_04182_INVALID_MATCHING_RULE, matchingRule ) );
             }

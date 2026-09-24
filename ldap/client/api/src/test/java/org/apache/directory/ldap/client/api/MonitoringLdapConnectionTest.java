@@ -69,4 +69,24 @@ public class MonitoringLdapConnectionTest
             assertFalse( monitor.startTlsCalled() );
         }
     }
+
+
+    /**
+     * Every bind flavour changes the connection identity, so every one of them
+     * must be seen by the monitor : the pool relies on it to restore its identity
+     */
+    @Test
+    public void testSaslBindSetsBindCalled() throws LdapException, IOException
+    {
+        LdapConnection connection = mock( LdapConnection.class );
+
+        try ( MonitoringLdapConnection monitor = new MonitoringLdapConnection( connection ) )
+        {
+            assertFalse( monitor.bindCalled() );
+
+            monitor.bind( new SaslPlainRequest() );
+
+            assertTrue( monitor.bindCalled() );
+        }
+    }
 }

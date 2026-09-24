@@ -177,6 +177,20 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
      * {@inheritDoc}
      */
     @Override
+    public BindResponse bind( SaslRequest saslRequest ) throws LdapException
+    {
+        // A SASL bind changes the connection identity too : it must be restored
+        // when the connection is returned to the pool
+        BindResponse response = connection.bind( saslRequest );
+        bindCalled = true;
+        return response;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExtendedResponse extended( String oid ) throws LdapException
     {
         if ( StartTlsRequest.EXTENSION_OID.equals( oid ) )
