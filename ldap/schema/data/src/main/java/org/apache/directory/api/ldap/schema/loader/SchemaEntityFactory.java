@@ -1555,6 +1555,16 @@ public class SchemaEntityFactory implements EntityFactory
 
             schemaObject.addExtension( MetaSchemaConstants.X_READ_ONLY_AT, value );
         }
+        
+        // X-ORIGIN
+        Attribute xOrigin = entry.get( MetaSchemaConstants.X_ORIGIN_AT );
+
+        if ( xOrigin != null )
+        {
+            String value = xOrigin.getString();
+
+            schemaObject.addExtension( MetaSchemaConstants.X_ORIGIN_AT, value );
+        }
     }
 
 
