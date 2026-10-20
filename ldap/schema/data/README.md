@@ -193,6 +193,7 @@ OID values are allocated as follows:
 - 1.3.6.1.4.1.18060.0.4.1.2.832: ads-replReqHandler
 - 1.3.6.1.4.1.18060.0.4.1.2.833: ads-replUseTls
 - 1.3.6.1.4.1.18060.0.4.1.2.834: ads-replStrictCertValidation
+- 1.3.6.1.4.1.18060.0.4.1.2.835: ads-replUseSsl
 - 1.3.6.1.4.1.18060.0.4.1.2.837: ads-replConsumerId
 - 1.3.6.1.4.1.18060.0.4.1.2.838: ads-replEnabled
 
