@@ -1596,6 +1596,10 @@ public final class SchemaConstants
     public static final String ADS_REPL_STRICT_CERT_VALIDATION = "ads-replStrictCertValidation";
     public static final String ADS_REPL_STRICT_CERT_VALIDATION_OID = "1.3.6.1.4.1.18060.0.4.1.2.834";
 
+    // ads-replUseSsl AT
+    public static final String ADS_REPL_USE_SSL = "ads-replUseSsl";
+    public static final String ADS_REPL_USE_SSL_OID = "1.3.6.1.4.1.18060.0.4.1.2.835";
+
     // ads-replProviderId AT
     public static final String ADS_REPL_PROVIDER_ID = "ads-replProviderId";
     public static final String ADS_REPL_PROVIDER_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.836";

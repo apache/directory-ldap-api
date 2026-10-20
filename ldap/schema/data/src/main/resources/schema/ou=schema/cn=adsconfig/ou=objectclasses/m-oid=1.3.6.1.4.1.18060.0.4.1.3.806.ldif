@@ -22,6 +22,7 @@ m-must: ads-replSearchTimeOut
 m-must: ads-replUserDn
 m-must: ads-replUserPassword
 m-may: ads-replUseTls
+m-may: ads-replUseSsl
 m-may: ads-replStrictCertValidation
 m-may: ads-replConsumerImpl
 m-may: ads-replCookie
