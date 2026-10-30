@@ -1,0 +1,16 @@
+# Attribut SupAnn : supannRefId
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.37, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannRefId
+m-oid: 1.3.6.1.4.1.7135.1.2.1.37
+m-description: identifiant partage avec autre brique du SI
+m-equality: caseExactMatch
+m-substr: caseExactSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-length: 128

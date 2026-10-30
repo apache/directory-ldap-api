@@ -1,0 +1,16 @@
+# Attribut SupAnn : supannListeRouge
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.1, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.7135.1.2.1.1
+m-name: supannListeRouge
+m-description: indique que l entree correspondante n est pas publique
+m-equality: booleanMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+creatorsname: uid=admin,ou=system

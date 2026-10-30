@@ -1,0 +1,16 @@
+# Attribut SupAnn : supannCodeINE
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.9, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannCodeINE
+m-oid=1.3.6.1.4.1.7135.1.2.1.9
+m-description: code INE
+m-equality: caseIgnoreMatch
+m-substr: caseIgnoreSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.44
+m-length: 128

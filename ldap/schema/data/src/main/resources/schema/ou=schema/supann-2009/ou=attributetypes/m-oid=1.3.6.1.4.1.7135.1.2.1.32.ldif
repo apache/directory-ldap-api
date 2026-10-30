@@ -1,0 +1,16 @@
+# Attribut SupAnn : supannEtuSecteurDisciplinaire
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.32, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannEtuSecteurDisciplinaire
+m-oid: 1.3.6.1.4.1.7135.1.2.1.32
+m-description: secteur disciplinaire
+m-equality: caseIgnoreMatch
+m-substr: caseIgnoreSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-length: 128

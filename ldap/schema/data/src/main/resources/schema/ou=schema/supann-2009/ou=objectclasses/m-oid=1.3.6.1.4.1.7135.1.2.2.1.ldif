@@ -1,0 +1,47 @@
+# classe complementaire specifique de supann: supannPerson
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.2.1,ou=objectClasses,cn=supann-2009,ou=schema
+m-oid: 1.3.6.1.4.1.7135.1.2.2.1
+m-supobjectclass: top
+m-description: classe d infos complementaires sur personnes supann
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-name: supannPerson
+m-typeobjectclass: AUXILIARY
+m-may: supannOrganisme
+m-may: supannCivilite
+m-may: supannAutreTelephone
+m-may: supannAffectation
+m-may: supannEmpId
+m-may: supannCodeINE
+m-may: supannEtuId
+m-may: supannAliasLogin
+m-may: supannParrainDN
+m-may: supannActivite
+m-may: supannEntiteAffectation
+m-may: supannEntiteAffectationPrincipale
+m-may: supannMailPerso
+m-may: supannRole
+m-may: supannRoleEntite
+m-may: supannRoleGenerique
+m-may: supannEtuAnneeInscription
+m-may: supannEtuCursusAnnee
+m-may: supannEtuDiplome
+m-may: supannEtuElementPedagogique
+m-may: supannEtuEtape
+m-may: supannEtuInscription
+m-may: supannEtuRegimeInscription
+m-may: supannEtuSecteurDisciplinaire
+m-may: supannEtuTypeDiplome
+m-may: supannEtablissement
+m-may: supannListeRouge
+m-may: supannAutreMail
+m-may: mailForwardingAddress
+m-may: supannEmpCorps
+m-may: supannTypeEntiteAffectation
+m-may: supannRefId
+creatorsname: uid=admin,ou=system

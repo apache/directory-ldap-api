@@ -1,0 +1,11 @@
+version: 1
+dn: cn=supann-2009,ou=schema
+cn: supann-2009
+objectclass: metaSchema
+objectclass: top
+m-dependencies: system
+m-dependencies: core
+m-dependencies: apache
+m-dependencies: apachemeta
+m-disabled: TRUE
+creatorsname: uid=admin,ou=system

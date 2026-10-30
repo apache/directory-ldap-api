@@ -1,0 +1,13 @@
+# Attribut SupAnn : supannAutreMail
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.34, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannAutreMail
+m-oid: 1.3.6.1.4.1.7135.1.2.1.34
+m-description: adresses mail non institutionnelles
+m-supattributetype: mail

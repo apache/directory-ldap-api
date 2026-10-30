@@ -1,0 +1,16 @@
+# Attribut SupAnn : supannCodeEntiteParent
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.7, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannCodeEntiteParent
+m-oid: 1.3.6.1.4.1.7135.1.2.1.7
+m-description: identifiant d entite parente
+m-equality: caseIgnoreIA5Match
+m-substr: caseIgnoreIA5SubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.26
+m-length: 128

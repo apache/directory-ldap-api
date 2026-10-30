@@ -1,0 +1,18 @@
+# Attribut SupAnn : supannOrganisme
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.3, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannOrganisme
+m-oid: 1.3.6.1.4.1.7135.1.2.1.3
+m-description: code organisme d appartenance
+m-equality: caseIgnoreMatch
+m-substr: caseIgnoreSubstringsMatch
+m-singleValue: TRUE
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-length: 128
+creatorsname: uid=admin,ou=system

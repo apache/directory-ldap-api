@@ -1,0 +1,19 @@
+# classe complementaire specifique de supann: supannOrg
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.2.3,ou=objectClasses,cn=supann-2009,ou=schema
+m-oid: 1.3.6.1.4.1.7135.1.2.2.3
+m-supobjectclass: top
+m-description: classe d infos complementaires pour entite
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-name: supannEntite
+m-typeobjectclass: AUXILIARY
+m-must: supannCodeEntite
+m-may: supannEntite
+m-may: supannCodeEntiteParent
+m-may: supannRefId
+creatorsname: uid=admin,ou=system

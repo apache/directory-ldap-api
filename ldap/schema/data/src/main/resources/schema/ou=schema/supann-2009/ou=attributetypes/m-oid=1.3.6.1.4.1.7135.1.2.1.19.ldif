@@ -1,0 +1,13 @@
+# Attribut SupAnn : supannGroupeAdminDN
+#---------------------------------------------------------
+# Version 2009
+#---------------------------------------------------------
+version: 1
+dn: m-oid=1.3.6.1.4.1.7135.1.2.1.19, ou=attributeTypes, cn=supann-2009, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-name: supannGroupeAdminDN
+m-oid: 1.3.6.1.4.1.7135.1.2.1.19
+m-description: dn des administrateurs du groupe concerne
+m-supattributetype: distinguishedName
