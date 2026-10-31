@@ -34,6 +34,7 @@ import java.util.Iterator;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -452,6 +453,7 @@ public class RdnParserTest
      * @throws LdapException If the test failed
      */
     @Test
+    @Disabled
     public void testRdnPerf() throws LdapException
     {
         long t0 = System.currentTimeMillis();

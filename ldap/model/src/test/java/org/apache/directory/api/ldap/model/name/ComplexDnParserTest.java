@@ -38,10 +38,10 @@ import org.junit.jupiter.api.Test;
  */
 class ComplexDnParserTest {
     
-    private static Method getPrivateMethod( String methodName, Class<?> clazz ) throws IllegalAccessException, IllegalArgumentException, 
+    private static Method getPrivateMethod( String methodName, Class<?>... classes ) throws IllegalAccessException, IllegalArgumentException, 
         InvocationTargetException, NoSuchMethodException, SecurityException 
     {
-        Method method = ComplexDnParser.class.getDeclaredMethod( methodName, clazz, Position.class );
+        Method method = ComplexDnParser.class.getDeclaredMethod( methodName, classes );
         method.setAccessible( true );
 
         return method;
@@ -54,7 +54,7 @@ class ComplexDnParserTest {
     void testParseSimpelAttributeType()
     {
         try {
-            Method method = getPrivateMethod( "parseAttributeType", byte[].class );
+            Method method = getPrivateMethod( "parseAttributeType", Position.class );
             
             // Check a simple attributeType
             // Transition Start -> 1
@@ -62,7 +62,7 @@ class ComplexDnParserTest {
             Position pos = new Position( at );
             pos.length = at.length(); 
             
-            String attributeType = ( String ) method.invoke( null, Strings.getBytesUtf8( at ), pos );
+            String attributeType = ( String ) method.invoke( null, pos );
             
             assertEquals( at, attributeType );
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -78,7 +78,7 @@ class ComplexDnParserTest {
     void testParseOidNumericOidAttributeType()
     {
         try {
-            Method method = getPrivateMethod( "parseAttributeType", byte[].class );
+            Method method = getPrivateMethod( "parseAttributeType", Position.class );
             
             // Check a simple attributeType
             // Transition Start -> 1
@@ -86,7 +86,7 @@ class ComplexDnParserTest {
             Position pos = new Position( at );
             pos.length = at.length(); 
             
-            String attributeType = ( String ) method.invoke( null, Strings.getBytesUtf8( at ), pos );
+            String attributeType = ( String ) method.invoke( null, pos );
             
             assertEquals( at, attributeType );
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -102,7 +102,7 @@ class ComplexDnParserTest {
     void testParseBadNumericOidAttributeType()
     {
         try {
-            Method method = getPrivateMethod( "parseAttributeType", byte[].class );
+            Method method = getPrivateMethod( "parseAttributeType", Position.class );
             
             // Check a wrong OID
             String at = "123";
@@ -111,7 +111,7 @@ class ComplexDnParserTest {
             
             try 
             {
-                method.invoke( null, Strings.getBytesUtf8( at ), pos );
+                method.invoke( null, pos );
             }
             catch ( Exception e )
             {
@@ -130,7 +130,7 @@ class ComplexDnParserTest {
     void testParseNotTerminatedNumericOidAttributeType()
     {
         try {
-            Method method = getPrivateMethod( "parseAttributeType", byte[].class );
+            Method method = getPrivateMethod( "parseAttributeType", Position.class );
             
             // Check a wrong OID
             String at = "123.2.";
@@ -140,7 +140,7 @@ class ComplexDnParserTest {
             
             try 
             {
-                method.invoke( null, Strings.getBytesUtf8( at ), pos );
+                method.invoke( null, pos );
             }
             catch ( Exception e )
             {
@@ -156,13 +156,13 @@ class ComplexDnParserTest {
     void testParseUTFMB2_00A3() throws ParseException
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xC2, ( byte ) 0xA3 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\u00A3' /*'£'*/, c );
             assertEquals( '£', c );
@@ -179,13 +179,13 @@ class ComplexDnParserTest {
     void testParseUTFMB3_1_0920()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xE0, ( byte ) 0xA4, ( byte ) 0xA0 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\u0920' /*'ठ'*/, c );
             assertEquals( 'ठ', c );
@@ -202,13 +202,13 @@ class ComplexDnParserTest {
     void testParseUTFMB3_2_1200()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xE1, ( byte ) 0x88, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\u1200' /*'ሀ'*/ , c);
             assertEquals( 'ሀ', c );
@@ -225,13 +225,13 @@ class ComplexDnParserTest {
     void testParseWrongUTFMB3_2()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xE1, ( byte ) 0x45, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            assertThrows( InvocationTargetException.class, () -> method.invoke( null, bytes, pos ) );
+            assertThrows( InvocationTargetException.class, () -> method.invoke( null, pos, bytes, new int[1] ) );
             
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
                 InvocationTargetException e ) {
@@ -247,13 +247,13 @@ class ComplexDnParserTest {
     void testParseUTFMB3_3_D000()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xED, ( byte ) 0x80, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\uD000' /*'퀀'*/, c );
             assertEquals( '퀀' /*'퀀'*/, c );
@@ -269,13 +269,13 @@ class ComplexDnParserTest {
     void testParseUTFMB3_3_D7FB()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xED, ( byte ) 0x9F, ( byte ) 0xBB };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\uD7FB' /*'ퟻ'*/, c );
             assertEquals( 'ퟻ', c );
@@ -292,13 +292,13 @@ class ComplexDnParserTest {
     void testParseUTFMB3_4_E000()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xEE, ( byte ) 0x80, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\uE000' /*''*/, c );
             assertEquals( '', c );
@@ -315,13 +315,13 @@ class ComplexDnParserTest {
     void testParseUTFMB3_4_FFFD()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xEF, ( byte ) 0xBF, ( byte ) 0xBD };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             
             assertEquals( '\uFFFD' /*'�'*/, c );
             assertEquals( '�', c );
@@ -338,13 +338,13 @@ class ComplexDnParserTest {
     void testParseUTFMB4_1_10000()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xF0, ( byte ) 0x90, ( byte ) 0x80, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             char[] chars = new char[] { ( char )( c >> 16 ), ( char ) ( c & 0xFFFF ) };
             String result = new String( chars );
             assertEquals( "\uD800\uDC00" /*'𐀀'*/, result );
@@ -362,13 +362,13 @@ class ComplexDnParserTest {
     void testParseUTFMB4_1_3D05F()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xF0, ( byte ) 0xBD, ( byte ) 0x81, ( byte ) 0x9F };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             char[] chars = new char[] { ( char )( c >> 16 ), ( char ) ( c & 0xFFFF ) };
             String result = new String( chars );
             assertEquals( "\uD8B4\uDC5F" /*'𽁟'*/, result );
@@ -386,13 +386,13 @@ class ComplexDnParserTest {
     void testParseUTFMB4_2_E0052()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xF3, ( byte ) 0xA0, ( byte ) 0x81, ( byte ) 0x92 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             char[] chars = new char[] { ( char )( c >> 16 ), ( char ) ( c & 0xFFFF ) };
             String result = new String( chars );
             assertEquals( "\uDB40\uDC52", result );
@@ -409,13 +409,13 @@ class ComplexDnParserTest {
     void testParseUTFMB4_3_100000()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xF4, ( byte ) 0x80, ( byte ) 0x80, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             char[] chars = new char[] { ( char )( c >> 16 ), ( char ) ( c & 0xFFFF ) };
             String result = new String( chars );
             assertEquals( "\uDBC0\uDC00", result );
@@ -432,13 +432,13 @@ class ComplexDnParserTest {
     void testParseUTFMB4_3_10FFFF()
     {
         try {
-            Method method = getPrivateMethod( "parseUTFMB", byte[].class );
+            Method method = getPrivateMethod( "parseUTFMB", Position.class, byte[].class, int[].class );
 
             byte[] bytes = new byte[] { ( byte ) 0xF4, ( byte ) 0x80, ( byte ) 0x80, ( byte ) 0x80 };
             Position pos  = new Position( bytes );
             pos.length = bytes.length;
             
-            int c = ( int ) method.invoke( null, bytes, pos );
+            int c = ( int ) method.invoke( null, pos, bytes, new int[1] );
             char[] chars = new char[] { ( char )( c >> 16 ), ( char ) ( c & 0xFFFF ) };
             String result = new String( chars );
             assertEquals( "\uDBC0\uDC00", result );

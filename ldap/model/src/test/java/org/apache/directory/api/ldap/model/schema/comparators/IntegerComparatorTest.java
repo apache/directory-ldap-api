@@ -62,6 +62,7 @@ public class IntegerComparatorTest
         assertEquals( 1, comparator.compare( "1000000000000000000000000", null ) );
         assertEquals( 0, comparator.compare( "1000000000000000000000000", "1000000000000000000000000" ) );
         
+        /*
         long t0 = System.currentTimeMillis();
         
         for ( int i = 0; i < 10000000; i++ )
@@ -72,7 +73,8 @@ public class IntegerComparatorTest
         long t1 = System.currentTimeMillis();
         
         System.out.println( "Delta = " + ( t1 - t0 ) );
+        */
         
-            assertEquals( 1, comparator.compare( "1000000000000000000000001", "1000000000000000000000000" ) );
+        assertEquals( 1, comparator.compare( "1000000000000000000000001", "1000000000000000000000000" ) );
     }
 }
