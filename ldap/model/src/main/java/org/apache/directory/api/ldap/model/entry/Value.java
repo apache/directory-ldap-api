@@ -1498,7 +1498,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @param in The input stream
      * @return A new Value instance
      * @throws IOException If the stream can't be read
-     * @throws ClassNotFoundException If we can't instanciate a Value
+     * @throws ClassNotFoundException If we can't instantiate a Value
      */
     public static Value deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
@@ -1516,7 +1516,7 @@ public class Value implements Cloneable, Externalizable, Comparable<Value>
      * @param in The input stream
      * @return A new Value instance
      * @throws IOException If the stream can't be read
-     * @throws ClassNotFoundException If we can't instanciate a Value
+     * @throws ClassNotFoundException If we can't instantiate a Value
      */
     public static Value deserialize( AttributeType attributeType, ObjectInput in ) throws IOException, ClassNotFoundException
     {
