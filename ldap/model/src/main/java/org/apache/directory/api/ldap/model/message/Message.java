@@ -108,7 +108,7 @@ public interface Message
      * Gets a message scope parameter. Message scope parameters are temporary
      * variables associated with a message and are set locally to be used to
      * associate housekeeping information with a request or its processing.
-     * These parameters are never transmitted nor recieved, think of them as
+     * These parameters are never transmitted nor received, think of them as
      * transient data associated with the message or its processing. These
      * transient parameters are not locked down so modifications can occur
      * without firing LockExceptions even when this Lockable is in the locked
