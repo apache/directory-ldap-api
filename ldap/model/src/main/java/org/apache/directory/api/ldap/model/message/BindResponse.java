@@ -40,7 +40,7 @@ public interface BindResponse extends ResultResponse
 
 
     /**
-     * Sets the optional property holding SASL authentication response paramters
+     * Sets the optional property holding SASL authentication response parameters
      * that are SASL mechanism specific. Leave null if authentication mode is
      * simple.
      * 
